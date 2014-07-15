@@ -1,0 +1,30 @@
+#Netbeans project
+nbproject/
+
+.directory
+
+#VIM swap files
+*.swp
+
+#PHPStorm
+.idea
+
+#Eclipse
+.buildpath
+.project
+.settings
+
+#ignore folders
+/assets/
+protected/runtime/
+protected/tests/report/
+/uploads/
+/temp/
+protected/data/backup/
+
+protected/config/local-db.php
+protected/config/local-path.php
+protected/config/local-mail.php
+protected/config/local-console-request.php
+protected/config/local-main.php
+protected/config/local-console.php
