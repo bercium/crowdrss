@@ -1,4 +1,5 @@
 <?php
+require(dirname(__FILE__).DIRECTORY_SEPARATOR.'../components/global.php');
 
 // This is the configuration for yiic console application.
 // Any writable CConsoleApplication properties can be configured here.
@@ -9,11 +10,27 @@ return array(
 	// preloading 'log' component
 	'preload'=>array('log'),
 
+	'import'=>array(
+		'application.models.*',
+		'application.components.*',
+
+		'application.components.*',
+    //'application.components.functions.*',
+    //'application.components.extenders.*',
+    //'application.components.behaviours.*',
+    //'application.components.lib.*',
+    'ext.giix-components.*', // giix components
+      
+    'ext.mail.YiiMailMessage', // mail system      
+	),    
+
 	// application components
 	'components'=>array(
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+    'db' => array(
+                  'enableProfiling'=>YII_DEBUG,
+                  'enableParamLogging'=>YII_DEBUG,
+                  'initSQLs'=>array("set time_zone='+00:00';"),
+            ),
 		// uncomment the following to use a MySQL database
 		/*
 		'db'=>array(
@@ -30,8 +47,24 @@ return array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
+          'logFile' => 'console.log',
 				),
 			),
 		),
+      
+    'mail' => array(
+        'class' => 'ext.mail.YiiMail',
+        'transportType' => 'php', //smtp
+        /*'transportOptions' => array_merge(array(
+            'host' => 'smtp.gmail.com',
+            'port' => '465',
+            'encryption'=>'tls',
+          ),require(dirname(__FILE__) . '/local-mail.php')
+        ),*/
+        'viewPath' => 'application.views.layouts.mail',
+        'logging' => YII_DEBUG,
+        'dryRun' => YII_DEBUG
+    ),  
+      
 	),
 );

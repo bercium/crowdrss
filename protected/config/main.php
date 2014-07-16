@@ -1,13 +1,16 @@
 <?php
+require(dirname(__FILE__).DIRECTORY_SEPARATOR.'../components/global.php');
 
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
-return array(
+$a = array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'Crowdfunding RSS',
+  
+  'timeZone'=>'GMT',    
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -16,18 +19,27 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+
+		'application.components.*',
+    //'application.components.functions.*',
+    //'application.components.extenders.*',
+    //'application.components.behaviours.*',
+    //'application.components.lib.*',
+    'ext.giix-components.*', // giix components
+      
+    'ext.mail.YiiMailMessage', // mail system      
 	),
 
 	'modules'=>array(
-		// uncomment the following to enable the Gii tool
-		/*
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'Enter Your Password Here',
+			'password'=>'yiigii',
+      'generatorPaths' => array(
+  			'ext.giix-core', // giix generators
+    	),        
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
-		*/
 	),
 
 	// application components
@@ -37,7 +49,7 @@ return array(
 			'allowAutoLogin'=>true,
 		),
 		// uncomment the following to enable URLs in path-format
-		/*
+		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
 			'rules'=>array(
@@ -46,20 +58,13 @@ return array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
-		*/
-		'db'=>array(
-			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
-		),
+		
 		// uncomment the following to use a MySQL database
-		/*
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
-		),
-		*/
+		'db' => array(
+                  'enableProfiling'=>YII_DEBUG,
+                  'enableParamLogging'=>YII_DEBUG,
+                  'initSQLs'=>array("set time_zone='+00:00';"),
+            ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
 			'errorAction'=>'site/error',
@@ -68,17 +73,63 @@ return array(
 			'class'=>'CLogRouter',
 			'routes'=>array(
 				array(
-					'class'=>'CFileLogRoute',
-					'levels'=>'error, warning',
-				),
+					//'class'=>'CWebLogRoute',
+					'levels'=>'error, warning, trace, info',
+					'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
+          'ipFilters'=>array('127.0.0.1'),
+          'enabled'=>YII_DEBUG,
+				),/*
+        array(
+  					'levels'=>'error',
+            'class'=>'CEmailLogRoute',
+            'emails' => array('dev@cofinder.eu'),
+            //'categories' => 'exception.*, system.*',
+            'sentFrom'   => 'admin@cofinder.eu',
+            'subject'    => 'Error on production',
+            'utf8' => true,
+            'enabled'=>(!YII_DEBUG),  // send mail only from production
+            //'enabled'=>YII_DEBUG,
+            //*'categories'=>'system.db.*',* /
+            'except'=>'exception.CHttpException.*'
+        ),*/
+        array(
+  					'levels'=>'error',
+            'class'=>'CFileLogRoute',
+            'logFile' => 'application.error.log',
+            'enabled'=>!YII_DEBUG,
+            //'enabled'=>YII_DEBUG,
+            /*'categories'=>'system.db.*',*/
+        ),          
+        array(
+  					'levels'=>'warning',
+            'class'=>'CFileLogRoute',
+            'logFile' => 'application.warning.log',
+            'enabled'=>!YII_DEBUG,
+            /*'categories'=>'system.db.*',*/
+        ),          
 				// uncomment the following to show log messages on web pages
 				/*
 				array(
 					'class'=>'CWebLogRoute',
-				),
-				*/
+				),*/
+				
 			),
 		),
+      
+    'mail' => array(
+        'class' => 'ext.mail.YiiMail',
+        'transportType' => 'php', //smtp
+        /*'transportOptions' => array_merge(array(
+            'host' => 'smtp.gmail.com',
+            'port' => '465',
+            'encryption'=>'tls',
+          ),require(dirname(__FILE__) . '/local-mail.php')
+        ),*/
+        'viewPath' => 'application.views.layouts.mail',
+        'logging' => YII_DEBUG,
+        'dryRun' => YII_DEBUG
+    ),      
+      
 	),
 
 	// application-level parameters that can be accessed
@@ -88,3 +139,7 @@ return array(
 		'adminEmail'=>'webmaster@example.com',
 	),
 );
+
+$b = require(dirname(__FILE__) . '/local-main.php');
+
+return array_merge_recursive_distinct($a,$b);
