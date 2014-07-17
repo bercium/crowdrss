@@ -22,14 +22,19 @@ class UpdateCommand extends CConsoleCommand{
     $check=false;
     while (($i <= 1)or($check == true)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
+      echo "test 1 ";
       if ($result->results) {
+        echo "test 2 ";
         foreach ($result->results as $data){
+	  echo "test 3 ";
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if (isset($link_check)){
+	    echo "test preverjanje ";
 	    $check=true;
 	    break;
 	  }else{
-	    $result_single = query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
+	    echo "test 4 ";
+	    $result_single = $this->query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
 	    $data_single = $result_single->results;
 	    $insert=new Project;
 	    $insert->title=$data->title;
@@ -45,6 +50,7 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->goal=$data_single[0]->goal;
 	    $insert->type_of_funding="fixed";
 	    $insert->save();
+	    echo "Vneseno " . $data->title . "\n";
           }
 	}
       }
