@@ -24,11 +24,12 @@
 		<?php echo $form->error($model,'platform_id'); ?>
 		</div><!-- row -->
 
+    <?php /* ?>
 		<label><?php echo GxHtml::encode($model->getRelationLabel('projects')); ?></label>
 		<?php echo $form->checkBoxList($model, 'projects', GxHtml::encodeEx(GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)), false, true)); ?>
 		<label><?php echo GxHtml::encode($model->getRelationLabel('projects1')); ?></label>
-		<?php echo $form->checkBoxList($model, 'projects1', GxHtml::encodeEx(GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)), false, true)); ?>
-
+		<?php  echo $form->checkBoxList($model, 'projects1', GxHtml::encodeEx(GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)), false, true)); ?>
+    <?php */ ?>
 <?php
 echo GxHtml::submitButton(Yii::t('app', 'Save'));
 $this->endWidget();

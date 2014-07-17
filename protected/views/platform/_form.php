@@ -19,9 +19,10 @@
 		<?php echo $form->error($model,'name'); ?>
 		</div><!-- row -->
 
+    <?php /* ?>
 		<label><?php echo GxHtml::encode($model->getRelationLabel('categories')); ?></label>
 		<?php echo $form->checkBoxList($model, 'categories', GxHtml::encodeEx(GxHtml::listDataEx(Category::model()->findAllAttributes(null, true)), false, true)); ?>
-
+    <?php */ ?>
 <?php
 echo GxHtml::submitButton(Yii::t('app', 'Save'));
 $this->endWidget();
