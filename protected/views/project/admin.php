@@ -66,6 +66,7 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 		'creator_backed',
 		'goal',
 		'type_of_funding',
+		'time_added',
 		*/
 		array(
 			'class' => 'CButtonColumn',

@@ -24,7 +24,7 @@ class TrackController extends Controller
 	{
 		return array(
 			array('allow', // allow all users to perform actions
-        'actions'=>array('mailOpen','ml'),
+        'actions'=>array('mailOpen','ml','rl'),
 				'users'=>array('*'),
 			),
 			/*array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -137,5 +137,26 @@ class TrackController extends Controller
     $this->redirect($l);
     Yii::app()->end();
   }
+  
+  /**
+   * tracking RSS link clicks
+   */
+  public function actionRl($tc, $l, $ln) {
+    /*Yii::import('application.helpers.Hashids');
+    $hashids = new Hashids('cofinder');
+    $tid = $hashids->decrypt($id);
+    $id = $tid[0];*/
+    $tc = mailTrackingCodeDecode($tc);
+    
+    $mailLinkClick = new MailClickLog();
+    $mailLinkClick->link = $l;
+    $mailLinkClick->mail_tracking_code = $tc;
+    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
+    $mailLinkClick->button_name = $ln;
+    $mailLinkClick->save();
+    
+    $this->redirect($l);
+    Yii::app()->end();
+  }  
 	
 }
