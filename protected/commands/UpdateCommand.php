@@ -22,35 +22,33 @@ class UpdateCommand extends CConsoleCommand{
     $check=false;
     while (($i <= 1)or($check == true)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
-      echo "test 1 ";
       if ($result->results) {
-        echo "test 2 ";
         foreach ($result->results as $data){
-	  echo "test 3 ";
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if (isset($link_check)){
-	    echo "test preverjanje ";
 	    $check=true;
 	    break;
 	  }else{
-	    echo "test 4 ";
 	    $result_single = $this->query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
-	    $data_single = $result_single->results;
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
 	    $insert->link=$data->link;
-	    $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
-	    $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
-	    $insert->location=$data_single[0]->location;
-	    $insert->creator=$data_single[0]->creator;
-	    $insert->creator_created=$data_single[0]->created;
-	    $insert->creator_backed=$data_single[0]->backed;
-	    $insert->goal=$data_single[0]->goal;
-	    $insert->type_of_funding="fixed";
+//	    $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
+//	    $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
+//	    $insert->location=$data_single[0]->location;
+//	    $insert->creator=$data_single[0]->creator;
+//	    if ($data_single[0]->created == "First") {$created = 1;}
+//	    else{$created = $data_single[0]->created;}
+//	    $insert->creator_created=$created;
+//	    $insert->creator_backed=$data_single[0]->backed;
+//	    $insert->goal=$data_single[0]->goal;
+//	    $insert->type_of_funding="";
+	    $insert->platform_id=1;
+	    $insert->category_id=0;
 	    $insert->save();
-	    echo "Vneseno " . $data->title . "\n";
+//	    print_r($insert->getErrors());
           }
 	}
       }
