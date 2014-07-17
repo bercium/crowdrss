@@ -20,7 +20,7 @@ class UpdateCommand extends CConsoleCommand{
   public function actionKickstarter(){
     $i=1;
     $check=false;
-    while (($i <= 5)or($check == true)) {
+    while (($i <= 1)or($check == true)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
@@ -30,19 +30,19 @@ class UpdateCommand extends CConsoleCommand{
 	    break;
 	  }else{
 	    $result_single = query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
-	    $result_single->results as $data_single;
+	    $data_single = $result_single->results;
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
 	    $insert->link=$data->link;
-	    $insert->start=date("Y-m-d H:i:s",strtotime($data->start_date));
-	    $insert->end=date("Y-m-d H:i:s",strtotime($data->end_date));
-	    $insert->location=$data->location;
-	    $insert->creator=$data->creator;
-	    $insert->created=$data->created;
-	    $insert->backed=$data->backed;
-	    $insert->goal=$data->goal;
+	    $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
+	    $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
+	    $insert->location=$data_single[0]->location;
+	    $insert->creator=$data_single[0]->creator;
+	    $insert->creator_created=$data_single[0]->created;
+	    $insert->creator_backed=$data_single[0]->backed;
+	    $insert->goal=$data_single[0]->goal;
 	    $insert->type_of_funding="fixed";
 	    $insert->save();
           }
