@@ -32,6 +32,24 @@ class SiteController extends Controller
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
 	}
+  
+  /**
+   * tracking RSS link clicks and redirecting them
+   */
+  public function actionRl($l) {
+    /*Yii::import('application.helpers.Hashids');
+    $hashids = new Hashids('cofinder');
+    $tid = $hashids->decrypt($id);
+    $id = $tid[0];*/
+    
+    $mailLinkClick = new MailClickLog();
+    $mailLinkClick->link = $l;
+    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
+    $mailLinkClick->save();
+    
+    $this->redirect($l);
+    Yii::app()->end();
+  }   
 
 	/**
 	 * This is the action to handle external exceptions.

@@ -138,25 +138,6 @@ class TrackController extends Controller
     Yii::app()->end();
   }
   
-  /**
-   * tracking RSS link clicks
-   */
-  public function actionRl($tc, $l, $ln) {
-    /*Yii::import('application.helpers.Hashids');
-    $hashids = new Hashids('cofinder');
-    $tid = $hashids->decrypt($id);
-    $id = $tid[0];*/
-    $tc = mailTrackingCodeDecode($tc);
-    
-    $mailLinkClick = new MailClickLog();
-    $mailLinkClick->link = $l;
-    $mailLinkClick->mail_tracking_code = $tc;
-    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
-    $mailLinkClick->button_name = $ln;
-    $mailLinkClick->save();
-    
-    $this->redirect($l);
-    Yii::app()->end();
-  }  
+ 
 	
 }
