@@ -18,18 +18,24 @@ class UpdateCommand extends CConsoleCommand{
   }
 
   public function actionKickstarter(){
-    $result = query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=1&state=live&sort=launch_date",), false);
-    if ($result->results)
-    foreach ($result->results as $data){
-      $data_tmp['link'] = $data->link;
-      if (compareToDb($data_tmp['link']) == true) then { break; }
-      $data_tmp['image'] = $data->image;
-      $data_tmp['title'] = $data->title;
-      $data_tmp['description'] = $data->description;
+    $i=1;
+    $check=false;
+    while (($i <= 5)or($check == true)) {
+      $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if (isset($link_check)) { $check=true; break;}
+          else{
+	  
+          }
+	}
+      }
+      $i++;
     }
   }
 
-  public function actionIndiegogo(){
+/*  public function actionIndiegogo(){
     $result = query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
     if ($result->results)
     foreach ($result->results as $data){
@@ -38,5 +44,6 @@ class UpdateCommand extends CConsoleCommand{
       $data_tmp['image'] = $data->image;
       $data_tmp['title'] = $data->title;
       $data_tmp['description'] = $data->description;
-  }
+    }
+  }*/
 }
