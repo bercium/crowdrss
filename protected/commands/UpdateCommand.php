@@ -20,33 +20,37 @@ class UpdateCommand extends CConsoleCommand{
   public function actionKickstarter(){
     $i=1;
     $check=false;
-    while (($i <= 1)or($check == true)) {
+    while (($i <= 55555) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-          if (isset($link_check)){
+          if ($link_check){
 	    $check=true;
 	    break;
 	  }else{
 	    $result_single = $this->query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
+	    $data_single = $result_single->results[0];
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
 	    $insert->link=$data->link;
-//	    $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
-//	    $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
-//	    $insert->location=$data_single[0]->location;
-//	    $insert->creator=$data_single[0]->creator;
-//	    if ($data_single[0]->created == "First") {$created = 1;}
-//	    else{$created = $data_single[0]->created;}
-//	    $insert->creator_created=$created;
-//	    $insert->creator_backed=$data_single[0]->backed;
-//	    $insert->goal=$data_single[0]->goal;
-//	    $insert->type_of_funding="";
+	    if (isset($data_single->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single->start_date));
+	    if (isset($data_single->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single->end_date));
+	    if (isset($data_single->location)) $insert->location=$data_single->location;
+	    if (isset($data_single->creator)) $insert->creator=$data_single->creator;
+	    if (isset($data_single->created)){
+	      if ($data_single->created == "First") { $created = 1; }
+	      else{ $created = $data_single->created; }
+	      $insert->creator_created=$created;
+	    }
+	    if (isset($data_single->backed)) $insert->creator_backed=$data_single->backed;
+	    if (isset($data_single->goal)) $insert->goal=$data_single->goal;
+//	    if (isset($data_single->start_date)) $insert->type_of_funding=0;
+	    $insert->time_added=date("Y-m-d H:i:s");
 	    $insert->platform_id=1;
-	    $insert->category_id=0;
+	    $insert->category_id=1;
 	    $insert->save();
 //	    print_r($insert->getErrors());
           }
