@@ -11,9 +11,7 @@
  *
  * @property integer $id
  * @property string $name
- * @property integer $platform_id
  *
- * @property Platform $platform
  * @property Project[] $projects
  * @property Project[] $projects1
  */
@@ -37,16 +35,14 @@ abstract class BaseCategory extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('name, platform_id', 'required'),
-			array('platform_id', 'numerical', 'integerOnly'=>true),
+			array('name', 'required'),
 			array('name', 'length', 'max'=>255),
-			array('id, name, platform_id', 'safe', 'on'=>'search'),
+			array('id, name', 'safe', 'on'=>'search'),
 		);
 	}
 
 	public function relations() {
 		return array(
-			'platform' => array(self::BELONGS_TO, 'Platform', 'platform_id'),
 			'projects' => array(self::HAS_MANY, 'Project', 'category_id'),
 			'projects1' => array(self::HAS_MANY, 'Project', 'platform_id'),
 		);
@@ -61,8 +57,6 @@ abstract class BaseCategory extends GxActiveRecord {
 		return array(
 			'id' => Yii::t('app', 'ID'),
 			'name' => Yii::t('app', 'Name'),
-			'platform_id' => null,
-			'platform' => null,
 			'projects' => null,
 			'projects1' => null,
 		);
@@ -73,7 +67,6 @@ abstract class BaseCategory extends GxActiveRecord {
 
 		$criteria->compare('id', $this->id);
 		$criteria->compare('name', $this->name, true);
-		$criteria->compare('platform_id', $this->platform_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

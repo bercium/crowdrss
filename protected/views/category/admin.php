@@ -45,11 +45,6 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 		'id',
 		'name',
 		array(
-				'name'=>'platform_id',
-				'value'=>'GxHtml::valueEx($data->platform)',
-				'filter'=>GxHtml::listDataEx(Platform::model()->findAllAttributes(null, true)),
-				),
-		array(
 			'class' => 'CButtonColumn',
 		),
 	),

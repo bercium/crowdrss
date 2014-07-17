@@ -21,11 +21,6 @@ $this->menu=array(
 	'attributes' => array(
 'id',
 'name',
-array(
-			'name' => 'platform',
-			'type' => 'raw',
-			'value' => $model->platform !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->platform)), array('platform/view', 'id' => GxActiveRecord::extractPkValue($model->platform, true))) : null,
-			),
 	),
 )); ?>
 
