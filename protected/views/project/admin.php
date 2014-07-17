@@ -62,11 +62,7 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 		'end',
 		'location',
 		'creator',
-		array(
-					'name' => 'creator_first',
-					'value' => '($data->creator_first === 0) ? Yii::t(\'app\', \'No\') : Yii::t(\'app\', \'Yes\')',
-					'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
-					),
+		'creator_created',
 		'creator_backed',
 		'goal',
 		'type_of_funding',

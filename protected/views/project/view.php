@@ -38,7 +38,7 @@ array(
 'end',
 'location',
 'creator',
-'creator_first:boolean',
+'creator_created',
 'creator_backed',
 'goal',
 'type_of_funding',

@@ -64,9 +64,9 @@
 		<?php echo $form->error($model,'creator'); ?>
 		</div><!-- row -->
 		<div class="row">
-		<?php echo $form->labelEx($model,'creator_first'); ?>
-		<?php echo $form->checkBox($model, 'creator_first'); ?>
-		<?php echo $form->error($model,'creator_first'); ?>
+		<?php echo $form->labelEx($model,'creator_created'); ?>
+		<?php echo $form->textField($model, 'creator_created'); ?>
+		<?php echo $form->error($model,'creator_created'); ?>
 		</div><!-- row -->
 		<div class="row">
 		<?php echo $form->labelEx($model,'creator_backed'); ?>

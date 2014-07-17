@@ -35,8 +35,8 @@
 	<?php echo GxHtml::encode($data->getAttributeLabel('creator')); ?>:
 	<?php echo GxHtml::encode($data->creator); ?>
 	<br />
-	<?php echo GxHtml::encode($data->getAttributeLabel('creator_first')); ?>:
-	<?php echo GxHtml::encode($data->creator_first); ?>
+	<?php echo GxHtml::encode($data->getAttributeLabel('creator_created')); ?>:
+	<?php echo GxHtml::encode($data->creator_created); ?>
 	<br />
 	<?php echo GxHtml::encode($data->getAttributeLabel('creator_backed')); ?>:
 	<?php echo GxHtml::encode($data->creator_backed); ?>

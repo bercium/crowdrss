@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2014 at 04:43 PM
+-- Generation Time: Jul 17, 2014 at 04:53 PM
 -- Server version: 5.5.37-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `project` (
   `end` datetime DEFAULT NULL,
   `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `creator_first` tinyint(1) DEFAULT NULL,
+  `creator_created` int(11) DEFAULT NULL,
   `creator_backed` int(11) DEFAULT NULL,
   `goal` int(11) DEFAULT NULL,
   `type_of_funding` int(11) DEFAULT NULL,
@@ -87,8 +87,8 @@ CREATE TABLE IF NOT EXISTS `project` (
 -- Constraints for table `project`
 --
 ALTER TABLE `project`
-  ADD CONSTRAINT `project_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `project_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `project_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `project_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
