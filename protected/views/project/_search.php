@@ -61,8 +61,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model, 'creator_first'); ?>
-		<?php echo $form->dropDownList($model, 'creator_first', array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')), array('prompt' => Yii::t('app', 'All'))); ?>
+		<?php echo $form->label($model, 'creator_created'); ?>
+		<?php echo $form->textField($model, 'creator_created'); ?>
 	</div>
 
 	<div class="row">
