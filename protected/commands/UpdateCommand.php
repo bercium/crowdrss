@@ -25,9 +25,26 @@ class UpdateCommand extends CConsoleCommand{
       if ($result->results) {
         foreach ($result->results as $data){
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-          if (isset($link_check)) { $check=true; break;}
-          else{
-	  
+          if (isset($link_check)){
+	    $check=true;
+	    break;
+	  }else{
+	    $result_single = query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
+	    $result_single->results as $data_single;
+	    $insert=new Project;
+	    $insert->title=$data->title;
+	    $insert->description=$data->description;
+	    $insert->image=$data->image;
+	    $insert->link=$data->link;
+	    $insert->start=date("Y-m-d H:i:s",strtotime($data->start_date));
+	    $insert->end=date("Y-m-d H:i:s",strtotime($data->end_date));
+	    $insert->location=$data->location;
+	    $insert->creator=$data->creator;
+	    $insert->created=$data->created;
+	    $insert->backed=$data->backed;
+	    $insert->goal=$data->goal;
+	    $insert->type_of_funding="fixed";
+	    $insert->save();
           }
 	}
       }
