@@ -22,7 +22,7 @@
  * @property string $creator
  * @property integer $creator_created
  * @property integer $creator_backed
- * @property integer $goal
+ * @property string $goal
  * @property integer $type_of_funding
  *
  * @property Category $platform
@@ -49,9 +49,10 @@ abstract class BaseProject extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('platform_id, category_id, title, description, image, link', 'required'),
-			array('platform_id, category_id, creator_created, creator_backed, goal, type_of_funding', 'numerical', 'integerOnly'=>true),
+			array('platform_id, category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
 			array('title, image, link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
+			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
 			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('id, platform_id, category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding', 'safe', 'on'=>'search'),
@@ -108,7 +109,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('creator', $this->creator, true);
 		$criteria->compare('creator_created', $this->creator_created);
 		$criteria->compare('creator_backed', $this->creator_backed);
-		$criteria->compare('goal', $this->goal);
+		$criteria->compare('goal', $this->goal, true);
 		$criteria->compare('type_of_funding', $this->type_of_funding);
 
 		return new CActiveDataProvider($this, array(

@@ -75,7 +75,7 @@
 		</div><!-- row -->
 		<div class="row">
 		<?php echo $form->labelEx($model,'goal'); ?>
-		<?php echo $form->textField($model, 'goal'); ?>
+		<?php echo $form->textField($model, 'goal', array('maxlength' => 20)); ?>
 		<?php echo $form->error($model,'goal'); ?>
 		</div><!-- row -->
 		<div class="row">

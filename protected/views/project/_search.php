@@ -72,7 +72,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model, 'goal'); ?>
-		<?php echo $form->textField($model, 'goal'); ?>
+		<?php echo $form->textField($model, 'goal', array('maxlength' => 20)); ?>
 	</div>
 
 	<div class="row">
