@@ -3,7 +3,7 @@ require(dirname(__FILE__).DIRECTORY_SEPARATOR.'../components/global.php');
 
 // This is the configuration for yiic console application.
 // Any writable CConsoleApplication properties can be configured here.
-return array(
+$a = array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'My Console Application',
 
@@ -75,3 +75,7 @@ return array(
 	),
     
 );
+
+$b = require(dirname(__FILE__) . '/local-console.php');
+
+return array_merge_recursive_distinct($a,$b);
