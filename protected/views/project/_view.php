@@ -47,6 +47,9 @@
 	<?php echo GxHtml::encode($data->getAttributeLabel('type_of_funding')); ?>:
 	<?php echo GxHtml::encode($data->type_of_funding); ?>
 	<br />
+	<?php echo GxHtml::encode($data->getAttributeLabel('time_added')); ?>:
+	<?php echo GxHtml::encode($data->time_added); ?>
+	<br />
 	*/ ?>
 
 </div>

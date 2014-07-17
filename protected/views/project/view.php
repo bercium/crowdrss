@@ -42,6 +42,7 @@ array(
 'creator_backed',
 'goal',
 'type_of_funding',
+'time_added',
 	),
 )); ?>
 

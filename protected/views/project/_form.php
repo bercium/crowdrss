@@ -83,6 +83,11 @@
 		<?php echo $form->textField($model, 'type_of_funding'); ?>
 		<?php echo $form->error($model,'type_of_funding'); ?>
 		</div><!-- row -->
+		<div class="row">
+		<?php echo $form->labelEx($model,'time_added'); ?>
+		<?php echo $form->textField($model, 'time_added'); ?>
+		<?php echo $form->error($model,'time_added'); ?>
+		</div><!-- row -->
 
 
 <?php

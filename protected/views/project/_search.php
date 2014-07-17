@@ -80,6 +80,11 @@
 		<?php echo $form->textField($model, 'type_of_funding'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model, 'time_added'); ?>
+		<?php echo $form->textField($model, 'time_added'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo GxHtml::submitButton(Yii::t('app', 'Search')); ?>
 	</div>
