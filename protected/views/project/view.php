@@ -23,7 +23,7 @@ $this->menu=array(
 array(
 			'name' => 'platform',
 			'type' => 'raw',
-			'value' => $model->platform !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->platform)), array('category/view', 'id' => GxActiveRecord::extractPkValue($model->platform, true))) : null,
+			'value' => $model->platform !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->platform)), array('platform/view', 'id' => GxActiveRecord::extractPkValue($model->platform, true))) : null,
 			),
 array(
 			'name' => 'category',

@@ -25,7 +25,7 @@
  * @property string $goal
  * @property integer $type_of_funding
  *
- * @property Category $platform
+ * @property Platform $platform
  * @property Category $category
  */
 abstract class BaseProject extends GxActiveRecord {
@@ -61,7 +61,7 @@ abstract class BaseProject extends GxActiveRecord {
 
 	public function relations() {
 		return array(
-			'platform' => array(self::BELONGS_TO, 'Category', 'platform_id'),
+			'platform' => array(self::BELONGS_TO, 'Platform', 'platform_id'),
 			'category' => array(self::BELONGS_TO, 'Category', 'category_id'),
 		);
 	}
