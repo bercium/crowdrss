@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 17, 2014 at 04:29 PM
+-- Generation Time: Jul 17, 2014 at 04:43 PM
 -- Server version: 5.5.37-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
@@ -29,9 +29,7 @@ SET time_zone = "+00:00";
 CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `platform_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `platform_id` (`platform_id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -84,12 +82,6 @@ CREATE TABLE IF NOT EXISTS `project` (
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `category`
---
-ALTER TABLE `category`
-  ADD CONSTRAINT `category_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `platform` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `project`
