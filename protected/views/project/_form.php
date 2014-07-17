@@ -15,7 +15,7 @@
 
 		<div class="row">
 		<?php echo $form->labelEx($model,'platform_id'); ?>
-		<?php echo $form->dropDownList($model, 'platform_id', GxHtml::listDataEx(Category::model()->findAllAttributes(null, true))); ?>
+		<?php echo $form->dropDownList($model, 'platform_id', GxHtml::listDataEx(Platform::model()->findAllAttributes(null, true))); ?>
 		<?php echo $form->error($model,'platform_id'); ?>
 		</div><!-- row -->
 		<div class="row">
@@ -75,7 +75,7 @@
 		</div><!-- row -->
 		<div class="row">
 		<?php echo $form->labelEx($model,'goal'); ?>
-		<?php echo $form->textField($model, 'goal'); ?>
+		<?php echo $form->textField($model, 'goal', array('maxlength' => 20)); ?>
 		<?php echo $form->error($model,'goal'); ?>
 		</div><!-- row -->
 		<div class="row">

@@ -46,7 +46,7 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 		array(
 				'name'=>'platform_id',
 				'value'=>'GxHtml::valueEx($data->platform)',
-				'filter'=>GxHtml::listDataEx(Category::model()->findAllAttributes(null, true)),
+				'filter'=>GxHtml::listDataEx(Platform::model()->findAllAttributes(null, true)),
 				),
 		array(
 				'name'=>'category_id',

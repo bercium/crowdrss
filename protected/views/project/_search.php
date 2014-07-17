@@ -12,7 +12,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model, 'platform_id'); ?>
-		<?php echo $form->dropDownList($model, 'platform_id', GxHtml::listDataEx(Category::model()->findAllAttributes(null, true)), array('prompt' => Yii::t('app', 'All'))); ?>
+		<?php echo $form->dropDownList($model, 'platform_id', GxHtml::listDataEx(Platform::model()->findAllAttributes(null, true)), array('prompt' => Yii::t('app', 'All'))); ?>
 	</div>
 
 	<div class="row">
@@ -72,7 +72,7 @@
 
 	<div class="row">
 		<?php echo $form->label($model, 'goal'); ?>
-		<?php echo $form->textField($model, 'goal'); ?>
+		<?php echo $form->textField($model, 'goal', array('maxlength' => 20)); ?>
 	</div>
 
 	<div class="row">
