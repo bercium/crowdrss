@@ -61,46 +61,42 @@ class UpdateCommand extends CConsoleCommand{
   }
 
   public function actionIndiegogo(){
-    $result = query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
-    $i=1;
-    $check=false;
-    $count=1;
-    while (($i <= 5) and ($check == false)) {
-      $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
-      if ($result->results) {
-        foreach ($result->results as $data){
-          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-          if ($link_check){ $count=$count+1;}
-          else{
-            $result_single = $this->query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
-            if (isset($result_single)) $data_single = $result_single->results;
-            $insert=new Project;
-            $insert->title=$data->title;
-            $insert->description=$data->description;
-            $insert->image=$data->image;
-            $insert->link=$data->link;
-            $insert->time_added=date("Y-m-d H:i:s");
-            $insert->platform_id=1;
-            $insert->category_id=1;
-            if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
-            if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
-            if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
-            if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
-            if (isset($data_single[0]->created)){
-              if ($data_single[0]->created == "First") { $created = 1; }
-              else{ $created = $data_single[0]->created; }
-              $insert->creator_created=$created;
-            }
-            if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
-            if (isset($data_single[0]->goal)) $insert->goal=$data_single[0]->goal;
-            if (isset($data_single[0]->type_of_funding)) $insert->type_of_funding=$data_single[0]->type_of_funding;
-            $insert->save();
-//          print_r($insert->getErrors());
+    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
+    if ($result->results) {
+      foreach ($result->results as $data){
+        $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+        if ($link_check){ $count=$count+1;}
+        else{
+          $result_single = $this->query("d3239d9f-f333-4201-b1d8-e84fc4385606", array("webpage/url" => $data->link,), false);
+          if (isset($result_single)) $data_single = $result_single->results;
+          $insert=new Project;
+          $insert->title=$data->title;
+          $insert->description=$data->description;
+          $insert->image=$data->image;
+          $insert->link=$data->link;
+          $insert->time_added=date("Y-m-d H:i:s");
+          $insert->platform_id=2;
+          $insert->category_id=1;
+          if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
+          if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
+          if (isset($data_single[0]->goal)) $insert->goal=$data_single[0]->goal;
+          if (isset($data_single[0]->type_of_funding)){
+            if ($data_single[0]->type_of_funding == "Fixed") {$typeOfFunding = 0;}
+            else {$typeOfFunding = 1;}
+            $insert->type_of_funding=$typeOfFunding;
           }
-          if ($count > 10){ $check=true; break; }
+/*          if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
+          if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
+          if (isset($data_single[0]->created)){
+            if ($data_single[0]->created == "First") { $created = 1; }
+            else{ $created = $data_single[0]->created; }
+            $insert->creator_created=$created;
+          }
+          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;*/
+          $insert->save();
+//          print_r($insert->getErrors());
         }
       }
-      $i=$i+1;
     }
   }
 }
