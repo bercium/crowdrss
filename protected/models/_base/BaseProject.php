@@ -11,7 +11,7 @@
  *
  * @property integer $id
  * @property integer $platform_id
- * @property integer $category_id
+ * @property integer $orig_category_id
  * @property string $title
  * @property string $description
  * @property string $image
@@ -26,8 +26,8 @@
  * @property integer $type_of_funding
  * @property string $time_added
  *
+ * @property OrigCategory $origCategory
  * @property Platform $platform
- * @property Category $category
  */
 abstract class BaseProject extends GxActiveRecord {
 
@@ -49,21 +49,21 @@ abstract class BaseProject extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('platform_id, category_id, title, description, image, link, time_added', 'required'),
-			array('platform_id, category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
+			array('platform_id, orig_category_id, title, description, image, link, time_added', 'required'),
+			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
 			array('title, image, link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
 			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
 			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, platform_id, category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, time_added', 'safe', 'on'=>'search'),
+			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, time_added', 'safe', 'on'=>'search'),
 		);
 	}
 
 	public function relations() {
 		return array(
+			'origCategory' => array(self::BELONGS_TO, 'OrigCategory', 'orig_category_id'),
 			'platform' => array(self::BELONGS_TO, 'Platform', 'platform_id'),
-			'category' => array(self::BELONGS_TO, 'Category', 'category_id'),
 		);
 	}
 
@@ -76,7 +76,7 @@ abstract class BaseProject extends GxActiveRecord {
 		return array(
 			'id' => Yii::t('app', 'ID'),
 			'platform_id' => null,
-			'category_id' => null,
+			'orig_category_id' => null,
 			'title' => Yii::t('app', 'Title'),
 			'description' => Yii::t('app', 'Description'),
 			'image' => Yii::t('app', 'Image'),
@@ -90,8 +90,8 @@ abstract class BaseProject extends GxActiveRecord {
 			'goal' => Yii::t('app', 'Goal'),
 			'type_of_funding' => Yii::t('app', 'Type Of Funding'),
 			'time_added' => Yii::t('app', 'Time Added'),
+			'origCategory' => null,
 			'platform' => null,
-			'category' => null,
 		);
 	}
 
@@ -100,7 +100,7 @@ abstract class BaseProject extends GxActiveRecord {
 
 		$criteria->compare('id', $this->id);
 		$criteria->compare('platform_id', $this->platform_id);
-		$criteria->compare('category_id', $this->category_id);
+		$criteria->compare('orig_category_id', $this->orig_category_id);
 		$criteria->compare('title', $this->title, true);
 		$criteria->compare('description', $this->description, true);
 		$criteria->compare('image', $this->image, true);

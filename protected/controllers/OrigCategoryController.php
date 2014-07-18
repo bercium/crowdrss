@@ -1,6 +1,6 @@
 <?php
 
-class CategoryController extends GxController {
+class OrigCategoryController extends GxController {
 /**
 	 * @return array action filters
 	 */
@@ -31,16 +31,16 @@ class CategoryController extends GxController {
 
 	public function actionView($id) {
 		$this->render('view', array(
-			'model' => $this->loadModel($id, 'Category'),
+			'model' => $this->loadModel($id, 'OrigCategory'),
 		));
 	}
 
 	public function actionCreate() {
-		$model = new Category;
+		$model = new OrigCategory;
 
 
-		if (isset($_POST['Category'])) {
-			$model->setAttributes($_POST['Category']);
+		if (isset($_POST['OrigCategory'])) {
+			$model->setAttributes($_POST['OrigCategory']);
 
 			if ($model->save()) {
 				if (Yii::app()->getRequest()->getIsAjaxRequest())
@@ -54,11 +54,11 @@ class CategoryController extends GxController {
 	}
 
 	public function actionUpdate($id) {
-		$model = $this->loadModel($id, 'Category');
+		$model = $this->loadModel($id, 'OrigCategory');
 
 
-		if (isset($_POST['Category'])) {
-			$model->setAttributes($_POST['Category']);
+		if (isset($_POST['OrigCategory'])) {
+			$model->setAttributes($_POST['OrigCategory']);
 
 			if ($model->save()) {
 				$this->redirect(array('view', 'id' => $model->id));
@@ -72,7 +72,7 @@ class CategoryController extends GxController {
 
 	public function actionDelete($id) {
 		if (Yii::app()->getRequest()->getIsPostRequest()) {
-			$this->loadModel($id, 'Category')->delete();
+			$this->loadModel($id, 'OrigCategory')->delete();
 
 			if (!Yii::app()->getRequest()->getIsAjaxRequest())
 				$this->redirect(array('admin'));
@@ -81,18 +81,18 @@ class CategoryController extends GxController {
 	}
 
 	public function actionIndex() {
-		$dataProvider = new CActiveDataProvider('Category');
+		$dataProvider = new CActiveDataProvider('OrigCategory');
 		$this->render('index', array(
 			'dataProvider' => $dataProvider,
 		));
 	}
 
 	public function actionAdmin() {
-		$model = new Category('search');
+		$model = new OrigCategory('search');
 		$model->unsetAttributes();
 
-		if (isset($_GET['Category']))
-			$model->setAttributes($_GET['Category']);
+		if (isset($_GET['OrigCategory']))
+			$model->setAttributes($_GET['OrigCategory']);
 
 		$this->render('admin', array(
 			'model' => $model,

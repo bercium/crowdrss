@@ -19,9 +19,9 @@
 		<?php echo $form->error($model,'platform_id'); ?>
 		</div><!-- row -->
 		<div class="row">
-		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->dropDownList($model, 'category_id', GxHtml::listDataEx(Category::model()->findAllAttributes(null, true))); ?>
-		<?php echo $form->error($model,'category_id'); ?>
+		<?php echo $form->labelEx($model,'orig_category_id'); ?>
+		<?php echo $form->dropDownList($model, 'orig_category_id', GxHtml::listDataEx(OrigCategory::model()->findAllAttributes(null, true))); ?>
+		<?php echo $form->error($model,'orig_category_id'); ?>
 		</div><!-- row -->
 		<div class="row">
 		<?php echo $form->labelEx($model,'title'); ?>

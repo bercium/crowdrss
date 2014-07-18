@@ -20,29 +20,22 @@ $this->menu=array(
 	'data' => $model,
 	'attributes' => array(
 'id',
+'name',
 array(
-			'name' => 'platform',
+			'name' => 'category',
 			'type' => 'raw',
-			'value' => $model->platform !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->platform)), array('platform/view', 'id' => GxActiveRecord::extractPkValue($model->platform, true))) : null,
+			'value' => $model->category !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->category)), array('category/view', 'id' => GxActiveRecord::extractPkValue($model->category, true))) : null,
 			),
-array(
-			'name' => 'origCategory',
-			'type' => 'raw',
-			'value' => $model->origCategory !== null ? GxHtml::link(GxHtml::encode(GxHtml::valueEx($model->origCategory)), array('origCategory/view', 'id' => GxActiveRecord::extractPkValue($model->origCategory, true))) : null,
-			),
-'title',
-'description',
-'image',
-'link',
-'start',
-'end',
-'location',
-'creator',
-'creator_created',
-'creator_backed',
-'goal',
-'type_of_funding',
-'time_added',
 	),
 )); ?>
 
+<h2><?php echo GxHtml::encode($model->getRelationLabel('projects')); ?></h2>
+<?php
+	echo GxHtml::openTag('ul');
+	foreach($model->projects as $relatedModel) {
+		echo GxHtml::openTag('li');
+		echo GxHtml::link(GxHtml::encode(GxHtml::valueEx($relatedModel)), array('project/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
+		echo GxHtml::closeTag('li');
+	}
+	echo GxHtml::closeTag('ul');
+?>

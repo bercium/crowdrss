@@ -16,7 +16,7 @@ $('.search-button').click(function(){
 	return false;
 });
 $('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('project-grid', {
+	$.fn.yiiGridView.update('orig-category-grid', {
 		data: $(this).serialize()
 	});
 	return false;
@@ -38,36 +38,17 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id' => 'project-grid',
+	'id' => 'orig-category-grid',
 	'dataProvider' => $model->search(),
 	'filter' => $model,
 	'columns' => array(
 		'id',
+		'name',
 		array(
-				'name'=>'platform_id',
-				'value'=>'GxHtml::valueEx($data->platform)',
-				'filter'=>GxHtml::listDataEx(Platform::model()->findAllAttributes(null, true)),
+				'name'=>'category_id',
+				'value'=>'GxHtml::valueEx($data->category)',
+				'filter'=>GxHtml::listDataEx(Category::model()->findAllAttributes(null, true)),
 				),
-		array(
-				'name'=>'orig_category_id',
-				'value'=>'GxHtml::valueEx($data->origCategory)',
-				'filter'=>GxHtml::listDataEx(OrigCategory::model()->findAllAttributes(null, true)),
-				),
-		'title',
-		'description',
-		'image',
-		/*
-		'link',
-		'start',
-		'end',
-		'location',
-		'creator',
-		'creator_created',
-		'creator_backed',
-		'goal',
-		'type_of_funding',
-		'time_added',
-		*/
 		array(
 			'class' => 'CButtonColumn',
 		),

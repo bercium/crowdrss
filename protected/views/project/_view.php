@@ -7,8 +7,8 @@
 	<?php echo GxHtml::encode($data->getAttributeLabel('platform_id')); ?>:
 		<?php echo GxHtml::encode(GxHtml::valueEx($data->platform)); ?>
 	<br />
-	<?php echo GxHtml::encode($data->getAttributeLabel('category_id')); ?>:
-		<?php echo GxHtml::encode(GxHtml::valueEx($data->category)); ?>
+	<?php echo GxHtml::encode($data->getAttributeLabel('orig_category_id')); ?>:
+		<?php echo GxHtml::encode(GxHtml::valueEx($data->origCategory)); ?>
 	<br />
 	<?php echo GxHtml::encode($data->getAttributeLabel('title')); ?>:
 	<?php echo GxHtml::encode($data->title); ?>
