@@ -21,10 +21,12 @@ class UpdateCommand extends CConsoleCommand{
     $i=1;
     $check=false;
     $count=1;
+    $id_ks=1; // originalno prebrat iz baze
     while (($i <= 5) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
+          sleep(2);
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ $count=$count+1;}
 	  else{
@@ -36,9 +38,10 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->image=$data->image;
 	    $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
-            $insert->platform_id=1;
-            $insert->category_id=1;
-	    $insert->type_of_funding=0;
+            $insert->platform_id=$id_ks;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single[0]->category));
+            $insert->orig_category_id=$category->id;
+//	    $insert->type_of_funding=0;
 	    if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
 	    if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
 	    if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
@@ -53,7 +56,7 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->save();
 //	    print_r($insert->getErrors());
           }
-	  if ($count > 10){ $check=true; break; }
+	  if ($count > 30){ $check=true; break; }
 	}
       }
       $i=$i+1;
@@ -61,9 +64,11 @@ class UpdateCommand extends CConsoleCommand{
   }
 
   public function actionIndiegogo(){
+    $id_igg=2; // originalno prebrat iz baze
     $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
     if ($result->results) {
       foreach ($result->results as $data){
+	sleep(2);
         $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
         if ($link_check){ $count=$count+1;}
         else{
@@ -75,13 +80,14 @@ class UpdateCommand extends CConsoleCommand{
           $insert->image=$data->image;
           $insert->link=$data->link;
           $insert->time_added=date("Y-m-d H:i:s");
-          $insert->platform_id=2;
-          $insert->category_id=1;
+          $insert->platform_id=$id_igg;
+          $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+          $insert->orig_category_id=$category->id;
           if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
           if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
           if (isset($data_single[0]->goal)) $insert->goal=$data_single[0]->goal;
           if (isset($data_single[0]->type_of_funding)){
-            if ($data_single[0]->type_of_funding == "Fixed") {$typeOfFunding = 0;}
+            if ($data_single[0]->type_of_funding == "Fixed Funding") {$typeOfFunding = 0;}
             else {$typeOfFunding = 1;}
             $insert->type_of_funding=$typeOfFunding;
           }
