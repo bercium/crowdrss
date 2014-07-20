@@ -20,4 +20,71 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+  public $pageDesc = '';
+  
+  
+public function init(){
+    $baseUrl = Yii::app()->baseUrl; 
+    $cs = Yii::app()->getClientScript();
+      
+    $cs->registerCssFile($baseUrl.'/css/foundation.css');
+    $cs->registerCssFile($baseUrl.'/css/layout.css');   
+    $cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
+
+
+		// JAVASCRIPTS
+    $cs->registerCoreScript('jquery');  //core jquery lib
+
+		$cs->registerScriptFile($baseUrl.'/js/vendor/custom.modernizr.js',CClientScript::POS_HEAD);  //modernizer
+    
+    //$cs->registerScriptFile($baseUrl.'/js/respond.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
+    $cs->registerScriptFile($baseUrl.'/js/jquery.scrolldepth.min.js'); //scroll tracker
+
+
+    //$cs->registerCoreScript($baseUrl.'jquery.ui');
+    //$cs->registerCoreScript($baseUrl.'autocomplete');
+    
+    // google analytics
+    $cs->registerScript("ganalytics","
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-9773251-6', 'auto');
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+     ");
+    //ga('set', '&uid', <?php echo ? >); // Set the user ID using signed-in user_id.
+     
+    //ga('require', 'linkid', 'linkid.js');
+    $cs->registerScript("scrollDepth","
+      $(function() {
+        $.scrollDepth();
+      });");
+     
+    
+    // startup scripts
+    //$cs->registerScriptFile($baseUrl.'/js/app.js');
+    
+    parent::init();
+  }
+  
+  public function run($in_actionID){
+    $baseUrl = Yii::app()->baseUrl; 
+    $cs = Yii::app()->getClientScript();
+    // general controller JS
+    if (file_exists("js/controllers/".Yii::app()->controller->id."/controller.js"))
+      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/controller.js");
+    // specific action JS
+    if (!$in_actionID) $actionID = $this->defaultAction;
+    else $actionID =  $in_actionID;
+
+    if (file_exists("js/controllers/".Yii::app()->controller->id."/".$actionID.".js"))
+      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/".$actionID.".js");
+    
+    parent::run($in_actionID);
+  }  
 }
