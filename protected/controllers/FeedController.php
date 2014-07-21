@@ -25,7 +25,7 @@ class FeedController extends Controller
     $rssResponse .= '<channel>';
     $rssResponse .= '<title>Crowdfounding RSS</title>';
     $rssResponse .= '<link>http://crowdfoundingrss.eberce.si</link>';
-    $rssResponse .= '<description>All your crowdfounding projects at one place</description>';
+    $rssResponse .= '<description>All your crowdfunding projects at one place.</description>';
     $rssResponse .= '<language>en</language>';
     $rssResponse .= '<ttl>15</ttl>';
 //    $rssResponse .= '<webMaster>team@eberce.si</webMaster>';
