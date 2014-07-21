@@ -59,12 +59,12 @@ class FeedController extends Controller
     // CREATE RSS
     foreach ($projects as $project){
       $rssResponse .= '<item>';
-      $rssResponse .= '<title>' . $projects->title  . '</title>';
-      $rssResponse .= '<pubDate>' . $projects->time_added  . '</pubDate>';
-      $rssResponse .= '<category>' . $projects->origCategory->name  . '</category>';
-      $rssResponse .= '<link>' . $projects->link  . '</link>';
-      $rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $projects->description  . '</description>';
-      $rssResponse .= '<author>' . $projects->creator  . '</author>';
+      $rssResponse .= '<title>' . $project->title  . '</title>';
+      $rssResponse .= '<pubDate>' . $project->time_added  . '</pubDate>';
+      $rssResponse .= '<category>' . $project->origCategory->name  . '</category>';
+      $rssResponse .= '<link>' . $project->link  . '</link>';
+      $rssResponse .= '<description>&lt;img width="680" height="510" src="' . $project->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $project->description  . '</description>';
+      $rssResponse .= '<author>' . $project->creator  . '</author>';
       $rssResponse .= '</item>';
     }
 
