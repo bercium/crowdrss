@@ -23,12 +23,12 @@ class FeedController extends Controller
     $rssResponse = '<?xml version="1.0" encoding="UTF-8"?>';
     $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
     $rssResponse .= '<channel>';
-    $rssResponse .= '<title></title>';
-    $rssResponse .= '<link></link>';
-    $rssResponse .= '<description></description>';
+    $rssResponse .= '<title>Crowdfounding RSS</title>';
+    $rssResponse .= '<link>http://crowdfoundingrss.eberce.si</link>';
+    $rssResponse .= '<description>All your crowdfounding projects at one place</description>';
     $rssResponse .= '<language>en</language>';
     $rssResponse .= '<ttl>15</ttl>';
-    $rssResponse .= '<webMaster></webMaster>';
+//    $rssResponse .= '<webMaster>team@eberce.si</webMaster>';
     
     //$data  hash tag for 
     // get subscription type of projects
@@ -52,9 +52,9 @@ class FeedController extends Controller
       $rssResponse .= '<item>';
       $rssResponse .= '<title>' . $projects->title  . '</title>';
       $rssResponse .= '<pubDate>' . $projects->time_added  . '</pubDate>';
-      $rssResponse .= '<category>' . $projects-> name  . '</category>';
+      $rssResponse .= '<category>' . $projects->name  . '</category>';
       $rssResponse .= '<link>' . $projects->link  . '</link>';
-	$rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;nbsp;' . $projects->description  . '</description>';
+	$rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $projects->description  . '</description>';
       $rssResponse .= '<author>' . $projects->creator  . '</author>';
       $rssResponse .= '</item>';
     }
@@ -65,8 +65,5 @@ class FeedController extends Controller
     // echo rss
     echo $rssResponse;
     Yii::app()->end();
-    
   }
-  
-  
 }
