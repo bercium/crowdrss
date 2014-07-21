@@ -226,7 +226,7 @@ function writeFlashes(){
   if ($flashMessages) {
     $nh = $i = 0;
     $hide = '';
-    $html = '<div class=""><div class="">';
+    $html = '<div class="">';
     foreach($flashMessages as $key => $flash) {
       Yii::app()->user->getFlash($key);
 
@@ -246,7 +246,7 @@ function writeFlashes(){
       $i++;
     }
 
-    $html .= '</div></div>';
+    $html .= '</div>';
     if ($nh > 0){
       $html .= '<div></div>';
     }

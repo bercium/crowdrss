@@ -1,0 +1,26 @@
+.intro{
+  color:#FFF;
+  background: #0088bb;
+  background-image: url('../images/bg.png');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  height:600px;
+  font-weight: bold;
+  
+}
+
+.intro-desc{
+  color:#EEE;
+  background: #0088bb;
+}
+
+.intro h1, .intro-desc h1{
+  color:#FFF;
+}
+
+.intro h1{
+  font-family: 'Istok Web', sans-serif;
+  font-weight: bold;
+  
+}
+

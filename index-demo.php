@@ -25,9 +25,9 @@ html {
   font-family: 'Segoe UI', 'Open Sans', Helvetica, Arial, sans-serif;
   overflow: hidden;
   background: #0000dd;
-  background-image: -webkit-gradient(radial, center center, 0, center center, 460, color-stop(0%, #827ad1), color-stop(100%, #16114b));
-  background-image: -webkit-radial-gradient(50% 0%, circle farthest-corner, #827ad1, #16114b);
-  background-image: radial-gradient(circle farthest-corner at 50% 0%, #827ad1, #16114b);
+  background-image: -webkit-gradient(radial, center center, 0, center center, 460, color-stop(0%, #99ccee), color-stop(100%, #0088bb));
+  background-image: -webkit-radial-gradient(50% 0%, circle farthest-corner, #99ccee, #0088bb);
+  background-image: radial-gradient(circle farthest-corner at 50% 0%, #99ccee, #0088bb);
 }
 body a,
 html a {
@@ -43,7 +43,7 @@ html a {
 }
 
 #main-content {
-  height: 500px;
+  height: 900px;
   width: 100%;
 }
    
@@ -3488,7 +3488,7 @@ $result = query("a0250b6e-f4b6-494c-8f53-01305c3e1ba8", array(
                   t = function () {
                       var n = $("#particles-left"),
                           t = $("#particles-right"),
-                          i = 50;
+                          i = 90;
                       window.innerWidth <= 500 && (i = 5), $("#particles-middle").particles({
                           particleCount: i,
                           size: 2,
@@ -3497,7 +3497,7 @@ $result = query("a0250b6e-f4b6-494c-8f53-01305c3e1ba8", array(
                           maxVelocity: .6,
                           minDistance: 70
                       }), n.is(":visible") && t.is(":visible") && (n.particles({
-                          particleCount: 25,
+                          particleCount:55,
                           size: 3,
                           heightFactor: .8,
                           widthFactor: .333,
@@ -3505,7 +3505,7 @@ $result = query("a0250b6e-f4b6-494c-8f53-01305c3e1ba8", array(
                           minDistance: 70,
                           position: "left"
                       }), t.particles({
-                          particleCount: 25,
+                          particleCount: 55,
                           size: 3,
                           heightFactor: .8,
                           widthFactor: .333,
@@ -3650,7 +3650,7 @@ $result = query("a0250b6e-f4b6-494c-8f53-01305c3e1ba8", array(
                   }
 
                   function tt(n, r) {
-                      for (var f, o, s, h, e = 0; e < i.length; e++) e != r && (f = i[e], o = v(n.x, n.y, f.x, f.y), o <= t.minDistance && (u.beginPath(), u.strokeStyle = "rgba(0,255,255," + n.alpha * (1.2 - o / t.minDistance)*0.6 + ")", u.moveTo(n.x, n.y), u.lineTo(f.x, f.y), u.stroke(), u.closePath(), n.hasState(gdx.particles.ParticleState.ACCELERATING) || n.hasState(gdx.particles.ParticleState.SLOWING) || f.hasState(gdx.particles.ParticleState.ACCELERATING) || f.hasState(gdx.particles.ParticleState.SLOWING) || (s = (n.x - f.x) / 2e3, h = (n.y - f.y) / 2e3, n.vx -= s, n.vy -= h, f.vx += s, f.vy += h, n.addState(gdx.particles.ParticleState.ATTRACTING), f.addState(gdx.particles.ParticleState.ATTRACTING))))
+                      for (var f, o, s, h, e = 0; e < i.length; e++) e != r && (f = i[e], o = v(n.x, n.y, f.x, f.y), o <= t.minDistance && (u.beginPath(), u.strokeStyle = "rgba(255,255,255," + n.alpha * (1.2 - o / t.minDistance)*0.6 + ")", u.moveTo(n.x, n.y), u.lineTo(f.x, f.y), u.stroke(), u.closePath(), n.hasState(gdx.particles.ParticleState.ACCELERATING) || n.hasState(gdx.particles.ParticleState.SLOWING) || f.hasState(gdx.particles.ParticleState.ACCELERATING) || f.hasState(gdx.particles.ParticleState.SLOWING) || (s = (n.x - f.x) / 2e3, h = (n.y - f.y) / 2e3, n.vx -= s, n.vy -= h, f.vx += s, f.vy += h, n.addState(gdx.particles.ParticleState.ATTRACTING), f.addState(gdx.particles.ParticleState.ATTRACTING))))
                   }
 
                   function y(n) {
