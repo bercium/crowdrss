@@ -21,6 +21,14 @@ class FeedController extends Controller
     $this->layout = 'none';
     
     $rssResponse = '<?xml version="1.0" encoding="UTF-8"?>';
+    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
+    $rssResponse .= '<channel>';
+    $rssResponse .= '<title></title>';
+    $rssResponse .= '<link></link>';
+    $rssResponse .= '<description></description>';
+    $rssResponse .= '<language>en</language>';
+    $rssResponse .= '<ttl>15</ttl>';
+    $rssResponse .= '<webMaster></webMaster>';
     
     //$data  hash tag for 
     // get subscription type of projects
@@ -29,6 +37,9 @@ class FeedController extends Controller
       throw new CHttpException(404,'The specified feed was not found.');
     }
     
+//    Tole je treba link zgenerirat na katerem bo rss od specifičnega uporabnika in ga dat v href
+//    $rssResponse .= '<atom:link href="http://rss.torrentleech.org/9c2e20d5a657fc62cea8" rel="self" type="application/rss+xml" />';
+
     // get projects
     $sql = '';
     if ($sub->category) $sql .= " (category_id in (".$sub->category.")) AND ";
@@ -38,8 +49,18 @@ class FeedController extends Controller
     $projects = Project::model()->findAll($sql);
     // CREATE RSS
     foreach ($projects as $project){
-      $rssResponse .= '';
+      $rssResponse .= '<item>';
+      $rssResponse .= '<title></title>';
+      $rssResponse .= '<pubDate></pubDate>';
+      $rssResponse .= '<category></category>';
+      $rssResponse .= '<link></link>';
+      $rssResponse .= '<description></description>';
+      $rssResponse .= '<author></author>';
+      $rssResponse .= '</item>';
     }
+
+    $rssResponse .= '</channel>';
+    $rssResponse .= '</rss>';
     
     // echo rss
     echo $rssResponse;
