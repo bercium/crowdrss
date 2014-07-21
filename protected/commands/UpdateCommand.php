@@ -85,7 +85,7 @@ function parseIndiegogo($link){
     //Type of funding
     $pattern = '/<span>(.+ Funding)<\/span>/';
     preg_match($pattern, $htmlData, $matches);
-    $data['category'] = html_entity_decode($matches[1]);
+    $data['type_of_funding'] = $matches[1];
 
     //Start date
     $pattern = '/started on (.+)and will/';
@@ -132,14 +132,14 @@ function parseIndiegogo($link){
     $check=false;
     $count=1;
     $id_ks=1; // originalno prebrat iz baze
-    while (($i <= 1) and ($check == false)) {
+    while (($i <= 5) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ $count=$count+1;}
 	  else{
-	    $result_single = $this->parseKickstarter($data->link);
+	    $data_single = $this->parseKickstarter($data->link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
@@ -147,21 +147,20 @@ function parseIndiegogo($link){
 	    $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id_ks;
-	    echo $result_single['category'] . "\n";
-	    $category = OrigCategory::model()->findByAttributes(array('name'=>$result_single['category']));
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
             $insert->orig_category_id=$category->id;
 //	    $insert->type_of_funding=0;
-	    if (isset($result_single['start_date'])) $insert->start=date(strtotime($result_single['start_date']));
-	    if (isset($result_single['end_date'])) $insert->end=date(strtotime($result_single['end_date']));
-	    if (isset($result_single['location'])) $insert->location=$result_single['location'];
-	    if (isset($result_single['creator'])) $insert->creator=$result_single['creator'];
+	    if (isset($data_single['start_date'])) $insert->start=date(strtotime($data_single['start_date']));
+	    if (isset($data_single['end_date'])) $insert->end=date(strtotime($data_single['end_date']));
+	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
+	    if (isset($data_single['creator'])) $insert->creator=$data_single['creator'];
 //	    if (isset($data_single[0]->created)){
 //	      if ($data_single[0]->created == "First") { $created = 1; }
 //	      else{ $created = $data_single[0]->created; }
 //	      $insert->creator_created=$created;
 //	    }
 //	    if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
-	    if (isset($result_single['goal'])) $insert->goal=$result_single['goal'];
+	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
 	    $insert->save();
 //	    print_r($insert->getErrors());
           }
@@ -177,13 +176,10 @@ function parseIndiegogo($link){
     $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
     if ($result->results) {
       foreach ($result->results as $data){
-	sleep(2);
         $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
         if ($link_check){ $count=$count+1;}
         else{
-	  $result_single = $this->parseIndiegogo($data->link);
-/*          $result_single = $this->query("d3239d9f-f333-4201-b1d8-e84fc4385606", array("webpage/url" => $data->link,), false);
-          if (isset($result_single)) $data_single = $result_single->results;
+	  $data_single = $this->parseIndiegogo($data->link);
           $insert=new Project;
           $insert->title=$data->title;
           $insert->description=$data->description;
@@ -193,11 +189,11 @@ function parseIndiegogo($link){
           $insert->platform_id=$id_igg;
           $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
           $insert->orig_category_id=$category->id;
-          if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
-          if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
-          if (isset($data_single[0]->goal)) $insert->goal=$data_single[0]->goal;
-          if (isset($data_single[0]->type_of_funding)){
-            if ($data_single[0]->type_of_funding == "Fixed Funding") {$typeOfFunding = 0;}
+          if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s",strtotime($data_single['start_date']));
+          if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s",strtotime($data_single['end_date']));
+          if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+          if (isset($data_single['type_of_funding'])){
+            if ($data_single['type_of_funding'] == "Fixed Funding") {$typeOfFunding = 0;}
             else {$typeOfFunding = 1;}
             $insert->type_of_funding=$typeOfFunding;
           }
@@ -208,8 +204,8 @@ function parseIndiegogo($link){
             else{ $created = $data_single[0]->created; }
             $insert->creator_created=$created;
           }
-          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
-          $insert->save();*/
+          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;*/
+          $insert->save();
 //          print_r($insert->getErrors());
         }
       }
