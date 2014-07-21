@@ -150,8 +150,8 @@ function parseIndiegogo($link){
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
             $insert->orig_category_id=$category->id;
 //	    $insert->type_of_funding=0;
-	    if (isset($data_single['start_date'])) $insert->start=date(strtotime($data_single['start_date']));
-	    if (isset($data_single['end_date'])) $insert->end=date(strtotime($data_single['end_date']));
+	    if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
 	    if (isset($data_single['creator'])) $insert->creator=$data_single['creator'];
 //	    if (isset($data_single[0]->created)){
