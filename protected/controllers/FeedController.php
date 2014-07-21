@@ -60,10 +60,10 @@ class FeedController extends Controller
     // CREATE RSS
     foreach ($projects as $project){
       $rssResponse .= '<item>';
-      $rssResponse .= '<title>' . $project->title . '</title>';
+      $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . $project->origCategory->name . '</category>';
-      $rssResponse .= '<link>' . $project->link . '</link>';
+      $rssResponse .= '<link><![CDATA[' . $project->link . ']]></link>';
       $rssResponse .= '<description><![CDATA[<img src="' . $project->image . '"/>&nbsp;' . $project->description . ']]></description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
@@ -76,5 +76,5 @@ class FeedController extends Controller
     // echo rss
     echo $rssResponse;
     Yii::app()->end();
-  }
-}
+	  }
+	}
