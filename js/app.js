@@ -1,53 +1,8 @@
 
 ;(function ($, window, undefined) {
   $(document).foundation();
-  
 
-  if ($('.cc-cookies').length > 0) { 
-      $('.intro h1').css('margin-top','50px');
-  }
-  
-//.parallax(xPosition, speedFactor, outerHeight) options:
-	//xPosition - Horizontal position of the element
-	//inertia - speed to move relative to vertical scroll. Example: 0.1 is one tenth the speed of scrolling, 2 is twice the speed of scrolling
-	//outerHeight (true/false) - Whether or not jQuery should use it's outerHeight option to determine when a section is in the viewport
-	//$('#intro').parallax("50%", 0.4);
-	//$('#outro').parallax("50%", 0.4);
-  
-  
-  'use strict';
 
-  var $doc = $(document),
-      Modernizr = window.Modernizr;
-
-  
-  $.fn.foundationAlerts           ? $doc.foundationAlerts() : null;
-  $.fn.foundationAccordion        ? $doc.foundationAccordion() : null;
-  $.fn.foundationTooltips         ? $doc.foundationTooltips() : null;
-  $('input, textarea').placeholder();
-  
-  
-  $.fn.foundationButtons          ? $doc.foundationButtons() : null;
-  
-  
-  $.fn.foundationNavigation       ? $doc.foundationNavigation() : null;
-  
-  
-  $.fn.foundationTopBar           ? $doc.foundationTopBar() : null;
-  
-  $.fn.foundationCustomForms      ? $doc.foundationCustomForms() : null;
-  $.fn.foundationMediaQueryViewer ? $doc.foundationMediaQueryViewer() : null;
-  
-    
-    $.fn.foundationTabs             ? $doc.foundationTabs() : null;
-    
-  
-
-  // UNCOMMENT THE LINE YOU WANT BELOW IF YOU WANT IE8 SUPPORT AND ARE USING .block-grids
-  // $('.block-grid.two-up>li:nth-child(2n+1)').css({clear: 'both'});
-  // $('.block-grid.three-up>li:nth-child(3n+1)').css({clear: 'both'});
-  // $('.block-grid.four-up>li:nth-child(4n+1)').css({clear: 'both'});
-  // $('.block-grid.five-up>li:nth-child(5n+1)').css({clear: 'both'});
 
   // Hide address bar on mobile devices
   if (Modernizr.touch) {
@@ -58,32 +13,9 @@
     });
   }
   
-  /*$(window).scroll(function(){
-    var visibility = (20-$(document).scrollTop())/20;
-    if ($(document).scrollTop() > 20) visibility = 0;
-    $(".image-beta").fadeTo(0,visibility);
-    //if ($(document).scrollTop() > 10) $("#image-beta").fadeOut();
-    //else if ($("#image-beta").is(':hidden')) $("#image-beta").fadeIn();
-  });*/
+
+  //$.cookieCuttr();
   
-  $(".lin-hidden").each(function(){
-    if ($(this).find('.lin-edit').val() == '') $(this).hide();
-  });
-  $(".lin-edit").focusout(function(){
-    if ($(this).val() == '') $(this).parents('.lin-hidden').hide();
-    if ($(this).hasClass('lin-hidden')) $(this).hide();
-  });
-  $(".lin-trigger").hover(
-    function(){
-      $(this).find('.lin-hidden').show();
-    }, 
-    function(){
-      if (!$(this).find(".lin-edit").is(':focus') && $(this).find(".lin-edit").val() == '') $(this).find('.lin-hidden').hide();
-    });
-
-  $('select').chosen({no_results_text: Yii.t('js','Oops, nothing found!'), allow_single_deselect: true, width:'100%' });
-
-  $.cookieCuttr();
   
   //tracking with code
   // regular events CATEGORY_ACTION_LABEL_VALUE
@@ -101,28 +33,6 @@
       });
   });
   
-  //slimscroll
-  $('.slimscrollSmall').slimScroll({
-    height: '130px'
-  });
-  
-  $('.slimscrollBig').slimScroll({
-    height: '250px'
-  });
-  
-  //scroll events
-  //$.scrollDepth();
-  /*{
-  percentage: false,
-  userTiming: false,
-  pixelDepth: false }*/
-  
-  $('[limitchars]').each(function(){
-    $(this).jqEasyCounter({
-        'maxChars': $(this).attr('limitchars'),
-        'maxCharsWarning': ($(this).attr('limitchars') - 10)
-    });
-  });
   
   
   // hide top bar
@@ -143,26 +53,6 @@ $(window).scroll(function () {
 });
 
 
-var qrActive = false;
-function qrLoad(){
-  //alert('d');
-//  $.get(Yii.app.createUrl("profile/suggestSkil",{ajax:1,term:'ski'}), function( data ) {
-  if (qrActive) return;
-  $(".login-qrcode" ).html(Yii.t('js','Loading QR code login...'));
-  $.get(fullURL+"/qr/create?ajax=1", function( id ) {
-    qrActive = true;
-    link = 'http://'+document.domain+fullURL+'/qr/scan?qr='+id;
-    qrtitle = Yii.t('js',"QR code login is safer and faster way to login. First time we will pair your phone with your profile. You will then be able to login without the need of writing your email and password. <br />Advisable in cyber cafes where you don't know if they are tracking your key strokes.");
-    $(".login-qrcode" ).html('<hr><p>'+Yii.t('js','Scan QR code with phone to login')+'</p><img src="https://chart.googleapis.com/chart?cht=qr&chld=M|0&chs=300&chl='+link+'" data-tooltip class="tip-top" title="'+qrtitle+'" alt="'+qrtitle+'" style="opacity:0.8">');
-    $(".login-qrcode" ).everyTime('1s',function(i){qrCheck(id);},0);
-  });
-}
-
-function qrCheck(id){
-  $.get(fullURL+"/qr/validate?ajax=1&qr="+id, function( data ) {
-    if (data == true) location.reload();
-  });
-}
 
 function contact(e){
 	var pri = "@";
@@ -178,20 +68,6 @@ function extractLast( term ) {
 	return splitComa( term ).pop();
 }
 
-var pageNavCount = 1;
-var pageScrollName = '';
-function addPageToList(e){
-  //alert('da');
-  pageNavCount++;
-  $(".page-navigation").fadeIn('normal');
-  $(".page-navigation ul").append('<li><a class="button secondary small radius" href="#page'+pageNavCount+'">'+Yii.t('js','Page')+' '+pageNavCount+'</a></li>');
-  e.loading.msg.fadeOut('normal');
-
-  var psn = pageScrollName.split("_");
-//  //alert(psn[0]+'-'+psn[1]);
-  ga('send', 'event', psn[0], psn[1], 'scroll', pageNavCount);
-  ga('send', 'event', psn[0], psn[1], 'page-'+pageNavCount, 1);
-}
 
 // ga function depending on debuging
 function gase(id){
@@ -213,13 +89,4 @@ function gase(id){
     if (trk.length > 1) ga('send', 'event', trk[0], trk[1]);
   }
   
-}
-
-function markNotifications(inUrl){
-   $.ajax({
-   type: 'GET',
-   url: inUrl,
-   data:{ajax: 1},
-   dataType:'html'
-  });
 }
