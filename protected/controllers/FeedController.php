@@ -38,7 +38,7 @@ class FeedController extends Controller
     }
     
 //    Tole je treba link zgenerirat na katerem bo rss od specifičnega uporabnika in ga dat v href
-//    $rssResponse .= '<atom:link href="' . $  . 'http://rss.torrentleech.org/9c2e20d5a657fc62cea8" rel="self" type="application/rss+xml" />';
+//    $rssResponse .= '<atom:link href="' . $link z hashom do rss . '" rel="self" type="application/rss+xml" />';
 
     // get projects
     $sql = '';
