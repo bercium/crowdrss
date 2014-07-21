@@ -49,10 +49,10 @@ class FeedController extends Controller
       foreach ($orgCat as $cat){
         $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (category_id in (".implode(',',$allCats).")) AND ";
+      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
     }
     if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
-     $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 DAY)";
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 DAY)";
     
      // get projects
     $projects = Project::model()->findAll($sql);
