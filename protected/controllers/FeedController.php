@@ -52,9 +52,9 @@ class FeedController extends Controller
       $rssResponse .= '<item>';
       $rssResponse .= '<title>' . $projects->title  . '</title>';
       $rssResponse .= '<pubDate>' . $projects->time_added  . '</pubDate>';
-      $rssResponse .= '<category>' . $projects->name  . '</category>';
+      $rssResponse .= '<category>' . $projects->origCategory->name  . '</category>';
       $rssResponse .= '<link>' . $projects->link  . '</link>';
-	$rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $projects->description  . '</description>';
+      $rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $projects->description  . '</description>';
       $rssResponse .= '<author>' . $projects->creator  . '</author>';
       $rssResponse .= '</item>';
     }
