@@ -4,9 +4,22 @@
   background-image: url('../images/bg.png');
   background-position: bottom center;
   background-repeat: no-repeat;
-  height:600px;
+  height:650px;
   font-weight: bold;
-  
+}
+
+.outro{
+  color:#FFF;
+  background: #0088bb;
+  background-image: url('../images/bg1.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+/*  border-bottom: 2px #666 solid;  
+  border-top: 2px #666 solid;  */
+}
+
+.footer{
+  border-top: 2px #0088bb solid;
 }
 
 .intro-desc{
@@ -14,13 +27,13 @@
   background: #0088bb;
 }
 
-.intro h1, .intro-desc h1{
+.intro h1, .intro-desc h1, .outro h1{
   color:#FFF;
 }
 
 .intro h1{
   font-family: 'Istok Web', sans-serif;
   font-weight: bold;
-  
+  text-shadow: 1px 0 0 #0088bb, -1px 0 0 #0088bb, 0 1px 0 #0088bb, 0 -1px 0 #0088bb, 1px 1px #0088bb, -1px -1px 0 #0088bb, 1px -1px 0 #0088bb, -1px 1px 0 #0088bb;
 }
 

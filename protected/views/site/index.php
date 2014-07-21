@@ -11,7 +11,7 @@ $this->pageTitle=Yii::app()->name;
        <a id="whatIsCRSS" class="anchor"></a>
        <div class="row">
          <div class="columns large-12 text-center">
-           <img src="images/logo.png">
+           <img src="images/logo.png" style="margin:30px;">
            <h1 class="title">Crowdfunding RSS</h1>
          </div>
        </div>
@@ -47,13 +47,17 @@ $this->pageTitle=Yii::app()->name;
           <div class="row" data-equalizer>
 
             <div class="columns medium-4 large-4" data-equalizer-watch>
-              <label for="platformAll">
-                <div class="panel radius text-center" style="height:150px;"><h2> All platforms</h2></div>
-              </label>  
-                <div class="switch round large" style="width:90px; margin-left: auto; margin-right: auto;">
-                  <input id="platformAll" type="checkbox" checked name="platformGroup" onclick="uncheckPlatforms()">
-                  <label for="platformAll"></label>
-                </div>
+                
+                <label for="platformAll">
+                  <div class="panel radius text-center small-8 small-offset-2" style="height:150px;">
+                    <h2> All platforms</h2>
+                  </div>
+                </label>  
+                  
+                  <div class="switch round large" style="width:90px; margin-left: auto; margin-right: auto;">
+                    <input id="platformAll" type="checkbox" checked name="platformGroup" onclick="uncheckPlatforms()">
+                    <label for="platformAll"></label>
+                  </div>
             </div>
 
             <div class="columns medium-4 large-4 text-center" data-equalizer-watch>
@@ -152,7 +156,7 @@ $this->pageTitle=Yii::app()->name;
 
 
 
-		<div class="mt30">
+		<div class="mt30 pt30 pb30 outro">
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns large-12 large-centered">

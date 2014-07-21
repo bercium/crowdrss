@@ -57,7 +57,7 @@ $(window).scroll(function () {
 function contact(e){
 	var pri = "@";
 	e.href = "mailto:info";
-	e.href += pri+"cofinder.eu";
+	e.href += pri+"eberce.si";
 }
 
 function splitComa( val ) {

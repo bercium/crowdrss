@@ -71,17 +71,24 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
     
 	<?php echo $content; ?>
 
-    
-	<div class="clear"></div>
-
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
-	</div><!-- footer -->
-
-</div><!-- page -->
-
+  <div class="footer">
+    <div class="row">
+      <div class="column small-12 pt30  text-center">
+        <div class="left">
+          Enjoy crowdfunding projects
+        </div>
+        <dl class="sub-nav right">
+          <dd><a htef="#" onclick="contact(this);">Contact us</a></dd> 
+          <?php if (!Yii::app()->user->isGuest){ ?>
+          <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
+          <?php } ?>
+        </dl>
+      </div>
+    </div>
+  </div>
 
 
 </body>
