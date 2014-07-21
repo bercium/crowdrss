@@ -24,8 +24,13 @@ class FeedController extends Controller
     $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
     $rssResponse .= '<channel>';
     $rssResponse .= '<title>Crowdfounding RSS</title>';
+<<<<<<< HEAD
     $rssResponse .= '<link>http://crowdfoundingrss.eberce.si</link>';
     $rssResponse .= '<description>All your crowdfunding projects at one place.</description>';
+=======
+    $rssResponse .= '<link>http://crowdrss.eberce.si</link>';
+    $rssResponse .= '<description>All your crowdfounding projects at one place</description>';
+>>>>>>> 5b1519ece246438cb89c52eb1f24814d8ff4b26d
     $rssResponse .= '<language>en</language>';
     $rssResponse .= '<ttl>15</ttl>';
 //    $rssResponse .= '<webMaster>team@eberce.si</webMaster>';
@@ -39,23 +44,41 @@ class FeedController extends Controller
     
 //    Tole je treba link zgenerirat na katerem bo rss od specifičnega uporabnika in ga dat v href
 //    $rssResponse .= '<atom:link href="' . $link z hashom do rss . '" rel="self" type="application/rss+xml" />';
-
-    // get projects
+    
+    // project constrains
     $sql = '';
-    if ($sub->category) $sql .= " (category_id in (".$sub->category.")) AND ";
+    if ($sub->category){
+      $orgCat = OrigCategory::model()->findAll("(category_id in (".$sub->category."))");
+      
+      $allCats = array();
+      foreach ($orgCat as $cat){
+        $allCats[$cat->id] = $cat->id;
+      }
+      $sql .= " (category_id in (".implode(',',$allCats).")) AND ";
+    }
     if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
      $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 DAY)";
     
+     // get projects
     $projects = Project::model()->findAll($sql);
     // CREATE RSS
     foreach ($projects as $project){
       $rssResponse .= '<item>';
+<<<<<<< HEAD
       $rssResponse .= '<title>' . $projects->title  . '</title>';
       $rssResponse .= '<pubDate>' . $projects->time_added  . '</pubDate>';
       $rssResponse .= '<category>' . $projects->origCategory->name  . '</category>';
       $rssResponse .= '<link>' . $projects->link  . '</link>';
       $rssResponse .= '<description>&lt;img width="200" height="150" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $projects->description  . '</description>';
       $rssResponse .= '<author>' . $projects->creator  . '</author>';
+=======
+      $rssResponse .= '<title>' . $project->title  . '</title>';
+      $rssResponse .= '<pubDate>' . $project->time_added  . '</pubDate>';
+      $rssResponse .= '<category>' . $project->origCategory->name  . '</category>';
+      $rssResponse .= '<link>' . $project->link  . '</link>';
+      $rssResponse .= '<description>&lt;img width="680" height="510" src="' . $project->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;&lt br $gt;' . $project->description  . '</description>';
+      $rssResponse .= '<author>' . $project->creator  . '</author>';
+>>>>>>> 5b1519ece246438cb89c52eb1f24814d8ff4b26d
       $rssResponse .= '</item>';
     }
 
