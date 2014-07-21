@@ -238,9 +238,9 @@ function writeFlashes(){
                                                               function() { $(this).oneTime(".(4000+$i*1000).", function() { $(this).fadeOut(); }); });";
       }else $nh++;      
 
-      $html .= '<div style="padding:4px 20px; height: 100%; font-weight:bold;" data-alert class="alert-box mb0 '.$flash['status'].' flash-hide-'.$i.' "><div class="row">';
+      $html .= '<div class="alert-box mb0 '.$flash['status'].' flash-hide-'.$i.' " style="margin-bottom:0px; font-weight:bold;" data-alert ><div class="row">';
       $html .= decodeFlashMsg($flash['message']);
-      //$html .= '<a href="#" class="close">&times;</a></div></div>';
+      $html .= '<a href="#" class="close">&times;</a></div></div>';
       $html .= '</div></div>';
 
       $i++;
@@ -395,10 +395,10 @@ function absoluteURL($url = ''){
     if ($tc_name == '') $tc_name = $name;
     $html = '<a href="'.mailLinkTracking($tc,$link,$tc_name).'" ';
 
-    if ($type == '') $type = 'background-color: #4469a6; color: white;';
-    else if ($type == 'secondary') $type = 'background-color: #e9e9e9; border: 1px solid #d0d0d0; color: #333333;';
-    else if ($type == 'alert') $type = 'background-color: #c60f13; color: white;';
-    else if ($type == 'success') $type = ' background-color: #5da423; color: white;';
+    if ($type == '') $type = 'background-color: #0088bb; color: white;';
+    else if ($type == 'secondary') $type = 'background-color: #ee8822; border: 1px solid #d0d0d0; color: #333333;';
+    else if ($type == 'alert') $type = 'background-color: #ee4422; color: white;';
+    else if ($type == 'success') $type = ' background-color: #44aa66; color: white;';
     
     if($type != 'link'){
         $html .= 'style="border-radius:3px; -webkit-border-radius:3px; border-style: solid;  border-width: 1px;  cursor: pointer;  font-family: inherit;  font-weight: bold;

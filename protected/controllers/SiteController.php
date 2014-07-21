@@ -30,7 +30,9 @@ class SiteController extends Controller
     $this->layout = 'blank';
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-    setFlash("save", "SaveOK");
+    //setFlash("save", "SaveOK", "success ", false);
+    
+    
 		$this->render('index');
 	}
   

@@ -29,7 +29,7 @@ $this->pageTitle=Yii::app()->name;
           In a constantly changing environment they must <strong>adapt</strong> their strategy and tactics. But much more is required, to be the <strong>very best</strong>.
 
           </p>
-          
+
         </div>
       </div>
     </div>
@@ -86,7 +86,7 @@ $this->pageTitle=Yii::app()->name;
           <hr>
           
           <h2>Categories</h2>
-          <p>Chose all categories you woud like to follow:<p>
+          <p>Chose all categories you would like to follow:<p>
             
           <div class="row" data-equalizer>
 
@@ -119,12 +119,9 @@ $this->pageTitle=Yii::app()->name;
             </div>
             
             <div class="columns medium-4 text-center" data-equalizer-watch>
-              
-              
             </div>
 
             <div class="columns medium-4 text-center" data-equalizer-watch>
-              
             </div>
 
           </div>

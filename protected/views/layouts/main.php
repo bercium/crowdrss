@@ -65,7 +65,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 <body>
   
   
-<?php  //writeFlashes(); ?>
+<?php  writeFlashes(); ?>
 
     
     
