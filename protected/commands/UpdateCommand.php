@@ -66,6 +66,67 @@ class UpdateCommand extends CConsoleCommand{
     return($data);
   }
 
+function parseIndiegogo($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+//    $httpClient->enableAutoReferer(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+//echo $htmlData;
+
+    // Goal
+    $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['goal'] = $matches[1];
+
+    //Type of funding
+    $pattern = '/<span>(.+ Funding)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = html_entity_decode($matches[1]);
+
+    //Start date
+    $pattern = '/started on (.+)and will/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['start_date'] = $matches[1];
+
+    $pattern = '/close on (.+)\(/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['end_date'] = $matches[1];
+
+/*    //Location
+    $pattern = '/class="i.{1}byline(.+)<\/a>/';
+    preg_match($pattern, $htmlData, $matches);
+    var_dump($matches);
+    $data['location'] = $matches[1];
+    echo $data['location'];
+
+    //Creator
+    $pattern = '/id="name">(.+)<\/a>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['creator'] = $matches[1];
+
+    //Created
+    $pattern = '//';
+    preg_match($pattern, $htmlData, $matches);
+    $data['created'] = $matches[1];
+
+    $pattern = '/\d{4} \((.+)\)/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['start_date'] .= $matches[1];
+    $data['end_date'] .= $matches[1];
+
+    //Backed
+    $pattern = '//';
+    preg_match($pattern, $htmlData, $matches);
+    $data['backed'] = $matches[1];*/
+
+    return($data);
+  }
+
+
   public function actionKickstarter(){
     $i=1;
     $check=false;
@@ -120,7 +181,8 @@ class UpdateCommand extends CConsoleCommand{
         $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
         if ($link_check){ $count=$count+1;}
         else{
-          $result_single = $this->query("d3239d9f-f333-4201-b1d8-e84fc4385606", array("webpage/url" => $data->link,), false);
+	  $result_single = $this->parseIndiegogo($data->link);
+/*          $result_single = $this->query("d3239d9f-f333-4201-b1d8-e84fc4385606", array("webpage/url" => $data->link,), false);
           if (isset($result_single)) $data_single = $result_single->results;
           $insert=new Project;
           $insert->title=$data->title;
@@ -146,8 +208,8 @@ class UpdateCommand extends CConsoleCommand{
             else{ $created = $data_single[0]->created; }
             $insert->creator_created=$created;
           }
-          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;*/
-          $insert->save();
+          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
+          $insert->save();*/
 //          print_r($insert->getErrors());
         }
       }
