@@ -38,7 +38,7 @@ class FeedController extends Controller
     }
     
 //    Tole je treba link zgenerirat na katerem bo rss od specifičnega uporabnika in ga dat v href
-//    $rssResponse .= '<atom:link href="http://rss.torrentleech.org/9c2e20d5a657fc62cea8" rel="self" type="application/rss+xml" />';
+//    $rssResponse .= '<atom:link href="' . $  . 'http://rss.torrentleech.org/9c2e20d5a657fc62cea8" rel="self" type="application/rss+xml" />';
 
     // get projects
     $sql = '';
@@ -50,12 +50,12 @@ class FeedController extends Controller
     // CREATE RSS
     foreach ($projects as $project){
       $rssResponse .= '<item>';
-      $rssResponse .= '<title></title>';
-      $rssResponse .= '<pubDate></pubDate>';
-      $rssResponse .= '<category></category>';
-      $rssResponse .= '<link></link>';
-      $rssResponse .= '<description></description>';
-      $rssResponse .= '<author></author>';
+      $rssResponse .= '<title>' . $projects->title  . '</title>';
+      $rssResponse .= '<pubDate>' . $projects->time_added  . '</pubDate>';
+      $rssResponse .= '<category>' . $projects-> name  . '</category>';
+      $rssResponse .= '<link>' . $projects->link  . '</link>';
+	$rssResponse .= '<description>&lt;img width="680" height="510" src="' . $projects->image  . '" class="attachment-large wp-post-image" alt="Startupbootcamp" /&gt;&amp;nbsp;' . $projects->description  . '</description>';
+      $rssResponse .= '<author>' . $projects->creator  . '</author>';
       $rssResponse .= '</item>';
     }
 
