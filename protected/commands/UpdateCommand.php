@@ -17,21 +17,68 @@ class UpdateCommand extends CConsoleCommand{
     return json_decode($result);
   }
 
+  function parseKickstarter($link){
+    $httpClient = new elHttpClient();
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/data-goal="(.+)" data-percent-raised/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['goal'] = $matches[1] . " ";
+    $pattern = '/data-currency="(.+)" data-format/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['goal'] .= $matches[1];
+
+    //Location
+    $pattern = '/<a href="\/discover\/places\/.+">(.+)<\/a>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['location'] = $matches[1];
+
+    //Category
+    $pattern = '/class="category".+\s.+<\/span>\s(.*)\s<\/a><\/li>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = html_entity_decode($matches[1]);
+
+    //Creator
+    $pattern = '/id="name">(.+)<\/a>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['creator'] = $matches[1];
+
+    //Date
+    $pattern = '/<time class="js-adjust" data-format="ll" datetime="(.+)">/';
+    preg_match_all($pattern, $htmlData, $matches);
+    $data['start_date'] = $matches[1][0];
+    $data['end_date'] = $matches[1][1];
+
+/*    //Created
+    $pattern = '//';
+    preg_match($pattern, $htmlData, $matches);
+    $data['created'] = $matches[1];
+
+    //Backed
+    $pattern = '//';
+    preg_match($pattern, $htmlData, $matches);
+    $data['backed'] = $matches[1];*/
+
+    return($data);
+  }
+
   public function actionKickstarter(){
     $i=1;
     $check=false;
     $count=1;
     $id_ks=1; // originalno prebrat iz baze
-    while (($i <= 5) and ($check == false)) {
+    while (($i <= 1) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
-          sleep(2);
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ $count=$count+1;}
 	  else{
-	    $result_single = $this->query("c6cf42d9-6e28-440a-9cde-6f31a810f298", array("webpage/url" => $data->link,), false);
-	    if (isset($result_single)) $data_single = $result_single->results;
+	    $result_single = $this->parseKickstarter($data->link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
@@ -39,20 +86,21 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id_ks;
-	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single[0]->category));
+	    echo $result_single['category'] . "\n";
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$result_single['category']));
             $insert->orig_category_id=$category->id;
 //	    $insert->type_of_funding=0;
-	    if (isset($data_single[0]->start_date)) $insert->start=date("Y-m-d H:i:s",strtotime($data_single[0]->start_date));
-	    if (isset($data_single[0]->end_date)) $insert->end=date("Y-m-d H:i:s",strtotime($data_single[0]->end_date));
-	    if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
-	    if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
-	    if (isset($data_single[0]->created)){
-	      if ($data_single[0]->created == "First") { $created = 1; }
-	      else{ $created = $data_single[0]->created; }
-	      $insert->creator_created=$created;
-	    }
-	    if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
-	    if (isset($data_single[0]->goal)) $insert->goal=$data_single[0]->goal;
+	    if (isset($result_single['start_date'])) $insert->start=date(strtotime($result_single['start_date']));
+	    if (isset($result_single['end_date'])) $insert->end=date(strtotime($result_single['end_date']));
+	    if (isset($result_single['location'])) $insert->location=$result_single['location'];
+	    if (isset($result_single['creator'])) $insert->creator=$result_single['creator'];
+//	    if (isset($data_single[0]->created)){
+//	      if ($data_single[0]->created == "First") { $created = 1; }
+//	      else{ $created = $data_single[0]->created; }
+//	      $insert->creator_created=$created;
+//	    }
+//	    if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
+	    if (isset($result_single['goal'])) $insert->goal=$result_single['goal'];
 	    $insert->save();
 //	    print_r($insert->getErrors());
           }
