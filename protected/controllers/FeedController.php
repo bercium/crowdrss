@@ -76,5 +76,5 @@ class FeedController extends Controller
     // echo rss
     echo $rssResponse;
     Yii::app()->end();
-	  }
-	}
+  }
+}
