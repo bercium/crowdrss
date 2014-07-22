@@ -161,7 +161,7 @@ class UpdateCommand extends CConsoleCommand{
 //	    if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
 	    $insert->save();
-	    $count = 1;
+	    $count = 0;
 //	    print_r($insert->getErrors());
           }
 	  if ($count >= 30){ $check=true; break; }
