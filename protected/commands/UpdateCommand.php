@@ -66,16 +66,13 @@ class UpdateCommand extends CConsoleCommand{
     return($data);
   }
 
-function parseIndiegogo($link){
+  function parseIndiegogo($link){
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects(true);
-//    $httpClient->enableAutoReferer(true);
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link);
     $htmlData = $htmlDataObject->httpBody;
-
-//echo $htmlData;
 
     // Goal
     $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
@@ -133,7 +130,7 @@ function parseIndiegogo($link){
     $check=false;
     $count=1;
     $id_ks=1; // originalno prebrat iz baze
-    while (($i <= 5) and ($check == false)) {
+    while (($i <= 50) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
@@ -174,11 +171,11 @@ function parseIndiegogo($link){
 
   public function actionIndiegogo(){
     $id_igg=2; // originalno prebrat iz baze
-    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=150",), false);
+    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2400",), false);
     if ($result->results) {
       foreach ($result->results as $data){
         $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-        if ($link_check){ $count=$count+1;}
+        if ($link_check){ }
         else{
 	  $data_single = $this->parseIndiegogo($data->link);
           $insert=new Project;
