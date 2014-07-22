@@ -25,7 +25,7 @@ class FeedController extends Controller
     
     $rssResponse = '';
     $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
-    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
+    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml">';
 //    $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
     $rssResponse .= '<title>Crowdfounding RSS</title>';
@@ -65,11 +65,12 @@ class FeedController extends Controller
     $i = 0;
     foreach ($projects as $project){
       $rssResponse .= '<item>';
-      $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>';
+      $rssResponse .= '<title>' . htmlspecialchars($project->title) . '</title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . '</pubDate>';
-      $rssResponse .= '<category><![CDATA[' . $project->origCategory->name . ']]></category>';
+      $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
       $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></link>';
-
+      $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
+  
       $desc = '';
       $desc.= $project->platform->name.": ".$project->origCategory->name."<br />";
       $desc.= '<img src="' . $project->image . '"/><br />';
