@@ -91,16 +91,16 @@ class SiteController extends Controller
         $ml->subscription_id = $subscription->id;
         $ml->save();
         
-        $message->setBody(array("content"=>'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
-                                            Just copy and paste the following link in your favourite RSS reader and enjoy. <p class="callout">'.$rss_link."</p>
-                                            To test the RSS ".mailButton("click here", $rss_link, 'link', $tc, 'subscription-rss-click').".<br />".
-                                            "To edit or change your preferences ".mailButton("click here", $edit_link, 'link', $tc, 'subscription-edit'),
-                                "tc"=>$tc), 'text/html');
+        $content = 'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
+                   Just copy and paste the following link in your favourite RSS reader and enjoy. <p class="callout">'.$rss_link."</p>
+                   To test the RSS ".mailButton("click here", $rss_link, 'link', $tc, 'subscription-rss-click').".<br />".
+                   "To edit or change your preferences ".mailButton("click here", $edit_link, 'link', $tc, 'subscription-edit');
+        
+        $message->setBody(array("content"=>$content,"tc"=>$tc), 'text/html');
 
         $message->addTo($subscription->email);
         $message->from = Yii::app()->params['noreplyEmail'];
         Yii::app()->mail->send($message);
-        
         
         setFlash("save", "Subscription saved pleas check your email for the link to your personalized RSS feed.", "success", false);
         

@@ -226,7 +226,7 @@ function writeFlashes(){
   if ($flashMessages) {
     $nh = $i = 0;
     $hide = '';
-    $html = '<div class="">';
+    $html = '<div class=""><div class="">';
     foreach($flashMessages as $key => $flash) {
       Yii::app()->user->getFlash($key);
 
@@ -238,15 +238,15 @@ function writeFlashes(){
                                                               function() { $(this).oneTime(".(4000+$i*1000).", function() { $(this).fadeOut(); }); });";
       }else $nh++;      
 
-      $html .= '<div class="alert-box mb0 '.$flash['status'].' flash-hide-'.$i.' " style="margin-bottom:0px; font-weight:bold;" data-alert ><div class="row">';
+      $html .= '<div class="alert-box mb0 '.$flash['status'].' flash-hide-'.$i.' " style="margin-bottom:0px; font-weight:bold;" data-alert><div class="row">';
       $html .= decodeFlashMsg($flash['message']);
-      $html .= '<a href="#" class="close">&times;</a></div></div>';
-      $html .= '</div></div>';
+      $html .= '</div><a href="#" class="close">&times;</a></div>';
+      //$html .= '</div></div>';
 
       $i++;
     }
 
-    $html .= '</div>';
+    $html .= '<div></div>';
     if ($nh > 0){
       $html .= '<div></div>';
     }

@@ -306,15 +306,16 @@ if (!empty($title)){ ?>
 				</tr>
 			</table>
       </div><!-- /content -->
-				
+
 		</td>
 		<td></td>
 	</tr>
 </table><!-- /FOOTER -->
 
-<?php if (!empty($tc)){ ?>
-  <img src="<?php echo absoluteURL().'/track/mailOpen?tc='.$tc; ?>">
-<?php } ?>
+  <?php if (!empty($tc)){ ?>
+    <img src="<?php echo 'http://localhost/crowdfunding-rss/track/mailOpen?tc='.$tc; ?>" />
+    <img src="<?php echo absoluteURL().'/track/mailOpen?tc='.$tc; ?>" />
+  <?php } ?>
 
 </body>
 </html>
