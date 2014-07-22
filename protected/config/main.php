@@ -81,20 +81,20 @@ $a = array(
 					'class'=>'ext.yii-debug-toolbar.YiiDebugToolbarRoute',
           'ipFilters'=>array('127.0.0.1'),
           'enabled'=>YII_DEBUG,
-				),/*
+				),
         array(
   					'levels'=>'error',
             'class'=>'CEmailLogRoute',
-            'emails' => array('dev@cofinder.eu'),
+            'emails' => array('team@eberce.si'),
             //'categories' => 'exception.*, system.*',
-            'sentFrom'   => 'admin@cofinder.eu',
-            'subject'    => 'Error on production',
+            'sentFrom'   => 'script@eberce.si',
+            'subject'    => 'Error on production for crowd RSS',
             'utf8' => true,
             'enabled'=>(!YII_DEBUG),  // send mail only from production
             //'enabled'=>YII_DEBUG,
             //*'categories'=>'system.db.*',* /
             'except'=>'exception.CHttpException.*'
-        ),*/
+        ),
         array(
   					'levels'=>'error',
             'class'=>'CFileLogRoute',
@@ -139,9 +139,11 @@ $a = array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'noreplyEmail'=>array('no-reply@eberce.eu'=>'Crowdfunding RSS'),
+		'adminEmail'=>array('info@eberce.eu'=>'Crowdfunding RSS'),
 		'username'=>'',
 		'pass'=>'',
+    'absoluteHost' => 'http://crowdrss.eberce.si',
 	),
 );
 

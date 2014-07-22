@@ -26,14 +26,6 @@ class CronController extends Controller
         'actions'=>array(),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array(),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform actions:
-				'actions'=>array(),
-				'users'=>Yii::app()->getModule('user')->getAdmins(),
-			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -64,8 +56,9 @@ class CronController extends Controller
 	 */
 	public function actionTest()
 	{
-    echo absoluteURL()."\n<br />";
-    echo $this->consoleCommand('','');
+    echo "test";
+    //echo absoluteURL()."\n<br />";
+    //echo $this->consoleCommand('','');
   }
 	
   
@@ -73,8 +66,23 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionPoolCrowd(){
-    echo $this->consoleCommand('','');
+    set_time_limit(60*5); //5 min
+    echo $this->consoleCommand('update','kickstarter');
+    echo $this->consoleCommand('update','indiegogo');
   }
   
+  /**
+   * all hidden profiles will be notified every second week
+   */
+  public function actionPoolKs(){
+    echo $this->consoleCommand('update','kickstarter');
+  }  
+  
+  /**
+   * all hidden profiles will be notified every second week
+   */
+  public function actionPoolIgg(){
+    echo $this->consoleCommand('update','indiegogo');
+  }
   
 }

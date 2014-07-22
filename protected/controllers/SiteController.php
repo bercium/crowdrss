@@ -51,29 +51,61 @@ class SiteController extends Controller
     
     //subscribe to feed
     if(isset($_POST['subscribe'])){
-      $plat = implode(",",array_keys($_POST['plat']));
+      $plat = '';
+      if (isset($_POST['plat'])) $plat = implode(",",array_keys($_POST['plat']));
       if ($plat == '0') $plat = '';
       $platform_sel = explode(',',$plat);
       
-      $cat = implode(",",array_keys($_POST['cat']));
+      $cat = '';
+      if (isset($_POST['cat'])) $cat = implode(",",array_keys($_POST['cat']));
       $cat_sel = explode(',',$cat);
       $email = $_POST['email']; 
       
       $subscription = Subscription::model()->findByAttributes(array('email'=>$email));
+      $subupdate = 'update';
       if (!$subscription){
+        $subupdate = 'new';
         $subscription = new Subscription();
-        $subscription->time_created = date("Y-m-d H:i:s");
+        //$subscription->time_created = date("Y-m-d H:i:s");
+        $subscription->hash = mailTrackingCode();
       }
       
-      $subscription->hash = md5($email.$plat.$cat);
+      
       $subscription->email = $email;
       $subscription->platform = $plat;
       $subscription->category = $cat;
       $subscription->rss = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
-        setFlash("save", "Subscription saved please check your email for the link to RSS feed.", "success", false);
-      }else setFlash("save", "Problem saving your subscription please try later.", "alert", false);
+        
+        $rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
+       
+        $message = new YiiMailMessage;
+        $message->view = 'system';
+        $message->subject = 'Crowdfunding RSS subscription link';
+        $tc = mailTrackingCode();
+        $ml = new MailLog();
+        $ml->tracking_code = mailTrackingCodeDecode($tc);
+        $ml->type = 'subscription-'.$subupdate;
+        $ml->subscription_id = $subscription->id;
+        $ml->save();
+        
+        $message->setBody(array("content"=>'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
+                                            Just copy and paste the following link in your favourite RSS reader and enjoy. <p class="callout">'.$rss_link."</p>
+                                            To test the RSS you can also ".mailButton("click here", $rss_link, 'link', $tc, 'subscription-rss-click').".",
+                                "tc"=>$tc), 'text/html');
+
+        $message->addTo($subscription->email);
+        $message->from = Yii::app()->params['noreplyEmail'];
+        Yii::app()->mail->send($message);
+        
+        
+        setFlash("save", "Subscription saved pleas check your email for the link to RSS feed.", "success", false);
+        
+      }else{
+        if (YII_DEBUG) setFlash("save", "Problem saving your subscription please try later. ".print_r($subscription->getErrors(),true), "alert", false);
+        else setFlash("save", "Problem saving your subscription please try later.", "alert", false);
+      }
     }
 
     
@@ -96,23 +128,7 @@ class SiteController extends Controller
     
 	}
   
-  /**
-   * tracking RSS link clicks and redirecting them
-   */
-  public function actionRl($l) {
-    /*Yii::import('application.helpers.Hashids');
-    $hashids = new Hashids('cofinder');
-    $tid = $hashids->decrypt($id);
-    $id = $tid[0];*/
-    
-    $mailLinkClick = new MailClickLog();
-    $mailLinkClick->link = $l;
-    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
-    $mailLinkClick->save();
-    
-    $this->redirect($l);
-    Yii::app()->end();
-  }   
+ 
 
 	/**
 	 * This is the action to handle external exceptions.

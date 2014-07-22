@@ -41,11 +41,11 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
           
           <form method="post" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
-          <h2>1. Chose platforms</h2>
+          <h2>1. Choose platforms</h2>
           <p>Which platforms you wish to get your news from?<p>
             
             
-          <ul class="small-block-grid-2 medium-block-grid-3">
+          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
               <?php
               $i = 0;
               foreach ($platforms as $plat){
@@ -75,13 +75,11 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
               } ?>
           </ul>
           
-        
-          
           
           <hr>
           
           
-          <h2>2. Chose categories</h2>
+          <h2>2. Choose categories</h2>
           <p>Which topics do you find interesting?<p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
@@ -119,7 +117,7 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
             <label>Email *
               <input type="email" name="email" value="<?php echo $email; ?>" required>
             </label>
-            <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell your email address to anyone!</small>
+            <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
           
           <div style="margin-top: 30px;">
