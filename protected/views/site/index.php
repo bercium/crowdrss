@@ -12,7 +12,8 @@ $this->pageTitle=Yii::app()->name;
        <div class="row">
          <div class="columns large-12 text-center">
            <img src="images/logo.png" style="margin:30px;">
-           <h1 class="title">Crowdfunding RSS</h1>
+           <h1 class="title show-for-medium-up">Crowdfunding RSS</h1>
+           <h1 class="title-small show-for-small">Crowdfunding RSS</h1>
          </div>
        </div>
     </div>
@@ -42,15 +43,15 @@ $this->pageTitle=Yii::app()->name;
           
           <form data-abide>
           
-          <h2>Chose a platform</h2>
-          <p>Chose the platforms you wish to get your news from:<p>
+          <h2>1. Chose platforms</h2>
+          <p>Which platforms you wish to get your news from?<p>
           <div class="row" data-equalizer>
 
             <div class="columns medium-4 large-4" data-equalizer-watch>
                 
                 <label for="platformAll">
                   <div class="panel radius text-center small-8 small-offset-2" style="height:150px;">
-                    <h2> All platforms</h2>
+                    <h2>All platforms</h2>
                   </div>
                 </label>  
                   
@@ -85,8 +86,8 @@ $this->pageTitle=Yii::app()->name;
           </div>
           <hr>
           
-          <h2>Categories</h2>
-          <p>Chose all categories you would like to follow:<p>
+          <h2>2. Chose categories</h2>
+          <p>Which topics do you find interesting?<p>
             
           <div class="row" data-equalizer>
 
@@ -129,14 +130,14 @@ $this->pageTitle=Yii::app()->name;
           
           
           
-          <h2>Get the link</h2>
-          <p>We will generate the link and send it to your email address.<p>
+          <h2>3. Get the RSS link</h2>
+          <p>We will generate a link and send it to your email address.<p>
             
           <div class="email-field">
             <label>Email *
               <input type="email" required>
             </label>
-            <small>We will not distribute your email to third parties or use it for anything else than notifiying you abu.</small>
+            <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell your email address to anyone!</small>
           </div>
           
           <div style="margin-top: 30px;">
