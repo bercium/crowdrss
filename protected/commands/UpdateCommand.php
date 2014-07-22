@@ -45,7 +45,7 @@ class UpdateCommand extends CConsoleCommand{
     //Creator
     $pattern = '/id="name">(.+)<\/a>/';
     preg_match($pattern, $htmlData, $matches);
-    $data['creator'] = $matches[1];
+    $data['creator'] = html_entity_decode($matches[1]);
 
     //Date
     $pattern = '/<time class="js-adjust" data-format="ll" datetime="(.+)">/';
@@ -92,6 +92,7 @@ function parseIndiegogo($link){
     preg_match($pattern, $htmlData, $matches);
     $data['start_date'] = $matches[1];
 
+    //End date
     $pattern = '/close on (.+)\(/';
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
@@ -197,14 +198,14 @@ function parseIndiegogo($link){
             else {$typeOfFunding = 1;}
             $insert->type_of_funding=$typeOfFunding;
           }
-/*          if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
-          if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
-          if (isset($data_single[0]->created)){
-            if ($data_single[0]->created == "First") { $created = 1; }
-            else{ $created = $data_single[0]->created; }
-            $insert->creator_created=$created;
-          }
-          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;*/
+//          if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
+//          if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
+//          if (isset($data_single[0]->created)){
+//            if ($data_single[0]->created == "First") { $created = 1; }
+//            else{ $created = $data_single[0]->created; }
+//            $insert->creator_created=$created;
+//          }
+//          if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
           $insert->save();
 //          print_r($insert->getErrors());
         }
