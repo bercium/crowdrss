@@ -127,16 +127,16 @@ class UpdateCommand extends CConsoleCommand{
 
 
   public function actionKickstarter(){
-    $i=1;
-    $check=false;
-    $count=1;
-    $id_ks=1; // originalno prebrat iz baze
+    $i = 1;
+    $check = false;
+    $count = 0;
+    $id_ks = 1; // originalno prebrat iz baze
     while (($i <= 50) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-          if ($link_check){ $count=$count+1;}
+          if ($link_check){ $count = $count+1;}
 	  else{
 	    $data_single = $this->parseKickstarter($data->link);
 	    $insert=new Project;
@@ -161,9 +161,10 @@ class UpdateCommand extends CConsoleCommand{
 //	    if (isset($data_single[0]->backed)) $insert->creator_backed=$data_single[0]->backed;
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
 	    $insert->save();
+	    $count = 0;
 //	    print_r($insert->getErrors());
           }
-	  if ($count > 30){ $check=true; break; }
+	  if ($count >= 30){ $check=true; break; }
 	}
       }
       $i=$i+1;
