@@ -11,7 +11,7 @@ $this->pageTitle=Yii::app()->name;
        <a id="whatIsCRSS" class="anchor"></a>
        <div class="row">
          <div class="columns large-12 text-center">
-           <img src="images/logo.png" style="margin:30px;">
+           <img src="images/logo.png" class="mt30 mb30 lshow-for-medium-up" >
            <h1 class="title show-for-medium-up">Crowdfunding RSS</h1>
            <h1 class="title-small show-for-small">Crowdfunding RSS</h1>
          </div>
