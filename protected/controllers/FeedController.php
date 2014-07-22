@@ -58,6 +58,7 @@ class FeedController extends Controller
      // get projects
     $projects = Project::model()->findAll($sql);
     // CREATE RSS
+    $i = 0;
     foreach ($projects as $project){
       $rssResponse .= '<item>';
       $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>';
@@ -82,6 +83,7 @@ class FeedController extends Controller
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
       $rssResponse .= "</item>\n";
+      if ($i++ > 20) break;
     }
 
     $rssResponse .= '</channel>';
