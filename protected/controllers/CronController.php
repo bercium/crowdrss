@@ -26,14 +26,6 @@ class CronController extends Controller
         'actions'=>array(),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array(),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform actions:
-				'actions'=>array(),
-				'users'=>Yii::app()->getModule('user')->getAdmins(),
-			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
