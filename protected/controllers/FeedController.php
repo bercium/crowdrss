@@ -88,7 +88,7 @@ class FeedController extends Controller
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
       }
-      $rssResponse .= '<description>' . htmlspecialchars($desc) . '</description>';
+      $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
       $rssResponse .= "</item>\n";
