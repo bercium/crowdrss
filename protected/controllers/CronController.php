@@ -73,7 +73,8 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionPoolCrowd(){
-    echo $this->consoleCommand('','');
+    echo $this->consoleCommand('update','kickstarter');
+    echo $this->consoleCommand('update','indiegogo');
   }
   
   
