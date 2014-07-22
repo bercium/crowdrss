@@ -25,7 +25,7 @@ class FeedController extends Controller
     $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
     $rssResponse .= '<title>Crowdfounding RSS</title>';
-    $rssResponse .= '<link>http://crowdrss.eberce.si</link>';
+    $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
     $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
     $rssResponse .= '<language>en-us</language>';
     $rssResponse .= '<ttl>1</ttl>';

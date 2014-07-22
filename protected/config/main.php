@@ -139,9 +139,10 @@ $a = array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@example.com',
+		'adminEmail'=>'info@eberce.si',
 		'username'=>'',
 		'pass'=>'',
+    'absoluteHost' => 'http://crowdrss.eberce.si',
 	),
 );
 

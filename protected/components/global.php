@@ -263,6 +263,9 @@ function writeFlashes(){
 
 
 function absoluteURL($url = ''){
+  
+  return Yii::app()->params['absoluteHost'];
+  
   if (!YII_TESTING) return 'http://www.cofinder.eu'.$url;
   else return 'http://test.cofinder.eu'.$url;
   //$host = require(dirname(__FILE__) . '/../config/local-console-request.php');
