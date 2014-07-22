@@ -64,7 +64,8 @@ class CronController extends Controller
 	 */
 	public function actionTest()
 	{
-    echo absoluteURL()."\n<br />";
+    echo "test";
+    //echo absoluteURL()."\n<br />";
     //echo $this->consoleCommand('','');
   }
 	
