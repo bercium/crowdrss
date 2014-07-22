@@ -61,9 +61,9 @@ class FeedController extends Controller
     foreach ($projects as $project){
       $rssResponse .= '<item>';
       $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>';
-      $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . ']]></pubDate>';
-      $rssResponse .= '<category><![CDATA[' . $project->origCategory->name . '</category>';
-      $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+      $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . '</pubDate>';
+      $rssResponse .= '<category><![CDATA[' . $project->origCategory->name . ']]></category>';
+      $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></link>';
 
       $desc = '';
       $desc.= $project->platform->name.": ".$project->origCategory->name."<br />";
@@ -97,19 +97,8 @@ class FeedController extends Controller
   /**
    * tracking RSS link clicks and redirecting them
    */
-  public function actionRl($l) {
-    /*Yii::import('application.helpers.Hashids');
-    $hashids = new Hashids('cofinder');
-    $tid = $hashids->decrypt($id);
-    $id = $tid[0];*/
-    $this->redirect($l);
-    Yii::app()->end();
-    
-    $mailLinkClick = new MailClickLog();
-    $mailLinkClick->link = $l;
-    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
-    $mailLinkClick->save();
-    
+  public function actionRl($l,$i) {
+    // log clicks
     $this->redirect($l);
     Yii::app()->end();
   }
