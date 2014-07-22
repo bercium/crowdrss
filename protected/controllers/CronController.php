@@ -70,5 +70,18 @@ class CronController extends Controller
     echo $this->consoleCommand('update','indiegogo');
   }
   
+  /**
+   * all hidden profiles will be notified every second week
+   */
+  public function actionPoolKs(){
+    echo $this->consoleCommand('update','kickstarter');
+  }  
+  
+  /**
+   * all hidden profiles will be notified every second week
+   */
+  public function actionPoolIgg(){
+    echo $this->consoleCommand('update','indiegogo');
+  }
   
 }
