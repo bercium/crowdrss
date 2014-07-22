@@ -93,7 +93,7 @@ class FeedController extends Controller
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
       $rssResponse .= "</item>\n";
-      if ($i++ > 20) break;
+      //if ($i++ > 20) break;
     }
 
     $rssResponse .= '</channel>';
