@@ -69,7 +69,8 @@ $a = array(
 	),
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'info@eberce.si',
+		'noreplyEmail'=>array('no-reply@eberce.eu'=>'Crowdfunding RSS'),
+		'adminEmail'=>array('info@eberce.eu'=>'Crowdfunding RSS'),
 		'username'=>'',
 		'pass'=>'',
     'absoluteHost' => 'http://crowdrss.eberce.si',

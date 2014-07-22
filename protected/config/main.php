@@ -140,6 +140,7 @@ $a = array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'info@eberce.si',
+		'noreplyEmail'=>'noreply@eberce.si',
 		'username'=>'',
 		'pass'=>'',
     'absoluteHost' => 'http://crowdrss.eberce.si',

@@ -41,7 +41,7 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
           
           <form method="post" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
-          <h2>1. Chose platforms</h2>
+          <h2>1. Choose platforms</h2>
           <p>Which platforms you wish to get your news from?<p>
             
             
@@ -75,13 +75,11 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
               } ?>
           </ul>
           
-        
-          
           
           <hr>
           
           
-          <h2>2. Chose categories</h2>
+          <h2>2. Choose categories</h2>
           <p>Which topics do you find interesting?<p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">

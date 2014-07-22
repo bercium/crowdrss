@@ -368,7 +368,7 @@ function absoluteURL($url = ''){
    */
   function mailTrackingCode($extra = ''){
     //Yii::import('application.helpers.Hashids');
-    $hashids = new Hashids('cofinder');
+    $hashids = new Hashids('crowdrss');
     return $hashids->encrypt(round(microtime(true)));
   }
   
@@ -377,7 +377,7 @@ function absoluteURL($url = ''){
    */
   function mailTrackingCodeDecode($tc){
     //Yii::import('application.helpers.Hashids');
-    $hashids = new Hashids('cofinder');
+    $hashids = new Hashids('crowdrss');
     $tid = $hashids->decrypt($tc);
     if (is_array($tid) && isset($tid[0])) return $tid[0];
     else return $tid;
