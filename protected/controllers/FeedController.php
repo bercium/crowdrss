@@ -25,9 +25,13 @@ class FeedController extends Controller
     
     $rssResponse = '';
     $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
-    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" rel="self" type="application/rss+xml">';
+    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
+    
 //    $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
+    //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
+    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://crowdrss.eberce.si/feed/rss/'.$data.'" />';
+    
     $rssResponse .= '<title>Crowdfounding RSS</title>';
     $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
     $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
