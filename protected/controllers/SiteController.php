@@ -43,13 +43,14 @@ class SiteController extends Controller
         $cat_sel = explode(',',$subscription->category);
         $platform_sel = explode(',',$subscription->platform);
         $email = $subscription->email;
+      }else{
+        setFlash("save", "Subscription not found! Pleas check that you have the right ID.", "alert", false);
       }
     }
     
     
     //subscribe to feed
     if(isset($_POST['subscribe'])){
-      setFlash("save", "SaveOK", "success ", false);
       $plat = implode(",",array_keys($_POST['plat']));
       if ($plat == '0') $plat = '';
       $platform_sel = explode(',',$plat);
@@ -70,7 +71,9 @@ class SiteController extends Controller
       $subscription->category = $cat;
       $subscription->rss = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
-      $subscription->save();
+      if ($subscription->save()){
+        setFlash("save", "Subscription saved please check your email for the link to RSS feed.", "success", false);
+      }else setFlash("save", "Problem saving your subscription please try later.", "alert", false);
     }
 
     

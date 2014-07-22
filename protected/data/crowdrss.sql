@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 21, 2014 at 03:23 PM
+-- Generation Time: Jul 22, 2014 at 02:27 PM
 -- Server version: 5.5.37-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
@@ -353,11 +353,11 @@ CREATE TABLE IF NOT EXISTS `subscription` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `hash` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `platform` int(11) DEFAULT NULL,
-  `category` int(11) DEFAULT NULL,
+  `platform` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `rss` tinyint(1) DEFAULT '0',
-  `email_time` int(11) DEFAULT NULL,
-  `email_limit` int(11) DEFAULT NULL,
+  `time_created` datetime NOT NULL,
+  `time_updated` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 

@@ -22,7 +22,6 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
         <div class="columns large-12 large-centered">
           <h1>What is crowdfunding RSS</h1>
           <p>
-
             
           Tracker is a competitive post apocalyptic <strong>board game</strong>. The game, where even the <strong>dead still have a chance</strong>...<br />
           Years after apocalypse. A group of survivors locked in battle for the astonishing <strong>power of artefacts</strong>. 
