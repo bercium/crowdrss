@@ -63,11 +63,25 @@ class FeedController extends Controller
       $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . $project->origCategory->name . '</category>';
-      $rssResponse .= '<link><![CDATA[' . $project->link . ']]></link>';
-      $rssResponse .= '<description><![CDATA[<img src="' . $project->image . '"/>&nbsp;' . $project->description . ']]></description>';
+      $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+
+      $desc = '';
+      $desc.= $project->platform->name.": ".$project->origCategory->name."<br />";
+      $desc.= '<img src="' . $project->image . '"/><br />';
+
+      $desc.= "<br />".$project->description;
+      
+      if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator;
+      //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
+      if (!empty($project->goal)) $desc.= "<br />Project goal: ".$project->goal;
+      if (!empty($project->type_of_funding)){
+        if ($project->type_of_funding == 0) $desc.= " Fixed funding";
+        else $desc.= " Flexible funding";
+      }
+      $rssResponse .= '<description><![CDATA[' . $desc . ']]></description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
-      $rssResponse .= '</item>';
+      $rssResponse .= "</item>\n";
     }
 
     $rssResponse .= '</channel>';
@@ -77,4 +91,28 @@ class FeedController extends Controller
     echo $rssResponse;
     Yii::app()->end();
   }
+  
+  
+  
+  /**
+   * tracking RSS link clicks and redirecting them
+   */
+  public function actionRl($l) {
+    /*Yii::import('application.helpers.Hashids');
+    $hashids = new Hashids('cofinder');
+    $tid = $hashids->decrypt($id);
+    $id = $tid[0];*/
+    $this->redirect($l);
+    Yii::app()->end();
+    
+    $mailLinkClick = new MailClickLog();
+    $mailLinkClick->link = $l;
+    $mailLinkClick->time_clicked = date('Y-m-d H:i:s');
+    $mailLinkClick->save();
+    
+    $this->redirect($l);
+    Yii::app()->end();
+  }
+  
+  
 }
