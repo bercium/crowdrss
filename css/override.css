@@ -7,3 +7,15 @@ body{
 hr{
   /*border-color: #0088bb;*/
 }
+
+li .switch , li .switch label{
+  margin-bottom: 0px;
+}
+
+.mb0{
+  margin-bottom: 0px;
+}
+
+.mb30{
+  margin-bottom: 30px;
+}

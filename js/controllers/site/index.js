@@ -3,10 +3,17 @@
  * and open the template in the editor.
  */
 
-function uncheckPlatforms(){
-  if ($('#platformKS').is(':checked')) $('#platformKS').prop('checked', false);
-  if ($('#platformIGG').is(':checked')) $('#platformIGG').prop('checked', false);
+function uncheckPlatforms(id){
+  if (id == 0){
+    $('[id^="plat_"]').each(function(index){
+      if ($(this).attr('id') != 'plat_0') $(this).prop('checked', false);
+    });
+  }else{
+    $('#plat_0').prop('checked', false);
+  }
 }
+
+
 
 $(function() {
     

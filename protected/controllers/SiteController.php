@@ -30,10 +30,67 @@ class SiteController extends Controller
     $this->layout = 'blank';
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-    //setFlash("save", "SaveOK", "success ", false);
+    //
+    
+    $cat_sel = array();
+    $platform_sel = array();
+    $email = '';
+    
+    //load previous feed
+    if (isset($_GET['id'])){
+      $subscription = Subscription::model()->findByAttributes(array('hash'=>$_GET['id']));
+      if ($subscription){
+        $cat_sel = explode(',',$subscription->category);
+        $platform_sel = explode(',',$subscription->platform);
+        $email = $subscription->email;
+      }
+    }
     
     
-		$this->render('index');
+    //subscribe to feed
+    if(isset($_POST['subscribe'])){
+      setFlash("save", "SaveOK", "success ", false);
+      $plat = implode(",",array_keys($_POST['plat']));
+      if ($plat == '0') $plat = '';
+      $platform_sel = explode(',',$plat);
+      
+      $cat = implode(",",array_keys($_POST['cat']));
+      $cat_sel = explode(',',$cat);
+      $email = $_POST['email']; 
+      
+      $subscription = Subscription::model()->findByAttributes(array('email'=>$email));
+      if (!$subscription){
+        $subscription = new Subscription();
+        $subscription->time_created = date("Y-m-d H:i:s");
+      }
+      
+      $subscription->hash = md5($email.$plat.$cat);
+      $subscription->email = $email;
+      $subscription->platform = $plat;
+      $subscription->category = $cat;
+      $subscription->rss = 1;
+      $subscription->time_updated = date("Y-m-d H:i:s");
+      $subscription->save();
+    }
+
+    
+    //platforms
+    $platforms = Platform::model()->findAll();
+    $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true));
+    foreach ($platforms as $platform){
+      $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel));
+      if (in_array($platform->id, $platform_sel)) $selplat[0]['selected'] = false;
+    }
+    
+    //categories
+    $categories = Category::model()->findAll();
+    $selcat = array();
+    foreach ($categories as $platform){
+      $selcat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $cat_sel));
+    }
+    
+		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'email'=>$email));
+    
 	}
   
   /**

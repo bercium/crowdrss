@@ -12,11 +12,11 @@
  * @property integer $id
  * @property string $hash
  * @property string $email
- * @property integer $platform
- * @property integer $category
+ * @property string $platform
+ * @property string $category
  * @property integer $rss
- * @property integer $email_time
- * @property integer $email_limit
+ * @property string $time_created
+ * @property string $time_updated
  *
  */
 abstract class BaseSubscription extends GxActiveRecord {
@@ -39,12 +39,12 @@ abstract class BaseSubscription extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('hash, email', 'required'),
-			array('platform, category, rss, email_time, email_limit', 'numerical', 'integerOnly'=>true),
+			array('hash, email, time_created, time_updated', 'required'),
+			array('rss', 'numerical', 'integerOnly'=>true),
 			array('hash', 'length', 'max'=>100),
-			array('email', 'length', 'max'=>255),
-			array('platform, category, rss, email_time, email_limit', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, hash, email, platform, category, rss, email_time, email_limit', 'safe', 'on'=>'search'),
+			array('email, platform, category', 'length', 'max'=>255),
+			array('platform, category, rss', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, hash, email, platform, category, rss, time_created, time_updated', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,8 +66,8 @@ abstract class BaseSubscription extends GxActiveRecord {
 			'platform' => Yii::t('app', 'Platform'),
 			'category' => Yii::t('app', 'Category'),
 			'rss' => Yii::t('app', 'Rss'),
-			'email_time' => Yii::t('app', 'Email Time'),
-			'email_limit' => Yii::t('app', 'Email Limit'),
+			'time_created' => Yii::t('app', 'Time Created'),
+			'time_updated' => Yii::t('app', 'Time Updated'),
 		);
 	}
 
@@ -77,11 +77,11 @@ abstract class BaseSubscription extends GxActiveRecord {
 		$criteria->compare('id', $this->id);
 		$criteria->compare('hash', $this->hash, true);
 		$criteria->compare('email', $this->email, true);
-		$criteria->compare('platform', $this->platform);
-		$criteria->compare('category', $this->category);
+		$criteria->compare('platform', $this->platform, true);
+		$criteria->compare('category', $this->category, true);
 		$criteria->compare('rss', $this->rss);
-		$criteria->compare('email_time', $this->email_time);
-		$criteria->compare('email_limit', $this->email_limit);
+		$criteria->compare('time_created', $this->time_created, true);
+		$criteria->compare('time_updated', $this->time_updated, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
