@@ -31,10 +31,6 @@ class TrackController extends Controller
         'actions'=>array(),
 				'users'=>array('@'),
 			),*/
-			array('allow', // allow admin user to perform actions:
-				'actions'=>array('index'),
-				'users'=>Yii::app()->getModule('user')->getAdmins(),
-			),
 			/*array('deny',  // deny all users
 				'users'=>array('*'),
 			),*/
