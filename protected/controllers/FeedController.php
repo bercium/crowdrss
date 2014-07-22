@@ -98,7 +98,7 @@ class FeedController extends Controller
    * tracking RSS link clicks and redirecting them
    */
   public function actionRl($l,$i) {
-    // log clicks
+    // !!!log clicks
     $this->redirect($l);
     Yii::app()->end();
   }

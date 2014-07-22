@@ -90,7 +90,9 @@ class SiteController extends Controller
         $ml->subscription_id = $subscription->id;
         $ml->save();
         
-        $message->setBody(array("content"=>" ".$rss_link." or click this ".mailButton("RSS link", $rss_link, 'link', $tc, 'subscription-rss-click'),
+        $message->setBody(array("content"=>'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
+                                            Just copy and paste the following link in your favourite RSS reader and enjoy. <p class="callout">'.$rss_link."</p>
+                                            To test the RSS you can also ".mailButton("click here", $rss_link, 'link', $tc, 'subscription-rss-click').".",
                                 "tc"=>$tc), 'text/html');
 
         $message->addTo($subscription->email);
@@ -98,7 +100,7 @@ class SiteController extends Controller
         Yii::app()->mail->send($message);
         
         
-        setFlash("save", "Subscription saved please check your email for the link to RSS feed.", "success", false);
+        setFlash("save", "Subscription saved pleas check your email for the link to RSS feed.", "success", false);
         
       }else{
         if (YII_DEBUG) setFlash("save", "Problem saving your subscription please try later. ".print_r($subscription->getErrors(),true), "alert", false);
