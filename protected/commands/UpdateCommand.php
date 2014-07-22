@@ -1,4 +1,5 @@
 <?php
+set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand{
   function query($connectorGuid, $input, $additionalInput) {
     $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
