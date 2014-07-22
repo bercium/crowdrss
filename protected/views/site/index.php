@@ -45,7 +45,7 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
           <p>Which platforms you wish to get your news from?<p>
             
             
-          <ul class="small-block-grid-2 medium-block-grid-3">
+          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
               <?php
               $i = 0;
               foreach ($platforms as $plat){
@@ -119,7 +119,7 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
             <label>Email *
               <input type="email" name="email" value="<?php echo $email; ?>" required>
             </label>
-            <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell your email address to anyone!</small>
+            <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
           
           <div style="margin-top: 30px;">
