@@ -50,6 +50,7 @@ abstract class BaseProject extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('platform_id, orig_category_id, title, description, image, link, time_added', 'required'),
+      array('time_added', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
 			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
 			array('title, image, link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),

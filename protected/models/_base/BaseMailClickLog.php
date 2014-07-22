@@ -37,7 +37,9 @@ abstract class BaseMailClickLog extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('mail_tracking_code, link, time_clicked, button_name', 'required'),
+			array('mail_tracking_code, link, button_name', 'required'),
+      array('time_clicked', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
+        
 			array('mail_tracking_code', 'numerical', 'integerOnly'=>true),
 			array('link', 'length', 'max'=>255),
 			array('button_name', 'length', 'max'=>200),
