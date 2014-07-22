@@ -40,7 +40,6 @@ abstract class BaseSubscription extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('hash, email', 'required'),
-      array('time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'update'),
       array('time_created, time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
 			array('rss', 'numerical', 'integerOnly'=>true),
 			array('hash', 'length', 'max'=>100),

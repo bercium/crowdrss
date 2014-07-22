@@ -66,7 +66,7 @@ class SiteController extends Controller
       if (!$subscription){
         $subupdate = 'new';
         $subscription = new Subscription();
-        $subscription->time_created = date("Y-m-d H:i:s");
+        //$subscription->time_created = date("Y-m-d H:i:s");
         $subscription->hash = mailTrackingCode();
       }
       
@@ -89,7 +89,7 @@ class SiteController extends Controller
         $ml->type = 'subscription-'.$subupdate;
         $ml->subscription_id = $subscription->id;
         $ml->save();
-
+        
         $message->setBody(array("content"=>" ".$rss_link." or click this ".mailButton("RSS link", $rss_link, 'link', $tc, 'subscription-rss-click'),
                                 "tc"=>$tc), 'text/html');
 
