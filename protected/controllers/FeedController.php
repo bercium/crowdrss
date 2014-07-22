@@ -21,6 +21,7 @@ class FeedController extends Controller
     $this->layout = 'none';
     
     //header('Content-Type', 'application/rss+xml;charset=utf-8'); 
+    header('Content-Type: application/rss+xml; charset=ISO-8859-1');
     
     $rssResponse = '';
     $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
