@@ -113,6 +113,14 @@ class FeedController extends Controller
    */
   public function actionRl($l,$i) {
     // !!!log clicks
+    $project = Project::model()->findByAttributes(array('link'=>$l));
+    if ($project){
+      $feedClick = new FeedClickLog();
+      $feedClick->project_id = $project->id;
+      $feedClick->subscription_id = $i;
+      $feedClick->save();
+    }
+    
     $this->redirect($l);
     Yii::app()->end();
   }
