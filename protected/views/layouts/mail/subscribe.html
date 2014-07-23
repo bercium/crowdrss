@@ -696,32 +696,7 @@ body.outlook p {
   </style>
   <style>
 
-    table.facebook td {
-      background: #3b5998;
-      border-color: #2d4473;
-    }
-
-    table.facebook:hover td {
-      background: #2d4473 !important;
-    }
-
-    table.twitter td {
-      background: #00acee;
-      border-color: #0087bb;
-    }
-
-    table.twitter:hover td {
-      background: #0087bb !important;
-    }
-
-    table.google-plus td {
-      background-color: #DB4A39;
-      border-color: #CC0000;
-    }
-
-    table.google-plus:hover td {
-      background: #CC0000 !important;
-    }
+    
 
     .template-label {
       color: #ffffff;
@@ -731,24 +706,36 @@ body.outlook p {
 
     .callout .wrapper {
       padding-bottom: 20px;
+      padding-top:0px;
     }
 
     .callout .panel {
-      background: #ECF8FF;
-      border-color: #b9e5ff;
+      /*background: #ECF8FF;
+      border-color: #b9e5ff;*/
     }
 
     .header {
-      background: #999999;
+      background: #0088bb;
+    }
+    
+    .content .wrapper {
+      padding-top:20px;
+      
+    }
+    
+    .white{
+      color:#FFF;
+    }
+    
+    .footer-last{
+      border-top: 2px solid #0088bb;
+      
     }
 
     .footer .wrapper {
-      background: #ebebeb;
-    }
-
-    .footer h5 {
       padding-bottom: 10px;
     }
+
 
     table.columns .text-pad {
       padding-left: 10px;
@@ -760,7 +747,7 @@ body.outlook p {
     }
 
     table.columns .right-text-pad {
-      padding-right: 10px;
+      padding-right: 10px !important;
     }
 
     @media only screen and (max-width: 600px) {
@@ -793,11 +780,8 @@ body.outlook p {
 
                         <table class="twelve columns">
                           <tr>
-                            <td class="six sub-columns">
-                              <img src="http://placehold.it/200x50">
-                            </td>
-                            <td class="six sub-columns last" style="text-align:right; vertical-align:middle;">
-                              <span class="template-label">BASIC</span>
+                            <td class="twelve sub-columns" style="text-align:left; vertical-align:middle;">
+                              <h6 class="white">TITLE</h6>
                             </td>
                             <td class="expander"></td>
                           </tr>
@@ -816,16 +800,14 @@ body.outlook p {
             <tr>
               <td>
 
-                <table class="row">
+                <table class="row content">
                   <tr>
                     <td class="wrapper last">
 
                       <table class="twelve columns">
                         <tr>
                           <td>
-                            <h1>Hi, Susan Calvin</h1>
-                						<p class="lead">Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae.</p>
-                						<p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. consequat vel lacus. Sed iaculis pulvinar ligula, ornare fringilla ante viverra et. In hac habitasse platea dictumst. Donec vel orci mi, eu congue justo. Integer eget odio est, eget malesuada lorem. Aenean sed tellus dui, vitae viverra risus. Nullam massa sapien, pulvinar eleifend fringilla id, convallis eget nisi. Mauris a sagittis dui. Pellentesque non lacinia mi. Fusce sit amet libero sit amet erat venenatis sollicitudin vitae vel eros. Cras nunc sapien, interdum sit amet porttitor ut, congue quis urna.</p>
+                						<p>CONTENT</p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -841,8 +823,10 @@ body.outlook p {
 
                       <table class="twelve columns">
                         <tr>
-                          <td class="panel">
-                            <p>Phasellus dictum sapien a neque luctus cursus. Pellentesque sem dolor, fringilla et pharetra vitae. <a href="#">Click it! »</a></p>
+                          <td class="panel radius">
+                            <p>
+                              LINK TO FEED
+                            </p>
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -852,6 +836,8 @@ body.outlook p {
                   </tr>
                 </table>
 
+
+
                 <table class="row footer">
                   <tr>
                     <td class="wrapper">
@@ -859,36 +845,8 @@ body.outlook p {
                       <table class="six columns">
                         <tr>
                           <td class="left-text-pad">
-
-                            <h5>Connect With Us:</h5>
-
-                            <table class="tiny-button facebook">
-                              <tr>
-                                <td>
-                                  <a href="#">Facebook</a>
-                                </td>
-                              </tr>
-                            </table>
-
-                            <br>
-
-                            <table class="tiny-button twitter">
-                              <tr>
-                                <td>
-                                  <a href="#">Twitter</a>
-                                </td>
-                              </tr>
-                            </table>
-
-                            <br>
-
-                            <table class="tiny-button google-plus">
-                              <tr>
-                                <td>
-                                  <a href="#">Google +</a>
-                                </td>
-                              </tr>
-                            </table>
+                            
+                            <p style="margin-top:10px;">Update or change your feed settings here:</p>
 
                           </td>
                           <td class="expander"></td>
@@ -901,9 +859,16 @@ body.outlook p {
                       <table class="six columns">
                         <tr>
                           <td class="last right-text-pad">
-                            <h5>Contact Info:</h5>
-                            <p>Phone: 408.341.0600</p>
-                            <p>Email: <a href="mailto:hseldon@trantor.com">hseldon@trantor.com</a></p>
+
+                            <table class="small-button success radius">
+                              <tr>
+                                <td>
+                                  <a href="#">Edit feed</a>
+                                </td>
+                              </tr>
+                            </table>                            
+                            
+                            
                           </td>
                           <td class="expander"></td>
                         </tr>
@@ -912,9 +877,9 @@ body.outlook p {
                     </td>
                   </tr>
                 </table>
-
-
-                <table class="row">
+                
+                
+                <table class="row footer-last">
                   <tr>
                     <td class="wrapper last">
 
@@ -922,7 +887,9 @@ body.outlook p {
                         <tr>
                           <td align="center">
                             <center>
-                              <p style="text-align:center;"><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Unsubscribe</a></p>
+                              <p style="text-align:center;">
+                                powered by: <a href="#">Crowdfunding RSS</a>
+                              </p>
                             </center>
                           </td>
                           <td class="expander"></td>

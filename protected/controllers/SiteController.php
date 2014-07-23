@@ -78,11 +78,8 @@ class SiteController extends Controller
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
         
-        $rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
-        $edit_link = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$subscription->hash));
-       
         $message = new YiiMailMessage;
-        $message->view = 'system';
+        $message->view = 'subscribe';
         $message->subject = 'Crowdfunding RSS subscription link';
         $tc = mailTrackingCode();
         $ml = new MailLog();
@@ -91,12 +88,13 @@ class SiteController extends Controller
         $ml->subscription_id = $subscription->id;
         $ml->save();
         
-        $content = 'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
-                   Just copy and paste the following link in your favourite RSS reader and enjoy. <p class="callout">'.$rss_link."</p>
-                   To test the RSS ".mailButton("click here", $rss_link, 'link', $tc, 'subscription-rss-click').".<br />".
-                   "To edit or change your preferences ".mailButton("click here", $edit_link, 'link', $tc, 'subscription-edit');
+        $rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
+        $editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$subscription->hash));
         
-        $message->setBody(array("content"=>$content,"tc"=>$tc), 'text/html');
+        $content = 'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
+                    Copy and paste the following link in your favourite RSS reader and enjoy.';
+
+        $message->setBody(array("content"=>$content,"linkToFeed"=>$rss_link,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
 
         $message->addTo($subscription->email);
         $message->from = Yii::app()->params['noreplyEmail'];
