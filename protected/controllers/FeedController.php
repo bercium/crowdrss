@@ -78,7 +78,7 @@ class FeedController extends Controller
       $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
   
       $desc = '';
-      $desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
+      //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt=""/><br />';
 
       $desc.= "<br />".$project->description." <br />";
