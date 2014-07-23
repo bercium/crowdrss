@@ -51,11 +51,11 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
                 $i++;
                 
                 ?>
-                <li class="text-center">
+                <li class="text-center" trk="platform_click_">
                     <div class="mb30">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
-                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="show_on:large" class="tip-right radius" title="<?php echo $plat['name']; ?>">
+                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
@@ -147,9 +147,9 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
         </div>
         <div class="columns medium-6">
           <br />
-            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" ></a>&nbsp;&nbsp;
-            <a href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" ></a>&nbsp;&nbsp;
-            <a href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" ></a>
+            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" ></a>&nbsp;&nbsp;
+            <a trk="social_twitter_share_bottom" href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" ></a>&nbsp;&nbsp;
+            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" ></a>
           
         </div>
       </div>
