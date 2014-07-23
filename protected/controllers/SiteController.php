@@ -101,7 +101,7 @@ class SiteController extends Controller
         Yii::app()->mail->send($message);
         
         setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
-        //$this->refresh();
+        $this->refresh();
         
       }else{
         if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
