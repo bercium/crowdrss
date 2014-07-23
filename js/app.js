@@ -1,18 +1,7 @@
 
 ;(function ($, window, undefined) {
   $(document).foundation();
-
-
-
-  // Hide address bar on mobile devices
-  if (Modernizr.touch) {
-    $(window).load(function () {
-      setTimeout(function () {
-        window.scrollTo(0, 1);
-      }, 0);
-    });
-  }
-  
+  $('#scope').foundation();
 
   //$.cookieCuttr();
   
@@ -33,24 +22,9 @@
       });
   });
   
-  
-  
-  // hide top bar
-  if(typeof hideTopBar != 'undefined') {
-    $('.top-bar-holder').css({ opacity: 0 });
-    $(document).scrollTop(45);
-  }
+
   
 })(jQuery, this);
-
-var scrollFirsttime = 0;
-
-$(window).scroll(function () {
-  if (!$('.top-bar-holder').is(":animated") && $('.top-bar-holder').css("opacity") == 0 && (scrollFirsttime)) {
-     $('.top-bar-holder').animate({ opacity: 1 }, "slow");
-  }
-  if ($(document).scrollTop() == 45) scrollFirsttime = 1;
-});
 
 
 

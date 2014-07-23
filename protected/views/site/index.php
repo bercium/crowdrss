@@ -20,12 +20,9 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns large-12 large-centered">
-          <h1>What is crowdfunding RSS</h1>
+          <h1>The best place for</h1>
           <p>
-            
-          Tracker is a competitive post apocalyptic <strong>board game</strong>. The game, where even the <strong>dead still have a chance</strong>...<br />
-          Years after apocalypse. A group of survivors locked in battle for the astonishing <strong>power of artefacts</strong>. 
-          In a constantly changing environment they must <strong>adapt</strong> their strategy and tactics. But much more is required, to be the <strong>very best</strong>.
+            the best place for 
 
           </p>
 
@@ -41,8 +38,8 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
           
           <form method="post" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
-          <h2>1. Choose platforms</h2>
-          <p>Which platforms you wish to get your news from?<p>
+          <h2>1. Choose platform</h2>
+          <p>Which platforms do you wish to get your news from?<p>
             
             
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
@@ -137,15 +134,18 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
 		<div class="mt30 pt30 pb30 outro">
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
-        <div class="columns large-12 large-centered">
-          <h1>Neki neki</h1>
+        <div class="columns medium-6">
+          <h1>Sharing is caring</h1>
           <p>
-
-          Tracker is a competitive post apocalyptic <strong>board game</strong>. The game, where even the <strong>dead still have a chance</strong>...<br />
-          Years after apocalypse. A group of survivors locked in battle for the astonishing <strong>power of artefacts</strong>. 
-          In a constantly changing environment they must <strong>adapt</strong> their strategy and tactics. But much more is required, to be the <strong>very best</strong>.
-
+            Share with your friends and help us spread the word :)<br />
           </p>
+          
+        </div>
+        <div class="columns medium-6">
+          <br />
+            <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" ></a>&nbsp;&nbsp;
+            <a href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" ></a>&nbsp;&nbsp;
+            <a href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" ></a>
           
         </div>
       </div>

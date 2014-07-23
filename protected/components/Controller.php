@@ -35,9 +35,10 @@ public function init(){
 		// JAVASCRIPTS
     $cs->registerCoreScript('jquery');  //core jquery lib
 
-		$cs->registerScriptFile($baseUrl.'/js/vendor/custom.modernizr.js',CClientScript::POS_HEAD);  //modernizer
+		$cs->registerScriptFile($baseUrl.'/js/vendor/modernizr.js',CClientScript::POS_HEAD);  //modernizer
     
     //$cs->registerScriptFile($baseUrl.'/js/respond.min.js');
+    $cs->registerScriptFile($baseUrl.'/js/vendor/fastclick.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
     

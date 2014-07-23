@@ -61,6 +61,11 @@ $a = array(
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),
+    'clientScript'=>array(
+      'coreScriptPosition'=>CClientScript::POS_END,
+      'defaultScriptPosition'=>CClientScript::POS_END,
+      'defaultScriptFilePosition'=>CClientScript::POS_END,
+    ),      
 		
 		// uncomment the following to use a MySQL database
 		'db' => array(
