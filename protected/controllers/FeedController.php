@@ -78,15 +78,15 @@ class FeedController extends Controller
       $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
   
       $desc = '';
-      $desc.= "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." <br />";
+      $desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt=""/><br />';
 
       $desc.= "<br />".$project->description." <br />";
       
-//      $desc.= "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
-      if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator." ";
+      $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+      if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
-      if (!empty($project->goal)) $desc.= "<br />Project goal: ".$project->goal;
+      if (!empty($project->goal)) $desc.= "<br />Project goal: <strong>".$project->goal."</strong>";
       if (!empty($project->type_of_funding)){
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
