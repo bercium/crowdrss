@@ -31,7 +31,7 @@ class FeedController extends Controller
 //    $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
     //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
-    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://crowdrss.eberce.si/feed/rss/'.$data.'" />';
+    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/rss/'.$data.'" />';
     
     $rssResponse .= '<title>Crowdfounding RSS</title>';
     $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';

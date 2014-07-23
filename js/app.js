@@ -31,7 +31,7 @@
 function contact(e){
 	var pri = "@";
 	e.href = "mailto:info";
-	e.href += pri+"eberce.si";
+	e.href += pri+"crowdfundingrss.com";
 }
 
 function splitComa( val ) {
