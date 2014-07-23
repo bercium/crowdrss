@@ -124,7 +124,15 @@ class SiteController extends Controller
     $categories = Category::model()->findAll();
     $selcat = array();
     foreach ($categories as $platform){
-      $selcat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $cat_sel));
+      $OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
+      $hint = '';
+      if ($OrigCategories){
+        foreach ($OrigCategories as $origCat){
+          if ($hint) $hint .= '<br />';
+          $hint .= $origCat->name;
+        }
+      }
+      $selcat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $cat_sel), "hint"=>$hint);
     }
     
 		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'email'=>$email));

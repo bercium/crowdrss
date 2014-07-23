@@ -1,7 +1,7 @@
 <?php
 /* @var $this SiteController */
-$this->pageTitle = 'All your crowdfunding projects in one place';
-$this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
+$this->pageTitle = 'Crowdfunding projects delivered to you';
+$this->pageDesc = "The best place for following crowdfunding projects from Kickstarter and Indiegogo.";
 
 ?>
 
@@ -10,8 +10,8 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
        <div class="row">
          <div class="columns large-12 text-center">
            <img src="images/logo.png" class="mt30 mb30">
-           <h1 class="title show-for-medium-up">Crowdfunding RSS</h1>
-           <h1 class="title-small show-for-small">Crowdfunding RSS</h1>
+           <h1 class="white title show-for-medium-up">Crowdfunding RSS</h1>
+           <h1 class="white title-small show-for-small">Crowdfunding RSS</h1>
          </div>
        </div>
     </div>
@@ -20,9 +20,11 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns large-12 large-centered">
-          <h1>The best place for</h1>
-          <p>
-            the best place for 
+          <h3 class="white">Crowdfunding projects delivered to you!</h3>
+          <p class="white-light">
+            Crowdfunding RSS is the best place for following crowdfunding projects from <a class="white strong" href="www.kickstarter.com" target="_blank">Kickstarter</a > and <a class="white strong" href="www.indiegogo.com" target="_blank">Indiegogo</a >.<br />
+            Select your platform, chose your interests and create a RSS link. Then just add it to your favorite RSS reader like 
+            <a class="white strong" href="www.feedly.com" target="_blank">Feedly</a > and enjoy.
 
           </p>
 
@@ -39,7 +41,7 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
           <form method="post" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
           <h2>1. Choose platform</h2>
-          <p>Which platforms do you wish to get your news from?<p>
+          <p>Which platforms do you wish to follow?<p>
             
             
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
@@ -52,8 +54,8 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
                 <li class="text-center">
                     <div class="mb30">
                       <label for="plat_<?php echo $plat['id']; ?>" >
-                        <?php if (file_exists("images/".strtolower($plat['name']).".png")){ ?>
-                        <img src="images/<?php echo strtolower($plat['name']); ?>.png">
+                        <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
+                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="show_on:large" class="tip-top radius" title="<?php echo $plat['name']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
@@ -95,7 +97,9 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
                       </div>
                     </div>
                     <div class="columns small-8">
-                        <label for="cat_<?php echo $cat['id']; ?>"><?php echo $cat['name']; ?></label>
+                        <label for="cat_<?php echo $cat['id']; ?>" data-tooltip data-options="show_on:large" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
+                          <?php echo $cat['name']; ?>
+                        </label>
                     </div>
                   </div>
                 </li>
@@ -135,8 +139,8 @@ $this->pageDesc = "Folow projects from Kickstarter and Indiegogo.";
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns medium-6">
-          <h1>Sharing is caring</h1>
-          <p>
+          <h1 class="white">Sharing is caring</h1>
+          <p class="white-light">
             Share with your friends and help us spread the word :)<br />
           </p>
           

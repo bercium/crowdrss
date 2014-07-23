@@ -78,13 +78,13 @@ class FeedController extends Controller
       $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
   
       $desc = '';
-//      $desc.= $project->platform->name.": ".$project->origCategory->name." <br />";
+      $desc.= "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt=""/><br />';
 
       $desc.= "<br />".$project->description." <br />";
       
-      $desc.= "<br />".$project->platform->name.": ".$project->origCategory->name;//." <br />";
-      if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator;
+//      $desc.= "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
+      if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator." ";
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
       if (!empty($project->goal)) $desc.= "<br />Project goal: ".$project->goal;
       if (!empty($project->type_of_funding)){
