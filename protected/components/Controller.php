@@ -69,7 +69,7 @@ public function init(){
      
     
     // startup scripts
-    //$cs->registerScriptFile($baseUrl.'/js/app.js');
+    $cs->registerScriptFile($baseUrl.'/js/app.js');
     
     parent::init();
   }

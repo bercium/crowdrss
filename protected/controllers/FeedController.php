@@ -62,7 +62,7 @@ class FeedController extends Controller
       $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
     }
     if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
-    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";  //!!! maybe do just -1 HOUR
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 DAY)";  //!!! maybe do just -1 HOUR
     $sql .= " ORDER BY time_added DESC";
     
      // get projects
@@ -78,11 +78,12 @@ class FeedController extends Controller
       $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
   
       $desc = '';
-      $desc.= $project->platform->name.": ".$project->origCategory->name."<br />";
+//      $desc.= $project->platform->name.": ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt=""/><br />';
 
-      $desc.= "<br />".$project->description."<br />";
+      $desc.= "<br />".$project->description." <br />";
       
+      $desc.= $project->platform->name.": ".$project->origCategory->name." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator;
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
       if (!empty($project->goal)) $desc.= "<br />Project goal: ".$project->goal;
