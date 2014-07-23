@@ -21,15 +21,12 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 // Function for emailing of problematic project
-  function errorMail($link, $platform){
+  function errorMail($link, $category){
     $message = new YiiMailMessage;
     $message->view = 'system';
-    $message->subject = 'Problematic project in '. $platform;
-
-    $content = 'Link to project: ' . $link;
-
+    $message->subject = 'Missing category';
+    $content = 'Link to project: ' . $link . "\n" . 'Category: ' . $catogery;
     $message->setBody(array("content"=>$content,"title"=>"Error"), 'text/html');
-
     $message->to = Yii::app()->params['adminEmail'];
     $message->from = Yii::app()->params['noreplyEmail'];
     Yii::app()->mail->send($message);
@@ -270,7 +267,14 @@ class UpdateCommand extends CConsoleCommand{
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
-            $insert->orig_category_id=$category->id;
+	    if ($category) { $insert->orig_category_id=$category->id; }
+	    else {
+	      $this->errorMail($data->link, $data->category);
+	      $updateOrigCategory = new OrigCategory();
+	      $updateOrigCategory->name = $data->category;
+	      $updateOrigCategory->category_id = "25";
+	      $updateOrigCategory->save();
+	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
 	    if (isset($data->creator)) $insert->creator=$data->creator;
