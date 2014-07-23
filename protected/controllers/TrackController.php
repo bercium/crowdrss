@@ -71,7 +71,7 @@ class TrackController extends Controller
   
   protected function afterAction($action){
     if ($action->id == 'index') return true;
-    header('Content-Type: image/jpeg');
+    header('Content-Type: image/png');
     echo file_get_contents("images/px.png");
     Yii::app()->end();
   }
