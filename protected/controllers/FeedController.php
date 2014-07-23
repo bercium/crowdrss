@@ -62,7 +62,8 @@ class FeedController extends Controller
       $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
     }
     if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
-    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 DAY)";  //!!! maybe do just -1 HOUR
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";  //!!! maybe do just -1 HOUR
+    $sql .= " ORDER BY time_added DESC";
     
      // get projects
     $projects = Project::model()->findAll($sql);
