@@ -65,7 +65,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           enjoy crowdfunding projects
         </div>
         <dl class="sub-nav right">
-          <dd><a htef="#" onclick="contact(this);">Contact us</a></dd> 
+          <dd><a htef="#" onclick="contact(this);" trk="link_bottom_contact us">Contact us</a></dd> 
           <?php if (!Yii::app()->user->isGuest){ ?>
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
