@@ -77,6 +77,7 @@ class SiteController extends Controller
       $subscription->rss = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
+        setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
         
         $message = new YiiMailMessage;
         $message->view = 'subscribe';
@@ -100,7 +101,7 @@ class SiteController extends Controller
         $message->from = Yii::app()->params['noreplyEmail'];
         Yii::app()->mail->send($message);
         
-        setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
+        
         $this->refresh();
         
       }else{
