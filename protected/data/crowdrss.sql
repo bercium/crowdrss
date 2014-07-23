@@ -362,6 +362,30 @@ CREATE TABLE IF NOT EXISTS `subscription` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
+-- Database: `crowdrss`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feed_click_log`
+--
+
+CREATE TABLE IF NOT EXISTS `feed_click_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `subscription_id` int(11) NOT NULL,
+  `time_clicked` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `subscription_id` (`subscription_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+
 -- Constraints for dumped tables
 --
 
@@ -383,6 +407,16 @@ ALTER TABLE `orig_category`
 ALTER TABLE `project`
   ADD CONSTRAINT `project_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `platform` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `project_ibfk_2` FOREIGN KEY (`orig_category_id`) REFERENCES `orig_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
+-- Constraints for table `feed_click_log`
+--
+ALTER TABLE `feed_click_log`
+  ADD CONSTRAINT `feed_click_log_ibfk_2` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `feed_click_log_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
