@@ -22,9 +22,9 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
         <div class="columns large-12 large-centered">
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
-            Crowdfunding RSS is the best place for following crowdfunding projects from <a class="white strong" href="www.kickstarter.com" target="_blank">Kickstarter</a > and <a class="white strong" href="www.indiegogo.com" target="_blank">Indiegogo</a >.<br />
-            Select your platform, chose your interests and create a RSS link. Then just add it to your favorite RSS reader like 
-            <a class="white strong" href="www.feedly.com" target="_blank">Feedly</a > and enjoy.
+            Crowdfunding RSS is the best place for following crowdfunding projects from <a class="white strong" href="http://www.kickstarter.com" target="_blank">Kickstarter</a > and <a class="white strong" href="http://www.indiegogo.com" target="_blank">Indiegogo</a >.<br />
+            Select your platform, chose your interests and create an RSS link. Then just add it to your favorite RSS reader like 
+            <a class="white strong" href="http://www.feedly.com" target="_blank">Feedly</a > and enjoy.
 
           </p>
 
@@ -141,7 +141,7 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
         <div class="columns medium-6">
           <h1 class="white">Sharing is caring</h1>
           <p class="white-light">
-            Share with your friends and help us spread the word :)<br />
+            Share with your friends and help us spread the word!<br />
           </p>
           
         </div>

@@ -313,7 +313,6 @@ if (!empty($title)){ ?>
 </table><!-- /FOOTER -->
 
   <?php if (!empty($tc)){ ?>
-    <img src="<?php echo 'http://localhost/crowdfunding-rss/track/mailOpen?tc='.$tc; ?>" />
     <img src="<?php echo absoluteURL().'/track/mailOpen?tc='.$tc; ?>" />
   <?php } ?>
 

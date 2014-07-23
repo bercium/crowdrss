@@ -62,7 +62,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
     <div class="row">
       <div class="column small-12 pt30  text-center">
         <div class="left">
-          enjoy crowdfunding projects
+          ...
         </div>
         <dl class="sub-nav right">
           <dd><a htef="#" onclick="contact(this);" trk="link_bottom_contact us">Contact us</a></dd> 
