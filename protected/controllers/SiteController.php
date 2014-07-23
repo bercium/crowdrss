@@ -102,12 +102,12 @@ class SiteController extends Controller
         $message->from = Yii::app()->params['noreplyEmail'];
         Yii::app()->mail->send($message);
         
-        setFlash("save", "Subscription saved please check your email for the link to your personalized RSS feed.", "success", false);
+        setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
         //$this->refresh();
         
       }else{
-        if (YII_DEBUG) setFlash("save", "Problem saving your subscription please try later. ".print_r($subscription->getErrors(),true), "alert", false);
-        else setFlash("save", "Problem saving your subscription please try later.", "alert", false);
+        if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
+        else setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
       }
     }
 
