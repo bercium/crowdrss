@@ -274,6 +274,8 @@ class UpdateCommand extends CConsoleCommand{
 	      $updateOrigCategory->name = $data->category;
 	      $updateOrigCategory->category_id = "25";
 	      $updateOrigCategory->save();
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $insert->orig_category_id=$category->id;
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
