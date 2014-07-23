@@ -122,9 +122,14 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
           </div>
           
           <div style="margin-top: 30px;">
+            <?php if (isset($_GET['id'])){ ?>
+            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Update RSS feed</button>
+            
+            <?php }else{ ?>
             <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Subscribe to RSS</button>
           
             <button trk="button_form_reset" type="reset" class="secondary radius right">Reset all</button>
+            <?php } ?>
           </div>
             
           </form>
