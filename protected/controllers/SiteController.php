@@ -79,7 +79,7 @@ class SiteController extends Controller
       if ($subscription->save()){
         
         $message = new YiiMailMessage;
-        $message->view = 'subscribe';
+        $message->view = 'system';
         $message->subject = 'Crowdfunding RSS subscription link';
         $tc = mailTrackingCode();
         $ml = new MailLog();
