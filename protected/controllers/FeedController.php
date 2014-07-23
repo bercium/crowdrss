@@ -83,7 +83,7 @@ class FeedController extends Controller
 
       $desc.= "<br />".$project->description." <br />";
       
-      $desc.= $project->platform->name.": ".$project->origCategory->name." <br />";
+      $desc.= "<br />".$project->platform->name.": ".$project->origCategory->name;//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: ".$project->creator;
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
       if (!empty($project->goal)) $desc.= "<br />Project goal: ".$project->goal;
