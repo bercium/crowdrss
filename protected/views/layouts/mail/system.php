@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 
 <meta name="viewport" content="width=device-width" />
@@ -218,25 +218,8 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 .clear { display: block; clear: both; }
 
 
-/* ------------------------------------------- 
-		PHONE
-		For clients that support media queries.
-		Nothing fancy. 
--------------------------------------------- */
-@media only screen and (max-width: 600px) {
-	
-	a[class="btn"] { display:block!important; margin-bottom:10px!important; background-image:none!important; margin-right:0!important;}
 
-	div[class="column"] { width: auto!important; float:none!important;}
-	
-	table.social div[class="column"] {
-		width:auto!important;
-	}
-
-}
 </style>
-
-
 </head>
  
 <body bgcolor="#FFFFFF">
