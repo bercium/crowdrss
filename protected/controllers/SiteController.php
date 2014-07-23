@@ -121,7 +121,7 @@ class SiteController extends Controller
     }
     
     //categories
-    $categories = Category::model()->findAll();
+    $categories = Category::model()->findAll(array("order"=>"name"));
     $selcat = array();
     foreach ($categories as $platform){
       $OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
