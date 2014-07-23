@@ -72,7 +72,7 @@ class FeedController extends Controller
     foreach ($projects as $project){
       $rssResponse .= '<item>';
       $rssResponse .= '<title>' . htmlspecialchars($project->title) . '</title>';
-      $rssResponse .= '<pubDate>' . date("D, d M Y G:i:s e",strtotime($project->time_added)) . '</pubDate>';
+      $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
       $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></link>';
       $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
