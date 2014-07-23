@@ -123,8 +123,11 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
           
           <div style="margin-top: 30px;">
             <?php if (isset($_GET['id'])){ ?>
-            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Update RSS feed</button>
+            <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius">Update RSS feed</button>
             
+            <a href="<?php echo Yii::app()->params['absoluteHost']; ?>">
+              <button trk="button_form_reset" class="secondary radius right">Cancel</button>
+            </a>
             <?php }else{ ?>
             <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Subscribe to RSS</button>
           
