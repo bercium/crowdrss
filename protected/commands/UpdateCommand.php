@@ -42,11 +42,10 @@ class UpdateCommand extends CConsoleCommand{
 
     // Goal
     $pattern = '/data-goal="(.+)" data-percent-raised/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['goal'] = $matches[1] . " ";
+    preg_match($pattern, $htmlData, $matchesGoal);
     $pattern = '/data-currency="(.+)" data-format/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['goal'] .= $matches[1];
+    preg_match($pattern, $htmlData, $matchesCurrency);
+    $data['goal'] = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
 
     //Location
     $pattern = '/<a href="\/discover\/places\/.+">(.+)<\/a>/';
@@ -121,18 +120,6 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
 
-/*    //Location
-    $pattern = '/class="i.{1}byline(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    var_dump($matches);
-    $data['location'] = $matches[1];
-    echo $data['location'];
-
-    //Creator
-    $pattern = '/id="name">(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['creator'] = $matches[1];
-*/
     return($data);
   }
 
@@ -234,8 +221,6 @@ class UpdateCommand extends CConsoleCommand{
             else {$typeOfFunding = 1;}
             $insert->type_of_funding=$typeOfFunding;
           }
-//          if (isset($data_single[0]->location)) $insert->location=$data_single[0]->location;
-//          if (isset($data_single[0]->creator)) $insert->creator=$data_single[0]->creator;
           $insert->save();
 //          print_r($insert->getErrors());
         }

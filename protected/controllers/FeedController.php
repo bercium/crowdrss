@@ -37,7 +37,7 @@ class FeedController extends Controller
     $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
     $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
     $rssResponse .= '<language>en-us</language>';
-    $rssResponse .= '<ttl>1</ttl>';
+    $rssResponse .= '<ttl>5</ttl>';
 //   $rssResponse .= '<webMaster>team@eberce.si</webMaster>';
     
     //$data hash tag for
