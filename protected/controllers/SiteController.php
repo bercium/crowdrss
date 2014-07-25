@@ -101,8 +101,8 @@ class SiteController extends Controller
         $message->from = Yii::app()->params['noreplyEmail'];
         Yii::app()->mail->send($message);
         
-        
         $this->refresh();
+        Yii::app()->end();
         
       }else{
         if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
