@@ -160,6 +160,29 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 
+// Parser for PS
+  function parsePubSlush($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/aised of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['goal'] = $matches[1];
+
+    //Location and Category
+    $pattern = '/meta-info.>\s.+i> (.+)<\/span>\s.+i> (.+)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['location'] = $matches[1];
+    $data['category'] = $matches[2];
+
+    return($data);
+  }
+
 // Kickstarter store in to DB
   public function actionKickstarter(){
     $i = 1;
@@ -285,6 +308,36 @@ class UpdateCommand extends CConsoleCommand{
 	}
       }
       $i=$i+1;
+    }
+  }
+
+// PubSlush store to DB
+  public function actionPubSlush(){
+    $platform = Platform::model()->findByAttributes(array('name'=>'Pubslush'));
+    $id = $platform->id;
+    $result = $this->query("c25cf290-ca42-45d8-a506-683d1a3e1fe7", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/",), false);
+    if ($result->results) {
+      foreach ($result->results as $data){
+        $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+        if ($link_check){ }
+        else{
+	  $data_single = $this->parsePubSlush($data->link);
+          $insert=new Project;
+          $insert->title=$data->title;
+          $insert->description=$data->description;
+          $insert->image=$data->image;
+          $insert->link=$data->link;
+          $insert->time_added=date("Y-m-d H:i:s");
+          $insert->platform_id=$id;
+          $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category'], 'category_id'=>'24'));
+          $insert->orig_category_id=$category->id;
+	  if (isset($data->creator)) $insert->creator=$data->creator;
+          if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+          if (isset($data_single['location'])) $insert->location=$data_single['location'];
+          $insert->save();
+//          print_r($insert->getErrors());
+        }
+      }
     }
   }
 
