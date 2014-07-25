@@ -1,7 +1,7 @@
 <?php
 /* @var $this SiteController */
 $this->pageTitle = 'Crowdfunding projects delivered to you';
-$this->pageDesc = "The best place for following crowdfunding projects from Kickstarter and Indiegogo.";
+$this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one place.";
 
 ?>
 
@@ -22,10 +22,8 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
         <div class="columns large-12 large-centered">
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
-            Crowdfunding RSS is the best place for following crowdfunding projects from <a class="white strong" href="http://www.kickstarter.com" target="_blank">Kickstarter</a > and <a class="white strong" href="http://www.indiegogo.com" target="_blank">Indiegogo</a >.<br />
-            Select your platform, chose your interests and create an RSS link. Then just add it to your favorite RSS reader like 
-            <a class="white strong" href="http://www.feedly.com" target="_blank">Feedly</a > and enjoy.
-
+            Select your favourite platform, chose your interests and we will generate a personalized RSS feed for you. 
+            Then just add it to your favorite RSS reader and enjoy.
           </p>
 
         </div>
@@ -153,11 +151,11 @@ $this->pageDesc = "The best place for following crowdfunding projects from Kicks
           </p>
           
         </div>
-        <div class="columns medium-6">
+        <div class="columns medium-6 social">
           <br />
-            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" ></a>&nbsp;&nbsp;
-            <a trk="social_twitter_share_bottom" href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" ></a>&nbsp;&nbsp;
-            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" ></a>
+            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Facebook"></a>
+            <a trk="social_twitter_share_bottom" href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Tweet about us"></a>
+            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Google+"></a>
         </div>
       </div>
     </div>
