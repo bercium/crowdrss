@@ -120,6 +120,15 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
 
+    $link = str_replace("pinw", "show_tab/home", $link);
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    //Location
+    $pattern = '/location-link">(.+)<\/a/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['location'] = $matches[1];
+
     return($data);
   }
 
@@ -149,6 +158,7 @@ class UpdateCommand extends CConsoleCommand{
 
     return($data);
   }
+
 
 // Kickstarter store in to DB
   public function actionKickstarter(){
@@ -216,6 +226,7 @@ class UpdateCommand extends CConsoleCommand{
           if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s",strtotime($data_single['start_date']));
           if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s",strtotime($data_single['end_date']));
           if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+          if (isset($data_single['location'])) $insert->location=$data_single['location'];
           if (isset($data_single['type_of_funding'])){
             if ($data_single['type_of_funding'] == "Fixed Funding") {$typeOfFunding = 0;}
             else {$typeOfFunding = 1;}
