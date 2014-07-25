@@ -47,28 +47,28 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matchesCurrency);
     $data['goal'] = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
 
-    //Location
+    // Location
     $pattern = '/<a href="\/discover\/places\/.+">(.+)<\/a>/';
     preg_match($pattern, $htmlData, $matches);
     $data['location'] = $matches[1];
 
-    //Category
+    // Category
     $pattern = '/class="category".+\s.+<\/span>\s(.*)\s<\/a><\/li>/';
     preg_match($pattern, $htmlData, $matches);
     $data['category'] = html_entity_decode($matches[1]);
 
-    //Creator
+    // Creator
     $pattern = '/id="name">(.+)<\/a>/';
     preg_match($pattern, $htmlData, $matches);
     $data['creator'] = html_entity_decode($matches[1]);
 
-    //Date
+    // Date
     $pattern = '/<time class="js-adjust" data-format="ll" datetime="(.+)">/';
     preg_match_all($pattern, $htmlData, $matches);
     $data['start_date'] = $matches[1][0];
     $data['end_date'] = $matches[1][1];
 
-    //Created
+    // Created
     $pattern = '/<span class="text">\s(.+) created/';
     preg_match($pattern, $htmlData, $matches);
     if ($matches[1] == "First"){ $data['created'] = 1; }
@@ -105,17 +105,17 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['goal'] = $matches[1];
 
-    //Type of funding
+    // Type of funding
     $pattern = '/<span>(.+ Funding)<\/span>/';
     preg_match($pattern, $htmlData, $matches);
     $data['type_of_funding'] = $matches[1];
 
-    //Start date
+    // Start date
     $pattern = '/started on (.+)and will/';
     preg_match($pattern, $htmlData, $matches);
     $data['start_date'] = $matches[1];
 
-    //End date
+    // End date
     $pattern = '/close on (.+)\(/';
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
@@ -124,7 +124,7 @@ class UpdateCommand extends CConsoleCommand{
     $htmlDataObject = $httpClient->get($link);
     $htmlData = $htmlDataObject->httpBody;
 
-    //Location
+    // Location
     $pattern = '/location-link">(.+)<\/a/';
     preg_match($pattern, $htmlData, $matches);
     $data['location'] = $matches[1];
@@ -146,19 +146,18 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['goal'] = $matches[1] . $matches[2];
 
-    //End date
+    // End date
     $pattern = '/donate to this project before (.+)<\/p/';
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
 
-    //Location
+    // Location
     $pattern = '/<a href="\/projects\/city.+">(.+)<\/a>/';
     preg_match($pattern, $htmlData, $matches);
     $data['location'] = $matches[1];
 
     return($data);
   }
-
 
 // Parser for PS
   function parsePubSlush($link){
@@ -174,7 +173,7 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['goal'] = $matches[1];
 
-    //Location and Category
+    // Location and Category
     $pattern = '/meta-info.>\s.+i> (.+)<\/span>\s.+i> (.+)<\/span>/';
     preg_match($pattern, $htmlData, $matches);
     $data['location'] = $matches[1];
@@ -182,6 +181,44 @@ class UpdateCommand extends CConsoleCommand{
 
     return($data);
   }
+
+// Parser for FA
+  function parseFoundAnything($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/Contributions of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['goal'] = $matches[1];
+
+    // Creator
+    $pattern = '/campaign-author">by (.+)<\/h3>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['creator'] = $matches[1];
+
+    // Description
+    $pattern = '/story">\s+<p>(.+)/';
+    preg_match($pattern, $htmlData, $matches);
+    $description = str_replace("</p>", "", $matches[1]);
+    $description = str_replace("<p>", "", $description);
+    $description = str_replace("&nbsp;", " ", $description);
+    $description = str_replace("<b>", "", $description);
+    $description = str_replace("</b>", "", $description);
+    $description = str_replace("<br>", "", $description);
+    $description = str_replace("<h4>", "", $description);
+    $description = str_replace("</h4>", "", $description);
+    $description = preg_replace('/<img .+">/', "", $description);
+    $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
+    $data['description'] = $description . " ...";
+
+    return($data);
+  }
+
 
 // Kickstarter store in to DB
   public function actionKickstarter(){
@@ -338,6 +375,40 @@ class UpdateCommand extends CConsoleCommand{
 //          print_r($insert->getErrors());
         }
       }
+    }
+  }
+
+// FoundAnything store in to DB
+  public function actionFoundAnything(){
+    $i = 1;
+    $platform = Platform::model()->findByAttributes(array('name'=>'Found anything'));
+    $id = $platform->id;
+    while ($i <= 3) {
+      $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if ($link_check){ } // Counter for checking if it missed some project in the next few projects
+	  else{
+	    $data_single = $this->parseFoundAnything($data->link);
+	    $insert=new Project;
+	    $insert->title=$data->title;
+	    $insert->description=$data_single['description'];
+	    $insert->image=$data->image;
+	    $insert->link=$data->link;
+            $insert->time_added=date("Y-m-d H:i:s");
+            $insert->platform_id=$id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+            $insert->orig_category_id=$category->id;
+	    if (isset($data->location)) $insert->location=$data->location;
+	    if (isset($data_single['creator'])) $insert->creator=$data_single['creator'];
+	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+	    $insert->save();
+//	    print_r($insert->getErrors());
+          }
+	}
+      }
+      $i=$i+1;
     }
   }
 
