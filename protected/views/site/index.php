@@ -36,7 +36,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
       <div class="row">
         <div class="columns large-12 large-centered">
           
-          <form method="post" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
+          <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
           <h2>1. Choose platform</h2>
           <p>Which platforms do you wish to follow?<p>
@@ -109,7 +109,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <h2>3. Get the RSS link</h2>
+          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Only first 10 projects will be shown in a preview">Preview</a> and get the RSS link</h2>
           <p>We will generate a link and send it to your email address.<p>
             
           <div class="email-field">
@@ -128,11 +128,19 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             </a>
             <?php }else{ ?>
             <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Subscribe to RSS</button>
-          
+            
+            <?php /* ?>
+            <button trk="button_form_preview" type="button" id="preview" class="info radius hide" style="margin-left:20px;" onclick="previewForm()">Preview</button>
+            <?php */ ?>
             <button trk="button_form_reset" type="reset" class="secondary radius right">Reset all</button>
             <?php } ?>
           </div>
             
+          </form>
+          
+          <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/previewRss'); ?>" target="_blank">
+            <input type="hidden" id="preview_platform" name="platform">
+            <input type="hidden" id="preview_category" name="category">
           </form>
         </div>
         

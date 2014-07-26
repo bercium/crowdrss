@@ -18,7 +18,7 @@
       
       $(this).click(function(event) { // when someone clicks these links
         gase(id);
-        if (thisEvent) eval(thisEvent);
+        //if (thisEvent) eval(thisEvent);
       });
   });
   
