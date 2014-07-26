@@ -72,5 +72,6 @@ div.switch label{
 }
 
 div.switch label:hover{
+  transition: background-color 300ms ease-out;
   background-color: #007095;
 }
