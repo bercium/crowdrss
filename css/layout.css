@@ -59,4 +59,18 @@
 .social img{
   margin-left: 10px;
   margin-right: 10px;
+  opacity: 1;
+}
+
+.social img:hover{
+  opacity: 0.85;
+}
+
+// switch hover
+div.switch label{
+transition: background-color 300ms ease-out;
+}
+
+div.switch label:hover{
+  background-color: #007095;
 }

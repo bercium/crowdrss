@@ -13,7 +13,7 @@ function uncheckPlatforms(id){
   }
 }
 
-
+// set everything for preview
 function previewForm(){
   var cat = plat = '';
   
@@ -36,5 +36,5 @@ function previewForm(){
 
 $(function() {
    if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
-   $('#preview').show();
+   //$('#preview').show();
 });

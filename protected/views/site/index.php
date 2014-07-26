@@ -42,15 +42,15 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <p>Which platforms do you wish to follow?<p>
             
             
-          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-3">
+          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
               <?php
               $i = 0;
               foreach ($platforms as $plat){
                 $i++;
                 
                 ?>
-                <li class="text-center" trk="switch_platform_<?php echo $plat['name']; ?>">
-                    <div class="mb30">
+                <li class="text-center mb30" trk="switch_platform_<?php echo $plat['name']; ?>">
+                    <div class="mb20">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
                         <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']; ?>">
@@ -73,7 +73,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           </ul>
           
           
-          <hr>
+          <hr class="mt0">
           
           
           <h2>2. Choose categories</h2>
