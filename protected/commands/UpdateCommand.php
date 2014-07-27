@@ -220,6 +220,48 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 
+// Parser for FR
+  function parseFoundRazr($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/raised of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['goal'] = $matches[1]; }
+    else { $data['goal'] = NULL; }
+
+    // Image
+    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['image'] = $matches[1];
+
+    // Category
+    $pattern = '/id="owner-info">\s.+<span class=".+">(.+)<\/a>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = $matches[1];
+echo $data['category'] . "\n";
+
+    // Start date
+    $pattern = '/Launched (.+)</';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['start_date'] = $matches[1]; }
+    else { $data['start_date'] = NULL; }
+
+    // End date
+    $pattern = '/Ends (.+) at(.+)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['end_date'] = $matches[1] . $matches[2];}
+    else { $data['end_date'] = NULL; }
+
+    return($data);
+  }
+
+
 // Kickstarter store in to DB
   public function actionKickstarter(){
     $i = 1;
@@ -411,6 +453,51 @@ class UpdateCommand extends CConsoleCommand{
       $i=$i+1;
     }
   }
+
+// FoundRazr store in to DB
+  public function actionFoundRazr(){
+    $check = false;
+    $count = 0;
+    $i = 1;
+//    $platform = Platform::model()->findByAttributes(array('name'=>'Found razr'));
+//    $id = $platform->id;
+$id=1;
+    while ($i <= 2371) {
+      $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if ($link_check){ $count = $count+1; } // Counter for checking if it missed some project in the next few projects
+	  else{
+	    $data_single = $this->parseFoundRazr($data->link);
+/*	    $insert=new Project;
+	    $insert->title=$data->title;
+	    $insert->description=$data->description;
+	    $insert->image=$data_single['image'];
+	    $insert->link=$data->link;
+            $insert->time_added=date("Y-m-d H:i:s");
+            $insert->platform_id=$id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
+            $insert->orig_category_id=$category->id;
+	    if (isset($data->location)) $insert->location=$data->location;
+	    if (isset($data->creator)) $insert->creator=$data->creator;
+	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+	    if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+	    $insert->save();*/
+//	    print_r($insert->getErrors());
+          }
+	  if ($count >= 10){ $check=true; break; }
+	}
+      }
+      $i=$i+1;
+    }
+  }
+
+
+
+
+
 
 
 }
