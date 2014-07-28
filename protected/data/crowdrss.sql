@@ -417,10 +417,8 @@ INSERT INTO `orig_category` (`id`, `name`, `category_id`) VALUES
 INSERT INTO `platform` (`id`, `name`) VALUES
 (1, 'Kickstarter'),
 (2, 'Indiegogo'),
-(3, 'Start something good'),
-(4, 'FundRazr'),
-(5, 'Go get funding'),
-(6, 'ulule');
+(3, 'Fund anything'),
+(4, 'PubSlush');
 
 
 
