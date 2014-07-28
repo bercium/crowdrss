@@ -221,7 +221,7 @@ class UpdateCommand extends CConsoleCommand{
 
 
 // Parser for FR
-  function parseFoundRazr($link){
+  function parseFundRazr($link){
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects(true);
     $httpClient->setUserAgent("ff3");
@@ -260,6 +260,45 @@ class UpdateCommand extends CConsoleCommand{
     return($data);
   }
 
+// Parser for PM
+  function parsePledgeMusic($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/raised of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['goal'] = $matches[1]; }
+    else { $data['goal'] = NULL; }
+
+    // Image
+    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['image'] = $matches[1];
+
+    // Category
+    $pattern = '/category":"(.+)","commentsEnabled/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = $matches[1];
+
+    // Start date
+    $pattern = '/Launched (.+)</';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['start_date'] = $matches[1]; }
+    else { $data['start_date'] = NULL; }
+
+    // End date
+    $pattern = '/Ends (.+) at(.+)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['end_date'] = $matches[1] . $matches[2];}
+    else { $data['end_date'] = NULL; }
+
+    return($data);
+  }
 
 // Kickstarter store in to DB
   public function actionKickstarter(){
@@ -369,7 +408,8 @@ class UpdateCommand extends CConsoleCommand{
 	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
 	      $updateOrigCategory->name = $data->category;
-	      $updateOrigCategory->category_id = "25";
+	      //$idCategory = Category::model()->findByAttributes(array('name'=>'Other'));
+	      //$updateOrigCategory->category_id = $idCategory;
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
 	      $insert->orig_category_id=$category->id;
@@ -388,6 +428,7 @@ class UpdateCommand extends CConsoleCommand{
       $i=$i+1;
     }
   }
+
 
 // PubSlush store to DB
   public function actionPubSlush(){
@@ -419,10 +460,11 @@ class UpdateCommand extends CConsoleCommand{
     }
   }
 
-// FoundAnything store in to DB
+
+// FundAnything store in to DB
   public function actionFoundAnything(){
     $i = 1;
-    $platform = Platform::model()->findByAttributes(array('name'=>'Found anything'));
+    $platform = Platform::model()->findByAttributes(array('name'=>'Fund anything'));
     $id = $platform->id;
     while ($i <= 3) {
       $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
@@ -431,7 +473,7 @@ class UpdateCommand extends CConsoleCommand{
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ } // Counter for checking if it missed some project in the next few projects
 	  else{
-	    $data_single = $this->parseFoundAnything($data->link);
+	    $data_single = $this->parseFundAnything($data->link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data_single['description'];
@@ -526,13 +568,14 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
-	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
 	    if ($category) { $insert->orig_category_id=$category->id; }
 	    else {
 	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
-	      $updateOrigCategory->name = $data->category;
-	      $updateOrigCategory->category_id = "25";
+	      $updateOrigCategory->name = $data->categoryo;
+	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
+	      $updateOrigCategory->category_id = $idCategory;
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
 	      $insert->orig_category_id=$category->id;
