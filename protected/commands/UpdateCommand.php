@@ -220,6 +220,86 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 
+// Parser for FR
+  function parseFundRazr($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/raised of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['goal'] = $matches[1]; }
+    else { $data['goal'] = NULL; }
+
+    // Image
+    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['image'] = $matches[1];
+
+    // Category
+    $pattern = '/category":"(.+)","commentsEnabled/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = $matches[1];
+
+    // Start date
+    $pattern = '/Launched (.+)</';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['start_date'] = $matches[1]; }
+    else { $data['start_date'] = NULL; }
+
+    // End date
+    $pattern = '/Ends (.+) at(.+)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['end_date'] = $matches[1] . $matches[2];}
+    else { $data['end_date'] = NULL; }
+
+    return($data);
+  }
+
+// Parser for PM
+  function parsePledgeMusic($link){
+    $httpClient = new elHttpClient();
+    $httpClient->enableRedirects(true);
+    $httpClient->setUserAgent("ff3");
+    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $htmlDataObject = $httpClient->get($link);
+    $htmlData = $htmlDataObject->httpBody;
+
+    // Goal
+    $pattern = '/raised of (.+) goal/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['goal'] = $matches[1]; }
+    else { $data['goal'] = NULL; }
+
+    // Image
+    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['image'] = $matches[1];
+
+    // Category
+    $pattern = '/category":"(.+)","commentsEnabled/';
+    preg_match($pattern, $htmlData, $matches);
+    $data['category'] = $matches[1];
+
+    // Start date
+    $pattern = '/Launched (.+)</';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['start_date'] = $matches[1]; }
+    else { $data['start_date'] = NULL; }
+
+    // End date
+    $pattern = '/Ends (.+) at(.+)<\/span>/';
+    preg_match($pattern, $htmlData, $matches);
+    if (isset($matches[1])) { $data['end_date'] = $matches[1] . $matches[2];}
+    else { $data['end_date'] = NULL; }
+
+    return($data);
+  }
+
 // Kickstarter store in to DB
   public function actionKickstarter(){
     $i = 1;
@@ -239,7 +319,7 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
-	    $insert->link=$data->link;
+            $insert->link=str_replace("?ref=discovery", "", $data->link);
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
@@ -328,7 +408,8 @@ class UpdateCommand extends CConsoleCommand{
 	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
 	      $updateOrigCategory->name = $data->category;
-	      $updateOrigCategory->category_id = "25";
+	      //$idCategory = Category::model()->findByAttributes(array('name'=>'Other'));
+	      //$updateOrigCategory->category_id = $idCategory;
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
 	      $insert->orig_category_id=$category->id;
@@ -347,6 +428,7 @@ class UpdateCommand extends CConsoleCommand{
       $i=$i+1;
     }
   }
+
 
 // PubSlush store to DB
   public function actionPubSlush(){
@@ -378,10 +460,11 @@ class UpdateCommand extends CConsoleCommand{
     }
   }
 
-// FoundAnything store in to DB
-  public function actionFoundAnything(){
+
+// FundAnything store in to DB
+  public function actionFundAnything(){
     $i = 1;
-    $platform = Platform::model()->findByAttributes(array('name'=>'Found anything'));
+    $platform = Platform::model()->findByAttributes(array('name'=>'Fund anything'));
     $id = $platform->id;
     while ($i <= 3) {
       $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
@@ -390,7 +473,7 @@ class UpdateCommand extends CConsoleCommand{
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ } // Counter for checking if it missed some project in the next few projects
 	  else{
-	    $data_single = $this->parseFoundAnything($data->link);
+	    $data_single = $this->parseFundAnything($data->link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data_single['description'];
@@ -411,6 +494,110 @@ class UpdateCommand extends CConsoleCommand{
       $i=$i+1;
     }
   }
+
+
+// FoundRazr store in to DB
+  public function actionFoundRazr(){
+    $check = false;
+    $count = 0;
+    $i = 1;
+    $preveri=false;
+    $kategorije = array();
+//    $platform = Platform::model()->findByAttributes(array('name'=>'Found razr'));
+//    $id = $platform->id;
+    while ($i <= 500) {
+      $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if ($link_check){ $count = $count+1; } // Counter for checking if it missed some project in the next few projects
+	  else{
+	    $data_single = $this->parseFoundRazr($data->link);
+	    if ($kategorije == NULL) { $kategorije[0] = $data_single['category']; echo $data_single['category'] . "\n";  }
+	    else{
+              $prestej=count($kategorije);
+	      for ($z=0; $z <= ($prestej-1); $z++){
+	        if ($data_single['category'] == $kategorije[$z]){ $preveri = true; break;}
+	      }
+	      if ($preveri == false) { $kategorije[$prestej] = $data_single['category']; echo $data_single['category'] . "\n";}
+	      else { $preveri = false; }
+	    }
+/*	    $insert=new Project;
+	    $insert->title=$data->title;
+	    $insert->description=$data->description;
+	    $insert->image=$data_single['image'];
+	    $insert->link=$data->link;
+            $insert->time_added=date("Y-m-d H:i:s");
+            $insert->platform_id=$id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
+            $insert->orig_category_id=$category->id;
+	    if (isset($data->location)) $insert->location=$data->location;
+	    if (isset($data->creator)) $insert->creator=$data->creator;
+	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+	    if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+	    $insert->save();*/
+//	    print_r($insert->getErrors());
+          }
+	  if ($count >= 10){ $check=true; break; }
+	}
+      }
+      $i=$i+1;
+    }
+  }
+
+// PledgeMusic store to DB
+  public function actionPledgeMusic(){
+    $i = 1;
+    $check = false;
+    $count = 0;
+    $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
+    $id = $platform->id;
+    while (($i <= 10) and ($check == false)) {
+      $result = $this->query("", array("webpage/url" => "" . $i . "",), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if ($link_check){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
+	  else{
+	    $data_single = $this->parsePledgeMusic($data->link);
+/*	    $insert=new Project;
+	    $insert->title=$data->title;
+	    $insert->description=$data->description;
+	    $insert->image=$data->image;
+	    $insert->link=$data->link;
+            $insert->time_added=date("Y-m-d H:i:s");
+            $insert->platform_id=$id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
+	    if ($category) { $insert->orig_category_id=$category->id; }
+	    else {
+	      $this->errorMail($data->link, $data->category);
+	      $updateOrigCategory = new OrigCategory();
+	      $updateOrigCategory->name = $data->categoryo;
+	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
+	      $updateOrigCategory->category_id = $idCategory;
+	      $updateOrigCategory->save();
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $insert->orig_category_id=$category->id;
+	    }
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
+	    if (isset($data->creator)) $insert->creator=$data->creator;
+	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
+	    $insert->save();
+	    $count = 0;*/
+//	    print_r($insert->getErrors());
+          }
+	  if ($count >= 10){ $check=true; break; }
+	}
+      }
+      $i=$i+1;
+    }
+  }
+
+
+
+
 
 
 }
