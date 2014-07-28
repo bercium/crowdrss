@@ -462,7 +462,7 @@ class UpdateCommand extends CConsoleCommand{
 
 
 // FundAnything store in to DB
-  public function actionFoundAnything(){
+  public function actionFundAnything(){
     $i = 1;
     $platform = Platform::model()->findByAttributes(array('name'=>'Fund anything'));
     $id = $platform->id;
