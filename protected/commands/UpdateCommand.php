@@ -311,15 +311,16 @@ class UpdateCommand extends CConsoleCommand{
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
-          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+	  $link = str_replace("?ref=discovery", "", $data->link);
+          $link_check = Project::model()->findByAttributes(array('link'=>$link));
           if ($link_check){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
 	  else{
-	    $data_single = $this->parseKickstarter($data->link);
+	    $data_single = $this->parseKickstarter($link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
-            $insert->link=str_replace("?ref=discovery", "", $data->link);
+            $insert->link=$link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
@@ -503,7 +504,7 @@ class UpdateCommand extends CConsoleCommand{
     $i = 1;
     $preveri=false;
     $kategorije = array();
-//    $platform = Platform::model()->findByAttributes(array('name'=>'Fund razr'));
+//    $platform = Platform::model()->findByAttributes(array('name'=>'Fundrazr'));
 //    $id = $platform->id;
     while ($i <= 500) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
