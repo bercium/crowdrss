@@ -197,7 +197,7 @@ class FeedController extends Controller
       $feedClick->save();
     }
     
-    //$this->redirect($l);
+    $this->redirect($l);
     Yii::app()->end();
   }
   
