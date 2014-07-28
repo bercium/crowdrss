@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `platform` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 -- --------------------------------------------------------
 
@@ -417,8 +417,9 @@ INSERT INTO `orig_category` (`id`, `name`, `category_id`) VALUES
 INSERT INTO `platform` (`id`, `name`) VALUES
 (1, 'Kickstarter'),
 (2, 'Indiegogo'),
-(3, 'Fund anything'),
-(4, 'PubSlush');
+(3, 'Go get funding'),
+(4, 'Fund anything'),
+(5, 'PubSlush');
 
 
 
