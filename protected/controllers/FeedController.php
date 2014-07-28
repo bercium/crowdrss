@@ -42,8 +42,8 @@ class FeedController extends Controller
         $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></link>';
         $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
       }else{
-        $rssResponse .= '<link><![CDATA[' . $project->link . ']]></link>';
-        $rssResponse .= '<guid><![CDATA[' . $project->link . ']]></guid>';
+        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
       }
       
       $desc = '';
@@ -187,7 +187,7 @@ class FeedController extends Controller
   /**
    * tracking RSS link clicks and redirecting them
    */
-  public function actionRl($l,$i) {
+  public function actionRl($l,$i = null) {
     // !!!log clicks
     $project = Project::model()->findByAttributes(array('link'=>$l));
     if ($project){
@@ -197,7 +197,7 @@ class FeedController extends Controller
       $feedClick->save();
     }
     
-    $this->redirect($l);
+    //$this->redirect($l);
     Yii::app()->end();
   }
   

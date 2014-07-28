@@ -37,9 +37,9 @@ abstract class BaseFeedClickLog extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('project_id, subscription_id', 'required'),
+			array('project_id', 'required'),
       array('time_clicked', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-        
+      array('subscription_id', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('project_id, subscription_id', 'numerical', 'integerOnly'=>true),
 			array('id, project_id, subscription_id, time_clicked', 'safe', 'on'=>'search'),
 		);
