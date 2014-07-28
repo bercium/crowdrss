@@ -390,7 +390,25 @@ INSERT INTO `orig_category` (`id`, `name`, `category_id`) VALUES
 (197, 'Personal', 26),
 (198, 'Weddings', 26),
 (199, 'Travel & Adventure', 23),
-(200, 'Impact Teachers', 8);
+(200, 'Impact Teachers', 8),
+(201, 'Book', 24),
+(202, 'Screenplay', 24),
+(203, 'Philanthropic Cause', 24),
+(204, 'Education', 24),
+(205, 'Technology', 24),
+(206, 'Other', 24),
+(207, 'Pets', 1),
+(208, 'Volunteering', 4),
+(209, 'Schools', 8),
+(210, 'Medical', 14),
+(211, 'Non-Profit', 19),
+(212, 'Theater & Dance', 25),
+(213, 'Web Projects', 25),
+(214, 'Funerals & Memorials', 26),
+(215, 'Hopes & Dreams', 26),
+(216, 'Family Needs', 26),
+(217, 'Celebrations', 25),
+(218, 'Business', 19);
 
 --
 -- Dumping data for table `platform`
