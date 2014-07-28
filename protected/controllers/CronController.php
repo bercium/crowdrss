@@ -72,6 +72,7 @@ class CronController extends Controller
     echo $this->consoleCommand('update','goGetFunding');
     echo $this->consoleCommand('update','pubSlush');
     echo $this->consoleCommand('update','fundAnything');
+    echo $this->consoleCommand('update','fundRazr');
   }
   
   /**

@@ -507,7 +507,7 @@ class UpdateCommand extends CConsoleCommand{
     $kategorije = array();
     $platform = Platform::model()->findByAttributes(array('name'=>'Fundrazr'));
     $id = $platform->id;
-    while ($i <= 100) {
+    while ($i <= 5) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
       if ($result->results) {
         foreach ($result->results as $data){
