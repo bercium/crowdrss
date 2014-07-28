@@ -183,7 +183,7 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 // Parser for FA
-  function parseFoundAnything($link){
+  function parseFundAnything($link){
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects(true);
     $httpClient->setUserAgent("ff3");
@@ -496,14 +496,14 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 
-// FoundRazr store in to DB
-  public function actionFoundRazr(){
+// FundRazr store in to DB
+  public function actionFundRazr(){
     $check = false;
     $count = 0;
     $i = 1;
     $preveri=false;
     $kategorije = array();
-//    $platform = Platform::model()->findByAttributes(array('name'=>'Found razr'));
+//    $platform = Platform::model()->findByAttributes(array('name'=>'Fund razr'));
 //    $id = $platform->id;
     while ($i <= 500) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
@@ -512,7 +512,7 @@ class UpdateCommand extends CConsoleCommand{
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){ $count = $count+1; } // Counter for checking if it missed some project in the next few projects
 	  else{
-	    $data_single = $this->parseFoundRazr($data->link);
+	    $data_single = $this->parseFundRazr($data->link);
 	    if ($kategorije == NULL) { $kategorije[0] = $data_single['category']; echo $data_single['category'] . "\n";  }
 	    else{
               $prestej=count($kategorije);
