@@ -118,7 +118,11 @@ class FeedController extends Controller
     Yii::app()->end();
   }
   
-  public function actionPreviewRss(){
+  /**
+   * 
+   */
+  public function actionDownloadRss(){
+    
     Yii::app()->clientScript->reset();
     $this->layout = 'none';
     
@@ -148,6 +152,35 @@ class FeedController extends Controller
     echo $this->createRssFeed($sql);
     Yii::app()->end();
   }
+  
+  
+  public function actionPreviewRss(){
+    $this->layout = 'blank';
+    
+    $sql = '';
+    if (!empty($_POST['category'])){
+      $orgCat = OrigCategory::model()->findAll("(category_id in (".$_POST['category']."))");
+      
+      $allCats = array();
+      foreach ($orgCat as $cat){
+        $allCats[$cat->id] = $cat->id;
+      }
+      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+    }
+    if (!empty($_POST['platform']) && ($_POST['platform'] != '0')){
+      $sql .= " (platform_id in (".$_POST['platform'].")) AND ";
+    }
+    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
+    $sql .= " 1";
+    $sql .= " ORDER BY time_added DESC"
+           ." LIMIT 10";
+    
+    $projects = Project::model()->findAll($sql);
+    $cat = $plat = '';
+    if (isset($_POST['category'])) $cat = $_POST['category'];
+    if (isset($_POST['platform'])) $plat = $_POST['platform'];
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat));
+  }  
   
   
   

@@ -109,7 +109,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Only first 10 projects will be shown in a preview">Preview</a> and get the RSS link</h2>
+          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="First 10 projects of your selection will be shown in a preview">Preview</a> and get the RSS link</h2>
           <p>We will generate a link and send it to your email address.<p>
             
           <div class="email-field">
