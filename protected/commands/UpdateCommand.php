@@ -315,12 +315,12 @@ class UpdateCommand extends CConsoleCommand{
           $link_check = Project::model()->findByAttributes(array('link'=>str_replace("?ref=discovery", "", $data->link)));
           if ($link_check || $link_check_old){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
 	  else{
-	    $data_single = $this->parseKickstarter($data->link);
+	    $data_single = $this->parseKickstarter($link);
 	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
-            $insert->link=str_replace("?ref=discovery", "", $data->link);
+            $insert->link=$link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
@@ -504,7 +504,7 @@ class UpdateCommand extends CConsoleCommand{
     $i = 1;
     $preveri=false;
     $kategorije = array();
-//    $platform = Platform::model()->findByAttributes(array('name'=>'Fund razr'));
+//    $platform = Platform::model()->findByAttributes(array('name'=>'Fundrazr'));
 //    $id = $platform->id;
     while ($i <= 500) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
@@ -532,6 +532,19 @@ class UpdateCommand extends CConsoleCommand{
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
             $insert->orig_category_id=$category->id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
+	    if ($category) { $insert->orig_category_id=$category->id; }
+	    else {
+	      $this->errorMail($data->link, $data->category);
+	      $updateOrigCategory = new OrigCategory();
+	      $updateOrigCategory->name = $data->categoryo;
+	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
+	      $updateOrigCategory->category_id = $idCategory;
+	      $updateOrigCategory->save();
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $insert->orig_category_id=$category->id;
+	    }
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data->location)) $insert->location=$data->location;
 	    if (isset($data->creator)) $insert->creator=$data->creator;
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
