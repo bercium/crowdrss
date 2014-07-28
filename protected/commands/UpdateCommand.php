@@ -532,6 +532,19 @@ class UpdateCommand extends CConsoleCommand{
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
             $insert->orig_category_id=$category->id;
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
+	    if ($category) { $insert->orig_category_id=$category->id; }
+	    else {
+	      $this->errorMail($data->link, $data->category);
+	      $updateOrigCategory = new OrigCategory();
+	      $updateOrigCategory->name = $data->categoryo;
+	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
+	      $updateOrigCategory->category_id = $idCategory;
+	      $updateOrigCategory->save();
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $insert->orig_category_id=$category->id;
+	    }
+	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data->location)) $insert->location=$data->location;
 	    if (isset($data->creator)) $insert->creator=$data->creator;
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
