@@ -21,11 +21,11 @@ class UpdateCommand extends CConsoleCommand{
   }
 
 // Function for emailing of problematic project
-  function errorMail($link, $category){
+  function errorMail($link, $category, $id){
     $message = new YiiMailMessage;
     $message->view = 'system';
     $message->subject = 'Missing category';
-    $content = 'Link to project: ' . $link . "\n" . 'Category: ' . $catogery;
+    $content = 'Link to project: ' . $link . "\n" . 'Category: ' . $catogery . 'id: ' . $id;
     $message->setBody(array("content"=>$content,"title"=>"Error"), 'text/html');
     $message->to = Yii::app()->params['adminEmail'];
     $message->from = Yii::app()->params['noreplyEmail'];
@@ -311,8 +311,9 @@ class UpdateCommand extends CConsoleCommand{
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data){
+	  $link = str_replace("?ref=discovery", "", $data->link);
           $link_check_old = Project::model()->findByAttributes(array('link'=>$data->link));
-          $link_check = Project::model()->findByAttributes(array('link'=>str_replace("?ref=discovery", "", $data->link)));
+          $link_check = Project::model()->findByAttributes(array('link'=>$link));
           if ($link_check || $link_check_old){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
 	  else{
 	    $data_single = $this->parseKickstarter($link);
@@ -406,7 +407,6 @@ class UpdateCommand extends CConsoleCommand{
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
 	    if ($category) { $insert->orig_category_id=$category->id; }
 	    else {
-	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
 	      $updateOrigCategory->name = $data->category;
 	      //$idCategory = Category::model()->findByAttributes(array('name'=>'Other'));
@@ -414,6 +414,7 @@ class UpdateCommand extends CConsoleCommand{
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
 	      $insert->orig_category_id=$category->id;
+	      $this->errorMail($data->link, $data->category, $category->id);
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
@@ -504,9 +505,9 @@ class UpdateCommand extends CConsoleCommand{
     $i = 1;
     $preveri=false;
     $kategorije = array();
-//    $platform = Platform::model()->findByAttributes(array('name'=>'Fundrazr'));
-//    $id = $platform->id;
-    while ($i <= 500) {
+    $platform = Platform::model()->findByAttributes(array('name'=>'Fundrazr'));
+    $id = $platform->id;
+    while ($i <= 100) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
       if ($result->results) {
         foreach ($result->results as $data){
@@ -514,16 +515,7 @@ class UpdateCommand extends CConsoleCommand{
           if ($link_check){ $count = $count+1; } // Counter for checking if it missed some project in the next few projects
 	  else{
 	    $data_single = $this->parseFundRazr($data->link);
-	    if ($kategorije == NULL) { $kategorije[0] = $data_single['category']; echo $data_single['category'] . "\n";  }
-	    else{
-              $prestej=count($kategorije);
-	      for ($z=0; $z <= ($prestej-1); $z++){
-	        if ($data_single['category'] == $kategorije[$z]){ $preveri = true; break;}
-	      }
-	      if ($preveri == false) { $kategorije[$prestej] = $data_single['category']; echo $data_single['category'] . "\n";}
-	      else { $preveri = false; }
-	    }
-/*	    $insert=new Project;
+	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data_single['image'];
@@ -531,18 +523,14 @@ class UpdateCommand extends CConsoleCommand{
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
 	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
-            $insert->orig_category_id=$category->id;
-	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
 	    if ($category) { $insert->orig_category_id=$category->id; }
 	    else {
-	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
-	      $updateOrigCategory->name = $data->categoryo;
-	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
-	      $updateOrigCategory->category_id = $idCategory;
+	      $updateOrigCategory->name = $data_single['category'];
 	      $updateOrigCategory->save();
-	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
 	      $insert->orig_category_id=$category->id;
+	      //$this->errorMail($data->link, $data->category, $category->id);
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data->location)) $insert->location=$data->location;
@@ -550,7 +538,7 @@ class UpdateCommand extends CConsoleCommand{
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
 	    if (isset($data_single['start_date'])) $insert->start=date("Y-m-d H:i:s", strtotime($data_single['start_date']));
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-	    $insert->save();*/
+	    $insert->save();
 //	    print_r($insert->getErrors());
           }
 	  if ($count >= 10){ $check=true; break; }
@@ -582,17 +570,17 @@ class UpdateCommand extends CConsoleCommand{
 	    $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
-	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_simple['category']));
+	    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
 	    if ($category) { $insert->orig_category_id=$category->id; }
 	    else {
-	      $this->errorMail($data->link, $data->category);
 	      $updateOrigCategory = new OrigCategory();
-	      $updateOrigCategory->name = $data->categoryo;
+	      $updateOrigCategory->name = $data_single['category'];
 	      $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
 	      $updateOrigCategory->category_id = $idCategory;
 	      $updateOrigCategory->save();
-	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
+	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
 	      $insert->orig_category_id=$category->id;
+	      $this->errorMail($data->link, $data->category, $category->id);
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
