@@ -24,9 +24,9 @@ class UpdateCommand extends CConsoleCommand{
   function errorMail($link, $category, $id){
     $message = new YiiMailMessage;
     $message->view = 'system';
-    $message->subject = 'Missing category';
-    $content = 'Link to project: ' . $link . "\n" . 'Category: ' . $catogery . 'id: ' . $id;
-    $message->setBody(array("content"=>$content,"title"=>"Error"), 'text/html');
+    $message->subject = 'Missing original category';
+    $content = 'Category: ' . $catogery . '<br>Id: ' . $id . '<br>Link to project: ' . $link;
+    $message->setBody(array("content"=>$content,"title"=>"Added new original category"), 'text/html');
     $message->to = Yii::app()->params['adminEmail'];
     $message->from = Yii::app()->params['noreplyEmail'];
     Yii::app()->mail->send($message);
@@ -535,7 +535,7 @@ class UpdateCommand extends CConsoleCommand{
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
 	      $insert->orig_category_id=$category->id;
-	      $this->errorMail($data->link, $data->category, $category->id);
+	      $this->errorMail($data->link, $data_single['category'], $category->id);
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data->location)) $insert->location=$data->location;
@@ -553,6 +553,8 @@ class UpdateCommand extends CConsoleCommand{
     }
   }
 
+
+/*
 // PledgeMusic store to DB
   public function actionPledgeMusic(){
     $i = 1;
@@ -568,7 +570,7 @@ class UpdateCommand extends CConsoleCommand{
           if ($link_check){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
 	  else{
 	    $data_single = $this->parsePledgeMusic($data->link);
-/*	    $insert=new Project;
+	    $insert=new Project;
 	    $insert->title=$data->title;
 	    $insert->description=$data->description;
 	    $insert->image=$data->image;
@@ -585,14 +587,14 @@ class UpdateCommand extends CConsoleCommand{
 	      $updateOrigCategory->save();
 	      $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
 	      $insert->orig_category_id=$category->id;
-	      $this->errorMail($data->link, $data->category, $category->id);
+	      $this->errorMail($data->link, $data_single['category'], $category->id);
 	    }
 	    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
 	    if (isset($data_single['location'])) $insert->location=$data_single['location'];
 	    if (isset($data->creator)) $insert->creator=$data->creator;
 	    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
 	    $insert->save();
-	    $count = 0;*/
+	    $count = 0;
 //	    print_r($insert->getErrors());
           }
 	  if ($count >= 10){ $check=true; break; }
@@ -601,10 +603,7 @@ class UpdateCommand extends CConsoleCommand{
       $i=$i+1;
     }
   }
-
-
-
-
+*/
 
 
 }
