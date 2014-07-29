@@ -100,17 +100,33 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                         </label>
                     </div>
                   </div>
+                  <?php if(count($cat['subcat']) > 1){ ?>
                   <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
-                    <div class="columns small-12" style="background-color: #eee;">
+                    <div class="columns small-12 mb20">
+                      <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">&times;</a>
+                      <br />
                       
-                      <div class="switch round tiny">
-                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox" onchange="showSubCat(<?php echo $cat['id']; ?>)">
-                        <label for="cat_<?php echo $cat['id']; ?>"></label>
+                      <?php foreach ($cat['subcat'] as $subcat) { ?>
+                      <div class="mt10">
+                        <div class="row">
+                          <div class="columns small-4">
+                            <div class="switch round tiny">
+                              <input id="subcat_<?php echo $subcat['id']; ?>" name="subcat[<?php echo $subcat['id']; ?>]" <?php if ($subcat['selected']) echo 'checked'; ?> type="checkbox">
+                              <label class="success" for="subcat_<?php echo $subcat['id']; ?>"></label>
+                            </div>
+                          </div>
+                          <div class="columns small-8">
+                              <label for="subcat_<?php echo $subcat['id']; ?>">
+                                <?php echo $subcat['name']; ?>
+                              </label>
+                          </div>
+                        </div>
                       </div>
-                        lalala
-                     
+                      <?php } ?>
+                                           
                     </div>
                   </div>
+                  <?php } ?>
                   
                 </li>
                 <?php

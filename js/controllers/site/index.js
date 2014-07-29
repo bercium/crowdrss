@@ -36,10 +36,10 @@ function previewForm(){
 
 function showSubCat(id){
   //alert('s');
-  $('[id^="subCatHolder_"]').hide();
+  $('[id^="subCatHolder_"]').slideUp();
 
   if ($('#cat_'+id).is(':checked')){
-     $('#subCatHolder_'+id).show();
+     $('#subCatHolder_'+id).slideDown();
   }
 }
 
