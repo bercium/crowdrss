@@ -74,6 +74,21 @@ class FeedController extends Controller
   }
   
   /**
+   * validate if just ID's in table just to be safe
+   */
+  function validateId($string){
+    $array = explode(",", $string);
+    $string = '';
+    foreach ($array as $value){
+      if (is_numeric($value)){
+        if ($string) $string .= ',';
+        $string .= $value;
+      }
+    }
+    echo $string;
+  }
+  
+  /**
 * all hidden profiles will be notified every second week
 */
   public function actionRss($data){
@@ -99,16 +114,25 @@ class FeedController extends Controller
     
     // project constrains
     $sql = '';
-    if ($sub->category){
-      $orgCat = OrigCategory::model()->findAll("(category_id in (".$sub->category."))");
+    if ($this->validateId($sub->category)){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($sub->category)."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
         $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
+    if ($this->validateId($sub->platform)) $sql .= " (platform_id IN (".$this->validateId($sub->platform).")) AND ";
+    else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
+    }
     $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
     $sql .= " ORDER BY time_added DESC";
     
@@ -131,17 +155,25 @@ class FeedController extends Controller
 
     
     $sql = '';
-    if (!empty($_POST['category'])){
-      $orgCat = OrigCategory::model()->findAll("(category_id in (".$_POST['category']."))");
+    if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($_POST['category'])."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
         $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if (!empty($_POST['platform']) && ($_POST['platform'] != '0')){
-      $sql .= " (platform_id in (".$_POST['platform'].")) AND ";
+    if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
+      $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
+    }else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     $sql .= " 1";
@@ -158,17 +190,25 @@ class FeedController extends Controller
     $this->layout = 'blank';
     
     $sql = '';
-    if (!empty($_POST['category'])){
-      $orgCat = OrigCategory::model()->findAll("(category_id in (".$_POST['category']."))");
+    if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($_POST['category'])."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
         $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if (!empty($_POST['platform']) && ($_POST['platform'] != '0')){
-      $sql .= " (platform_id in (".$_POST['platform'].")) AND ";
+    if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
+      $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
+    }else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     $sql .= " 1";

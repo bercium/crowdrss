@@ -112,7 +112,7 @@ class SiteController extends Controller
 
     
     //platforms
-    $platforms = Platform::model()->findAll();
+    $platforms = Platform::model()->findAll("active = :active",array(":active"=>1));
     $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true));
     foreach ($platforms as $platform){
       $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel));

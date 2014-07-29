@@ -1,0 +1,2 @@
+ALTER TABLE `platform` ADD `active` BOOLEAN NOT NULL DEFAULT FALSE ;
+
