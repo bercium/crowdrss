@@ -352,15 +352,20 @@ class UpdateCommand extends CConsoleCommand{
     $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2400",), false);
     if ($result->results) {
       foreach ($result->results as $data){
-        $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-        if ($link_check){ }
+        $link = str_replace("/pinw", "", $data->link);
+        $link = str_replace("?sa=0&sp=0", "", $link);
+        $link_check_old = Project::model()->findByAttributes(array('link'=>str_replace("?sa=0&sp=0", "", $data->link)));
+	$link_deform =  Project::model()->findByAttributes(array('link'=>$data->link));
+	$link_check = Project::model()->findByAttributes(array('link'=>$link));
+	$title_check = Project::model()->findByAttributes(array('title'=>$data->title));
+        if ($link_check || $link_check_old || $title || $link_deform){ }
         else{
 	  $data_single = $this->parseIndiegogo($data->link);
           $insert=new Project;
           $insert->title=$data->title;
           $insert->description=$data->description;
           $insert->image=$data->image;
-          $insert->link=$data->link;
+          $insert->link=$link;
           $insert->time_added=date("Y-m-d H:i:s");
           $insert->platform_id=$id;
           $category = OrigCategory::model()->findByAttributes(array('name'=>$data->category));
