@@ -360,7 +360,7 @@ class UpdateCommand extends CConsoleCommand{
 	$title_check = Project::model()->findByAttributes(array('title'=>$data->title));
         if ($link_check || $link_check_old || $title || $link_deform){ }
         else{
-	  $data_single = $this->parseIndiegogo($data->link);
+	  $data_single = $this->parseIndiegogo($link);
           $insert=new Project;
           $insert->title=$data->title;
           $insert->description=$data->description;
