@@ -34,6 +34,16 @@ function previewForm(){
 }
 
 
+function showSubCat(id){
+  //alert('s');
+  $('[id^="subCatHolder_"]').hide();
+
+  if ($('#cat_'+id).is(':checked')){
+     $('#subCatHolder_'+id).show();
+  }
+}
+
+
 $(function() {
    if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
    //$('#preview').show();

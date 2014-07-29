@@ -90,7 +90,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                   <div class="row">
                     <div class="columns small-4">
                       <div class="switch round small">
-                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox">
+                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox" onchange="showSubCat(<?php echo $cat['id']; ?>)">
                         <label for="cat_<?php echo $cat['id']; ?>"></label>
                       </div>
                     </div>
@@ -100,6 +100,18 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                         </label>
                     </div>
                   </div>
+                  <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
+                    <div class="columns small-12" style="background-color: #eee;">
+                      
+                      <div class="switch round tiny">
+                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox" onchange="showSubCat(<?php echo $cat['id']; ?>)">
+                        <label for="cat_<?php echo $cat['id']; ?>"></label>
+                      </div>
+                        lalala
+                     
+                    </div>
+                  </div>
+                  
                 </li>
                 <?php
               } ?>
