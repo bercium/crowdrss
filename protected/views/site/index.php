@@ -179,6 +179,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/previewRss'); ?>" target="_blank">
             <input type="hidden" id="preview_platform" name="platform">
             <input type="hidden" id="preview_category" name="category">
+            <input type="hidden" id="preview_subcategory" name="subcategory">
           </form>
         </div>
         

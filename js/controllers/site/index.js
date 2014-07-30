@@ -15,7 +15,7 @@ function uncheckPlatforms(id){
 
 // set everything for preview
 function previewForm(){
-  var cat = plat = '';
+  var subcat = cat = plat = '';
   
   $.each($('#rssfeed_form').serializeArray(), 
   function(i, field) {
@@ -27,9 +27,14 @@ function previewForm(){
       if (cat !== '') cat += ',';
       cat += field.name.substring(4,field.name.length-1);
     }
+    if (field.name.indexOf('subcat[') !== -1){
+      if (subcat !== '') subcat += ',';
+      subcat += field.name.substring(7,field.name.length-1);
+    }
   });
   $('#preview_platform').val(plat);
   $('#preview_category').val(cat);
+  $('#preview_subcategory').val(subcat);
   $('#preview_form').submit();
 }
 

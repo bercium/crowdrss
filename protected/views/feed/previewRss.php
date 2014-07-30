@@ -8,6 +8,7 @@
           </p>
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">
             <input type="hidden" id="preview_category" name="category" value="<?php echo $cat; ?>">
+            <input type="hidden" id="preview_subcategory" name="subcategory" value="<?php echo $subcat; ?>">
           </form>
           
         </div>
