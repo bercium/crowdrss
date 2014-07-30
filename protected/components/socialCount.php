@@ -22,18 +22,21 @@ class shareCount {
     $this->timeout = $timeout;
   }
 
+// Twitter
   function get_tweets() {
     $json_string = $this->file_get_contents_curl('http://urls.api.twitter.com/1/urls/count.json?url=' . $this->url);
     $json = json_decode($json_string, true);
     return isset($json['count']) ? intval($json['count']) : 0;
   }
 
+// LinkedIn
   function get_linkedin() {
     $json_string = $this->file_get_contents_curl("http://www.linkedin.com/countserv/count/share?url=$this->url&format=json");
     $json = json_decode($json_string, true);
     return isset($json['count']) ? intval($json['count']) : 0;
   }
 
+// Facebook
   function get_fb() {
     //"share_count":333619,"like_count":459419,"comment_count":259104,"total_count":1052142,"click_count":2236
     $json_string = $this->file_get_contents_curl('http://api.facebook.com/restserver.php?method=links.getStats&format=json&urls=' . $this->url);
@@ -45,6 +48,7 @@ class shareCount {
     return $tc;
   }
 
+// Google Plus
   function get_plusones() {
     $curl = curl_init();
     curl_setopt($curl, CURLOPT_URL, "https://clients6.google.com/rpc");
@@ -59,18 +63,21 @@ class shareCount {
     return isset($json[0]['result']['metadata']['globalCounts']['count']) ? intval($json[0]['result']['metadata']['globalCounts']['count']) : 0;
   }
 
+// StumbleUpon
   function get_stumble() {
     $json_string = $this->file_get_contents_curl('http://www.stumbleupon.com/services/1.01/badge.getinfo?url=' . $this->url);
     $json = json_decode($json_string, true);
     return isset($json['result']['views']) ? intval($json['result']['views']) : 0;
   }
 
+// Delicious
   function get_delicious() {
     $json_string = $this->file_get_contents_curl('http://feeds.delicious.com/v2/json/urlinfo/data?url=' . $this->url);
     $json = json_decode($json_string, true);
     return isset($json[0]['total_posts']) ? intval($json[0]['total_posts']) : 0;
   }
 
+// Pinterest
   function get_pinterest() {
     $return_data = $this->file_get_contents_curl('http://api.pinterest.com/v1/urls/count.json?url=' . $this->url);
     $json_string = preg_replace('/^receiveCount\((.*)\)$/', "\\1", $return_data);
@@ -78,10 +85,19 @@ class shareCount {
     return isset($json['count']) ? intval($json['count']) : 0;
   }
 
+// Digg
   function get_digg() {
+//    $return_data = $this->file_get_contents_curl('http://widgets.digg.com/buttons/count?url=' . $this->url);
+    return 0;
   }
-  
-  function get_redit() {
+
+// Reddit
+  function get_reddit() {
+    $jason_string = $this->file_get_contents_curl('' . $this->url);
+    $json = json_decode($json_string, true);
+    $score = isset($json['data']['children'][0]['data']['score']) ? intval($json['data']['children'][0]['data']['score']) : 0;
+    $comments = isset($json['data']['children'][0]['data']['num_comments']) ? intval($json['data']['children'][0]['data']['num_comments']) : 0;
+    return $score; 
   }
   
   private function file_get_contents_curl($url) {
