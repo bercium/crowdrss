@@ -34,15 +34,32 @@ function previewForm(){
 }
 
 
-function showSubCat(id){
+function toggleSubCat(id){
   //alert('s');
   $('[id^="subCatHolder_"]').slideUp();
 
   if ($('#cat_'+id).is(':checked')){
-     $('#subCatHolder_'+id).slideDown();
+     $('#subCatLink_'+id).fadeIn();
+     //$('#subCatHolder_'+id).slideDown();
+  }else{
+    $('#subCatLink_'+id).fadeOut();
   }
 }
 
+function showSubCat(id, show){
+  
+  if ($('#subCatLink_'+id).children('i').hasClass('fa-sort-up')){
+    $('#subCatHolder_'+id).slideUp();
+    $('#subCatLink_'+id).children('i').removeClass('fa-sort-up');
+    $('#subCatLink_'+id).children('i').addClass('fa-sort-down');
+  }else{
+    $('#subCatHolder_'+id).slideDown();
+    $('#subCatLink_'+id).children('i').addClass('fa-sort-up');
+    $('#subCatLink_'+id).children('i').removeClass('fa-sort-down');
+  }
+  
+  fa-sort-down
+}
 
 $(function() {
    if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
