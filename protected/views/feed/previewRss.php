@@ -1,9 +1,10 @@
 		<div class="pt30 outro">
       <div class="row">
         <div class="columns medium-12">
-          <h2 class="white">Preview of your RSS</h2>
+          <h2 class="white">Preview of your RSS <small>Approximate daily projects: <?php echo $numOfDailyResults; ?></small></h2>
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/downloadRss'); ?>" target="_blank">
           <p class="white-light">
+            
             You can also download preview RSS file by clicking <button trk="button_form_downloadPreview" type="submit" class="info tiny radius"><strong>download RSS</strong></button>
           </p>
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">

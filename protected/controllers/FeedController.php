@@ -225,7 +225,12 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
+    
+    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(CURDATE(), INTERVAL -4 DAY)")->queryScalar();
+    $numOfresults = round($numOfresults / 4);
+    
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
+    
     $sql .= " 1";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
@@ -237,7 +242,7 @@ class FeedController extends Controller
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
     if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
-    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat));
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'numOfDailyResults'=>$numOfresults));
   }  
   
   
