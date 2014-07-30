@@ -1,7 +1,8 @@
 		<div class="pt30 outro">
       <div class="row">
         <div class="columns medium-12">
-          <h2 class="white">Preview of your RSS <small>Approximate daily projects: <?php echo $numOfDailyResults; ?></small></h2>
+          <h2 class="white">Preview of your RSS </h2>
+          <h6 class="white">Approximate daily projects: <?php echo $numOfDailyResults; ?></h6>
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/downloadRss'); ?>" target="_blank">
           <p class="white-light">
             
