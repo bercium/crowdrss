@@ -29,8 +29,9 @@ public function init(){
       
     $cs->registerCssFile($baseUrl.'/css/foundation.css');
     $cs->registerCssFile($baseUrl.'/css/layout.css');   
-    $cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
-
+    //$cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
+    $cs->registerCssFile('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+    
 
 		// JAVASCRIPTS
     $cs->registerCoreScript('jquery');  //core jquery lib

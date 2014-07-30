@@ -98,12 +98,15 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                         <label for="cat_<?php echo $cat['id']; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
                           <?php echo $cat['name']; ?>
                         </label>
+                      
                     </div>
                   </div>
                   <?php if(count($cat['subcat']) > 1){ ?>
                   <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
                     <div class="columns small-12 mb20">
-                      <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">&times;</a>
+                      <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">
+                        <i class="fa fa-times"></i>
+                      </a>
                       <br />
                       
                       <?php foreach ($cat['subcat'] as $subcat) { ?>

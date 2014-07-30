@@ -64,3 +64,15 @@ function gase(id){
   }
   
 }
+
+
+/**
+ * stop propagation of events down
+ *
+ * @param inEvent event - event
+ */
+function stopPropagation(inEvent){
+  if (inEvent == null) return;
+  inEvent.cancelBubble=true;
+  if (inEvent.stopPropagation) inEvent.stopPropagation();
+}
