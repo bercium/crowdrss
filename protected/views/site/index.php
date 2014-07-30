@@ -90,16 +90,54 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                   <div class="row">
                     <div class="columns small-4">
                       <div class="switch round small">
-                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox">
+                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox" onchange="toggleSubCat(<?php echo $cat['id']; ?>)">
                         <label for="cat_<?php echo $cat['id']; ?>"></label>
                       </div>
                     </div>
                     <div class="columns small-8">
+                        <?php if(count($cat['subcat']) > 1){ ?>
+                        <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" onclick="showSubCat(<?php echo $cat['id']; ?>);" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
+                          <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+                        </a>
+                        <?php } ?>
+                      
                         <label for="cat_<?php echo $cat['id']; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
                           <?php echo $cat['name']; ?>
                         </label>
+                      
                     </div>
                   </div>
+                  <?php if(count($cat['subcat']) > 1){ ?>
+                  <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
+                    <div class="columns small-12 mb20 mt10 ml15">
+                      <?php /* ?>
+                      <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">
+                        <i class="fa fa-times"></i>
+                      </a>
+                      <br /><?php */ ?>
+                      
+                      <?php foreach ($cat['subcat'] as $subcat) { ?>
+                      <div class="mt10">
+                        <div class="row">
+                          <div class="columns small-4">
+                            <div class="switch round tiny">
+                              <input id="subcat_<?php echo $subcat['id']; ?>" name="subcat[<?php echo $subcat['id']; ?>]" <?php if ($subcat['selected']) echo 'checked'; ?> type="checkbox">
+                              <label class="success" for="subcat_<?php echo $subcat['id']; ?>"></label>
+                            </div>
+                          </div>
+                          <div class="columns small-8">
+                              <label for="subcat_<?php echo $subcat['id']; ?>">
+                                <?php echo $subcat['name']; ?>
+                              </label>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                                           
+                    </div>
+                  </div>
+                  <?php } ?>
+                  
                 </li>
                 <?php
               } ?>
@@ -109,7 +147,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="First 10 projects of your selection will be shown in a preview">Preview</a> and get the RSS link</h2>
+          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
           <p>We will generate a link and send it to your email address.<p>
             
           <div class="email-field">
@@ -141,6 +179,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/previewRss'); ?>" target="_blank">
             <input type="hidden" id="preview_platform" name="platform">
             <input type="hidden" id="preview_category" name="category">
+            <input type="hidden" id="preview_subcategory" name="subcategory">
           </form>
         </div>
         
