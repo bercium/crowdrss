@@ -85,7 +85,7 @@ class FeedController extends Controller
         $string .= $value;
       }
     }
-    echo $string;
+    return $string;
   }
   
   /**
@@ -214,6 +214,8 @@ class FeedController extends Controller
     $sql .= " 1";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
+    
+    //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
     
     $projects = Project::model()->findAll($sql);
     $cat = $plat = '';
