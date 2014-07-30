@@ -238,7 +238,7 @@ class FeedController extends Controller
     //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
     
     $projects = Project::model()->findAll($sql);
-    $cat = $plat = '';
+    $subcat = $cat = $plat = '';
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
     if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
