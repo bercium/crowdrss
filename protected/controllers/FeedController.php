@@ -215,6 +215,8 @@ class FeedController extends Controller
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
+    if (!Yii::app()->user->isGuest) echo $sql;
+    
     $projects = Project::model()->findAll($sql);
     $cat = $plat = '';
     if (isset($_POST['category'])) $cat = $_POST['category'];
