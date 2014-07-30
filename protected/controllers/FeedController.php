@@ -85,7 +85,7 @@ class FeedController extends Controller
         $string .= $value;
       }
     }
-    echo $string;
+    return $string;
   }
   
   /**
