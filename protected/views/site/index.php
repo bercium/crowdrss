@@ -38,7 +38,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
-          <h2>1. Choose platform</h2>
+          <h2>1. Choose a platform</h2>
           <p>Which platforms do you wish to follow?<p>
             
             

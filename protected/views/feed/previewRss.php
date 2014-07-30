@@ -6,7 +6,7 @@
           
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/downloadRss'); ?>" target="_blank">
           <p class="white-light">
-            You can also download sample RSS file by clicking <button trk="button_form_downloadPreview" type="submit" class="info tiny radius"><strong>download RSS</strong></button>
+            You can also download a sample RSS file by clicking <button trk="button_form_downloadPreview" type="submit" class="info tiny radius"><strong>download RSS</strong></button>
           </p>
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">
             <input type="hidden" id="preview_category" name="category" value="<?php echo $cat; ?>">
