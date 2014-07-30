@@ -113,13 +113,19 @@ class FeedController extends Controller
 //    $rssResponse .= '<atom:link href="' . $link z hashom do rss . '" rel="self" type="application/rss+xml" />';
     
     // project constrains
+    
+    $subcat = array();
+    if ($this->validateId($sub->exclude_orig_category)){
+      $subcat = explode(",",$this->validateId($sub->exclude_orig_category));
+    }
+    
     $sql = '';
     if ($this->validateId($sub->category)){
       $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($sub->category)."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        $allCats[$cat->id] = $cat->id;
+        if (!in_array($cat->id, $subcat)) $allCats[$cat->id] = $cat->id;
       }
       $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
@@ -153,6 +159,10 @@ class FeedController extends Controller
     header('Content-Type: application/rss+xml; charset=UTF-8');
     mb_internal_encoding("UTF-8"); 
 
+    $subcat = array();
+    if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
+      $subcat = explode(",",$this->validateId($_POST['subcategory']));
+    }
     
     $sql = '';
     if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
@@ -160,9 +170,9 @@ class FeedController extends Controller
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        $allCats[$cat->id] = $cat->id;
+        if (in_array($cat->id, $subcat))  $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
+      if (implode(',',$allCats) != '')  $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
     if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
       $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
@@ -189,15 +199,20 @@ class FeedController extends Controller
   public function actionPreviewRss(){
     $this->layout = 'blank';
     
+    $subcat = array();
+    if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
+      $subcat = explode(",",$this->validateId($_POST['subcategory']));
+    }
+    
     $sql = '';
     if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
       $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($_POST['category'])."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        $allCats[$cat->id] = $cat->id;
+        if (in_array($cat->id, $subcat))  $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
+      if (implode(',',$allCats) != '')  $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
     if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
       $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
@@ -221,7 +236,8 @@ class FeedController extends Controller
     $cat = $plat = '';
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
-    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat));
+    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat));
   }  
   
   
