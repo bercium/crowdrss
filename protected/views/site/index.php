@@ -97,7 +97,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     <div class="columns small-8">
                         <?php if(count($cat['subcat']) > 1){ ?>
                         <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" onclick="showSubCat(<?php echo $cat['id']; ?>);" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
-                          <i class="fa fa-sort-down"></i>
+                          <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
                         </a>
                         <?php } ?>
                       
