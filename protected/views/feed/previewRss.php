@@ -1,12 +1,12 @@
 		<div class="pt30 outro">
       <div class="row">
         <div class="columns medium-12">
-          <h2 class="white">Preview of your RSS </h2>
-          <h6 class="white">Approximate daily projects: <?php echo $numOfDailyResults; ?></h6>
+          <h2 class="white">Last 10 projects from your selection</h2>
+          <h5 class="white">Approximate number of projects per day: <strong><?php echo $numOfDailyResults; ?></strong></h5> 
+          
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/downloadRss'); ?>" target="_blank">
           <p class="white-light">
-            
-            You can also download preview RSS file by clicking <button trk="button_form_downloadPreview" type="submit" class="info tiny radius"><strong>download RSS</strong></button>
+            You can also download sample RSS file by clicking <button trk="button_form_downloadPreview" type="submit" class="info tiny radius"><strong>download RSS</strong></button>
           </p>
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">
             <input type="hidden" id="preview_category" name="category" value="<?php echo $cat; ?>">
