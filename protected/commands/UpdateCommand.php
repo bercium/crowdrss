@@ -204,15 +204,7 @@ class UpdateCommand extends CConsoleCommand{
     // Description
     $pattern = '/story">\s+<p>(.+)/';
     preg_match($pattern, $htmlData, $matches);
-    $description = str_replace("</p>", "", $matches[1]);
-    $description = str_replace("<p>", "", $description);
-    $description = str_replace("&nbsp;", " ", $description);
-    $description = str_replace("<b>", "", $description);
-    $description = str_replace("</b>", "", $description);
-    $description = str_replace("<br>", "", $description);
-    $description = str_replace("<h4>", "", $description);
-    $description = str_replace("</h4>", "", $description);
-    $description = preg_replace('/<img .+">/', "", $description);
+    $description = strip_tags($matches[1]);
     $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
     $data['description'] = $description . " ...";
 
