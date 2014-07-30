@@ -36,17 +36,18 @@ function previewForm(){
 
 function toggleSubCat(id){
   //alert('s');
-  $('[id^="subCatHolder_"]').slideUp();
+  //$('[id^="subCatHolder_"]').slideUp();
 
   if ($('#cat_'+id).is(':checked')){
      $('#subCatLink_'+id).fadeIn();
      //$('#subCatHolder_'+id).slideDown();
   }else{
     $('#subCatLink_'+id).fadeOut();
+    if ($('#subCatLink_'+id).children('i').hasClass('fa-sort-up')) showSubCat(id);
   }
 }
 
-function showSubCat(id, show){
+function showSubCat(id){
   
   if ($('#subCatLink_'+id).children('i').hasClass('fa-sort-up')){
     $('#subCatHolder_'+id).slideUp();

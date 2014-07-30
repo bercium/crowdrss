@@ -41,7 +41,6 @@ class SiteController extends Controller
     $SelOrigCategories = OrigCategory::model()->findAll();
     foreach ($SelOrigCategories as $origcat){
       $OrigCategories[$origcat->category_id][] = $origcat;
-      $subcat_sel[] = $origcat->id;
     }
     
     //load previous feed
@@ -50,6 +49,8 @@ class SiteController extends Controller
       if ($subscription){
         $cat_sel = explode(',',$subscription->category);
         $platform_sel = explode(',',$subscription->platform);
+        $subcat_sel = explode(',',$subscription->exclude_orig_category);
+        
         $email = $subscription->email;
       }else{
         setFlash("save", "Subscription not found! Pleas check that you have the right ID.", "alert", false);
@@ -69,9 +70,21 @@ class SiteController extends Controller
       $cat_sel = explode(',',$cat);
       
       $subcat = '';
-      if (isset($_POST['subcat'])) $subcat = implode(",",array_keys($_POST['subcat']));
-      $subcat_sel = explode(',',$subcat);
+      $subcat_sel_inv = array();
+      if (isset($_POST['subcat'])) $subcat_sel_inv = array_keys($_POST['subcat']);
+      //$subcat_sel_inv = explode(',',$subcat);
       
+      $subcat_sel = array();
+      foreach ($cat_sel as $id){
+          foreach ($OrigCategories[$id] as $origCat){
+            //echo ",".$origCat->id." ";
+            if (!in_array($origCat->id,$subcat_sel_inv)){
+              $subcat_sel[] = $origCat->id;
+            }
+          }
+      }
+      
+      $subcat = implode(",",$subcat_sel);
       
       $email = $_POST['email']; 
       
@@ -88,7 +101,7 @@ class SiteController extends Controller
       $subscription->email = $email;
       $subscription->platform = $plat;
       $subscription->category = $cat;
-      //$subscription->orig_category_exclude = $subcat;
+      $subscription->exclude_orig_category = $subcat;
       $subscription->rss = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
@@ -137,18 +150,18 @@ class SiteController extends Controller
     //categories
     $categories = Category::model()->findAll(array("order"=>"name"));
     $selcat = array();
-    foreach ($categories as $platform){
+    foreach ($categories as $category){
       //$OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
       $hint = '';
       $subCat = array();
-      if (isset($OrigCategories[$platform->id])){
-        foreach ($OrigCategories[$platform->id] as $origCat){
+      if (isset($OrigCategories[$category->id])){
+        foreach ($OrigCategories[$category->id] as $origCat){
           if ($hint) $hint .= '<br />';
           $hint .= $origCat->name;
-          $subCat[] = array("name"=>$origCat->name, "id"=>$origCat->id, "selected"=>in_array($origCat->id, $subcat_sel));
+          $subCat[] = array("name"=>$origCat->name, "id"=>$origCat->id, "selected"=>!in_array($origCat->id, $subcat_sel));
         }
       }
-      $selcat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
+      $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
     }
     
 		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'email'=>$email));
