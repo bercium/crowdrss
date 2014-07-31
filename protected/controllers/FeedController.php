@@ -4,12 +4,13 @@ class FeedController extends Controller
 {
   
   protected function beforeAction($action){
-    //if ($action->id == 'rss')
+    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl')){
       foreach (Yii::app()->log->routes as $route){
         //if ($route instanceof CWebLogRoute){
           $route->enabled = false;
         //}
       }
+    }
     return true;
   }
   
@@ -60,9 +61,19 @@ class FeedController extends Controller
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
       }
-      if ($id == 1 || $id == 2){
-        $desc .= "</p><p><a>dislike</a> | <a>like</a>";
+      
+      // voting and tracking
+      if ($id){
+        if ($id == 1 || $id == 2){
+          $desc .= '</p><p>
+                    <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a> | ';
+          $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a>';
+        }
+      // track opening of feed
+        $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
       }
+      else $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link)) .'" />';
+      
       $desc .= "</p>";
       $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
@@ -266,6 +277,15 @@ class FeedController extends Controller
     
     $this->redirect($l);
     Yii::app()->end();
+  }
+  
+  
+  /**
+   * used for voting on feeds
+   */
+  public function actionVote($l, $ra ,$i = null) {
+    $this->layout = 'blank';
+    $this->render('vote');
   }
   
   
