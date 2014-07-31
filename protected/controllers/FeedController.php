@@ -50,7 +50,7 @@ class FeedController extends Controller
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt=""/><br />';
 
-      $desc.= "<br />".$project->description." <br />";
+      $desc.= "<p><br />".$project->description." <br />";
       
       $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
@@ -60,6 +60,7 @@ class FeedController extends Controller
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
       }
+      $desc .= "</p>";
       $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
