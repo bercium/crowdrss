@@ -48,7 +48,7 @@ class FeedController extends Controller
       
       $desc = '';
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
-      $desc.= '<img src="' . $project->image . '" alt=""/><br />';
+      $desc.= '<img src="' . $project->image . '" alt="" border="0"/><br />';
 
       $desc.= "<p><br />".$project->description." <br />";
       
@@ -59,6 +59,9 @@ class FeedController extends Controller
       if (!empty($project->type_of_funding)){
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
+      }
+      if ($id == 1 || $id == 2){
+        $desc .= "</p><p><a>dislike</a> | <a>like</a>";
       }
       $desc .= "</p>";
       $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
