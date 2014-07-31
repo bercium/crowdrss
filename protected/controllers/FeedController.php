@@ -49,9 +49,9 @@ class FeedController extends Controller
       
       $desc = '';
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
-      $desc.= '<img src="' . $project->image . '" alt="" border="0"/><br />';
+      $desc.= '<img src="' . $project->image . '" alt="" border="0"/>';
 
-      $desc.= "<p><br />".$project->description." <br />";
+      $desc.= "<p>".$project->description." <br />";
       
       $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
@@ -65,7 +65,7 @@ class FeedController extends Controller
       // voting and tracking
       if ($id){
         if ($id == 1 || $id == 2){
-          $desc .= '</p><p>
+          $desc .= '</p><p style="text-align:right;">
                     <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a> | ';
           $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a>';
         }
