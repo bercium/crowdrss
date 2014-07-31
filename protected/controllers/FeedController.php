@@ -66,8 +66,8 @@ class FeedController extends Controller
       if ($id){
         if ($id == 1 || $id == 2){
           $desc .= '</p><p style="text-align:right;">
-                    <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a> | ';
-          $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a>';
+                    <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a> | ';
+          $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a>';
         }
       // track opening of feed
         $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
