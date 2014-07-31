@@ -45,7 +45,10 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matchesGoal);
     $pattern = '/data-currency="(.+)" data-format/';
     preg_match($pattern, $htmlData, $matchesCurrency);
-    $data['goal'] = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
+    $money = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
+    $money_split = explode(".", $money);
+    if ($money_slit[1] == "00"){ $data['goal'] = $money_slit[0]; }
+    else { $data['goal'] = $money; }
 
     // Location
     $pattern = '/<a href="\/discover\/places\/.+">(.+)<\/a>/';
@@ -204,15 +207,7 @@ class UpdateCommand extends CConsoleCommand{
     // Description
     $pattern = '/story">\s+<p>(.+)/';
     preg_match($pattern, $htmlData, $matches);
-    $description = str_replace("</p>", "", $matches[1]);
-    $description = str_replace("<p>", "", $description);
-    $description = str_replace("&nbsp;", " ", $description);
-    $description = str_replace("<b>", "", $description);
-    $description = str_replace("</b>", "", $description);
-    $description = str_replace("<br>", "", $description);
-    $description = str_replace("<h4>", "", $description);
-    $description = str_replace("</h4>", "", $description);
-    $description = preg_replace('/<img .+">/', "", $description);
+    $description = strip_tags($matches[1]);
     $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
     $data['description'] = $description . " ...";
 
