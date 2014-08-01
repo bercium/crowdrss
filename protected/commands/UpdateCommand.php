@@ -47,7 +47,7 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matchesCurrency);
     $money = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
     $money_split = explode(".", $money);
-    if ($money_slit[1] == "00"){ $data['goal'] = $money_slit[0]; }
+    if ($money_split[1] == "00"){ $data['goal'] = $money_split[0]; }
     else { $data['goal'] = $money; }
 
     // Location
