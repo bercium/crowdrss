@@ -49,7 +49,7 @@ class FeedController extends Controller
       
       $desc = '';
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
-      $desc.= '<img src="' . $project->image . '" alt="" border="0"/>';
+      $desc.= '<img src="' . $project->image . '" alt="" border="0" style="margin-bottom:8px;"/>';
 
       $desc.= "<p>".$project->description." <br />";
       
