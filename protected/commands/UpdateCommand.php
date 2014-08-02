@@ -351,6 +351,7 @@ class UpdateCommand extends CConsoleCommand{
       foreach ($result->results as $data){
         $link = str_replace("/pinw", "", $data->link);
         $link = str_replace("?sa=0&sp=0", "", $link);
+	$link = str_replace("?sa=0&amp;sp=0", "", $link);
         $link_check_old = Project::model()->findByAttributes(array('link'=>str_replace("?sa=0&sp=0", "", $data->link)));
 	$link_deform =  Project::model()->findByAttributes(array('link'=>$data->link));
 	$link_check = Project::model()->findByAttributes(array('link'=>$link));
