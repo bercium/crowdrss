@@ -123,7 +123,7 @@ class UpdateCommand extends CConsoleCommand{
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
 
-    $link = str_replace("pinw", "show_tab/home", $link);
+    $link = $link . "show_tab/home";
     $htmlDataObject = $httpClient->get($link);
     $htmlData = $htmlDataObject->httpBody;
 
