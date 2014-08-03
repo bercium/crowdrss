@@ -32,13 +32,18 @@ class UpdateCommand extends CConsoleCommand{
     Yii::app()->mail->send($message);
   }
 
-// Parser for KS
-  function parseKickstarter($link){
+// Function for geting HTML data
+  function getHtml($link){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    return $htmlDataObject->httpBody;
+  }
+
+// Parser for KS
+  function parseKickstarter($link){
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/data-goal="(.+)" data-percent-raised/';
@@ -96,12 +101,7 @@ class UpdateCommand extends CConsoleCommand{
 
 // Parser for IGG
   function parseIndiegogo($link){
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
@@ -137,12 +137,7 @@ class UpdateCommand extends CConsoleCommand{
 
 // Parser for GGF
   function parseGoGetFunding($link){
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/donated of (.+)<.+>(.+)<\/s/';
@@ -165,6 +160,7 @@ class UpdateCommand extends CConsoleCommand{
 // Parser for PS
   function parsePubSlush($link){
     $httpClient = new elHttpClient();
+    $htmlData = $htmlDataObject->httpBody;
     $httpClient->enableRedirects(true);
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
@@ -187,12 +183,7 @@ class UpdateCommand extends CConsoleCommand{
 
 // Parser for FA
   function parseFundAnything($link){
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/Contributions of (.+) goal/';
@@ -217,12 +208,7 @@ class UpdateCommand extends CConsoleCommand{
 
 // Parser for FR
   function parseFundRazr($link){
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/raised of (.+) goal/';
@@ -257,12 +243,7 @@ class UpdateCommand extends CConsoleCommand{
 
 // Parser for PM
   function parsePledgeMusic($link){
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
 
     // Goal
     $pattern = '/raised of (.+) goal/';
