@@ -1,7 +1,7 @@
 <?php
 
 
-class extractor {
+class extractors {
 
   function analyticsKickstarter($text){
     $tmp = array();
@@ -186,9 +186,9 @@ class extractor {
 //      for ($i=0; $i<$pledgesNumber; $i++){
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
-        return $tmp;
       }
     }
+    return $tmp;
   }
 
 
