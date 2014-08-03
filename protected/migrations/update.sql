@@ -42,3 +42,8 @@ CREATE TABLE IF NOT EXISTS `feed_rate` (
 ALTER TABLE `feed_rate`
   ADD CONSTRAINT `feed_rate_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `feed_rate_ibfk_1` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+ALTER TABLE `project` ADD `rating` DOUBLE NULL AFTER `type_of_funding` ;
+
+
