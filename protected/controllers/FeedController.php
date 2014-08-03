@@ -64,11 +64,11 @@ class FeedController extends Controller
       
       // voting and tracking
       if ($id){
-        if ($id == 1 || $id == 2){
+        //if ($id == 1 || $id == 2){
           $desc .= '</p><p style="text-align:right;">
                     <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a> | ';
           $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a>';
-        }
+        //}
       // track opening of feed
         $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
       }
@@ -154,8 +154,12 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
-    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
+    $sql .= ' 1 ';
+    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
     $sql .= " ORDER BY time_added DESC";
+    $sql .= " LIMIT 10";
+    
+   // echo $sql;
     
     
     // echo rss
@@ -284,6 +288,20 @@ class FeedController extends Controller
    * used for voting on feeds
    */
   public function actionVote($l, $ra ,$i = null) {
+
+    $project = Project::model()->findByAttributes(array('link'=>$l));
+    if ($project){
+      $feedClick = FeedRate::model()->findByAttributes(array('project_id'=>$project->id,'subscription_id'=>$i));
+      if (!$feedClick){
+        $feedClick = new FeedRate();
+        $feedClick->project_id = $project->id;
+        $feedClick->subscription_id = $i;
+        $feedClick->vote = $ra;
+        $feedClick->save();
+        //print_r($feedClick->getErrors());
+      }
+    }
+    
     $this->layout = 'blank';
     $this->render('vote');
   }

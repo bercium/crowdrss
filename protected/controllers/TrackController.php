@@ -138,14 +138,14 @@ class TrackController extends Controller
    */
   public function actionOf($l,$i = null) {
     // !!!log clicks
-    return;
+    //return;
     
     $project = Project::model()->findByAttributes(array('link'=>$l));
     if ($project){
-      /*$feedClick = new FeedClickLog();
+      $feedClick = new FeedOpenLog();
       $feedClick->project_id = $project->id;
       $feedClick->subscription_id = $i;
-      $feedClick->save();*/
+      $feedClick->save();
     }
   }  
   
