@@ -20,7 +20,7 @@ $a = array(
 		'application.components.*',
 
 		'application.components.*',
-    //'application.components.functions.*',
+    'application.components.rating.*',
     //'application.components.extenders.*',
     //'application.components.behaviours.*',
     //'application.components.lib.*',
