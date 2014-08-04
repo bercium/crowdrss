@@ -1,5 +1,5 @@
 <?php
-set_time_limit(60*5); //5 min
+//set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand{
 
 // Import.io function to get jason result for a webpage
