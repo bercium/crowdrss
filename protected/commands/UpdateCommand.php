@@ -289,9 +289,10 @@ class UpdateCommand extends CConsoleCommand{
         foreach ($result->results as $data){
 	  $link = str_replace("?ref=discovery", "", $data->link);
 	  $link_part = explode("/", $link);
+	  $count_link_parts = count($link_parts);
           $link_check_old = Project::model()->findByAttributes(array('link'=>$data->link));
           $link_check = Project::model()->findByAttributes(array('link'=>$link));
-	  $link_part_check = Project::model()->findByAttributes(array('link'=>'%/' . $link_part[5]));
+	  $link_part_check = Project::model()->findByAttributes(array('link'=>'%/' . $link_part[$count_link_parts - 1]));
           if ($link_check || $link_check_old || $link_part_check){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
 	  else{
 	    $data_single = $this->parseKickstarter($link);
