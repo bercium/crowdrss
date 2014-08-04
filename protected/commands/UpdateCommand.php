@@ -25,7 +25,7 @@ class UpdateCommand extends CConsoleCommand{
     $message = new YiiMailMessage;
     $message->view = 'system';
     $message->subject = 'Missing original category';
-    $content = 'Category: ' . $catogery . '<br>Id: ' . $id . '<br>Link to project: ' . $link;
+    $content = 'Category: ' . $category . '<br>Id: ' . $id . '<br>Link to project: ' . $link;
     $message->setBody(array("content"=>$content,"title"=>"Added new original category"), 'text/html');
     $message->to = Yii::app()->params['adminEmail'];
     $message->from = Yii::app()->params['noreplyEmail'];
