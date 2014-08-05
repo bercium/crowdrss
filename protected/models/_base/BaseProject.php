@@ -24,10 +24,14 @@
  * @property integer $creator_backed
  * @property string $goal
  * @property integer $type_of_funding
+ * @property double $rating
  * @property string $time_added
  *
- * @property OrigCategory $origCategory
+ * @property FeedClickLog[] $feedClickLogs
+ * @property FeedOpenLog[] $feedOpenLogs
+ * @property FeedRate[] $feedRates
  * @property Platform $platform
+ * @property OrigCategory $origCategory
  */
 abstract class BaseProject extends GxActiveRecord {
 
@@ -49,22 +53,26 @@ abstract class BaseProject extends GxActiveRecord {
 
 	public function rules() {
 		return array(
-			array('platform_id, orig_category_id, title, description, image, link, time_added', 'required'),
-      array('time_added', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
+			array('platform_id, orig_category_id, title, description, image, link', 'required'),
+      array('time_added', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),        
 			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
+			array('rating', 'numerical'),
 			array('title, image, link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
 			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
-			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, time_added', 'safe', 'on'=>'search'),
+			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added', 'safe', 'on'=>'search'),
 		);
 	}
 
 	public function relations() {
 		return array(
-			'origCategory' => array(self::BELONGS_TO, 'OrigCategory', 'orig_category_id'),
+			'feedClickLogs' => array(self::HAS_MANY, 'FeedClickLog', 'project_id'),
+			'feedOpenLogs' => array(self::HAS_MANY, 'FeedOpenLog', 'project_id'),
+			'feedRates' => array(self::HAS_MANY, 'FeedRate', 'project_id'),
 			'platform' => array(self::BELONGS_TO, 'Platform', 'platform_id'),
+			'origCategory' => array(self::BELONGS_TO, 'OrigCategory', 'orig_category_id'),
 		);
 	}
 
@@ -90,9 +98,13 @@ abstract class BaseProject extends GxActiveRecord {
 			'creator_backed' => Yii::t('app', 'Creator Backed'),
 			'goal' => Yii::t('app', 'Goal'),
 			'type_of_funding' => Yii::t('app', 'Type Of Funding'),
+			'rating' => Yii::t('app', 'Rating'),
 			'time_added' => Yii::t('app', 'Time Added'),
-			'origCategory' => null,
+			'feedClickLogs' => null,
+			'feedOpenLogs' => null,
+			'feedRates' => null,
 			'platform' => null,
+			'origCategory' => null,
 		);
 	}
 
@@ -114,6 +126,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('creator_backed', $this->creator_backed);
 		$criteria->compare('goal', $this->goal, true);
 		$criteria->compare('type_of_funding', $this->type_of_funding);
+		$criteria->compare('rating', $this->rating);
 		$criteria->compare('time_added', $this->time_added, true);
 
 		return new CActiveDataProvider($this, array(

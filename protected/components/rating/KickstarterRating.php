@@ -46,9 +46,9 @@ class KickstarterRating extends PlatformRating{
     if ($webAgregtor["#images"] > 7) $rating += 6; // img
     if ($webAgregtor["#images"] >= 13) $rating += 6; // 75% more than 8 imgs
     if ($webAgregtor["#images"] == 0){
-      if ($webAgregtor["#subtitle"] > 4) $rating += 7; // subtitle
+      if ($webAgregtor["#subtitles"] > 4) $rating += 7; // subtitle
       else 
-      if ($webAgregtor["#subtitle"] < 2) $rating -= 7; // no imgs or subtitles
+      if ($webAgregtor["#subtitles"] < 2) $rating -= 7; // no imgs or subtitles
     }
     
     if ($webAgregtor["#videos"] >= 2) $rating += 4; // has videos inside
@@ -74,7 +74,7 @@ class KickstarterRating extends PlatformRating{
 
   //get all 
   private function currentWebStatus(){
-    if (!$this->html) $this->getData();  //load data if not allready
+    if (!$this->html) $this->getData();  //load data if not loaded
     $text = $this->html;
     
     $tmp = array();
@@ -94,21 +94,21 @@ class KickstarterRating extends PlatformRating{
         $beginingPosition = strpos($description, '>');
         $description = substr($description, $beginingPosition);
         $descriptionNumber = str_word_count(strip_tags($description));
-        $tmp[] = $descriptionNumber;
+        $tmp['#wordsContent'] = $descriptionNumber;
 
         // Image number
         $imageNumber = substr_count($description, '</figure>');
-        $tmp[] = $imageNumber;
+        $tmp['#images'] = $imageNumber;
 
         // Subtitles Number
         $subtitlesNumber = substr_count($description, '</h1>');
-        $tmp[] = $subtitlesNumber;
+        $tmp['#subtitles'] = $subtitlesNumber;
 
         // Video number
         $videoNumber = substr_count($description, '</embed>');
         $videoNumber += substr_count($description, '</video>');
         $videoNumber += substr_count($description, '</iframe>');
-        $tmp[] = $videoNumber; 
+        $tmp['#videos'] = $videoNumber; 
 
         // Money
         $pattern = '/data-goal="(.+)" data-percent-raised/';
@@ -117,9 +117,6 @@ class KickstarterRating extends PlatformRating{
         $pattern = '/data-currency="(.+)" data-format="/';
         preg_match($pattern, $text, $matches);
         switch ($matches[1]) {
-            case "USD":
-              $convert = 1;
-              break;
             case "GBP":
 	      $convert = 1.69;
               break; 
@@ -132,15 +129,17 @@ class KickstarterRating extends PlatformRating{
             case "CAD":
 	      $convert = 0.92;
               break;
+            default:
+              $convert = 1;
         }
-        $tmp[] = $money * $convert;
+        $tmp['$goal'] = $money * $convert;
 
         // Video/Image
         $pattern = '/data-has-video="(\w+)" id="/';
         preg_match($pattern, $text, $matches);
         if ($matches[1] == "true"){$vid_img = 1;}
         elseif($matches[1] == "false"){$vid_img = 0;}
-        $tmp[] = $vid_img;
+        $tmp['Bvideo'] = $vid_img;
       
         // Words RaC
         $beginingPosition = strpos($text, 'id="risks"');
@@ -150,7 +149,7 @@ class KickstarterRating extends PlatformRating{
         $beginingPosition = strpos($risks, '</h2>');
         $risks = substr($risks, $beginingPosition);
         $riskNumber = str_word_count(strip_tags($risks));
-        $tmp[] = $riskNumber;
+        $tmp['#wordsRisk'] = $riskNumber;
 
       // Words FAQ
 //      $beginingPosition = strpos($text, 'id="project-faqs"');
@@ -161,7 +160,7 @@ class KickstarterRating extends PlatformRating{
 //      $risks = substr($risks, $beginingPosition);
 //      $riskNumber = str_word_count(strip_tags($faq));
 //echo strip_tags($faq) . "\n\n";
-//      $tmp[] = 0;
+//      $tmp['#wordsFaq'] = 0;
       
         // Created
         $pattern = '/<span class="text">\s(.+) created/';
@@ -171,7 +170,7 @@ class KickstarterRating extends PlatformRating{
           $pattern = '/\/created">(.+) created/';
   	  preg_match($pattern, $text, $matches);
         }
-        $tmp[] = $matches[1];
+        $tmp['#personCreated'] = $matches[1];
 
         // Backed
         $pattern = '/span>\s(.+) backed/';
@@ -180,82 +179,72 @@ class KickstarterRating extends PlatformRating{
           $pattern = '/\/backed">(.+) backed/';
           preg_match($pattern, $text, $matches);
         }
-        if (isset($matches[1])){$tmp[] = $matches[1];}
-	else{$tmp[] = 0;}
+        if (isset($matches[1])) $tmp['#personBacked'] = $matches[1];
+        else $tmp['#personBacked'] = 0;
 
         // Days running
         $pattern = '/data-duration="(.+)" data-end_time=/';
         preg_match($pattern, $text, $matches);
         $days = floor($matches[1]);
-        $tmp[] = $days;
+        $tmp['#daysActive'] = $days;
 
-        // Time to the end
+        // How long allready
         $pattern = '/data-hours-remaining="(.+)" id=/';
         preg_match($pattern, $text, $matches);
         $running = floor($matches[1]/24);
-        $tmp[] = $days-$running;
+        $tmp['#daysLong'] = $days-$running;
 
         // If project ended
         $pattern = '/Project-ended-(.+) Project-is_/';
         preg_match($pattern, $text, $matches);
-        if ($matches[1] == "true"){$tmp[] = 1;}
-        elseif ($matches[1] == "false"){$tmp[] = 0;}
+        if ($matches[1] == "true") $tmp['Bfinished'] = 1;
+        elseif ($matches[1] == "false") $tmp['Bfinished'] = 0;
 
         // State of project
         $pattern = '/Project-state-(.+) Project/';
         preg_match($pattern, $text, $matches);
-        if ($matches[1] == "successful"){$tmp[] = 1;}
-        else{$tmp[] = 0;}
-        if ($matches[1] == "suspended"){$tmp[] = 1;}
-        else{$tmp[] = 0;}
+        if ($matches[1] == "successful") $tmp['Bsuccessful'] = 1;
+        else $tmp['Bsuccessful'] = 0;
+        if ($matches[1] == "suspended") $tmp['Bsuspended'] = 1;
+        else $tmp['Bsuspended'] = 0;
         switch ($matches[1]){
-          case "live":
-	    $tmp[] = 1;
-	    break;
-          case "successful":
-	    $tmp[] = 2;
-	    break;
-          case "canceled":
-	    $tmp[] = 3;
-	    break;
-          case "failed":
-	    $tmp[] = 4;
- 	    break;
-          case "suspended":
-	    $tmp[] = 5;
-            break;
+          case "live": $tmp['Istate'] = 1; break;
+          case "successful": $tmp['Istate'] = 2; break;
+          case "canceled": $tmp['Istate'] = 3; break;
+          case "failed": $tmp['Istate'] = 4; break;
+          case "suspended": $tmp['Istate'] = 5; break;
         }
 
         // Number of comments
         $pattern = '/data-comments-count="(\d+)" id=/';
         preg_match($pattern, $text, $matches);
-        $tmp[] = $matches[1];
+        $tmp['#comments'] = $matches[1];
 
         // Number of updates
         $pattern = '/data-updates-count="(\d+)" id=/';
         preg_match($pattern, $text, $matches);
-        $tmp[] = $matches[1];
+        $tmp['#updates'] = $matches[1];
 
         // Number of backers
         $pattern = '/backers" content="(.+)"\/>/';
         preg_match($pattern, $text, $matches);
-        $tmp[] = $matches[1];
+        $tmp['#backers'] = $matches[1];
 
         // % Rased calc to money
         $pattern = '/data-percent-raised="(.+)" data-pledged=/';
         preg_match($pattern, $text, $matches);
-        $tmp[] = $money * $matches[1];
+        $tmp['$raised'] = $money * $matches[1];
 
 	// Launch day
         $pattern = '/datetime="(.+)">/';
         preg_match($pattern, $text, $matches);
-        $tmp[] = strtotime($matches[1]);
+        $tmp['Dlaunched'] = strtotime($matches[1]);
 
         // Pledges
         $pattern = '/Pledge[ ]*\s<span class=".+">(.+)<\/span>/';
         preg_match_all($pattern, $text, $matches);
         $pledgesNumber = count($matches[1]);
-        $tmp[] = $pledgesNumber;
+        $tmp['#pledges'] = $pledgesNumber;
 //      for ($i=0; $i<$pledgesNumber; $i++){
 //        $tmp[] = $matches[1][$i] . " ";
 //      }

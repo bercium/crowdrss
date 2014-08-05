@@ -1,10 +1,10 @@
 <?php
-class PlatformRating {
+abstract class PlatformRating {
   protected $html = null;
   protected $url = '';
   
-  abstract protected function firstAnalize();
-  abstract protected function analize();
+  abstract public function firstAnalize();
+  abstract public function analize();
   
   protected function getData(){
     $httpClient = new elHttpClient();
