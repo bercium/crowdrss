@@ -39,7 +39,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
           <h2>1. Choose a platform</h2>
-          <p>Which platforms do you wish to follow?<p>
+          <p>Which platforms do you wish to follow?</p>
             
             
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
@@ -77,7 +77,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           
           <h2>2. Choose categories</h2>
-          <p>Which topics do you find interesting?<p>
+          <p>Which topics do you find interesting?</p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
               <?php
@@ -143,12 +143,36 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
               } ?>
             </ul>
             
-   
           <hr>
           
           
+          <?php /* ?>
+          <h2>3. Limit your results</h2>
+          <p>Want more projects or only the best?</p>
+
+          
+          <script>var slider_value = 4;</script>
+          <div class="row"> 
+            <div class="small-2 medium-1 columns pt20" style="text-align:right;">
+              <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="More projects, less curated">All</span>
+            </div> 
+            <div class="small-8 medium-10 columns"> 
+              <div id="slider" class="range-slider round" data-slider data-options="display_selector: #sliderOutput; start: 1; end: 10;"> 
+                <span class="range-slider-handle"></span> 
+                <span class="range-slider-active-segment"></span> 
+                <input type="hidden" name="rating">
+              </div> 
+            </div> 
+            <div class="small-2 medium-1 columns pt20" >
+              <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Less projects, more curated">Best</span>
+            </div> 
+          </div>
+          
+          <hr><?php */ ?>
+          
+          
           <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
-          <p>We will generate a link and send it to your email address.<p>
+          <p>We will generate a link and send it to your email address.</p>
             
           <div class="email-field">
             <label>Email *
@@ -156,6 +180,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             </label>
             <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
+          
           
           <div style="margin-top: 30px;">
             <?php if (isset($_GET['id'])){ ?>

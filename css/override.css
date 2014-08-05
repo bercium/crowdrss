@@ -25,6 +25,10 @@ div.switch input:checked + label.success{
   margin-top: 10px;
 }
 
+.pt20{
+  margin-top: 20px;
+}
+
 .ml15{
   margin-left: 15px;
 }

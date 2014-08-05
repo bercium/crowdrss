@@ -68,6 +68,7 @@ function showSubCat(id){
 }
 
 $(function() {
-   if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
+  if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
+  $('#slider').foundation('slider', 'set_value', slider_value);
    //$('#preview').show();
 });

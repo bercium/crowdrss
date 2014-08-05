@@ -76,6 +76,7 @@ class SiteController extends Controller
       
       $subcat_sel = array();
       foreach ($cat_sel as $id){
+        //if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
           foreach ($OrigCategories[$id] as $origCat){
             //echo ",".$origCat->id." ";
             if (!in_array($origCat->id,$subcat_sel_inv)){
