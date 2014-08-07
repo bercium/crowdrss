@@ -53,7 +53,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     <div class="mb20">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
-                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']; ?>">
+                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
