@@ -378,7 +378,7 @@ class UpdateCommand extends CConsoleCommand {
         $link_deform = Project::model()->findByAttributes(array('link' => $data->link));
         $link_check = Project::model()->findByAttributes(array('link' => $link));
         $title_check = Project::model()->findByAttributes(array('title' => $data->title));
-        if ($link_check || $link_check_old || $title || $link_deform) {
+        if ($link_check || $link_check_old || $link_check || $link_deform) {
           
         } else {
           $data_single = $this->parseIndiegogo($link);
