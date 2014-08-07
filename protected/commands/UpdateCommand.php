@@ -136,7 +136,7 @@ class UpdateCommand extends CConsoleCommand {
     // Location
     $pattern = '/location-link">(.+)<\/a/';
     preg_match($pattern, $htmlData, $matches);
-    $data['location'] = $matches[1];
+    if (isset($matches[1])) $data['location'] = $matches[1];
 
     return($data);
   }
