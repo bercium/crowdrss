@@ -129,8 +129,9 @@ class UpdateCommand extends CConsoleCommand {
     $data['end_date'] = $matches[1];
 
     $link = $link . "/show_tab/home";
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link);
+    //$htmlDataObject = $httpClient->get($link);
+    //$htmlData = $htmlDataObject->httpBody;
 
     // Location
     $pattern = '/location-link">(.+)<\/a/';
