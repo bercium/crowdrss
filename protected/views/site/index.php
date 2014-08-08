@@ -254,13 +254,13 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <div style="margin-top: 30px;" class="text-center">
             <?php if (isset($_GET['id'])){ ?>
-            <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius large">Update RSS feed</button>
+            <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius large">Update subscribtion</button>
             
             <a href="<?php echo Yii::app()->params['absoluteHost']; ?>">
               <button trk="button_form_reset" class=" radius right tiny">Cancel</button>
             </a>
             <?php }else{ ?>
-            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius large">Subscribe to RSS</button>
+            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius large">Create my feed</button>
             
             <?php /* ?>
             <button trk="button_form_preview" type="button" id="preview" class="info radius hide" style="margin-left:20px;" onclick="previewForm()">Preview</button>

@@ -65,7 +65,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           in beta ... with <i class="fa fa-heart" style="color:#f04124"></i>
         </div>
         <dl class="sub-nav right">
-          <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-envelope"></i> Write to us</a></dd> 
+          <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-envelope"></i> Write us</a></dd> 
           <?php if (!Yii::app()->user->isGuest){ ?>
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
