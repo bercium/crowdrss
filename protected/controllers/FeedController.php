@@ -258,10 +258,12 @@ class FeedController extends Controller
     
     $projects = Project::model()->findAll($sql);
     $subcat = $cat = $plat = '';
+    $rating = 4;
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
     if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
-    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'numOfDailyResults'=>$numOfresults));
+    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'rating'=>$rating, 'numOfDailyResults'=>$numOfresults));
   }  
   
   

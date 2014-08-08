@@ -35,6 +35,7 @@ function previewForm(){
   $('#preview_platform').val(plat);
   $('#preview_category').val(cat);
   $('#preview_subcategory').val(subcat);
+  $('#preview_rating').val($('#rating').val());  
   $('#preview_form').submit();
 }
 

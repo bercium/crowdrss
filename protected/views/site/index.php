@@ -275,6 +275,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             <input type="hidden" id="preview_platform" name="platform">
             <input type="hidden" id="preview_category" name="category">
             <input type="hidden" id="preview_subcategory" name="subcategory">
+            <input type="hidden" id="preview_rating" name="preview_rating">
           </form>
         </div>
         
