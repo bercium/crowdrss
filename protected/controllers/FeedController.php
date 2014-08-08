@@ -154,8 +154,10 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
-    $sql .= ' 1 ';
-    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
+    //$sql .= ' 1 ';
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR) ";
+    if ($sub->rating > 1)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
+    
     $sql .= " ORDER BY time_added DESC";
     $sql .= " LIMIT 10";
     
@@ -204,8 +206,13 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
+    
+    $rating = 4;
+    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+    if (!is_numeric($rating)) $rating = 4;
+    
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
-    $sql .= " 1";
+    $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
@@ -217,6 +224,14 @@ class FeedController extends Controller
   
   public function actionPreviewRss(){
     $this->layout = 'blank';
+    
+    $subcat = $cat = $plat = '';
+    $rating = 4;    
+    if (isset($_POST['category'])) $cat = $_POST['category'];
+    if (isset($_POST['platform'])) $plat = $_POST['platform'];
+    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
+    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+    if (!is_numeric($rating)) $rating = 4;
     
     $subcat = array();
     if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
@@ -250,19 +265,15 @@ class FeedController extends Controller
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     
-    $sql .= " 1";
+    $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
     //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
     
     $projects = Project::model()->findAll($sql);
-    $subcat = $cat = $plat = '';
-    $rating = 4;
-    if (isset($_POST['category'])) $cat = $_POST['category'];
-    if (isset($_POST['platform'])) $plat = $_POST['platform'];
-    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
-    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+
+
     $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'rating'=>$rating, 'numOfDailyResults'=>$numOfresults));
   }  
   
