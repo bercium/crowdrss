@@ -322,8 +322,6 @@ class UpdateCommand extends CConsoleCommand {
           else {
             $htmlData = $this->getHtml($link);
             $data_single = $this->parseKickstarter($htmlData);
-            $KsRating = new KickstarterRating($link, $htmlData);
-            $rating = $KsRating->firstAnalize();
             
             $insert = new Project;
             $insert->title = $data->title;
@@ -350,8 +348,14 @@ class UpdateCommand extends CConsoleCommand {
             if (isset($data_single['goal']))
               $insert->goal = $data_single['goal'];
             
+            $insert->save();
+
+            // get rating 
+            $KsRating = new KickstarterRating($link, $htmlData);
+            $rating = $KsRating->firstAnalize($insert->id);
             $insert->rating = $rating;
             $insert->save();
+            
             $count = 0;
 //	    print_r($insert->getErrors());
           }

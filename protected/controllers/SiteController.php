@@ -36,6 +36,7 @@ class SiteController extends Controller
     $platform_sel = array();
     $subcat_sel = array();
     $email = '';
+    $subscription = null;
     
     $OrigCategories = array();
     $SelOrigCategories = OrigCategory::model()->findAll();
@@ -103,7 +104,9 @@ class SiteController extends Controller
       $subscription->platform = $plat;
       $subscription->category = $cat;
       $subscription->exclude_orig_category = $subcat;
-      $subscription->rss = 1;
+      if (isset($_POST['rss_feed'])) $subscription->rss = 1;
+      if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
+      if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
         setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
@@ -121,10 +124,18 @@ class SiteController extends Controller
         $rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
         $editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$subscription->hash));
         
-        $content = 'You have requested the link to personalized RSS feed for crowdfunding campaigns.<br />
-                    Copy and paste the following link in your favourite RSS reader and enjoy.';
+        if ($subscription->rss){
+          $content = 'Thank you for subscribing to Crowdfunding RSS.<br /><br />
+                      We have send you the link to personalized RSS feed for crowdfunding campaigns.<br />
+                      Just copy and paste the following link in your favourite RSS reader and enjoy.';
 
-        $message->setBody(array("content"=>$content,"linkToFeed"=>$rss_link,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
+          $message->setBody(array("content"=>$content,"linkToFeed"=>$rss_link,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
+        }else{
+          $content = "Thank you for subscribing to Crowdfunding RSS.<br />
+                      We hope you will enjoy our service.";
+
+          $message->setBody(array("content"=>$content,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
+        }
 
         $message->addTo($subscription->email);
         $message->from = Yii::app()->params['noreplyEmail'];
@@ -169,7 +180,7 @@ class SiteController extends Controller
       $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
     }
     
-		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'email'=>$email));
+		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'subscription'=>$subscription));
     
 	}
   

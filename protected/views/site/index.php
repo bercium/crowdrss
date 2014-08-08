@@ -146,9 +146,9 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <?php /* ?>
-          <h2>3. Limit your results</h2>
-          <p>Want more projects or only the best?</p>
+          <?php //* ?>
+          <h2>3. Limit projects</h2>
+          <p>We rate each project so you can enjoy them.</p>
 
           
           <script>var slider_value = 4;</script>
@@ -168,19 +168,88 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             </div> 
           </div>
           
-          <hr><?php */ ?>
+          <hr>
+            
+            
+          <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and select delivery frequency</h2>
+          <p>How often do you wish to receive new projects? Get them instantly with RSS or subscribe to our digest.</p>
+
+          <div class="row">
+             <div class="columns small-12 medium-4">
+               
+               <div class="row" trk="switch_delivery_rss">
+                  <div class="columns small-2 medium-5 large-4">
+                    <div class="switch round small">
+                      <input id="rss_feed" name="rss_feed" <?php if (!isset($subscription->rss)) echo 'checked'; else if ($subscription->rss) echo 'checked'; ?> type="checkbox">
+                      <label for="rss_feed"></label>
+                    </div>
+                  </div>
+                  <div class="columns small-10 medium-6 large-8">
+                    <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="We will generate a RSS link and send it to your email address.">
+                      RSS feed
+                    </label>
+                  </div>
+                </div>
+               
+               <div class="row" trk="switch_delivery_dailyDigest">
+                  <div class="columns small-2 medium-5 large-4">
+                    <div class="switch round small">
+                      <input id="daily_digest" name="daily_digest" <?php if (isset($subscription->dailyDigest) && $subscription->dailyDigest == 1) echo 'checked'; ?> type="checkbox">
+                      <label for="daily_digest"></label>
+                    </div>
+                  </div>
+                  <div class="columns small-10 medium-6 large-8">
+                    <label for="daily_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a day you will recieve an email with top 10 projects that day.">
+                      Daily digest
+                    </label>
+                  </div>
+                </div>
+               
+               <div class="row" trk="switch_delivery_weeklyDigest">
+                  <div class="columns small-2 medium-5 large-4">
+                    <div class="switch round small">
+                      <input id="weekly_digest" name="weekly_digest" <?php if (isset($subscription->weeklyDigest) && $subscription->weeklyDigest == 7) echo 'checked'; ?> type="checkbox">
+                      <label for="weekly_digest"></label>
+                    </div>
+                  </div>
+                  <div class="columns small-10 medium-6 large-8">
+                    <label for="weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week you will get an overview of most popular projects in the last week.">
+                      Weekly digest
+                    </label>
+                  </div>
+                </div>
+               
+             </div>
+             <div class="columns small-12 medium-8">
+               <div class="email-field">
+                <label>Email *
+                  <input type="email" name="email" value="<?php if (isset($subscription->email)) echo $subscription->email; ?>" required>
+                </label>
+                <small style="font-style: italic;">We will use your email only to send you RSS link or digest and occasional site updates. We will never sell or give your email address to anyone!</small>
+              </div>
+             </div>
+           </div>
+ 
+          
+          
+           
+           
+          <?php /*/ ?>
           
           
           <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
           <p>We will generate a link and send it to your email address.</p>
             
+          <input id="rss_feed" name="rss_feed" type="hidden" value="1">
+
           <div class="email-field">
             <label>Email *
-              <input type="email" name="email" value="<?php echo $email; ?>" required>
+              <input type="email" name="email" value="<?php if (isset($subscription->email)) echo $subscription->email; ?>" required>
             </label>
             <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
           
+          <?php //*/ ?>
           
           <div style="margin-top: 30px;">
             <?php if (isset($_GET['id'])){ ?>
