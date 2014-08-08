@@ -25,10 +25,6 @@ div.switch input:checked + label.success{
   margin-top: 10px;
 }
 
-.pt20{
-  margin-top: 20px;
-}
-
 .ml15{
   margin-left: 15px;
 }
@@ -53,10 +49,13 @@ div.switch input:checked + label.success{
   margin-bottom: 10px;
 }
 
+.pt20{
+  margin-top: 20px;
+}
+
 .pb30{
   padding-bottom: 30px;
 }
-
 
 .pt30{
   padding-top : 30px;

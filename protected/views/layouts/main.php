@@ -60,9 +60,10 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 
   <div class="footer">
     <div class="row">
-      <div class="column small-12 pt30  text-center">
+      <div class="column small-12 pt30 text-center">
         <div class="left">
           in beta ...
+          
         </div>
         <dl class="sub-nav right">
           <dd><a htef="#" onclick="contact(this);" trk="link_bottom_contact us">Write us</a></dd> 
@@ -73,6 +74,13 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
           <?php } ?>
         </dl>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column small-12 text-center mb20">
+        <small>
+           All published platforms and their related content and Trademarks are owned by individual platform and their respective project owners ⋅ Crowdfunding RSS is not affiliated with any of them.
+        </small>
       </div>
     </div>
   </div>
