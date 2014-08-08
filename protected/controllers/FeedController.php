@@ -154,8 +154,8 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
-    $sql .= ' 1 ';
-    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
+    //$sql .= ' 1 ';
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
     $sql .= " ORDER BY time_added DESC";
     $sql .= " LIMIT 10";
     
