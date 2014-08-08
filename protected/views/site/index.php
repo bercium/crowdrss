@@ -151,7 +151,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <p>We rate each project so you can enjoy them. Select how many projects you wish to receive.</p>
 
           
-          <script>var slider_value = 4;</script>
+          <script>var slider_value = <?php if (!isset($subscription->rating)) echo "4"; else echo $subscription->rating; ?>;</script>
           <div class="row"> 
             <div class="small-2 medium-1 columns pt20" style="text-align:right;">
               <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="More projects, less curated">All</span>
@@ -171,8 +171,9 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
             
             
-          <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and select delivery frequency</h2>
-          <p>Get them instantly with RSS or subscribe to a mail digest.</p>
+          <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
+            and Finish</h2>
+          <p>Instantly receive projects with RSS feed or subscribe to a mail digest.</p>
 
           <div class="row">
              <div class="columns small-12 medium-4">
@@ -185,7 +186,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     </div>
                   </div>
                   <div class="columns small-10 medium-6 large-8">
-                    <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="We will generate a RSS link and send it to your email address.">
+                    <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Instantly get all projects in your favourit RSS reader.">
                       RSS feed
                     </label>
                   </div>
@@ -199,7 +200,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     </div>
                   </div>
                   <div class="columns small-10 medium-6 large-8">
-                    <label for="daily_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a day you will recieve an email with top 10 projects that day.">
+                    <label for="daily_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a day recieve an email with top 10 projects that day.">
                       Daily digest
                     </label>
                   </div>
@@ -213,7 +214,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     </div>
                   </div>
                   <div class="columns small-10 medium-6 large-8">
-                    <label for="weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week you will get an overview of most popular projects in the last week.">
+                    <label for="weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week get an overview of most popular projects in the last week.">
                       Weekly digest
                     </label>
                   </div>
@@ -222,7 +223,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
              </div>
              <div class="columns small-12 medium-8">
                <div class="email-field">
-                <label>Email *
+                <label>Email <font style="color:#f04124">*</font>
                   <input type="email" name="email" value="<?php if (isset($subscription->email)) echo $subscription->email; ?>" required>
                 </label>
                 <small style="font-style: italic;">We will use your email only to send you RSS link or digest and occasional site updates. We will never sell or give your email address to anyone!</small>

@@ -107,6 +107,7 @@ class SiteController extends Controller
       if (isset($_POST['rss_feed'])) $subscription->rss = 1;
       if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
       if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
+      if (isset($_POST['rating'])) $subscription->rating = $_POST['rating'];
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
         setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
