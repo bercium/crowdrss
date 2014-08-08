@@ -148,7 +148,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <?php //* ?>
           <h2>3. Limit projects</h2>
-          <p>We rate each project so you can enjoy them.</p>
+          <p>We rate each project so you can enjoy them. Select how many projects you wish to receive.</p>
 
           
           <script>var slider_value = 4;</script>
@@ -172,7 +172,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             
             
           <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and select delivery frequency</h2>
-          <p>How often do you wish to receive new projects? Get them instantly with RSS or subscribe to our digest.</p>
+          <p>Get them instantly with RSS or subscribe to a mail digest.</p>
 
           <div class="row">
              <div class="columns small-12 medium-4">
@@ -251,20 +251,20 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <?php //*/ ?>
           
-          <div style="margin-top: 30px;">
+          <div style="margin-top: 30px;" class="text-center">
             <?php if (isset($_GET['id'])){ ?>
-            <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius">Update RSS feed</button>
+            <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius large">Update RSS feed</button>
             
             <a href="<?php echo Yii::app()->params['absoluteHost']; ?>">
-              <button trk="button_form_reset" class="secondary radius right">Cancel</button>
+              <button trk="button_form_reset" class=" radius right tiny">Cancel</button>
             </a>
             <?php }else{ ?>
-            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius">Subscribe to RSS</button>
+            <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius large">Subscribe to RSS</button>
             
             <?php /* ?>
             <button trk="button_form_preview" type="button" id="preview" class="info radius hide" style="margin-left:20px;" onclick="previewForm()">Preview</button>
             <?php */ ?>
-            <button trk="button_form_reset" type="reset" class="secondary radius right">Reset all</button>
+            <button trk="button_form_reset" type="reset" class=" radius right tiny">Reset form</button>
             <?php } ?>
           </div>
             

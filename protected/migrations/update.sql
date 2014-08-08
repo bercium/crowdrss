@@ -48,7 +48,7 @@ ALTER TABLE `project` ADD `rating` DOUBLE NULL AFTER `type_of_funding` ;
 
 
 ALTER TABLE `subscription` ADD `daily_digest` INT NULL AFTER `rss` ,
-ADD `weekly_digest` INT NULL AFTER `daily_digest` ;
+ADD `weekly_digest` INT NULL AFTER `daily_digest` , 
 ADD `rating` INT NULL AFTER `weekly_digest` ;
 
 ALTER TABLE `subscription` CHANGE `daily_digest` `daily_digest` BOOLEAN NULL DEFAULT NULL ,
