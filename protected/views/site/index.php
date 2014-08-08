@@ -22,8 +22,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
         <div class="columns large-12 large-centered">
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
-            Select your favorite platform, chose your interests and we will generate a personalized RSS feed for you. 
-            Then just add it to your favorite RSS reader and enjoy.
+            Select your favorite platform, chose your interests and we will deliver you the best projects right in your inbox or trough RSS feed.
           </p>
 
         </div>
@@ -186,7 +185,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     </div>
                   </div>
                   <div class="columns small-10 medium-6 large-8">
-                    <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Instantly get all projects in your favourit RSS reader.">
+                    <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Instantly get all projects in your favorit RSS reader.">
                       RSS feed
                     </label>
                   </div>
