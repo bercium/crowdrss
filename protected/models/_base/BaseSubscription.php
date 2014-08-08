@@ -7,17 +7,19 @@
  * property or method in class "Subscription".
  *
  * Columns in table "subscription" available as properties of the model,
- * and there are no model relations.
+ * followed by relations of table "subscription" available as properties of the model.
  *
  * @property integer $id
  * @property string $hash
  * @property string $email
  * @property string $platform
  * @property string $category
+ * @property string $exclude_orig_category
  * @property integer $rss
  * @property string $time_created
  * @property string $time_updated
  *
+ * @property FeedClickLog[] $feedClickLogs
  */
 abstract class BaseSubscription extends GxActiveRecord {
 
@@ -40,17 +42,17 @@ abstract class BaseSubscription extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('hash, email', 'required'),
-      array('time_created, time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
-			array('rss', 'numerical', 'integerOnly'=>true),
+      array('time_created, time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),			array('rss', 'numerical', 'integerOnly'=>true),
 			array('hash', 'length', 'max'=>100),
-			array('email, platform, category', 'length', 'max'=>255),
-			array('platform, category, rss', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, hash, email, platform, category, rss, time_created, time_updated', 'safe', 'on'=>'search'),
+			array('email, platform, category, exclude_orig_category', 'length', 'max'=>255),
+			array('platform, category, exclude_orig_category, rss', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, hash, email, platform, category, exclude_orig_category, rss, time_created, time_updated', 'safe', 'on'=>'search'),
 		);
 	}
 
 	public function relations() {
 		return array(
+			'feedClickLogs' => array(self::HAS_MANY, 'FeedClickLog', 'subscription_id'),
 		);
 	}
 
@@ -66,9 +68,11 @@ abstract class BaseSubscription extends GxActiveRecord {
 			'email' => Yii::t('app', 'Email'),
 			'platform' => Yii::t('app', 'Platform'),
 			'category' => Yii::t('app', 'Category'),
+			'exclude_orig_category' => Yii::t('app', 'Exclude Orig Category'),
 			'rss' => Yii::t('app', 'Rss'),
 			'time_created' => Yii::t('app', 'Time Created'),
 			'time_updated' => Yii::t('app', 'Time Updated'),
+			'feedClickLogs' => null,
 		);
 	}
 
@@ -80,6 +84,7 @@ abstract class BaseSubscription extends GxActiveRecord {
 		$criteria->compare('email', $this->email, true);
 		$criteria->compare('platform', $this->platform, true);
 		$criteria->compare('category', $this->category, true);
+		$criteria->compare('exclude_orig_category', $this->exclude_orig_category, true);
 		$criteria->compare('rss', $this->rss);
 		$criteria->compare('time_created', $this->time_created, true);
 		$criteria->compare('time_updated', $this->time_updated, true);

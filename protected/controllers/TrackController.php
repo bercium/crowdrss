@@ -24,7 +24,7 @@ class TrackController extends Controller
 	{
 		return array(
 			array('allow', // allow all users to perform actions
-        'actions'=>array('mailOpen','ml','rl'),
+        //'actions'=>array('mailOpen','ml','rl'),
 				'users'=>array('*'),
 			),
 			/*array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -58,14 +58,14 @@ class TrackController extends Controller
 	}
   
   protected function beforeAction($action){
-    if ($action->id != 'index'){
+    //if ($action->id != 'index'){
       foreach (Yii::app()->log->routes as $route){
         //if ($route instanceof CWebLogRoute){
           $route->enabled = false;
         //}
       }
       Yii::app()->clientScript->reset();
-    }
+    //}
     return true;
   }
   
@@ -80,10 +80,10 @@ class TrackController extends Controller
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionIndex($id = 1){
+	/*public function actionIndex($id = 1){
     $this->layout = 'card';
     //$this->render('index');
- 	}
+ 	}*/
   
 	/**
 	 * track message openers
@@ -109,8 +109,7 @@ class TrackController extends Controller
       }
     }
     
- 	}
-  
+ 	}  
 
   
   /**
@@ -133,6 +132,22 @@ class TrackController extends Controller
     $this->redirect($l);
     Yii::app()->end();
   }
+  
+  /**
+   * tracking opening of RSS item
+   */
+  public function actionOf($l,$i = null) {
+    // !!!log clicks
+    //return;
+    
+    $project = Project::model()->findByAttributes(array('link'=>$l));
+    if ($project){
+      $feedClick = new FeedOpenLog();
+      $feedClick->project_id = $project->id;
+      $feedClick->subscription_id = $i;
+      $feedClick->save();
+    }
+  }  
   
  
 	

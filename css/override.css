@@ -12,8 +12,25 @@ li .switch , li .switch label{
   margin-bottom: 0px;
 }
 
+div.switch input:checked + label.success{
+  background-color: #43ac6a;
+}
+
+
 .mt0{
   margin-top: 0px;
+}
+
+.mt10{
+  margin-top: 10px;
+}
+
+.pt20{
+  margin-top: 20px;
+}
+
+.ml15{
+  margin-left: 15px;
 }
 
 .mb0{
@@ -30,6 +47,10 @@ li .switch , li .switch label{
 
 .mb20{
   margin-bottom: 20px;
+}
+
+.mt10{
+  margin-bottom: 10px;
 }
 
 .pb30{

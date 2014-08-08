@@ -22,7 +22,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
         <div class="columns large-12 large-centered">
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
-            Select your favourite platform, chose your interests and we will generate a personalized RSS feed for you. 
+            Select your favorite platform, chose your interests and we will generate a personalized RSS feed for you. 
             Then just add it to your favorite RSS reader and enjoy.
           </p>
 
@@ -38,8 +38,8 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
-          <h2>1. Choose platform</h2>
-          <p>Which platforms do you wish to follow?<p>
+          <h2>1. Choose a platform</h2>
+          <p>Which platforms do you wish to follow?</p>
             
             
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
@@ -53,7 +53,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     <div class="mb20">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
-                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']; ?>">
+                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
@@ -77,7 +77,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           
           <h2>2. Choose categories</h2>
-          <p>Which topics do you find interesting?<p>
+          <p>Which topics do you find interesting?</p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
               <?php
@@ -90,27 +90,89 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                   <div class="row">
                     <div class="columns small-4">
                       <div class="switch round small">
-                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox">
+                        <input id="cat_<?php echo $cat['id']; ?>" name="cat[<?php echo $cat['id']; ?>]" <?php if ($cat['selected']) echo 'checked'; ?> type="checkbox" onchange="toggleSubCat(<?php echo $cat['id']; ?>)">
                         <label for="cat_<?php echo $cat['id']; ?>"></label>
                       </div>
                     </div>
                     <div class="columns small-8">
+                        <?php if(count($cat['subcat']) > 1){ ?>
+                        <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" onclick="showSubCat(<?php echo $cat['id']; ?>);" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
+                          <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+                        </a>
+                        <?php } ?>
+                      
                         <label for="cat_<?php echo $cat['id']; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
                           <?php echo $cat['name']; ?>
                         </label>
+                      
                     </div>
                   </div>
+                  <?php if(count($cat['subcat']) > 1){ ?>
+                  <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
+                    <div class="columns small-12 mb20 mt10 ml15">
+                      <?php /* ?>
+                      <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">
+                        <i class="fa fa-times"></i>
+                      </a>
+                      <br /><?php */ ?>
+                      
+                      <?php foreach ($cat['subcat'] as $subcat) { ?>
+                      <div class="mt10">
+                        <div class="row">
+                          <div class="columns small-4">
+                            <div class="switch round tiny">
+                              <input id="subcat_<?php echo $subcat['id']; ?>" name="subcat[<?php echo $subcat['id']; ?>]" <?php if ($subcat['selected']) echo 'checked'; ?> type="checkbox">
+                              <label class="success" for="subcat_<?php echo $subcat['id']; ?>"></label>
+                            </div>
+                          </div>
+                          <div class="columns small-8">
+                              <label for="subcat_<?php echo $subcat['id']; ?>">
+                                <?php echo $subcat['name']; ?>
+                              </label>
+                          </div>
+                        </div>
+                      </div>
+                      <?php } ?>
+                                           
+                    </div>
+                  </div>
+                  <?php } ?>
+                  
                 </li>
                 <?php
               } ?>
             </ul>
             
-   
           <hr>
           
           
-          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Only first 10 projects will be shown in a preview">Preview</a> and get the RSS link</h2>
-          <p>We will generate a link and send it to your email address.<p>
+          <?php /* ?>
+          <h2>3. Limit your results</h2>
+          <p>Want more projects or only the best?</p>
+
+          
+          <script>var slider_value = 4;</script>
+          <div class="row"> 
+            <div class="small-2 medium-1 columns pt20" style="text-align:right;">
+              <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="More projects, less curated">All</span>
+            </div> 
+            <div class="small-8 medium-10 columns"> 
+              <div id="slider" class="range-slider round" data-slider data-options="display_selector: #sliderOutput; start: 1; end: 10;"> 
+                <span class="range-slider-handle"></span> 
+                <span class="range-slider-active-segment"></span> 
+                <input type="hidden" name="rating">
+              </div> 
+            </div> 
+            <div class="small-2 medium-1 columns pt20" >
+              <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Less projects, more curated">Best</span>
+            </div> 
+          </div>
+          
+          <hr><?php */ ?>
+          
+          
+          <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
+          <p>We will generate a link and send it to your email address.</p>
             
           <div class="email-field">
             <label>Email *
@@ -118,6 +180,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             </label>
             <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
+          
           
           <div style="margin-top: 30px;">
             <?php if (isset($_GET['id'])){ ?>
@@ -141,6 +204,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/previewRss'); ?>" target="_blank">
             <input type="hidden" id="preview_platform" name="platform">
             <input type="hidden" id="preview_category" name="category">
+            <input type="hidden" id="preview_subcategory" name="subcategory">
           </form>
         </div>
         

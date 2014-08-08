@@ -4,12 +4,13 @@ class FeedController extends Controller
 {
   
   protected function beforeAction($action){
-    //if ($action->id == 'rss')
+    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl')){
       foreach (Yii::app()->log->routes as $route){
         //if ($route instanceof CWebLogRoute){
           $route->enabled = false;
         //}
       }
+    }
     return true;
   }
   
@@ -39,18 +40,18 @@ class FeedController extends Controller
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
       if ($id){
-        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></link>';
-        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$sub->id)) . ']]></guid>';
+        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></link>';
+        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></guid>';
       }else{
-        $rssResponse .= '<link><![CDATA[' . $project->link . ']]></link>';
-        $rssResponse .= '<guid><![CDATA[' . $project->link . ']]></guid>';
+        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
       }
       
       $desc = '';
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
-      $desc.= '<img src="' . $project->image . '" alt=""/><br />';
+      $desc.= '<img src="' . $project->image . '" alt="" border="0" style="margin-bottom:8px;"/>';
 
-      $desc.= "<br />".$project->description." <br />";
+      $desc.= "<p>".$project->description." <br />";
       
       $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
@@ -60,6 +61,20 @@ class FeedController extends Controller
         if ($project->type_of_funding == 0) $desc.= " Fixed funding";
         else $desc.= " Flexible funding";
       }
+      
+      // voting and tracking
+      if ($id){
+        //if ($id == 1 || $id == 2){
+          $desc .= '</p><p style="text-align:right;">
+                    <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a> | ';
+          $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a>';
+        //}
+      // track opening of feed
+        $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
+      }
+      else $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link)) .'" />';
+      
+      $desc .= "</p>";
       $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
@@ -71,6 +86,21 @@ class FeedController extends Controller
     $rssResponse .= '</rss>';
     
     return $rssResponse;
+  }
+  
+  /**
+   * validate if just ID's in table just to be safe
+   */
+  function validateId($string){
+    $array = explode(",", $string);
+    $string = '';
+    foreach ($array as $value){
+      if (is_numeric($value)){
+        if ($string) $string .= ',';
+        $string .= $value;
+      }
+    }
+    return $string;
   }
   
   /**
@@ -98,19 +128,38 @@ class FeedController extends Controller
 //    $rssResponse .= '<atom:link href="' . $link z hashom do rss . '" rel="self" type="application/rss+xml" />';
     
     // project constrains
+    
+    $subcat = array();
+    if ($this->validateId($sub->exclude_orig_category)){
+      $subcat = explode(",",$this->validateId($sub->exclude_orig_category));
+    }
+    
     $sql = '';
-    if ($sub->category){
-      $orgCat = OrigCategory::model()->findAll("(category_id in (".$sub->category."))");
+    if ($this->validateId($sub->category)){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($sub->category)."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        $allCats[$cat->id] = $cat->id;
+        if (!in_array($cat->id, $subcat)) $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+      $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if ($sub->platform) $sql .= " (platform_id in (".$sub->platform.")) AND ";
-    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
+    if ($this->validateId($sub->platform)) $sql .= " (platform_id IN (".$this->validateId($sub->platform).")) AND ";
+    else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
+    }
+    $sql .= ' 1 ';
+    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
     $sql .= " ORDER BY time_added DESC";
+    $sql .= " LIMIT 10";
+    
+   // echo $sql;
     
     
     // echo rss
@@ -118,26 +167,42 @@ class FeedController extends Controller
     Yii::app()->end();
   }
   
-  public function actionPreviewRss(){
+  /**
+   * 
+   */
+  public function actionDownloadRss(){
+    
     Yii::app()->clientScript->reset();
     $this->layout = 'none';
     
     header('Content-Type: application/rss+xml; charset=UTF-8');
     mb_internal_encoding("UTF-8"); 
 
+    $subcat = array();
+    if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
+      $subcat = explode(",",$this->validateId($_POST['subcategory']));
+    }
     
     $sql = '';
-    if (!empty($_POST['category'])){
-      $orgCat = OrigCategory::model()->findAll("(category_id in (".$_POST['category']."))");
+    if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($_POST['category'])."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        $allCats[$cat->id] = $cat->id;
+        if (in_array($cat->id, $subcat))  $allCats[$cat->id] = $cat->id;
       }
-      $sql .= " (orig_category_id in (".implode(',',$allCats).")) AND ";
+      if (implode(',',$allCats) != '')  $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if (!empty($_POST['platform']) && ($_POST['platform'] != '0')){
-      $sql .= " (platform_id in (".$_POST['platform'].")) AND ";
+    if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
+      $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
+    }else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     $sql .= " 1";
@@ -150,11 +215,61 @@ class FeedController extends Controller
   }
   
   
+  public function actionPreviewRss(){
+    $this->layout = 'blank';
+    
+    $subcat = array();
+    if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
+      $subcat = explode(",",$this->validateId($_POST['subcategory']));
+    }
+    
+    $sql = '';
+    if (!empty($_POST['category']) && ($this->validateId($_POST['category'])) ){
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($_POST['category'])."))");
+      
+      $allCats = array();
+      foreach ($orgCat as $cat){
+        if (in_array($cat->id, $subcat))  $allCats[$cat->id] = $cat->id;
+      }
+      if (implode(',',$allCats) != '')  $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
+    }
+    if (!empty($_POST['platform']) && ($_POST['platform'] != '0') && ($this->validateId($_POST['platform'])) ){
+      $sql .= " (platform_id IN (".$this->validateId($_POST['platform']).")) AND ";
+    }else{
+      $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
+      $selplat = '';
+      foreach ($platforms as $platform){
+        if ($selplat) $selplat .= ',';
+        $selplat .= $platform->id;
+      }
+      if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
+    }
+    
+    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -96 HOUR)")->queryScalar();
+    $numOfresults = round($numOfresults / 4);
+    
+    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
+    
+    $sql .= " 1";
+    $sql .= " ORDER BY time_added DESC"
+           ." LIMIT 10";
+    
+    //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
+    
+    $projects = Project::model()->findAll($sql);
+    $subcat = $cat = $plat = '';
+    if (isset($_POST['category'])) $cat = $_POST['category'];
+    if (isset($_POST['platform'])) $plat = $_POST['platform'];
+    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'numOfDailyResults'=>$numOfresults));
+  }  
+  
+  
   
   /**
    * tracking RSS link clicks and redirecting them
    */
-  public function actionRl($l,$i) {
+  public function actionRl($l,$i = null) {
     // !!!log clicks
     $project = Project::model()->findByAttributes(array('link'=>$l));
     if ($project){
@@ -166,6 +281,29 @@ class FeedController extends Controller
     
     $this->redirect($l);
     Yii::app()->end();
+  }
+  
+  
+  /**
+   * used for voting on feeds
+   */
+  public function actionVote($l, $ra ,$i = null) {
+
+    $project = Project::model()->findByAttributes(array('link'=>$l));
+    if ($project){
+      $feedClick = FeedRate::model()->findByAttributes(array('project_id'=>$project->id,'subscription_id'=>$i));
+      if (!$feedClick){
+        $feedClick = new FeedRate();
+        $feedClick->project_id = $project->id;
+        $feedClick->subscription_id = $i;
+        $feedClick->vote = $ra;
+        $feedClick->save();
+        //print_r($feedClick->getErrors());
+      }
+    }
+    
+    $this->layout = 'blank';
+    $this->render('vote');
   }
   
   

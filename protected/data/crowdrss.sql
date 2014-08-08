@@ -3,18 +3,12 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 22, 2014 at 02:27 PM
+-- Generation Time: Jul 28, 2014 at 11:49 AM
 -- Server version: 5.5.37-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `crowdrss`
@@ -30,37 +24,23 @@ CREATE TABLE IF NOT EXISTS `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=27 ;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `category`
+-- Table structure for table `feed_click_log`
 --
 
-INSERT INTO `category` (`id`, `name`) VALUES
-(1, 'Animals'),
-(2, 'Art'),
-(3, 'Comics'),
-(4, 'Community'),
-(5, 'Crafts'),
-(6, 'Dance'),
-(7, 'Design'),
-(8, 'Education'),
-(9, 'Environment'),
-(10, 'Fashion'),
-(11, 'Film & Video'),
-(12, 'Food'),
-(13, 'Games'),
-(14, 'Health'),
-(15, 'Music'),
-(16, 'Photography'),
-(17, 'Politics'),
-(18, 'Religion'),
-(19, 'Small Business'),
-(20, 'Sports'),
-(21, 'Technology'),
-(22, 'Theater'),
-(23, 'Transmedia'),
-(24, 'Writing');
+CREATE TABLE IF NOT EXISTS `feed_click_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `subscription_id` int(11) DEFAULT NULL,
+  `time_clicked` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `subscription_id` (`subscription_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -94,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `mail_log` (
   `extra_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `tracking_code` (`tracking_code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -108,7 +88,104 @@ CREATE TABLE IF NOT EXISTS `orig_category` (
   `category_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=181 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=219 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `platform`
+--
+
+CREATE TABLE IF NOT EXISTS `platform` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `project`
+--
+
+CREATE TABLE IF NOT EXISTS `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `platform_id` int(11) NOT NULL,
+  `orig_category_id` int(11) NOT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `link` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `creator_created` int(11) DEFAULT NULL,
+  `creator_backed` int(11) DEFAULT NULL,
+  `goal` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `type_of_funding` int(11) DEFAULT NULL,
+  `time_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `platform_id` (`platform_id`),
+  KEY `orig_category_id` (`orig_category_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subscription`
+--
+
+CREATE TABLE IF NOT EXISTS `subscription` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `hash` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `platform` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `rss` tinyint(1) DEFAULT '0',
+  `time_created` datetime NOT NULL,
+  `time_updated` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+
+
+
+--
+-- Database: `crowdrss`
+--
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `name`) VALUES
+(1, 'Animals'),
+(2, 'Art'),
+(3, 'Comics'),
+(4, 'Community'),
+(5, 'Crafts'),
+(6, 'Dance'),
+(7, 'Design'),
+(8, 'Education'),
+(9, 'Environment'),
+(10, 'Fashion'),
+(11, 'Film & Video'),
+(12, 'Food'),
+(13, 'Games'),
+(14, 'Health'),
+(15, 'Music'),
+(16, 'Photography'),
+(17, 'Politics'),
+(18, 'Religion'),
+(19, 'Business & Entrepreneurial'),
+(20, 'Sports'),
+(21, 'Technology'),
+(22, 'Theater'),
+(23, 'Travel'),
+(24, 'Writing'),
+(25, 'Other'),
+(26, 'Personal');
 
 --
 -- Dumping data for table `orig_category`
@@ -285,7 +362,7 @@ INSERT INTO `orig_category` (`id`, `name`, `category_id`) VALUES
 (169, 'Sports', 20),
 (170, 'Technology', 21),
 (171, 'Theater', 22),
-(172, 'Transmedia', 23),
+(172, 'Transmedia', 24),
 (173, 'Video / Web', 11),
 (174, 'Writing', 24),
 (175, 'Crafts', 5),
@@ -293,19 +370,45 @@ INSERT INTO `orig_category` (`id`, `name`, `category_id`) VALUES
 (177, 'Games', 13),
 (178, 'Journalism', 24),
 (179, 'Publishing', 24),
-(180, 'Fiction', 24);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `platform`
---
-
-CREATE TABLE IF NOT EXISTS `platform` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+(180, 'Fiction', 24),
+(181, 'Animals & Pets', 1),
+(182, 'Charity', 4),
+(183, 'Volunteer & Service', 4),
+(184, 'Creative', 5),
+(185, 'Education & Learning', 8),
+(186, 'Medical & Healing', 14),
+(187, 'Religious', 18),
+(188, 'Business & Startups', 19),
+(189, 'Nonprofits', 19),
+(190, 'Other', 25),
+(191, 'Special Events', 25),
+(192, 'Competitions', 25),
+(193, 'Music & Film', 25),
+(194, 'Family', 26),
+(195, 'Funerals & Tributes', 26),
+(196, 'Honeymoons', 26),
+(197, 'Personal', 26),
+(198, 'Weddings', 26),
+(199, 'Travel & Adventure', 23),
+(200, 'Impact Teachers', 8),
+(201, 'Book', 24),
+(202, 'Screenplay', 24),
+(203, 'Philanthropic Cause', 24),
+(204, 'Education', 24),
+(205, 'Technology', 24),
+(206, 'Other', 24),
+(207, 'Pets', 1),
+(208, 'Volunteering', 4),
+(209, 'Schools', 8),
+(210, 'Medical', 14),
+(211, 'Non-Profit', 19),
+(212, 'Theater & Dance', 25),
+(213, 'Web Projects', 25),
+(214, 'Funerals & Memorials', 26),
+(215, 'Hopes & Dreams', 26),
+(216, 'Family Needs', 26),
+(217, 'Celebrations', 25),
+(218, 'Business', 19);
 
 --
 -- Dumping data for table `platform`
@@ -313,81 +416,23 @@ CREATE TABLE IF NOT EXISTS `platform` (
 
 INSERT INTO `platform` (`id`, `name`) VALUES
 (1, 'Kickstarter'),
-(2, 'Indiegogo');
+(2, 'Indiegogo'),
+(3, 'Go get funding'),
+(4, 'Fund anything'),
+(5, 'PubSlush');
 
--- --------------------------------------------------------
 
---
--- Table structure for table `project`
---
-
-CREATE TABLE IF NOT EXISTS `project` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `platform_id` int(11) NOT NULL,
-  `orig_category_id` int(11) NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `link` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `start` datetime DEFAULT NULL,
-  `end` datetime DEFAULT NULL,
-  `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `creator` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `creator_created` int(11) DEFAULT NULL,
-  `creator_backed` int(11) DEFAULT NULL,
-  `goal` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `type_of_funding` int(11) DEFAULT NULL,
-  `time_added` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `platform_id` (`platform_id`),
-  KEY `orig_category_id` (`orig_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subscription`
---
-
-CREATE TABLE IF NOT EXISTS `subscription` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `hash` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `platform` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `rss` tinyint(1) DEFAULT '0',
-  `time_created` datetime NOT NULL,
-  `time_updated` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-
---
--- Database: `crowdrss`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `feed_click_log`
---
-
-CREATE TABLE IF NOT EXISTS `feed_click_log` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `project_id` int(11) NOT NULL,
-  `subscription_id` int(11) NOT NULL,
-  `time_clicked` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`),
-  KEY `subscription_id` (`subscription_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
 --
 
-
--- Constraints for dumped tables
 --
+-- Constraints for table `feed_click_log`
+--
+ALTER TABLE `feed_click_log`
+  ADD CONSTRAINT `feed_click_log_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `feed_click_log_ibfk_2` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `mail_click_log`
@@ -399,7 +444,7 @@ ALTER TABLE `mail_click_log`
 -- Constraints for table `orig_category`
 --
 ALTER TABLE `orig_category`
-  ADD CONSTRAINT `orig_category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `orig_category_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `project`
@@ -407,17 +452,3 @@ ALTER TABLE `orig_category`
 ALTER TABLE `project`
   ADD CONSTRAINT `project_ibfk_1` FOREIGN KEY (`platform_id`) REFERENCES `platform` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `project_ibfk_2` FOREIGN KEY (`orig_category_id`) REFERENCES `orig_category` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
---
--- Constraints for table `feed_click_log`
---
-ALTER TABLE `feed_click_log`
-  ADD CONSTRAINT `feed_click_log_ibfk_2` FOREIGN KEY (`subscription_id`) REFERENCES `subscription` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `feed_click_log_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

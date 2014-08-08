@@ -20,7 +20,7 @@ $a = array(
 		'application.components.*',
 
 		'application.components.*',
-    //'application.components.functions.*',
+    'application.components.rating.*',
     //'application.components.extenders.*',
     //'application.components.behaviours.*',
     //'application.components.lib.*',
@@ -90,9 +90,9 @@ $a = array(
         array(
   					'levels'=>'error',
             'class'=>'CEmailLogRoute',
-            'emails' => array('team@eberce.si'),
+            'emails' => array('info@crowdfundingrss.com'),
             //'categories' => 'exception.*, system.*',
-            'sentFrom'   => 'script@eberce.si',
+            'sentFrom'   => 'script@crowdfundingrss.com',
             'subject'    => 'Error on production for crowd RSS',
             'utf8' => true,
             'enabled'=>(!YII_DEBUG),  // send mail only from production

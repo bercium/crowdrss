@@ -7,11 +7,13 @@
  * property or method in class "Platform".
  *
  * Columns in table "platform" available as properties of the model,
- * and there are no model relations.
+ * followed by relations of table "platform" available as properties of the model.
  *
  * @property integer $id
  * @property string $name
+ * @property integer $active
  *
+ * @property Project[] $projects
  */
 abstract class BasePlatform extends GxActiveRecord {
 
@@ -34,13 +36,16 @@ abstract class BasePlatform extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('name', 'required'),
+			array('active', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
-			array('id, name', 'safe', 'on'=>'search'),
+			array('active', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, name, active', 'safe', 'on'=>'search'),
 		);
 	}
 
 	public function relations() {
 		return array(
+			'projects' => array(self::HAS_MANY, 'Project', 'platform_id'),
 		);
 	}
 
@@ -53,6 +58,8 @@ abstract class BasePlatform extends GxActiveRecord {
 		return array(
 			'id' => Yii::t('app', 'ID'),
 			'name' => Yii::t('app', 'Name'),
+			'active' => Yii::t('app', 'Active'),
+			'projects' => null,
 		);
 	}
 
@@ -61,6 +68,7 @@ abstract class BasePlatform extends GxActiveRecord {
 
 		$criteria->compare('id', $this->id);
 		$criteria->compare('name', $this->name, true);
+		$criteria->compare('active', $this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

@@ -34,7 +34,14 @@ class SiteController extends Controller
     
     $cat_sel = array();
     $platform_sel = array();
+    $subcat_sel = array();
     $email = '';
+    
+    $OrigCategories = array();
+    $SelOrigCategories = OrigCategory::model()->findAll();
+    foreach ($SelOrigCategories as $origcat){
+      $OrigCategories[$origcat->category_id][] = $origcat;
+    }
     
     //load previous feed
     if (isset($_GET['id'])){
@@ -42,6 +49,8 @@ class SiteController extends Controller
       if ($subscription){
         $cat_sel = explode(',',$subscription->category);
         $platform_sel = explode(',',$subscription->platform);
+        $subcat_sel = explode(',',$subscription->exclude_orig_category);
+        
         $email = $subscription->email;
       }else{
         setFlash("save", "Subscription not found! Pleas check that you have the right ID.", "alert", false);
@@ -59,6 +68,25 @@ class SiteController extends Controller
       $cat = '';
       if (isset($_POST['cat'])) $cat = implode(",",array_keys($_POST['cat']));
       $cat_sel = explode(',',$cat);
+      
+      $subcat = '';
+      $subcat_sel_inv = array();
+      if (isset($_POST['subcat'])) $subcat_sel_inv = array_keys($_POST['subcat']);
+      //$subcat_sel_inv = explode(',',$subcat);
+      
+      $subcat_sel = array();
+      foreach ($cat_sel as $id){
+        //if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
+          foreach ($OrigCategories[$id] as $origCat){
+            //echo ",".$origCat->id." ";
+            if (!in_array($origCat->id,$subcat_sel_inv)){
+              $subcat_sel[] = $origCat->id;
+            }
+          }
+      }
+      
+      $subcat = implode(",",$subcat_sel);
+      
       $email = $_POST['email']; 
       
       $subscription = Subscription::model()->findByAttributes(array('email'=>$email));
@@ -74,6 +102,7 @@ class SiteController extends Controller
       $subscription->email = $email;
       $subscription->platform = $plat;
       $subscription->category = $cat;
+      $subscription->exclude_orig_category = $subcat;
       $subscription->rss = 1;
       $subscription->time_updated = date("Y-m-d H:i:s");
       if ($subscription->save()){
@@ -112,26 +141,32 @@ class SiteController extends Controller
 
     
     //platforms
-    $platforms = Platform::model()->findAll();
-    $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true));
+    $platforms = Platform::model()->findAll("active = :active",array(":active"=>1));
+    $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true,"projPerDay"=>0));
+    $all = 0;
     foreach ($platforms as $platform){
-      $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel));
+      $numofp = round(count(Project::model()->findAll("time_added > DATE_ADD(NOW(), INTERVAL -96 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id))) / 4);
+      $all += $numofp;
+      $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel),"projPerDay"=>$numofp);
       if (in_array($platform->id, $platform_sel)) $selplat[0]['selected'] = false;
     }
+    $selplat[0]['projPerDay'] = $all;
     
     //categories
     $categories = Category::model()->findAll(array("order"=>"name"));
     $selcat = array();
-    foreach ($categories as $platform){
-      $OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
+    foreach ($categories as $category){
+      //$OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
       $hint = '';
-      if ($OrigCategories){
-        foreach ($OrigCategories as $origCat){
+      $subCat = array();
+      if (isset($OrigCategories[$category->id])){
+        foreach ($OrigCategories[$category->id] as $origCat){
           if ($hint) $hint .= '<br />';
           $hint .= $origCat->name;
+          $subCat[] = array("name"=>$origCat->name, "id"=>$origCat->id, "selected"=>!in_array($origCat->id, $subcat_sel));
         }
       }
-      $selcat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $cat_sel), "hint"=>$hint);
+      $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
     }
     
 		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'email'=>$email));
