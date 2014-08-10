@@ -117,20 +117,11 @@ class KickstarterRating extends PlatformRating{
         $pattern = '/data-currency="(.+)" data-format="/';
         preg_match($pattern, $text, $matches);
         switch ($matches[1]) {
-            case "GBP":
-	      $convert = 1.69;
-              break; 
-            case "EUR":
-	      $convert = 1.34;
-              break; 
-            case "AUD":
-	      $convert = 0.93;
-              break;
-            case "CAD":
-	      $convert = 0.92;
-              break;
-            default:
-              $convert = 1;
+            case "GBP": $convert = 1.69; break; 
+            case "EUR": $convert = 1.34; break; 
+            case "AUD": $convert = 0.93; break;
+            case "CAD": $convert = 0.92; break;
+            default: $convert = 1; break;
         }
         $tmp['$goal'] = $money * $convert;
 
