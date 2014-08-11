@@ -245,8 +245,8 @@ class FeedController extends Controller
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     
-    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -96 HOUR)")->queryScalar();
-    $numOfresults = round($numOfresults / 4);
+    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR)")->queryScalar();
+    $numOfresults = round($numOfresults / 7);
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     
