@@ -491,7 +491,7 @@ background: #970b0e !important;
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
                             <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img src="<?php echo $project->image; ?>" width="150" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 150px; float: left; clear: both; display: block; border: none;" align="left" />
+                              <img src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none;" align="left" />
                             </a>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <strong><?php echo $project->title; ?></strong>
@@ -534,7 +534,7 @@ background: #970b0e !important;
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
                             <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img src="<?php echo $project->image; ?>" width="150" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 150px; float: left; clear: both; display: block; border: none;" align="left" />
+                              <img src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none;" align="left" />
                             </a>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <strong><?php echo $project->title; ?></strong>

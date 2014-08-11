@@ -80,13 +80,13 @@ class MailerCommand extends CConsoleCommand{
         $message->subject = "Your Daily Dose Of Crowdfunding Projects";  // 11.6. title change
         $message->from = Yii::app()->params['noreplyEmail'];
 
-        $title = 'Yesterdays top crowdfunding projects';
+        $title = 'Top crowdfunding projects for '.date("j M", strtotime("-1 days"));
         $content = '';
 
         // not enough projects
-        if ($count < 4){
+        //if ($count < 4){
           $content = 'We found just a few projects for you. <br />Maybe your rules are set too stric? Consider editing your feed.<hr>';
-        }
+        //}
 
         $editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$sub->hash));
 
