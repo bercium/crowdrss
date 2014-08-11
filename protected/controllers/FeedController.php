@@ -4,7 +4,7 @@ class FeedController extends Controller
 {
   
   protected function beforeAction($action){
-    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl')){
+    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl') || ($action->id == 'rmailTest')){
       foreach (Yii::app()->log->routes as $route){
         //if ($route instanceof CWebLogRoute){
           $route->enabled = false;
@@ -156,7 +156,7 @@ class FeedController extends Controller
     }
     //$sql .= ' 1 ';
     $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR) ";
-    if ($sub->rating > 1)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
+    if ($sub->rating > 0)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
     
     $sql .= " ORDER BY time_added DESC";
     $sql .= " LIMIT 10";
@@ -207,12 +207,12 @@ class FeedController extends Controller
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     
-    $rating = 4;
+    $rating = 0;
     if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
-    if (!is_numeric($rating)) $rating = 4;
+    if (!is_numeric($rating)) $rating = 0;
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
-    $sql .= " (rating = NULL OR rating >= ".$rating.") ";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
@@ -226,11 +226,11 @@ class FeedController extends Controller
     $this->layout = 'blank';
     
     $subcat = $cat = $plat = '';
-    $rating = 4;    
+    $rating = 0;    
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
     if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
-    if (!is_numeric($rating)) $rating = 4;
+    if (!is_numeric($rating)) $rating = 0;
     
     //$subcat = array();
     if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
@@ -264,7 +264,7 @@ class FeedController extends Controller
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     
-    $sql .= " (rating = NULL OR rating >= ".$rating.") ";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
@@ -317,6 +317,30 @@ class FeedController extends Controller
     
     $this->layout = 'blank';
     $this->render('vote');
+  }
+  
+  /**
+   * test mail digest
+   */
+  public function actionMailTest(){
+    Yii::app()->clientScript->reset();
+    $this->layout = 'none';
+    $project = Project::model()->findAll("1 LIMIT 12");
+    
+    $featured = array_slice($project, 0, 4);
+    $regular = array_slice($project, 4, 12);
+    
+    $this->render('//layouts/mail/digest', array("title"=>"Naslov",
+        "user_id"=>1, "featuredProjects"=>$featured, "projects"=>$regular,"tc"=>"adfsdf","showEdit"=>true,"editLink"=>""));
+    // $content
+// $title
+// $user_id
+// $featuredProjects
+// $projects
+// $tc
+// $showEdit
+// $editLink
+    
   }
   
   

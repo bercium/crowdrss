@@ -1,4 +1,16 @@
-<!-- Inliner Build Version 4380b7741bb759d6cb997545f3add21ad48f010b -->
+<?php
+
+// $content
+// $title
+// $user_id
+// $featuredProjects
+// $projects
+// $tc
+// $showEdit
+// $editLink
+
+
+?><!-- Inliner Build Version 4380b7741bb759d6cb997545f3add21ad48f010b -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -347,12 +359,252 @@ background: #970b0e !important;
 
                       <table class="twelve columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;" align="left" valign="top">
                 						<p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;" align="left">
-                              <?php echo $content; ?>
+                               <?php if (isset($content)) echo $content; ?>
                             </p>
                           </td>
                           <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
                         </tr></table></td>
-                  </tr></table><table class="row footer-last" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; border-top-width: 2px; border-top-color: #0088bb; border-top-style: solid; padding: 0px;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
+                  </tr></table>
+                <?php 
+                if (count($featuredProjects)){ 
+                  $i = 1;
+                  foreach ($featuredProjects as $project){
+                    $i++;
+                 
+                    
+                 if ($i%2 == 0){ ?>
+                    <table class="row project even" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; background: #f2f2f2; padding: 0px; border: 1px solid #d9d9d9;" bgcolor="#f2f2f2">
+                   <?php }else{ ?>
+                    <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;" >
+                   <?php } ?>
+                  <tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="wrapper" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;" align="left" valign="top">
+
+                      <table class="four columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 180px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="left-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px 10px;" align="left" valign="top">
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'featured-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <img src="<?php echo $project->image; ?>" width="200" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 100%; float: left; clear: both; display: block;" align="left" />
+                            </a>
+                          </td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                    <td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
+
+                      <table class="eight columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 380px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="last right-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'featured-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <h5 style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 24px; margin: 0; padding: 0;" align="left">
+                                <?php echo $project->title; ?>
+                              </h5></a>
+                            <small style="font-size: 10px;">
+                                <?php echo date("D, d M Y H:i:s e",strtotime($project->time_added)); ?>
+                            </small>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <?php echo $project->description."<br />";
+                              
+
+                              echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                              if (!empty($project->creator)) echo "<br />Creator of project: <i>".$project->creator."</i> ";
+                              //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
+                              if (!empty($project->goal)) echo "<br />Project goal: <strong>".$project->goal."</strong>";
+                              if (!empty($project->type_of_funding)){
+                                if ($project->type_of_funding == 0) echo " Fixed funding";
+                                else echo " Flexible funding";
+                              }
+                              
+                              ?>
+                            </p>
+                            
+                          </td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                  </tr></table>
+                
+                <?php /* }else{   // switch image left right ?>
+                <table class="row" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="wrapper" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;" align="left" valign="top">
+
+                      <table class="eight columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 380px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                          <td class="left-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px 10px;" align="left" valign="top">
+
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'featured-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <h5 style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 24px; margin: 0; padding: 0;" align="left">
+                                <?php echo $project->title; ?>
+                              </h5></a>
+                            <small style="font-size: 10px;">
+                                <?php echo date("D, d M Y H:i:s e",strtotime($project->time_added)); ?>
+                            </small>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <?php echo $project->description."<br />";
+                              
+
+                              echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                              if (!empty($project->creator)) echo "<br />Creator of project: <i>".$project->creator."</i> ";
+                              //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
+                              if (!empty($project->goal)) echo "<br />Project goal: <strong>".$project->goal."</strong>";
+                              if (!empty($project->type_of_funding)){
+                                if ($project->type_of_funding == 0) echo " Fixed funding";
+                                else echo " Flexible funding";
+                              }
+                              
+                              ?>
+                            </p>
+
+                          </td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                    <td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
+
+                      <table class="four columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 180px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="last right-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'featured-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <img src="<?php echo $project->image; ?>" width="200" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 100%; float: left; clear: both; display: block;" align="left" />
+                            </a>
+                          </td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                  </tr></table>
+                
+                <?php
+                    }
+                  //*/
+                
+                   }
+                }
+                // end featured
+                
+                
+                // other projects
+                if (count($projects)){
+                  echo "<hr>";
+                  $c = 0;
+                  foreach ($projects as $project){
+                    $c++;
+                    
+                    if ($c == 1){
+                ?>
+                
+                <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                    <td class="wrapper" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;" align="left" valign="top">
+
+                      <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;">
+                        <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                  <?php } 
+                  if (($c == 1) || ($c == 2)){ ?>
+                          <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+                            
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <img src="<?php echo $project->image; ?>" width="150" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 150px; float: left; clear: both; display: block; border: none;" align="left" />
+                            </a>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <strong><?php echo $project->title; ?></strong>
+                              <small style="font-size: 10px;">
+                                <?php 
+                                  echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                                ?>
+                               </small>
+                             </p>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <small style="font-size: 10px;">
+                              <?php 
+
+                                echo $project->description;
+
+                                if (!empty($project->goal)) echo "<br /><strong>".$project->goal."</strong>";
+                                if (!empty($project->type_of_funding)){
+                                  if ($project->type_of_funding == 0) echo " Fixed";
+                                  else echo " Flexible";
+                                }
+
+                              ?>                                
+                              </small>
+                            </p>
+                            
+                          </td>
+                          <?php }
+                          if ($c == 3){ ?>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr>
+                      </table>
+                      
+                    </td>
+                    <td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
+
+                      <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;">
+                        <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                     <?php } 
+                     if (($c == 3) || ($c == 4)){ ?>
+                          <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+                            
+                            <a href="<?php echo mailLinkTracking($tc,Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$user_id)),'project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                              <img src="<?php echo $project->image; ?>" width="150" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 150px; float: left; clear: both; display: block; border: none;" align="left" />
+                            </a>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <strong><?php echo $project->title; ?></strong>
+                              <small style="font-size: 10px;">
+                                <?php 
+                                  echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                                ?>
+                               </small>
+                             </p>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                              <small style="font-size: 10px;">
+                              <?php 
+
+                                echo $project->description;
+
+                                if (!empty($project->goal)) echo "<br /><strong>".$project->goal."</strong>";
+                                if (!empty($project->type_of_funding)){
+                                  if ($project->type_of_funding == 0) echo " Fixed";
+                                  else echo " Flexible";
+                                }
+
+                              ?>                                
+                              </small>
+                            </p>
+                            
+                          </td>
+                     <?php }
+                     if ($c == 4){ ?>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table>
+                      
+                    </td>
+                  </tr></table>
+                  <?php $c = 0; } ?>
+                
+                <?php 
+                  }
+                }
+                
+                // add edit 
+                if (isset($showEdit) && $showEdit) {
+                  
+                ?>
+                      <hr>
+                <table class="row footer" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; padding: 0px;">
+                  <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                    <td class="wrapper" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 10px 0px;" align="left" valign="top">
+
+                      <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="left-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px 10px;" align="left" valign="top">
+                            
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0; padding: 0;" align="left">Update or change your feed settings here:</p>
+
+                          </td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                    <td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px;" align="left" valign="top">
+
+                      <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="last right-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
+
+                            <table class="small-button success radius" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; overflow: hidden; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: center; color: #ffffff; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; display: block; width: auto !important; -webkit-border-radius: 3px; -moz-border-radius: 3px; border-radius: 3px; background: #5da423; margin: 0; padding: 8px 0 7px; border: 1px solid #457a1a;" align="center" bgcolor="#5da423" valign="top">
+                                  <a href="<?php echo mailLinkTracking($tc,$editLink,'subscription-edit'); ?>" style="color: #ffffff; text-decoration: none; font-weight: bold; font-family: Helvetica, Arial, sans-serif; font-size: 16px;">Edit feed</a>
+                                </td>
+                              </tr></table></td>
+                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
+                        </tr></table></td>
+                  </tr></table>
+                <?php } ?>
+                
+                <table class="row footer-last" style="margin-top: 20px; border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; border-top-width: 2px; border-top-color: #0088bb; border-top-style: solid; padding: 0px;">
+                  <tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
 
                       <table class="twelve columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 580px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td align="center" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px;" valign="top">
                             <center style="width: 100%; min-width: 580px;">
