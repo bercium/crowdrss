@@ -194,7 +194,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                <div class="row" trk="switch_delivery_dailyDigest">
                   <div class="columns small-2 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="daily_digest" name="daily_digest" <?php if (isset($subscription->dailyDigest) && $subscription->dailyDigest == 1) echo 'checked'; ?> type="checkbox">
+                      <input id="daily_digest" name="daily_digest" <?php if (isset($subscription->daily_digest) && $subscription->daily_digest == 1) echo 'checked'; ?> type="checkbox">
                       <label for="daily_digest"></label>
                     </div>
                   </div>
@@ -208,7 +208,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                <div class="row" trk="switch_delivery_weeklyDigest">
                   <div class="columns small-2 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="weekly_digest" name="weekly_digest" <?php if (isset($subscription->weeklyDigest) && $subscription->weeklyDigest == 7) echo 'checked'; ?> type="checkbox">
+                      <input id="weekly_digest" name="weekly_digest" <?php if (isset($subscription->weekly_digest) && $subscription->weekly_digest == 1) echo 'checked'; ?> type="checkbox">
                       <label for="weekly_digest"></label>
                     </div>
                   </div>
