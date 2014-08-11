@@ -36,6 +36,7 @@ class UpdateCommand extends CConsoleCommand {
 // Function for geting HTML data
   function getHtml($link) {
     $httpClient = new elHttpClient();
+    $httpClient->enableRedirects();
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link);
