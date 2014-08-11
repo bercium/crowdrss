@@ -54,7 +54,7 @@ class MailerCommand extends CConsoleCommand{
     if ($subscriptions){
       foreach ($subscriptions  as $sub){
 
-        $sql .= $this->createSQL($sub, 1);
+        $sql = $this->createSQL($sub, 1);
 
         // get projects
         $projects = Project::model()->findAll($sql);
