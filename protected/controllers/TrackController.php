@@ -99,14 +99,7 @@ class TrackController extends Controller
     if ($openedMail){
       $openedMail->time_open = date('Y-m-d H:i:s');
       $openedMail->save();
-      // mark message as read
-      if ($openedMail->type == 'user-message'){
-        $message_read = Message::model()->findByPk($openedMail->extra_id);
-        if ($message_read){
-          $message_read->time_viewed =  date('Y-m-d H:i:s');
-          $message_read->save();
-        }
-      }
+
     }
     
  	}  
