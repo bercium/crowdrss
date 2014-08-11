@@ -85,9 +85,9 @@ class MailerCommand extends CConsoleCommand{
         $content = '';
 
         // not enough projects
-        //if ($count < 4){
-          $content = 'We found just a few projects for you. <br />Maybe your rules are set too stric? Consider editing your feed.<hr>';
-        //}
+        if ($count < 4){
+          $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
+        }
 
         $editLink = absoluteURL()."site/index?id=".$sub->hash;
 
@@ -148,7 +148,7 @@ class MailerCommand extends CConsoleCommand{
 
         // not enough projects
         //if ($count < 4){
-          $content = 'We found just a few projects for you. <br />Maybe your rules are set too stric? Consider editing your feed.<hr>';
+          $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
         //}
 
         $editLink = absoluteURL()."site/index?id=".$sub->hash;
