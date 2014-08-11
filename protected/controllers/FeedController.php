@@ -229,11 +229,10 @@ class FeedController extends Controller
     $rating = 4;    
     if (isset($_POST['category'])) $cat = $_POST['category'];
     if (isset($_POST['platform'])) $plat = $_POST['platform'];
-    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
     if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
     if (!is_numeric($rating)) $rating = 4;
     
-    $subcat = array();
+    //$subcat = array();
     if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
       $subcat = explode(",",$this->validateId($_POST['subcategory']));
     }
@@ -272,6 +271,7 @@ class FeedController extends Controller
     //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
     
     $projects = Project::model()->findAll($sql);
+    if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
 
 
     $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'rating'=>$rating, 'numOfDailyResults'=>$numOfresults));

@@ -54,6 +54,8 @@
                       if ($project->type_of_funding == 0) echo " Fixed funding";
                       else echo " Flexible funding";
                     }
+                    
+                    if (!Yii::app()->user->isGuest) echo "<br />Rating: ".$project->rating;
                   ?>
                   </p>  
                 </div>

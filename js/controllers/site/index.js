@@ -35,7 +35,7 @@ function previewForm(){
   $('#preview_platform').val(plat);
   $('#preview_category').val(cat);
   $('#preview_subcategory').val(subcat);
-  $('#preview_rating').val($('#rating').val());  
+  $('#preview_rating').val($('#rating').val());
   $('#preview_form').submit();
 }
 
@@ -65,7 +65,6 @@ function showSubCat(id){
     $('#subCatLink_'+id).children('i').removeClass('fa-sort-down');
   }
   
-  fa-sort-down
 }
 
 $(function() {

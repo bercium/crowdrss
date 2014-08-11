@@ -156,10 +156,10 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
               <span data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="More projects, less curated">All</span>
             </div> 
             <div class="small-8 medium-10 columns"> 
-              <div id="slider" class="range-slider round" data-slider data-options="display_selector: #sliderOutput; start: 1; end: 10;"> 
+              <div id="slider" class="range-slider round" data-slider data-options="display_selector: #sliderOutput; start: 0; end: 9;"> 
                 <span class="range-slider-handle"></span> 
                 <span class="range-slider-active-segment"></span> 
-                <input type="hidden" name="rating">
+                <input type="hidden" name="rating" id="rating">
               </div> 
             </div> 
             <div class="small-2 medium-1 columns pt20" >
