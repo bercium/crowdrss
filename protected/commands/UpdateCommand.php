@@ -34,11 +34,12 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Function for geting HTML data
-  function getHtml($link) {
+  function getHtml($link, $header) {
     $httpClient = new elHttpClient();
+    $httpClient->enableRedirects();
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
+    $htmlDataObject = $httpClient->get($link, $header);
     return $htmlDataObject->httpBody;
   }
 
@@ -106,7 +107,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for IGG
   function parseIndiegogo($link) {
-    $htmlData = $this->getHtml($link);
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
@@ -129,9 +130,7 @@ class UpdateCommand extends CConsoleCommand {
     $data['end_date'] = $matches[1];
 
     $link = $link . "/show_tab/home";
-    $htmlData = $this->getHtml($link);
-    //$htmlDataObject = $httpClient->get($link);
-    //$htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link, array("X-Requested-With" => "XMLHttpRequest"));
 
     // Location
     $pattern = '/location-link">(.+)<\/a/';
@@ -143,7 +142,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for GGF
   function parseGoGetFunding($link) {
-    $htmlData = $this->getHtml($link);
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/donated of (.+)<.+>(.+)<\/s/';
@@ -165,13 +164,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for PS
   function parsePubSlush($link) {
-    $httpClient = new elHttpClient();
-    $htmlData = $htmlDataObject->httpBody;
-    $httpClient->enableRedirects(true);
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link);
-    $htmlData = $htmlDataObject->httpBody;
+    $htmlData = $this->getHtml($link, array())
 
     // Goal
     $pattern = '/aised of (.+) goal/';
@@ -189,7 +182,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for FA
   function parseFundAnything($link) {
-    $htmlData = $this->getHtml($link);
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/Contributions of (.+) goal/';
@@ -213,7 +206,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for FR
   function parseFundRazr($link) {
-    $htmlData = $this->getHtml($link);
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/raised of (.+) goal/';
@@ -257,7 +250,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for PM
   function parsePledgeMusic($link) {
-    $htmlData = $this->getHtml($link);
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/raised of (.+) goal/';
@@ -320,7 +313,7 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $htmlData = $this->getHtml($link);
+            $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
             
             $insert = new Project;
