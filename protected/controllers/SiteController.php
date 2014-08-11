@@ -118,7 +118,7 @@ class SiteController extends Controller
       $subscription->exclude_orig_category = $this->validateId($subcat);
       
       if (isset($_POST['rss_feed'])) $subscription->rss = 1;
-      //!!!  else $subscription->rss = 0;
+      else $subscription->rss = 0;
       if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
       else $subscription->daily_digest = 0;
       if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
