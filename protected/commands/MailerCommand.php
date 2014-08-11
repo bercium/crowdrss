@@ -77,7 +77,7 @@ class MailerCommand extends CConsoleCommand{
         // create message
         $message = new YiiMailMessage;
         $message->view = 'digest';
-        $message->subject = "Your Daily Dose Of Crowdfunding Projects";  // 11.6. title change
+        $message->subject = "Your Daily Dose Of Crowdfunding Projects for ".date("j M", strtotime("-1 days"));  // 11.6. title change
         $message->from = Yii::app()->params['noreplyEmail'];
 
         $title = 'Top crowdfunding projects for '.date("j M", strtotime("-1 days"));
