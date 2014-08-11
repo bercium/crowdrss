@@ -537,7 +537,11 @@ background: #970b0e !important;
                               <img src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none;" align="left" />
                             </a>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
-                              <strong><?php echo $project->title; ?></strong>
+                              <strong>
+                                <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
+                                  <?php echo $project->title; ?>
+                                </a>
+                              </strong>
                               <small style="font-size: 10px;">
                                 <?php 
                                   echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";

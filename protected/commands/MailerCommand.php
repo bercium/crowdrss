@@ -74,13 +74,14 @@ class MailerCommand extends CConsoleCommand{
         $ml->subscription_id = $sub->id;
         $ml->save();
 
+        $date = date("j", strtotime("-1 days")).addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
         // create message
         $message = new YiiMailMessage;
         $message->view = 'digest';
-        $message->subject = "Your Daily Dose Of Crowdfunding Projects for ".date("j M", strtotime("-1 days"));  // 11.6. title change
+        $message->subject = "Your Daily Dose Of Crowdfunding Projects for ".$date;  // 11 Dec title change
         $message->from = Yii::app()->params['noreplyEmail'];
 
-        $title = 'Top crowdfunding projects for '.date("j M", strtotime("-1 days"));
+        $title = 'Top crowdfunding projects for '.$date;
         $content = '';
 
         // not enough projects
