@@ -88,7 +88,7 @@ class MailerCommand extends CConsoleCommand{
           $content = 'We found just a few projects for you. <br />Maybe your rules are set too stric? Consider editing your feed.<hr>';
         //}
 
-        $editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$sub->hash));
+        $editLink = absoluteURL()."site/index?id=".$sub->hash;
 
         $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
                                 "content"=>$content, "title"=>$title,

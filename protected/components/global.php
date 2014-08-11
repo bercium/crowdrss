@@ -360,7 +360,7 @@ function absoluteURL($url = ''){
    */
   function mailLinkTracking($id,$link,$name){
     if ($id == '') return $link;
-    return Yii::app()->createAbsoluteUrl("track/ml",array("tc"=>$id,"l"=>$link,"ln"=>$name));
+    return absoluteURL()."track/ml?tc=".$id."&l=".urlencode($link)."&ln=".$name;
   }
 
   /**
