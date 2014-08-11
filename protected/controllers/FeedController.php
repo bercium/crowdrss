@@ -259,12 +259,13 @@ class FeedController extends Controller
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     
+    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
+
     $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR)")->queryScalar();
     $numOfresults = round($numOfresults / 7);
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     
-    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
