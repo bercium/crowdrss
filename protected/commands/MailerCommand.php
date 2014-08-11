@@ -61,6 +61,7 @@ class MailerCommand extends CConsoleCommand{
         $count = count($projects);
         
         $featured = array_slice($projects, 0, 4);
+        $regular = array_slice($projects, 4);
         if ($count < 12) $regular = array_slice($projects, 4, 8);
         else if ($count < 8) $regular = array();
         
