@@ -124,27 +124,27 @@ class FeedController extends Controller
       throw new CHttpException(404,'The specified feed was not found.');
     }
     
-//    Tole je treba link zgenerirat na katerem bo rss od specifičnega uporabnika in ga dat v href
-//    $rssResponse .= '<atom:link href="' . $link z hashom do rss . '" rel="self" type="application/rss+xml" />';
-    
     // project constrains
     
-    $subcat = array();
+    /*$subcat = array();
     if ($this->validateId($sub->exclude_orig_category)){
       $subcat = explode(",",$this->validateId($sub->exclude_orig_category));
-    }
+    }*/
     
     $sql = '';
-    if ($this->validateId($sub->category)){
-      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($sub->category)."))");
+    if ($sub->category){
+    //if ($this->validateId($sub->category)){
+      //$orgCat = OrigCategory::model()->findAll("(category_id IN (".$this->validateId($sub->category)."))");
+      $orgCat = OrigCategory::model()->findAll("(category_id IN (".$sub->category."))");
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        if (!in_array($cat->id, $subcat)) $allCats[$cat->id] = $cat->id;
+        if (!in_array($cat->id, $sub->exclude_orig_category)) $allCats[$cat->id] = $cat->id;
       }
       $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
-    if ($this->validateId($sub->platform)) $sql .= " (platform_id IN (".$this->validateId($sub->platform).")) AND ";
+    if ($sub->platform) $sql .= " (platform_id IN (".$sub->platform.")) AND ";
+    //if ($this->validateId($sub->platform)) $sql .= " (platform_id IN (".$this->validateId($sub->platform).")) AND ";
     else{
       $platforms = Platform::model()->findAll("active = :active",array(":active"=>0));
       $selplat = '';

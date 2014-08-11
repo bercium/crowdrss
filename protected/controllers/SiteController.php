@@ -21,6 +21,18 @@ class SiteController extends Controller
 		);
 	}
 
+  function validateId($string){
+    $array = explode(",", $string);
+    $string = '';
+    foreach ($array as $value){
+      if (is_numeric($value)){
+        if ($string) $string .= ',';
+        $string .= $value;
+      }
+    }
+    return $string;
+  }
+  
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -101,9 +113,9 @@ class SiteController extends Controller
       
       
       $subscription->email = $email;
-      $subscription->platform = $plat;
-      $subscription->category = $cat;
-      $subscription->exclude_orig_category = $subcat;
+      $subscription->platform = $this->validateId($plat);
+      $subscription->category = $this->validateId($cat);
+      $subscription->exclude_orig_category = $this->validateId($subcat);
       if (isset($_POST['rss_feed'])) $subscription->rss = 1;
       if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
       if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
