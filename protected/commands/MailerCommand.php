@@ -89,7 +89,7 @@ class MailerCommand extends CConsoleCommand{
           $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
         }
 
-        $editLink = absoluteURL()."site/index?id=".$sub->hash;
+        $editLink = absoluteURL()."/?id=".$sub->hash;
 
         $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
                                 "content"=>$content, "title"=>$title,
