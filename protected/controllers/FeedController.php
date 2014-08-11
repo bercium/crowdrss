@@ -126,10 +126,12 @@ class FeedController extends Controller
     
     // project constrains
     
-    /*$subcat = array();
-    if ($this->validateId($sub->exclude_orig_category)){
-      $subcat = explode(",",$this->validateId($sub->exclude_orig_category));
-    }*/
+    $subcat = array();
+    if ($sub->exclude_orig_category){
+//    if ($this->validateId($sub->exclude_orig_category)){
+      $subcat = explode(",",$sub->exclude_orig_category);
+//      $subcat = explode(",",$this->validateId($sub->exclude_orig_category));
+    }
     
     $sql = '';
     if ($sub->category){
@@ -139,7 +141,7 @@ class FeedController extends Controller
       
       $allCats = array();
       foreach ($orgCat as $cat){
-        if (!in_array($cat->id, $sub->exclude_orig_category)) $allCats[$cat->id] = $cat->id;
+        if (!in_array($cat->id, $subcat)) $allCats[$cat->id] = $cat->id;
       }
       $sql .= " (orig_category_id IN (".implode(',',$allCats).")) AND ";
     }
