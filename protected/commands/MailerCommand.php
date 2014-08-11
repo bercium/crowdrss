@@ -94,7 +94,7 @@ class MailerCommand extends CConsoleCommand{
                                 "featuredProjects"=>$featured, "projects"=>$regular,
                                 "showEdit"=>true,"editLink"=>$editLink
                                 ), 'text/html');
-        $message->setTo($user->email);
+        $message->setTo($sub->email);
         Yii::app()->mail->send($message);
         
       }
