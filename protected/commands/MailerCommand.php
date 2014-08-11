@@ -107,6 +107,62 @@ class MailerCommand extends CConsoleCommand{
    * 
    */
   public function actionWeeklyDigest(){
+    $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
+    if ($subscriptions){
+      foreach ($subscriptions  as $sub){
+
+        $sql = $this->createSQL($sub, 7);
+
+        // get projects
+        $projects = Project::model()->findAll($sql);
+        $count = count($projects);
+        
+        $featured = array_slice($projects, 0, 4);
+        $regular = array_slice($projects, 4);
+        if ($count < 12) $regular = array_slice($projects, 4, 8);
+        else if ($count < 8) $regular = array();
+        
+        
+        //set mail tracking
+        $tc = mailTrackingCode();
+        $ml = new MailLog();
+        $ml->tracking_code = mailTrackingCodeDecode($tc);
+        $ml->type = 'weekly-digest';
+        $ml->subscription_id = $sub->id;
+        $ml->save();
+
+        
+        if (date("M", strtotime("-1 days")) == date("M", strtotime("-8 days"))){
+          $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+        }else{
+          $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." ".date("M", strtotime("-8 days"))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+        }
+        // create message
+        $message = new YiiMailMessage;
+        $message->view = 'digest';
+        $message->subject = "Your Weekly Dose Of Crowdfunding Projects for ".$date;  // 11 Dec title change
+        $message->from = Yii::app()->params['noreplyEmail'];
+
+        $title = 'Top crowdfunding projects for week '.$date;
+        $content = '';
+
+        // not enough projects
+        //if ($count < 4){
+          $content = 'We found just a few projects for you. <br />Maybe your rules are set too stric? Consider editing your feed.<hr>';
+        //}
+
+        $editLink = absoluteURL()."site/index?id=".$sub->hash;
+
+        $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
+                                "content"=>$content, "title"=>$title,
+                                "featuredProjects"=>$featured, "projects"=>$regular,
+                                "showEdit"=>true,"editLink"=>$editLink
+                                ), 'text/html');
+        $message->setTo($sub->email);
+        Yii::app()->mail->send($message);
+        
+      }
+    }
 
   }
     
