@@ -60,8 +60,8 @@ class MailerCommand extends CConsoleCommand{
         $projects = Project::model()->findAll($sql);
         $count = count($projects);
         
-        $featured = array_slice($project, 0, 4);
-        if ($count < 12) $regular = array_slice($project, 4, 8);
+        $featured = array_slice($projects, 0, 4);
+        if ($count < 12) $regular = array_slice($projects, 4, 8);
         else if ($count < 8) $regular = array();
         
         
