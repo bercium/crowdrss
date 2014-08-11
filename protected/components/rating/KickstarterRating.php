@@ -8,7 +8,7 @@ class KickstarterRating extends PlatformRating{
   }  
   
   // full analize
-  public function firstAnalize(){
+  public function firstAnalize($id){
     $cws = $this->currentWebStatus();
     $rating = $this->calcWebRating($cws);
     
@@ -18,7 +18,7 @@ class KickstarterRating extends PlatformRating{
   }
   
   // full analize
-  public function analize(){
+  public function analize($id){
     $this->social();
     $cws = $this->currentWebStatus();
     $this->calcWebRating($cws);

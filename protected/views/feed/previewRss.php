@@ -11,6 +11,7 @@
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">
             <input type="hidden" id="preview_category" name="category" value="<?php echo $cat; ?>">
             <input type="hidden" id="preview_subcategory" name="subcategory" value="<?php echo $subcat; ?>">
+            <input type="hidden" id="preview_rating" name="preview_rating" value="<?php echo $rating; ?>">
           </form>
           
         </div>
@@ -53,6 +54,8 @@
                       if ($project->type_of_funding == 0) echo " Fixed funding";
                       else echo " Flexible funding";
                     }
+                    
+                    if (!Yii::app()->user->isGuest) echo "<br />Rating: ".$project->rating;
                   ?>
                   </p>  
                 </div>
