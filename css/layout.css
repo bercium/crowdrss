@@ -19,6 +19,10 @@
   color: #DDD;
 }
 
+.light{
+  color:#999;
+}
+
 .intro{
   color:#FFF;
   background: #0088bb;
@@ -66,7 +70,7 @@
   opacity: 0.85;
 }
 
-// switch hover
+/* switch hover */
 div.switch label{
   transition: background-color 300ms ease-out;
 }

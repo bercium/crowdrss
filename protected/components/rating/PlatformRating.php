@@ -3,8 +3,8 @@ abstract class PlatformRating {
   protected $html = null;
   protected $url = '';
   
-  abstract public function firstAnalize();
-  abstract public function analize();
+  abstract public function firstAnalize($id);
+  abstract public function analize($id);
   
   protected function getData(){
     $httpClient = new elHttpClient();

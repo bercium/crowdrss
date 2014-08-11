@@ -4,7 +4,7 @@ class FeedController extends Controller
 {
   
   protected function beforeAction($action){
-    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl')){
+    if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl') || ($action->id == 'rmailTest')){
       foreach (Yii::app()->log->routes as $route){
         //if ($route instanceof CWebLogRoute){
           $route->enabled = false;
@@ -154,8 +154,10 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
-    $sql .= ' 1 ';
-    //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR)";  
+    //$sql .= ' 1 ';
+    $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR) ";
+    if ($sub->rating > 0)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
+    
     $sql .= " ORDER BY time_added DESC";
     $sql .= " LIMIT 10";
     
@@ -204,8 +206,13 @@ class FeedController extends Controller
       }
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
+    
+    $rating = 0;
+    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+    if (!is_numeric($rating)) $rating = 0;
+    
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
-    $sql .= " 1";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
@@ -218,7 +225,14 @@ class FeedController extends Controller
   public function actionPreviewRss(){
     $this->layout = 'blank';
     
-    $subcat = array();
+    $subcat = $cat = $plat = '';
+    $rating = 0;    
+    if (isset($_POST['category'])) $cat = $_POST['category'];
+    if (isset($_POST['platform'])) $plat = $_POST['platform'];
+    if (isset($_POST['preview_rating'])) $rating = $_POST['preview_rating'];
+    if (!is_numeric($rating)) $rating = 0;
+    
+    //$subcat = array();
     if (!empty($_POST['subcategory']) && ($this->validateId($_POST['subcategory'])) ){
       $subcat = explode(",",$this->validateId($_POST['subcategory']));
     }
@@ -245,23 +259,22 @@ class FeedController extends Controller
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     
-    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -96 HOUR)")->queryScalar();
-    $numOfresults = round($numOfresults / 4);
+    $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR)")->queryScalar();
+    $numOfresults = round($numOfresults / 7);
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
     
-    $sql .= " 1";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
     //if (!Yii::app()->user->isGuest) echo "SQL:".$sql;
     
     $projects = Project::model()->findAll($sql);
-    $subcat = $cat = $plat = '';
-    if (isset($_POST['category'])) $cat = $_POST['category'];
-    if (isset($_POST['platform'])) $plat = $_POST['platform'];
     if (isset($_POST['subcategory'])) $subcat = $_POST['subcategory'];
-    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'numOfDailyResults'=>$numOfresults));
+
+
+    $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'rating'=>$rating, 'numOfDailyResults'=>$numOfresults));
   }  
   
   
@@ -304,6 +317,30 @@ class FeedController extends Controller
     
     $this->layout = 'blank';
     $this->render('vote');
+  }
+  
+  /**
+   * test mail digest
+   */
+  public function actionMailTest(){
+    Yii::app()->clientScript->reset();
+    $this->layout = 'none';
+    $project = Project::model()->findAll("1 LIMIT 12");
+    
+    $featured = array_slice($project, 0, 4);
+    $regular = array_slice($project, 4, 12);
+    
+    $this->render('//layouts/mail/digest', array("title"=>"Naslov",
+        "user_id"=>1, "featuredProjects"=>$featured, "projects"=>$regular,"tc"=>"adfsdf","showEdit"=>true,"editLink"=>""));
+    // $content
+// $title
+// $user_id
+// $featuredProjects
+// $projects
+// $tc
+// $showEdit
+// $editLink
+    
   }
   
   

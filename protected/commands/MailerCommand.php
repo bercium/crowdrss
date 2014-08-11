@@ -2,11 +2,11 @@
 
 class MailerCommand extends CConsoleCommand{
 
-	public function actionDigest(){
+	public function actionDailyDigest(){
     
     $message = new YiiMailMessage;
-    $message->view = 'system';
-    $message->subject = "New crowdfunding projects for you";  // 11.6. title change
+    $message->view = 'digest';
+    $message->subject = "Daily digest of crowdfunding projects";  // 11.6. title change
     $message->from = Yii::app()->params['noreplyEmail'];
     
     // send newsletter to all in waiting list
@@ -40,6 +40,13 @@ class MailerCommand extends CConsoleCommand{
       $message->setTo($user->email);
       Yii::app()->mail->send($message);
     }
+  }
+  
+  /**
+   * 
+   */
+  public function actionWeeklyDigest(){
+
   }
     
 }

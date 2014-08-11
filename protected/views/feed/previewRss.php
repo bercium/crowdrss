@@ -11,6 +11,7 @@
             <input type="hidden" id="preview_platform" name="platform" value="<?php echo $plat; ?>">
             <input type="hidden" id="preview_category" name="category" value="<?php echo $cat; ?>">
             <input type="hidden" id="preview_subcategory" name="subcategory" value="<?php echo $subcat; ?>">
+            <input type="hidden" id="preview_rating" name="preview_rating" value="<?php echo $rating; ?>">
           </form>
           
         </div>
@@ -40,7 +41,7 @@
                 </div>
                 <div class="columns small-8">
                   <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
-                  <small><?php echo date("D, d M Y H:i:s e",strtotime($project->time_added))." - ". $project->origCategory->name; ?></small>
+                  <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
                   <p style="margin-top: 10px;" class="mb0">
                   <?php echo $project->description; ?>
                   <br />
@@ -53,6 +54,8 @@
                       if ($project->type_of_funding == 0) echo " Fixed funding";
                       else echo " Flexible funding";
                     }
+                    
+                    if (!Yii::app()->user->isGuest) echo "<br />Rating: ".$project->rating;
                   ?>
                   </p>  
                 </div>
