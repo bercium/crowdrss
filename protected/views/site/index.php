@@ -145,7 +145,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <?php //* ?>
+          <?php if (!Yii::app()->user->isGuest) { //* ?>
           <h2>3. Limit projects</h2>
           <p>We rate each project so you can enjoy them. Select how many projects you wish to receive.</p>
 
@@ -234,7 +234,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
            
            
-          <?php /*/ ?>
+          <?php }else{ //*/ ?>
           
           
           <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
@@ -249,7 +249,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             <small>We will use your email only to send you RSS link and occasional crowdfunding project notifications. We will never sell or give your email address to anyone!</small>
           </div>
           
-          <?php //*/ ?>
+          <?php } //*/ ?>
           
           <div style="margin-top: 30px;" class="text-center">
             <?php if (isset($_GET['id'])){ ?>
