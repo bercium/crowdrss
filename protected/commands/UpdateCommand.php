@@ -35,15 +35,15 @@ class UpdateCommand extends CConsoleCommand {
 
 // Check if category exists
   function checkCategory($category_check){
+    $category_check = htmlspecialchars_decode($category_check);
     $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
     if ($category) {
       return $category;
     } else {
       $updateOrigCategory = new OrigCategory();
-      $updateOrigCategory->name = $data_single['category'];
+      $updateOrigCategory->name = $category_check;
       $updateOrigCategory->save();
-      $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category']));
-      $this->errorMail($data->link, $data_single['category'], $category->id);
+      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
       return $category;
     }
   }
@@ -314,7 +314,7 @@ class UpdateCommand extends CConsoleCommand {
     $count = 0;
     $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
     $id = $platform->id;
-    while (($i <= 1) and ($check == false)) {
+    while (($i <= 50) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if ($result->results) {
         foreach ($result->results as $data) {
