@@ -33,6 +33,21 @@ class UpdateCommand extends CConsoleCommand {
     Yii::app()->mail->send($message);
   }
 
+// Check if category exists
+  function checkCategory($category_check){
+    $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+    if ($category) {
+      return $category;
+    } else {
+      $updateOrigCategory = new OrigCategory();
+      $updateOrigCategory->name = $data_single['category'];
+      $updateOrigCategory->save();
+      $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category']));
+      $this->errorMail($data->link, $data_single['category'], $category->id);
+      return $category;
+    }
+  }
+
 // Function for geting HTML data
   function getHtml($link, $header) {
     $httpClient = new elHttpClient();
@@ -164,7 +179,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Parser for PS
   function parsePubSlush($link) {
-    $htmlData = $this->getHtml($link, array())
+    $htmlData = $this->getHtml($link, array());
 
     // Goal
     $pattern = '/aised of (.+) goal/';
@@ -323,7 +338,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category']));
+            $category = $this->checkCategory($data_single['category']);
             $insert->orig_category_id = $category->id;
             if (isset($data_single['start_date']))
               $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -387,7 +402,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = OrigCategory::model()->findByAttributes(array('name' => $data->category));
+          $category = $this->checkCategory($data->category);
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
             $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -436,19 +451,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = OrigCategory::model()->findByAttributes(array('name' => $data->category));
-            if ($category) {
-              $insert->orig_category_id = $category->id;
-            } else {
-              $updateOrigCategory = new OrigCategory();
-              $updateOrigCategory->name = $data->category;
-              //$idCategory = Category::model()->findByAttributes(array('name'=>'Other'));
-              //$updateOrigCategory->category_id = $idCategory;
-              $updateOrigCategory->save();
-              $category = OrigCategory::model()->findByAttributes(array('name' => $data->category));
-              $insert->orig_category_id = $category->id;
-              $this->errorMail($data->link, $data->category, $category->id);
-            }
+            $category = $this->checkCategory($data->category);
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data_single['location']))
@@ -527,7 +530,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = OrigCategory::model()->findByAttributes(array('name' => $data->category));
+            $category = $this->checkCategory($data->category);
             $insert->orig_category_id = $category->id;
             if (isset($data->location))
               $insert->location = $data->location;
@@ -570,17 +573,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category']));
-            if ($category) {
-              $insert->orig_category_id = $category->id;
-            } else {
-              $updateOrigCategory = new OrigCategory();
-              $updateOrigCategory->name = $data_single['category'];
-              $updateOrigCategory->save();
-              $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category']));
-              $insert->orig_category_id = $category->id;
-              $this->errorMail($data->link, $data_single['category'], $category->id);
-            }
+            $category = $this->checkCategory($data_single['category']);     
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data->location))
@@ -629,18 +622,7 @@ class UpdateCommand extends CConsoleCommand {
     $insert->link=$data->link;
     $insert->time_added=date("Y-m-d H:i:s");
     $insert->platform_id=$id;
-    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
-    if ($category) { $insert->orig_category_id=$category->id; }
-    else {
-    $updateOrigCategory = new OrigCategory();
-    $updateOrigCategory->name = $data_single['category'];
-    $idCategory = Category::model()->findByAttributes(array('name'=>'Music'));
-    $updateOrigCategory->category_id = $idCategory;
-    $updateOrigCategory->save();
-    $category = OrigCategory::model()->findByAttributes(array('name'=>$data_single['category']));
-    $insert->orig_category_id=$category->id;
-    $this->errorMail($data->link, $data_single['category'], $category->id);
-    }
+    $category = $this->checkCategory($data_single['category']);
     if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
     if (isset($data_single['location'])) $insert->location=$data_single['location'];
     if (isset($data->creator)) $insert->creator=$data->creator;
