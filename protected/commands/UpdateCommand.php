@@ -34,7 +34,7 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Check if category exists
-  function checkCategory($category_check){
+  function checkCategory($category_check, $link){
     $category_check = htmlspecialchars_decode($category_check);
     $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
     if ($category) {
@@ -44,6 +44,7 @@ class UpdateCommand extends CConsoleCommand {
       $updateOrigCategory->name = $category_check;
       $updateOrigCategory->save();
       $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+      $this->errorMail($link, $category_check, $category->id);
       return $category;
     }
   }
@@ -338,7 +339,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category']);
+            $category = $this->checkCategory($data_single['category'], $link);
             $insert->orig_category_id = $category->id;
             if (isset($data_single['start_date']))
               $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -402,7 +403,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = $this->checkCategory($data->category);
+          $category = $this->checkCategory($data->category, $link);
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
             $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -451,7 +452,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category);
+            $category = $this->checkCategory($data->category, $data->link);
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data_single['location']))
@@ -530,7 +531,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category);
+            $category = $this->checkCategory($data->category, $data->link);
             $insert->orig_category_id = $category->id;
             if (isset($data->location))
               $insert->location = $data->location;
@@ -573,7 +574,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category']);     
+            $category = $this->checkCategory($data_single['category'], $data->link);
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data->location))
@@ -622,7 +623,7 @@ class UpdateCommand extends CConsoleCommand {
     $insert->link=$data->link;
     $insert->time_added=date("Y-m-d H:i:s");
     $insert->platform_id=$id;
-    $category = $this->checkCategory($data_single['category']);
+    $category = $this->checkCategory($data_single['category'], $data->link);
     if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
     if (isset($data_single['location'])) $insert->location=$data_single['location'];
     if (isset($data->creator)) $insert->creator=$data->creator;
