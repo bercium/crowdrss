@@ -35,7 +35,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Check if category exists
   function checkCategory($category_check, $link){
-    $category_check = htmlspecialchars_decode($category_check);
+    $category_check = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $category_check);
     $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
     if ($category) {
       return $category;
