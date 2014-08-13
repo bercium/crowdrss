@@ -453,6 +453,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data->category, $data->link);
+	    $insert->orig_category_id = $category->id;
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data_single['location']))
@@ -625,6 +626,7 @@ class UpdateCommand extends CConsoleCommand {
     $insert->time_added=date("Y-m-d H:i:s");
     $insert->platform_id=$id;
     $category = $this->checkCategory($data_single['category'], $data->link);
+    $insert->orig_category_id = $category->id;
     if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
     if (isset($data_single['location'])) $insert->location=$data_single['location'];
     if (isset($data->creator)) $insert->creator=$data->creator;
