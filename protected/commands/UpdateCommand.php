@@ -239,7 +239,7 @@ class UpdateCommand extends CConsoleCommand {
     $data['image'] = $matches[1];
 
     // Category
-    $pattern = '/category":"(.+)","commentsEnabled/';
+    $pattern = '/"category":"(.+)","commentsEnabled/';
     preg_match($pattern, $htmlData, $matches);
     $data['category'] = $matches[1];
 
@@ -575,6 +575,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data_single['category'], $data->link);
+	    $insert->orig_category_id = $category->id;
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data->location))
