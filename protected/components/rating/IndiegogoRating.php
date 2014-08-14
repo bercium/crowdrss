@@ -10,7 +10,7 @@ class IndiegogoRating extends PlatformRating{
   // full analize
   public function firstAnalize($id){
     $cws = $this->currentWebStatus();
-    $rating = $this->calcWebRating($cws);
+    $rating = $this->calcContentRating($cws);
     
     // save to DB
     
@@ -21,7 +21,7 @@ class IndiegogoRating extends PlatformRating{
   public function analize($id){
     $this->social();
     $cws = $this->currentWebStatus();
-    $this->calcWebRating($cws);
+    $this->calcContentRating($cws);
     $this->history();
     //$this->rssRating();  // when we have enough clicks
 
@@ -35,38 +35,32 @@ class IndiegogoRating extends PlatformRating{
   }
   
   // calculate rating
-  private function calcWebRating($webAgregtor){
+  private function calcContentRating($webAgregtor){
     $rating = 0;
-    $minRating = -7-6-4-3;
-    $maxRating = 10+6+6+4+9+7+3+2+2+1+2;
+    $minRating = -7-6-4;
+    $maxRating = 10+6+6+4+9+7+1+2;
     
-    //*
-    if ($webAgregtor["Bvideo"] == 1) $rating += 10; // has video
+    if ($tmpData["Bvideo"] == 1) $rating_new += 10; // has video
     //if ($tmpData["#images"] > 3) $rating_new += 3; // img
-    if ($webAgregtor["#images"] > 7) $rating += 6; // img
-    if ($webAgregtor["#images"] >= 13) $rating += 6; // 75% more than 8 imgs
-    if ($webAgregtor["#images"] == 0){
-      if ($webAgregtor["#subtitles"] > 4) $rating += 7; // subtitle
+    if ($tmpData["#images"] > 7) $rating_new += 6; // img
+    if ($tmpData["#images"] >= 11) $rating_new += 6; // 75% more than 8 imgs
+    if ($tmpData["#images"] == 0){
+      if ($tmpData["#subtitle"] > 4) $rating_new += 7; // subtitle
       else 
-      if ($webAgregtor["#subtitles"] < 2) $rating -= 7; // no imgs or subtitles
+      if ($tmpData["#subtitle"] < 2) $rating_new -= 7; // no imgs or subtitles
     }
     
-    if ($webAgregtor["#videos"] >= 2) $rating += 4; // has videos inside
+    if ($tmpData["#videos"] >= 2) $rating_new += 4; // has videos inside
     
-    if ($webAgregtor["#wordsContent"] > 520) $rating += 9; // description words
-    if ($webAgregtor["#wordsContent"] > 700) $rating += 7; // 75%
-    if ($webAgregtor["#wordsContent"] < 220) $rating -= 6; //
-    if ($webAgregtor["#wordsContent"] < 87) $rating -= 4; // 25% without description
+    if ($tmpData["#wordsContent"] > 845) $rating_new += 9; // median description words
+    if ($tmpData["#wordsContent"] > 1000) $rating_new += 7; // mean
+    if ($tmpData["#wordsContent"] < 290) $rating_new -= 6; //
+    if ($tmpData["#wordsContent"] < 87) $rating_new -= 4; // 25% without description
     
-    if ($webAgregtor["#wordsRisk"] > 120) $rating += 3; // risk words
-    if ($webAgregtor["#wordsRisk"] < 64) $rating -= 3; // risk words min
-    
-    if ($webAgregtor["#personBacked"] >= 2) $rating += 2; // backed
-    if ($webAgregtor["#personBacked"] >= 7) $rating += 2; // backed
-    
-    if ($webAgregtor["#personCreated"] > 1) $rating += 1; // created
+    //if ($tmpData["#personCreated"] > 1) $rating_new += 1; // created
+    if ($tmpData["#teamMembers"] > 3) $rating_new += 1; // created
      
-    if ($webAgregtor["#pledges"] > 7) $rating += 2; // created
+    if ($tmpData["#pledges"] > 6) $rating_new += 2; // created
     
     return round(($rating-$minRating)/($maxRating-$minRating)*9);  //normalize
   }
