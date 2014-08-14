@@ -41,7 +41,6 @@ class MailerCommand extends CConsoleCommand{
 
     $sql .= " ORDER BY rating DESC, time_added ASC";
     //$sql .= " LIMIT 12";
-    echo $sql;
     return $sql;
   }
   
