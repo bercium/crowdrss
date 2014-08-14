@@ -37,7 +37,7 @@ class MailerCommand extends CConsoleCommand{
     //$sql .= ' 1 ';
     $hours = $days*24+3;
     $sql .= " (time_added < DATE_ADD(NOW(),INTERVAL -3 HOUR)) AND (time_added >= DATE_ADD(NOW(),INTERVAL -".$hours." HOUR)) ";  // one day slot with 3h delay
-    if ($sub->rating > 0)  $sql .= " AND ( rating >= ".$sub->rating.") ";
+    if ($sub->rating > 0)  $sql .= " AND ((rating IS NULL) OR (rating >= ".$sub->rating.")) ";
 
     $sql .= " ORDER BY rating DESC, time_added ASC";
     //$sql .= " LIMIT 12";
