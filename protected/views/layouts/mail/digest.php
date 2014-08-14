@@ -478,15 +478,19 @@ background: #970b0e !important;
                   foreach ($projects as $project){
                     $c++;
                     
-                    if ($c == 1){
-                ?>
+                if ($c == 1){ ?>
+                <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;">
+                  <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
+                <?php } ?>
+                    
+                <?php if ($c == 1 || $c == 3){ ?>
                 
-                <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                    <td class="wrapper" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 20px 0px 0px;" align="left" valign="top">
+                    <td class="wrapper <?php if ($c == 3) echo "last"; ?>" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; <?php if ($c == 3) echo "padding: 10px 0px 0px;"; else "padding: 10px 20px 0px 0px;"; ?> " align="left" valign="top">
 
                       <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;">
                         <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                  <?php } 
+                  <?php }
+                  
                   if (($c == 1) || ($c == 2)){ ?>
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
@@ -523,60 +527,21 @@ background: #970b0e !important;
                             
                           </td>
                           <?php }
-                          if ($c == 3){ ?>
+                          if ($c == 2 || $c == 4){ ?>
                           <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
                         </tr>
                       </table>
                       
                     </td>
-                    <td class="wrapper last" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; position: relative; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 10px 0px 0px;" align="left" valign="top">
-
-                      <table class="six columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 280px; margin: 0 auto; padding: 0;">
-                        <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
-                     <?php } 
-                     if (($c == 3) || ($c == 4)){ ?>
-                          <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
-                            
-                            <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img alt="<?php echo $project->rating; ?>" src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none;" align="left" />
-                            </a>
-                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
-                              <strong>
-                                <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                                  <?php echo $project->title; ?>
-                                </a>
-                              </strong>
-                              <small style="font-size: 10px;">
-                                <?php 
-                                  echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
-                                ?>
-                               </small>
-                             </p>
-                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
-                              <small style="font-size: 10px;">
-                              <?php 
-
-                                echo $project->description;
-
-                                if (!empty($project->goal)) echo "<br /><strong>".$project->goal."</strong>";
-                                if (!empty($project->type_of_funding)){
-                                  if ($project->type_of_funding == 0) echo " Fixed";
-                                  else echo " Flexible";
-                                }
-
-                              ?>                                
-                              </small>
-                            </p>
-                            
-                          </td>
-                     <?php }
+                     <?php } ?>
+                          
+                     <?php
                      if ($c == 4){ ?>
-                          <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
-                        </tr></table>
-                      
-                    </td>
-                  </tr></table>
-                  <?php $c = 0; } ?>
+                  </tr>
+                </table>
+                  <?php 
+                    $c = 0; 
+                  } ?>
                 
                 <?php 
                   }

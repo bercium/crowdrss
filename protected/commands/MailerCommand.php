@@ -40,7 +40,7 @@ class MailerCommand extends CConsoleCommand{
     if ($sub->rating > 0)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
 
     $sql .= " ORDER BY rating DESC, time_added ASC";
-    $sql .= " LIMIT 12";
+    //$sql .= " LIMIT 12";
     
     return $sql;
   }
@@ -58,12 +58,22 @@ class MailerCommand extends CConsoleCommand{
 
         // get projects
         $projects = Project::model()->findAll($sql);
-        $count = count($projects);
+        //$count = count($projects);
+        
+        $regularNull = array();
+        $i = 0;
+        foreach ($projects as $project){
+          $i++;
+          if ($i > 8 && $project->rating == null) $regularNull[] = $project;
+        }
         
         $featured = array_slice($projects, 0, 4);
-        $regular = array_slice($projects, 4);
-        if ($count < 12) $regular = array_slice($projects, 4, 8);
-        else if ($count < 8) $regular = array();
+        if (count($regularNull) >= 4){
+          $regular = array_merge(array_slice($projects, 4,8),array_rand($regularNull,4));
+        }else $regular = array_slice($projects, 4,12);
+        
+        if (count($regular) < 4) $regular = array();
+        else if (count($regular) < 12) $regular = array_slice($projects, 4, 8);
         
         
         //set mail tracking
@@ -115,12 +125,22 @@ class MailerCommand extends CConsoleCommand{
 
         // get projects
         $projects = Project::model()->findAll($sql);
-        $count = count($projects);
+        //$count = count($projects);
+        
+        $regularNull = array();
+        $i = 0;
+        foreach ($projects as $project){
+          $i++;
+          if ($i > 8 && $project->rating == null) $regularNull[] = $project;
+        }
         
         $featured = array_slice($projects, 0, 4);
-        $regular = array_slice($projects, 4);
-        if ($count < 12) $regular = array_slice($projects, 4, 8);
-        else if ($count < 8) $regular = array();
+        if (count($regularNull) >= 4){
+          $regular = array_merge(array_slice($projects, 4,8),array_rand($regularNull,4));
+        }else $regular = array_slice($projects, 4,12);
+        
+        if (count($regular) < 4) $regular = array();
+        else if (count($regular) < 12) $regular = array_slice($projects, 4, 8);
         
         
         //set mail tracking
