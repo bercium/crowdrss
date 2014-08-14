@@ -69,11 +69,11 @@ class MailerCommand extends CConsoleCommand{
         
         $featured = array_slice($projects, 0, 4);
         if (count($regularNull) >= 4){
-          $regular = array_merge(array_slice($projects, 4,8),array_rand($regularNull,4));
-        }else $regular = array_slice($projects, 4,12);
+          $regular = array_merge(array_slice($projects, 4,4),array_rand($regularNull,4));
+        }else $regular = array_slice($projects, 4,8);
         
         if (count($regular) < 4) $regular = array();
-        else if (count($regular) < 12) $regular = array_slice($projects, 4, 8);
+        else if (count($regular) < 8) $regular = array_slice($projects, 4, 4);
         
         
         //set mail tracking
