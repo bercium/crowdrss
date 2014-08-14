@@ -491,7 +491,8 @@ background: #970b0e !important;
                         <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
                   <?php }
                   
-                  if (($c == 1) || ($c == 2)){ ?>
+                          
+                    //if (($c == 1) || ($c == 2)){ ?>
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
                             <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
@@ -526,7 +527,7 @@ background: #970b0e !important;
                             </p>
                             
                           </td>
-                          <?php }
+                          <?php //}
                           if ($c == 2 || $c == 4){ ?>
                           <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
                         </tr>
