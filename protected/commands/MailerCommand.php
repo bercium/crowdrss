@@ -41,7 +41,7 @@ class MailerCommand extends CConsoleCommand{
 
     $sql .= " ORDER BY rating DESC, time_added ASC";
     //$sql .= " LIMIT 12";
-    
+    echo $sql;
     return $sql;
   }
   
@@ -55,7 +55,7 @@ class MailerCommand extends CConsoleCommand{
       foreach ($subscriptions  as $sub){
 
         $sql = $this->createSQL($sub, 1);
-
+        return;
         // get projects
         $projects = Project::model()->findAll($sql);
         $count = count($projects);
