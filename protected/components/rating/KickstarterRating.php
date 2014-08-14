@@ -10,7 +10,7 @@ class KickstarterRating extends PlatformRating{
   // full analize
   public function firstAnalize($id){
     $cws = $this->currentWebStatus();
-    $rating = $this->calcWebRating($cws);
+    $rating = $this->calcContentRating($cws);
     
     // save to DB
     
@@ -21,7 +21,7 @@ class KickstarterRating extends PlatformRating{
   public function analize($id){
     $this->social();
     $cws = $this->currentWebStatus();
-    $this->calcWebRating($cws);
+    $this->calcContentRating($cws);
     $this->history();
     //$this->rssRating();  // when we have enough clicks
 
@@ -35,7 +35,7 @@ class KickstarterRating extends PlatformRating{
   }
   
   // calculate rating
-  private function calcWebRating($webAgregtor){
+  private function calcContentRating($webAgregtor){
     $rating = 0;
     $minRating = -7-6-4-3;
     $maxRating = 10+6+6+4+9+7+3+2+2+1+2;

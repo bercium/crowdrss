@@ -22,7 +22,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
         <div class="columns large-12 large-centered">
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
-            Select your favorite platform, chose your interests and we will deliver you the best projects right in your inbox or trough RSS feed.
+            Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver <strong>the best projects</strong> right in your inbox or trough RSS feed.
           </p>
 
         </div>
@@ -147,7 +147,11 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <?php if (!Yii::app()->user->isGuest) { //* ?>
           <h2>3. Limit projects</h2>
-          <p>We rate each project so you can enjoy them. Select how many projects you wish to receive.</p>
+          <p>
+            Select the quantity and quality of projects you wish to receive.
+            <br />
+            <small><i>Currently we rate only projects from Kickstarter and Indiegogo</i></small>
+          </p>
 
           
           <script>var slider_value = <?php if (!isset($subscription->rating)) echo "4"; else echo $subscription->rating; ?>;</script>
@@ -167,6 +171,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
             </div> 
           </div>
           
+
           <hr>
             
             

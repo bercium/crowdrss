@@ -62,11 +62,12 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
     <div class="row">
       <div class="column small-12 pt30 text-center">
         <div class="left">
-          in beta ... with <i class="fa fa-heart" style="color:#f04124"></i>
+          in beta ... with <i class="fa fa-heart" style="color:#f04124" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Love"></i>
         </div>
         <dl class="sub-nav right">
           <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-envelope"></i> Write us</a></dd> 
           <?php if (!Yii::app()->user->isGuest){ ?>
+          <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-sitemap"></i> Browse</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
