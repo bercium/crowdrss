@@ -71,7 +71,7 @@ class MailerCommand extends CConsoleCommand{
           }
         }
         
-        $regularNull = array_rand($regularNull,4);
+        shuffle($regularNull);
         $regular = array_merge(array_slice($regular, 0,8-count($regularNull)),$regularNull);
         
         if (count($regular) < 4) $regular = array();
@@ -140,7 +140,7 @@ class MailerCommand extends CConsoleCommand{
           }
         }
         
-        $regularNull = array_rand($regularNull,4);
+        shuffle($regularNull);
         $regular = array_merge(array_slice($regular, 0,8-count($regularNull)),$regularNull);
         
         if (count($regular) < 4) $regular = array();
