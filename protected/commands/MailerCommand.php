@@ -55,7 +55,7 @@ class MailerCommand extends CConsoleCommand{
       foreach ($subscriptions  as $sub){
 
         $sql = $this->createSQL($sub, 1);
-        return;
+        
         // get projects
         $projects = Project::model()->findAll($sql);
         $count = count($projects);
@@ -72,7 +72,8 @@ class MailerCommand extends CConsoleCommand{
         }
         
         shuffle($regularNull);
-        $regular = array_merge(array_slice($regular, 0,8-count($regularNull)),$regularNull);
+        $regularNull = array_slice($regularNull,0,4);
+        $regular = array_merge(array_slice($regular,0,8-count($regularNull)),$regularNull);
         
         if (count($regular) < 4) $regular = array();
         else if (count($regular) < 8) $regular = array_slice($regular, 0, 4);
@@ -141,7 +142,8 @@ class MailerCommand extends CConsoleCommand{
         }
         
         shuffle($regularNull);
-        $regular = array_merge(array_slice($regular, 0,8-count($regularNull)),$regularNull);
+        $regularNull = array_slice($regularNull,0,4);
+        $regular = array_merge(array_slice($regular,0,8-count($regularNull)),$regularNull);
         
         if (count($regular) < 4) $regular = array();
         else if (count($regular) < 8) $regular = array_slice($regular, 0, 4);
