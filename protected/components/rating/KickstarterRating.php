@@ -74,7 +74,7 @@ class KickstarterRating extends PlatformRating{
 
   //get all 
   private function currentWebStatus(){
-    if (!$this->html) $this->getData();  //load data if not loaded
+    if (!$this->html) $this->html = $this->getData();  //load data if not loaded
     $text = $this->html;
     
     $tmp = array();
