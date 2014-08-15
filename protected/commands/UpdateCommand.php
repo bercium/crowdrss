@@ -122,8 +122,7 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Parser for IGG
-  function parseIndiegogo($link) {
-    $htmlData = $this->getHtml($link, array());
+  function parseIndiegogo($htmlData) {
 
     // Goal
     $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
@@ -144,9 +143,6 @@ class UpdateCommand extends CConsoleCommand {
     $pattern = '/close on (.+)\(/';
     preg_match($pattern, $htmlData, $matches);
     $data['end_date'] = $matches[1];
-
-    $link = $link . "/show_tab/home";
-    $htmlData = $this->getHtml($link, array("X-Requested-With" => "XMLHttpRequest"));
 
     // Location
     $pattern = '/location-link">(.+)<\/a/';
@@ -396,7 +392,9 @@ class UpdateCommand extends CConsoleCommand {
         if ($link_check || $link_check_old || $link_check || $link_deform) {
           
         } else {
-          $data_single = $this->parseIndiegogo($link);
+          $htmlData = $this->getHtml($link, array());
+          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
+          $data_single = $this->parseIndiegogo($htmlData);
           $insert = new Project;
           $insert->title = $data->title;
           $insert->description = $data->description;
