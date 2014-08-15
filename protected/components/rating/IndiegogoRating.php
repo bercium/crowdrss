@@ -49,7 +49,7 @@ class IndiegogoRating extends PlatformRating{
   private function calcContentRating($webAgregtor){
     $rating = 0;
     $minRating = -7-6-4;
-    $maxRating = 10+6+6+4+9+7+1+2;
+    $maxRating = 10+6+6+4+9+7+3+4+2;
     
     if ($webAgregtor["Bvideo"] == 1) $rating += 10; // has video
     //if ($tmpData["#images"] > 3) $rating_new += 3; // img
@@ -69,7 +69,8 @@ class IndiegogoRating extends PlatformRating{
     if ($webAgregtor["#wordsContent"] < 87) $rating -= 4; // 25% without description
     
     //if ($tmpData["#personCreated"] > 1) $rating_new += 1; // created
-    if ($webAgregtor["#teamMembers"] > 3) $rating += 1; // created
+    if ($webAgregtor["#teamMembers"] > 3) $rating += 3; // created
+    if ($webAgregtor["#externalPages"] > 2) $rating += 4; // created
      
     if ($webAgregtor["#pledges"] > 6) $rating += 2; // created
     
