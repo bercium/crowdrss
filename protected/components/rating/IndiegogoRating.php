@@ -2,27 +2,37 @@
 
 class IndiegogoRating extends PlatformRating{
   
-  function __construct($url, $html=null) {
+  function __construct($url, $id = null, $html=null) {
     $this->html = $html;
     $this->link = $url;
+    $this->id = $id;
   }  
   
   // full analize
-  public function firstAnalize($id){
+  public function firstAnalize(){
     $cws = $this->currentWebStatus();
     $rating = $this->calcContentRating($cws);
-    
     // save to DB
-    
+    if ($this->id){
+      
+    }
     return $rating;
   }
   
   // full analize
-  public function analize($id){
-    $this->social();
+  public function analize(){
     $cws = $this->currentWebStatus();
     $this->calcContentRating($cws);
+    
+    $this->social();
+    
     $this->history();
+    
+    // save to DB
+    if ($this->id){
+      
+    }
+    
     //$this->rssRating();  // when we have enough clicks
 
     // save to DB
@@ -70,10 +80,10 @@ class IndiegogoRating extends PlatformRating{
   private function currentWebStatus(){
     if (!$this->html){
       $this->html = $this->getData();  //load data if not loaded
-      $this->html .= $this->getData("/show_tab/home");  //load secondary data if not loaded
+      $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest"));  //load secondary data if not loaded
     }
     $text = $this->html;
-    
+
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
     $endPosition = strpos($text, '<div class="i-lined-header">');

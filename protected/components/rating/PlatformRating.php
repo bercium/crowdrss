@@ -2,14 +2,15 @@
 abstract class PlatformRating {
   protected $html = null;
   protected $url = '';
+  protected $id = null;
   
   abstract public function firstAnalize($id);
   abstract public function analize($id);
   
-  protected function getData($sufix = ''){
+  protected function getData($sufix = '', $headers = null){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
+    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),$headers));
     $htmlDataObject = $httpClient->get($this->url.$sufix);
     return $htmlDataObject->httpBody;
   }

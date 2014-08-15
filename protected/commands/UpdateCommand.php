@@ -421,6 +421,12 @@ class UpdateCommand extends CConsoleCommand {
             $insert->type_of_funding = $typeOfFunding;
           }
           $insert->save();
+          
+          // get rating 
+          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+          $rating = $IggRating->firstAnalize();
+          $insert->rating = $rating;
+          $insert->save();          
 //          print_r($insert->getErrors());
         }
       }
