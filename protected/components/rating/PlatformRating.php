@@ -6,11 +6,11 @@ abstract class PlatformRating {
   abstract public function firstAnalize($id);
   abstract public function analize($id);
   
-  protected function getData(){
+  protected function getData($sufix = ''){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($this->url);
+    $htmlDataObject = $httpClient->get($this->url.$sufix);
     return $htmlDataObject->httpBody;
   }
   
