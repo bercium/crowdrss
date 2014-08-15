@@ -424,9 +424,9 @@ class UpdateCommand extends CConsoleCommand {
           
           // get rating 
           $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
-          $rating = $IggRating->firstAnalize();
-          $insert->rating = $rating;
-          $insert->save();          
+          //$rating = $IggRating->firstAnalize();
+          //$insert->rating = $rating;
+          //$insert->save();          
 //          print_r($insert->getErrors());
         }
       }
