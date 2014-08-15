@@ -70,7 +70,7 @@ class IndiegogoRating extends PlatformRating{
   private function currentWebStatus(){
     if (!$this->html){
       $this->html = $this->getData();  //load data if not loaded
-      $this->html .= $this->getData("/home");  //load secondary data if not loaded
+      $this->html .= $this->getData("/show_tab/home");  //load secondary data if not loaded
     }
     $text = $this->html;
     
