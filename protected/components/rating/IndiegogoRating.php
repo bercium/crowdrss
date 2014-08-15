@@ -11,6 +11,7 @@ class IndiegogoRating extends PlatformRating{
   // full analize
   public function firstAnalize(){
     $cws = $this->currentWebStatus();
+    if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     // save to DB
     if ($this->id){
@@ -83,6 +84,9 @@ class IndiegogoRating extends PlatformRating{
       $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest"));  //load secondary data if not loaded
     }
     $text = $this->html;
+    
+    // check validity of data
+    if (false) return false;
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
@@ -193,7 +197,7 @@ class IndiegogoRating extends PlatformRating{
     $pattern = '/i-perk-title">/';
     preg_match_all($pattern, $text, $matches);
     $pledgesNumber = count($matches[0]);
-    $tmp['#pladges'] = $pledgesNumber;
+    $tmp['#pledges'] = $pledgesNumber;
 
     // Type of funding
     $pattern = '/<span>(.+) Funding<\/span>/';
@@ -223,7 +227,7 @@ class IndiegogoRating extends PlatformRating{
       else { $tmp['Bsuccessful'] = 1; }
     }else{ $tmp['Bsuccessful'] = 0; }
 
-    return array();
+    return $tmp;
   }
 
 

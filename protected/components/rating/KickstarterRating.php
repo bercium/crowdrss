@@ -11,6 +11,10 @@ class KickstarterRating extends PlatformRating{
   // full analize
   public function firstAnalize(){
     $cws = $this->currentWebStatus();
+    if ($cws === false){
+      die ("nenee");
+      return null;
+    }
     $rating = $this->calcContentRating($cws);
     // save to DB
     if ($this->id){
@@ -87,7 +91,7 @@ class KickstarterRating extends PlatformRating{
     if (!$this->html) $this->html = $this->getData();  //load data if not loaded
     $text = $this->html;
     
-    $tmp = array();
+    $tmp = false;
     if ($text) {
       if (strlen($text) > 2000){
         // Link

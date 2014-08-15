@@ -313,15 +313,20 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 50) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
-      if ($result->results) {
+      if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link = str_replace("?ref=discovery", "", $data->link);
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
-          $link_check_old = Project::model()->findByAttributes(array('link' => $data->link));
-          $link_check = Project::model()->findByAttributes(array('link' => $link));
-          $link_part_check = Project::model()->findByAttributes(array('link' => '%/' . $link_parts[$count_link_parts - 1]));
-          if ($link_check || $link_check_old || $link_part_check) {
+          //$link_check_old = Project::model()->findByAttributes(array('link' => $data->link));
+          //$link_check = Project::model()->findByAttributes(array('link' => $link));
+          //$link_part_check = Project::model()->findByAttributes(array('link' => ));
+          $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 ",
+                                                  array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
+                                                        ':link2' => $data->link, 
+                                                        ':link3' => $link));
+          
+          if ($project_check) {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
@@ -356,8 +361,8 @@ class UpdateCommand extends CConsoleCommand {
             $insert->save();
 
             // get rating 
-            $KsRating = new KickstarterRating($link, $htmlData);
-            $rating = $KsRating->firstAnalize($insert->id);
+            $KsRating = new KickstarterRating($link, $insert->id, $htmlData);
+            $rating = $KsRating->firstAnalize();
             $insert->rating = $rating;
             $insert->save();
             
@@ -379,19 +384,21 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2400",), false);
-    if ($result->results) {
+    if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link = str_replace("/pinw", "", $data->link);
         $link = str_replace("/pimf", "", $link);
         $link = str_replace("?sa=0&sp=0", "", $link);
         $link = str_replace("?sa=0&amp;sp=0", "", $link);
-        $link_check_old = Project::model()->findByAttributes(array('link' => str_replace("?sa=0&sp=0", "", $data->link)));
-        $link_deform = Project::model()->findByAttributes(array('link' => $data->link));
-        $link_check = Project::model()->findByAttributes(array('link' => $link));
-        $title_check = Project::model()->findByAttributes(array('title' => $data->title));
-        if ($link_check || $link_check_old || $link_check || $link_deform) {
-          
-        } else {
+        /*$link_check_old = Project::model()->findByAttributes(array()));
+        $link_deform = Project::model()->findByAttributes(array());
+        $link_check = Project::model()->findByAttributes(array());*/
+        $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3  OR  title LIKE :title ",
+                                                array(':link1' => str_replace("?sa=0&sp=0", "", $data->link),
+                                                      ':link2' => $data->link, 
+                                                      ':title' => $data->title, 
+                                                      ':link3' => $link));
+        if (!$project_check) {
           $htmlData = $this->getHtml($link, array());
           $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
           $data_single = $this->parseIndiegogo($htmlData);
@@ -424,9 +431,9 @@ class UpdateCommand extends CConsoleCommand {
           
           // get rating 
           $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
-          //$rating = $IggRating->firstAnalize();
-          //$insert->rating = $rating;
-          //$insert->save();          
+          $rating = $IggRating->firstAnalize();
+          $insert->rating = $rating;
+          $insert->save();          
 //          print_r($insert->getErrors());
         }
       }
@@ -442,7 +449,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
       $result = $this->query("4b6e0d90-3728-4135-b308-560d238de82b", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
-      if ($result->results) {
+    if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
           if ($link_check) {
@@ -486,7 +493,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Pubslush'));
     $id = $platform->id;
     $result = $this->query("c25cf290-ca42-45d8-a506-683d1a3e1fe7", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/",), false);
-    if ($result->results) {
+    if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link_check = Project::model()->findByAttributes(array('link' => $data->link));
         if ($link_check) {
@@ -522,7 +529,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 3) {
       $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
-      if ($result->results) {
+      if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
           if ($link_check) {
@@ -565,7 +572,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 5) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
-      if ($result->results) {
+      if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
           if ($link_check) {

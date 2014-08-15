@@ -7,7 +7,7 @@ abstract class PlatformRating {
   abstract public function firstAnalize();
   abstract public function analize();
   
-  protected function getData($sufix = '', $headers = null){
+  protected function getData($sufix = '', $headers = array()){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),$headers));
