@@ -328,11 +328,11 @@ class UpdateCommand extends CConsoleCommand {
                                                         ':link3' => $link));
           
           if ($project_check) {
-            echo "project inside: ".$link."<br />";
+            echo "project inside: ".$link."<br />\n";
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            echo "new: ".$link."<br />";
+            echo "new: ".$link."<br />\n";
             $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
             
