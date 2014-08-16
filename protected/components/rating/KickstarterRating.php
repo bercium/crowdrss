@@ -8,48 +8,16 @@ class KickstarterRating extends PlatformRating{
     $this->id = $id;
   }  
   
-  // full analize
-  public function firstAnalize(){
-    $cws = $this->currentWebStatus();
-    if ($cws === false){
-      die ("nenee");
-      return null;
-    }
-    $rating = $this->calcContentRating($cws);
-    // save to DB
-    if ($this->id){
-      
-    }    
-    return $rating;
-  }
-  
-  // full analize
-  public function analize(){
-    
-    
-    $cws = $this->currentWebStatus();
-    $c_rating = $this->calcContentRating($cws);
-    
-    $this->social();
-    
-    $this->history();
-    // save to DB
-    if ($this->id){
-      
-    }    
-    //$this->rssRating();  // when we have enough clicks
-
-    // save to DB
-  }
+ 
   
   // previous data collection
-  private function history($currentWeb){
+  protected function history(){
     // from DB load previous web
     return array();
   }
   
   // calculate rating
-  private function calcContentRating($webAgregtor){
+  protected function calcContentRating($webAgregtor){
     $rating = 0;
     $minRating = -7-6-4-3;
     $maxRating = 10+6+6+4+9+7+3+2+2+1+2;
@@ -87,7 +55,7 @@ class KickstarterRating extends PlatformRating{
   
 
   //get all 
-  private function currentWebStatus(){
+  protected function currentWebStatus(){
     if (!$this->html) $this->html = $this->getData();  //load data if not loaded
     $text = $this->html;
     
