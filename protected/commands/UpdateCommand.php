@@ -306,10 +306,6 @@ class UpdateCommand extends CConsoleCommand {
 
 // Kickstarter store in to DB
   public function actionKickstarter() {
-    ini_set('display_errors',1);
-    ini_set('display_startup_errors',1);
-    error_reporting(-1);
-
     $i = 1;
     $check = false;
     $count = 0;
@@ -318,6 +314,8 @@ class UpdateCommand extends CConsoleCommand {
     while (($i <= 50) and ($check == false)) {
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
       if (isset($result->results)) {
+        print_r($result->results);
+        
         foreach ($result->results as $data) {
           $link = str_replace("?ref=discovery", "", $data->link);
           $link_parts = explode("/", $link);
@@ -331,9 +329,11 @@ class UpdateCommand extends CConsoleCommand {
                                                         ':link3' => $link));
           
           if ($project_check) {
+            echo "project inside!<br />";
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
+            echo "new<br />";
             $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
             
@@ -378,7 +378,7 @@ class UpdateCommand extends CConsoleCommand {
             break;
           }
         }
-      }
+      }else echo "NO";
       $i = $i + 1;
     }
   }
