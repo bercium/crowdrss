@@ -328,7 +328,9 @@ class UpdateCommand extends CConsoleCommand {
                                                         ':link3' => $link));
           
           if ($project_check) {
+            echo "|";
             print_r($project_check);
+            echo "|";//.$project_check."|";
             echo "project inside: ".$link;
             print_r(array(':link1' => '%/'.$link_parts[$count_link_parts - 1],
                           ':link2' => $data->link, 
