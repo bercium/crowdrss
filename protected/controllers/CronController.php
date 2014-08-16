@@ -66,13 +66,15 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionPoolCrowd(){
-    set_time_limit(60*5); //5 min
+    set_time_limit(60*12); //5 min
     echo $this->consoleCommand('update','kickstarter');
     echo $this->consoleCommand('update','indiegogo');
     echo $this->consoleCommand('update','goGetFunding');
     echo $this->consoleCommand('update','pubSlush');
     echo $this->consoleCommand('update','fundAnything');
     echo $this->consoleCommand('update','fundRazr');
+    
+    echo $this->consoleCommand('rating','after3h');
   }
   
   /**
@@ -93,6 +95,8 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionDailyDigest(){
+    echo $this->consoleCommand('rating','after1day');
+    
     echo $this->consoleCommand('mailer','dailyDigest');
   }
   
@@ -100,6 +104,8 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionWeeklyDigest(){
+    echo $this->consoleCommand('rating','after1week');
+    
     echo $this->consoleCommand('mailer','weeklyDigest');
   }  
   
