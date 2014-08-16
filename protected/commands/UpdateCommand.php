@@ -312,7 +312,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
     $id = $platform->id;
     while (($i <= 50) and ($check == false)) {
-      $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=launch_date",), false);
+      $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=newest",), false);
       if (isset($result->results)) {
         
         foreach ($result->results as $data) {
@@ -328,18 +328,9 @@ class UpdateCommand extends CConsoleCommand {
                                                         ':link3' => $link));
           
           if ($project_check) {
-            echo "|";
-            print_r($project_check);
-            echo "|";//.$project_check."|";
-            echo "project inside: ".$link;
-            print_r(array(':link1' => '%/'.$link_parts[$count_link_parts - 1],
-                          ':link2' => $data->link, 
-                          ':link3' => $link));
-                    
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            echo "new: ".$link."<br />\n";
             $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
             
