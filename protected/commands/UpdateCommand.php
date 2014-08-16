@@ -328,10 +328,10 @@ class UpdateCommand extends CConsoleCommand {
                                                         ':link3' => $link));
           
           if ($project_check) {
-            echo "project inside: ";
-            print_r(array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                        ':link2' => $data->link, 
-                                                        ':link3' => $link));
+            echo "project inside: ".$link;
+            print_r(array(':link1' => '%/'.$link_parts[$count_link_parts - 1],
+                          ':link2' => $data->link, 
+                          ':link3' => $link));
                     
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
