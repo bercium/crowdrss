@@ -306,6 +306,10 @@ class UpdateCommand extends CConsoleCommand {
 
 // Kickstarter store in to DB
   public function actionKickstarter() {
+    ini_set('display_errors',1);
+    ini_set('display_startup_errors',1);
+    error_reporting(-1);
+
     $i = 1;
     $check = false;
     $count = 0;
