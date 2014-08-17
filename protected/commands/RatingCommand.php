@@ -23,10 +23,11 @@ class RatingCommand extends CConsoleCommand{
         default: continue; break;
       }
       if ($rating_class == null) continue;
-    echo " analize \n<br>";
+      echo " analize ";
       
       $rating = $rating_class->analize();
 
+      echo $rating." \n<br>";
       $project->rating = $rating;
       $project->save();
     }
@@ -46,8 +47,6 @@ class RatingCommand extends CConsoleCommand{
     
     $start = date('Y-m-d H:',$time).$start.":00";
     $end = date('Y-m-d H:',$time).$end.":59";
-    
-    echo "time_added >= ".$start." AND time_added <= ".$end." ";
     
     $projects = Project::model()->findAll("time_added >= :start AND time_added <= :end", array(":start"=>$start, ":end"=>$end));
     
