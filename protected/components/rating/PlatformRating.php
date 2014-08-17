@@ -60,6 +60,7 @@ abstract class PlatformRating {
     
     if ($social == null) $social = $this->emptySocial();
     
+    echo $this->id;
     $rh = new RatingHistory();
     $rh->project_id = $this->id;
     $rh->data = json_encode(array("cws"=>$cws, "social"=>$social));
