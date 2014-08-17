@@ -60,7 +60,6 @@ class RatingCommand extends CConsoleCommand{
   public function actionAfter1day(){
     $start = strtotime("-1 day -3 hours");
     $end = strtotime("-3 hours");
-    $end = $start+14;
     
     $start = date('Y-m-d H:',$start)."00:00";
     $end = date('Y-m-d H:',$end)."00:00";

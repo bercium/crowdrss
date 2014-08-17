@@ -25,7 +25,7 @@ abstract class PlatformRating {
    * get social from the web
    */
   protected function getSocial(){
-    $social = new shareCount($this->link);
+    $social = new ShareCount($this->link);
     $return = array();
     $return['twitter'] = $social->get_tweets();
     $return['linkedin'] = $social->get_linkedin();
@@ -59,7 +59,7 @@ abstract class PlatformRating {
     if ($this->id == null) return;
     
     if ($social == null) $social = $this->emptySocial();
-    echo $this->id;
+    
     $rh = new RatingHistory();
     $rh->project_id = $this->id;
     $rh->data = json_encode(array("cws"=>$cws, "social"=>$social));

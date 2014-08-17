@@ -1,4 +1,4 @@
-<?
+<?php
 // http://stackoverflow.com/questions/5699270/how-to-get-share-counts-using-graph-api
 /*
 
@@ -13,7 +13,7 @@ Pinterest: http://widgets.pinterest.com/v1/urls/count.json?source=6&url=%%URL%%
 
  */
 
-class shareCount {
+class ShareCount {
 
   private $url, $timeout;
 
