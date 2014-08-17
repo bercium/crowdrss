@@ -16,8 +16,8 @@ abstract class PlatformRating {
   protected function getData($sufix = '', $headers = array()){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),$headers));
-    $htmlDataObject = $httpClient->get($this->link.$sufix);
+    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")));
+    $htmlDataObject = $httpClient->get($this->link.$sufix,$headers);
     return $htmlDataObject->httpBody;
   }
   
