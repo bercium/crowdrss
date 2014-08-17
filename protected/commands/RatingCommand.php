@@ -10,9 +10,9 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   private function loopProjects($projects){
-    echo "in";
+    echo count($projects)."\n<br>";
     if (!$projects) return;
-    echo count($projects)."‘\n<br>";
+    
     foreach ($projects as $project){
       $rating_class = null;
 
