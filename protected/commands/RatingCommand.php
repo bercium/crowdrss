@@ -38,6 +38,7 @@ class RatingCommand extends CConsoleCommand{
   public function actionAfter3h(){
 
     $time = strtotime("-3 hours");
+    echo date("i",$time)." ";
     $start = (date("i",$time) % 15)*15;
     $end = $start+14;
     
@@ -46,7 +47,7 @@ class RatingCommand extends CConsoleCommand{
     $start = date('Y-m-d H:',$time).$start.":00";
     $end = date('Y-m-d H:',$time).$end.":59";
     
-    echo "time_added >= ".$start." AND time_added <= ".$end;
+    echo "time_added >= ".$start." AND time_added <= ".$end." ";
     
     $projects = Project::model()->findAll("time_added >= :start AND time_added <= :end", array(":start"=>$start, ":end"=>$end));
     
