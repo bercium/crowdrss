@@ -97,7 +97,7 @@ abstract class PlatformRating {
 
     
     // save to DB
-    //$this->saveRating($cws, $social);
+    $this->saveRating($cws, $social);
     
     return $rating;
   }
