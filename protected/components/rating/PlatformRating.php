@@ -85,6 +85,7 @@ abstract class PlatformRating {
    */
   public function analize(){
     $cws = $this->currentWebStatus();
+    if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     
     $social =  $this->getSocial();
@@ -96,7 +97,7 @@ abstract class PlatformRating {
 
     
     // save to DB
-    $this->saveRating($cws, $social);
+    //$this->saveRating($cws, $social);
     
     return $rating;
   }
