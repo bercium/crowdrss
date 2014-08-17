@@ -110,7 +110,7 @@ class shareCount {
     curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
     $cont = curl_exec($ch);
     if (curl_error($ch)) {
-      die(curl_error($ch));
+      die(curl_error($ch)." ".$url);
     }
     return $cont;
   }
