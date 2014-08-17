@@ -25,6 +25,7 @@ abstract class PlatformRating {
    * get social from the web
    */
   protected function getSocial(){
+    echo ".".$this->url.".";
     $social = new shareCount($this->url);
     $return = array();
     $return['twitter'] = $social->get_tweets();
