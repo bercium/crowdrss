@@ -43,7 +43,6 @@ class IndiegogoRating extends PlatformRating{
      
     if ($webAgregtor["#pledges"] > 6) $rating += 2; // created
     
-    echo "igg: ".$rating.' ';
     return round(($rating-$minRating)/($maxRating-$minRating)*9);  //normalize
   }
   

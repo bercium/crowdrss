@@ -17,13 +17,13 @@ class RatingCommand extends CConsoleCommand{
       $rating_class = null;
 
       switch ($project->platform->name) {
-        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); echo "ks: ".$project->link; break;
-        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); echo "igg"; break;
+        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); echo "ks"; break;
+        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); echo "igg".$project->link; break;
 
         default: continue; break;
       }
       if ($rating_class == null) continue;
-      echo " analize ";
+      echo " analize \n<br>";
       
       $rating = $rating_class->analize();
 
