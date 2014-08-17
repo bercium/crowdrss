@@ -11,17 +11,18 @@ class RatingCommand extends CConsoleCommand{
    */
   private function loopProjects($projects){
     if (!$projects) return;
-    
+    echo count($projects)."‘\n<br>";
     foreach ($projects as $project){
       $rating_class = null;
 
       switch ($project->platform->name) {
-        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); break;
-        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); break;
+        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); echo "ks"; break;
+        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); echo "igg"; break;
 
         default: continue; break;
       }
       if ($rating_class == null) continue;
+    echo " analize \n<br>";
       
       $rating = $rating_class->analize();
 
