@@ -84,8 +84,6 @@ abstract class PlatformRating {
    * every other analyze
    */
   public function analize(){
-    echo "in ";
-    echo $this->link." out";
     $cws = $this->currentWebStatus();
     $this->calcContentRating($cws);
     
