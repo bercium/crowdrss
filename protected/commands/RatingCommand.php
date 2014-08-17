@@ -29,7 +29,7 @@ class RatingCommand extends CConsoleCommand{
 
       echo $rating." \n<br>";
       $project->rating = $rating;
-      $project->save();
+      //$project->save();
     }
   }
   
