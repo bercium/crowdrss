@@ -38,8 +38,8 @@ class RatingCommand extends CConsoleCommand{
   public function actionAfter3h(){
 
     $time = strtotime("-3 hours");
-    echo date("i",$time)." ".(date("i",$time) % 15)." ";
-    $start = (date("i",$time) % 15)*15;
+    
+    $start = floor(date("i",$time) / 15)*15;
     $end = $start+14;
     
     if ($start == 0) $start = '00';
