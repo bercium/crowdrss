@@ -41,6 +41,8 @@ class RatingCommand extends CConsoleCommand{
     $start = (date("i",$time) % 15)*15;
     $end = $start+14;
     
+    if ($start == 0) $start = '00';
+    
     $start = date('Y-m-d H:',$time).$start.":00";
     $end = date('Y-m-d H:',$time).$end.":59";
     
