@@ -375,7 +375,7 @@ class UpdateCommand extends CConsoleCommand {
             break;
           }
         }
-      }else echo "NO";
+      }//else echo "NO";
       $i = $i + 1;
     }
   }

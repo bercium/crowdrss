@@ -88,7 +88,6 @@ abstract class PlatformRating {
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     
-    echo " bs ";
     
     $social =  $this->getSocial();
     
@@ -97,8 +96,15 @@ abstract class PlatformRating {
     //$this->calculateOverallRating($cws, $social, $ows);
     //$this->rssRating();  // when we have enough clicks
 
-    echo "after social".$this->id;
-    
+
+    /* overall rating:
+    CONTENT
+    ABSOLUTE SOCIAL (koliko like-ov shareov v sestevku)
+
+    RELATIVE CONTENT project progress.. zbranih sredstev, komentarjev itd
+    RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
+     
+    */
     // save to DB
     $this->saveRating($cws, $social);
     
