@@ -46,6 +46,8 @@ class RatingCommand extends CConsoleCommand{
     $start = date('Y-m-d H:',$time).$start.":00";
     $end = date('Y-m-d H:',$time).$end.":59";
     
+    echo "time_added >= ".$start." AND time_added <= ".$end;
+    
     $projects = Project::model()->findAll("time_added >= :start AND time_added <= :end", array(":start"=>$start, ":end"=>$end));
     
     $this->loopProjects($projects);
