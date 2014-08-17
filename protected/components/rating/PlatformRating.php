@@ -60,7 +60,6 @@ abstract class PlatformRating {
     
     if ($social == null) $social = $this->emptySocial();
     
-    echo $this->id;
     $rh = new RatingHistory();
     $rh->project_id = $this->id;
     $rh->data = json_encode(array("cws"=>$cws, "social"=>$social));
@@ -89,6 +88,8 @@ abstract class PlatformRating {
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     
+    echo " bs ";
+    
     $social =  $this->getSocial();
     
     //$ows = $this->history();
@@ -96,6 +97,7 @@ abstract class PlatformRating {
     //$this->calculateOverallRating($cws, $social, $ows);
     //$this->rssRating();  // when we have enough clicks
 
+    echo "after social".$this->id;
     
     // save to DB
     $this->saveRating($cws, $social);
