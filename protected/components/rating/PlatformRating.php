@@ -84,10 +84,14 @@ abstract class PlatformRating {
    * every other analyze
    */
   public function analize(){
+    echo "1 ";
     $cws = $this->currentWebStatus();
+    echo "2 ";
     $this->calcContentRating($cws);
+    echo "3 ";
     
     $social =  $this->social();
+    echo "4 ";
     
     //$ows = $this->history();
     
