@@ -10,15 +10,15 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   private function loopProjects($projects){
-    //echo count($projects)."\n<br>";
+    echo count($projects)."\n<br>";
     if (!$projects) return;
     
     foreach ($projects as $project){
       $rating_class = null;
 
       switch ($project->platform->name) {
-        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); /*echo "ks";*/ break;
-        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); /*echo "igg".$project->link;*/ break;
+        case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); echo "ks"; break;
+        case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); echo "igg".$project->link; break;
 
         default: continue; break;
       }
@@ -26,7 +26,7 @@ class RatingCommand extends CConsoleCommand{
       
       $rating = $rating_class->analize();
 
-      //echo $project->rating."-".$rating." \n<br>";
+      echo $project->rating."-".$rating." \n<br>";
       $project->rating = $rating;
       $project->save();
     }

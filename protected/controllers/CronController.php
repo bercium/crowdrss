@@ -116,8 +116,9 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionDailyDigest(){
+    echo "ba1d";
     echo $this->consoleCommand('rating','after1day');
-    
+    echo "daily digest start";
     echo $this->consoleCommand('mailer','dailyDigest');
   }
   
