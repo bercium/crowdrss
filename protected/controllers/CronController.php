@@ -63,10 +63,10 @@ class CronController extends Controller
 	
   
   /**
-   * all hidden profiles will be notified every second week
+   * 
    */
   public function actionPoolCrowd(){
-    set_time_limit(60*12); //5 min
+    //set_time_limit(60*12); //5 min
     echo $this->consoleCommand('update','kickstarter');
     echo $this->consoleCommand('update','indiegogo');
     echo $this->consoleCommand('update','goGetFunding');
@@ -78,7 +78,7 @@ class CronController extends Controller
   }
   
   /**
-   * all hidden profiles will be notified every second week
+   * 
    */
   public function actionPoolKs(){
     echo $this->consoleCommand('update','kickstarter');
@@ -87,10 +87,31 @@ class CronController extends Controller
   /**
    * all hidden profiles will be notified every second week
    */
-  public function actionPoolIgg(){
-    echo $this->consoleCommand('update','indiegogo');
+  public function actionPoolSingle($type){
+    switch ($type) {
+      case "ks":echo $this->consoleCommand('update','kickstarter');
+        break;
+      case "igg":echo $this->consoleCommand('update','indiegogo');
+        break;
+      case "ggf":echo $this->consoleCommand('update','goGetFunding');
+        break;
+      case "ps":echo $this->consoleCommand('update','pubSlush');
+        break;
+      case "fa":echo $this->consoleCommand('update','fundAnything');
+        break;
+      case "fr":echo $this->consoleCommand('update','fundRazr');
+        break;
+
+      default: echo "Chose from: ks, igg, ggf, ps, fa, fr";
+        break;
+    }
   }
   
+  public function actionAfter3h(){
+    echo $this->consoleCommand('rating','after3h');
+  }
+
+
   /**
    * all hidden profiles will be notified every second week
    */

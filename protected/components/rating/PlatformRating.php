@@ -1,7 +1,7 @@
 <?php
 abstract class PlatformRating {
   protected $html = null;
-  protected $url = '';
+  protected $link = '';
   protected $id = null;
   
   abstract protected function history();
@@ -16,8 +16,8 @@ abstract class PlatformRating {
   protected function getData($sufix = '', $headers = array()){
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"),$headers));
-    $htmlDataObject = $httpClient->get($this->url.$sufix);
+    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")));
+    $htmlDataObject = $httpClient->get($this->link.$sufix,$headers);
     return $htmlDataObject->httpBody;
   }
   
@@ -25,7 +25,7 @@ abstract class PlatformRating {
    * get social from the web
    */
   protected function getSocial(){
-    $social = new shareCount($this->url);
+    $social = new ShareCount($this->link);
     $return = array();
     $return['twitter'] = $social->get_tweets();
     $return['linkedin'] = $social->get_linkedin();
@@ -85,18 +85,30 @@ abstract class PlatformRating {
    */
   public function analize(){
     $cws = $this->currentWebStatus();
-    $this->calcContentRating($cws);
+    if ($cws === false) return null;
+    $rating = $this->calcContentRating($cws);
     
-    $social =  $this->social();
+    
+    $social =  $this->getSocial();
     
     //$ows = $this->history();
     
     //$this->calculateOverallRating($cws, $social, $ows);
     //$this->rssRating();  // when we have enough clicks
 
-    
+
+    /* overall rating:
+    CONTENT
+    ABSOLUTE SOCIAL (koliko like-ov shareov v sestevku)
+
+    RELATIVE CONTENT project progress.. zbranih sredstev, komentarjev itd
+    RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
+     
+    */
     // save to DB
     $this->saveRating($cws, $social);
+    
+    return $rating;
   }
     
   
