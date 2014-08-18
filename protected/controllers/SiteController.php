@@ -175,8 +175,7 @@ class SiteController extends Controller
     $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true,"projPerDay"=>0));
     $all = 0;
     foreach ($platforms as $platform){
-      //$numofp = round(Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id)) / 7);
-      $numofp = 0;
+      $numofp = round(Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id)) / 7);
       //$numofp = round(count(Project::model()->findAll("time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id))) / 7);
       $all += $numofp;
       $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel),"projPerDay"=>$numofp);
