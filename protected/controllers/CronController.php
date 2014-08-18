@@ -73,8 +73,6 @@ class CronController extends Controller
     echo $this->consoleCommand('update','pubSlush');
     echo $this->consoleCommand('update','fundAnything');
     echo $this->consoleCommand('update','fundRazr');
-    
-    echo $this->consoleCommand('rating','after3h');
   }
   
   /**
@@ -107,27 +105,36 @@ class CronController extends Controller
     }
   }
   
-  public function actionAfter3h(){
+  public function actionAfter3hRating(){
     echo $this->consoleCommand('rating','after3h');
   }
 
 
   /**
-   * all hidden profiles will be notified every second week
+   * 
+   */
+  public function actionDailyRating(){
+    echo $this->consoleCommand('rating','after1day');
+  }
+  
+  /**
+   * 
    */
   public function actionDailyDigest(){
-    echo "ba1d";
-    echo $this->consoleCommand('rating','after1day');
-    echo "daily digest start";
     echo $this->consoleCommand('mailer','dailyDigest');
   }
   
   /**
-   * all hidden profiles will be notified every second week
+   * 
+   */
+  public function actionWeeklyRating(){
+    echo $this->consoleCommand('rating','after1week');
+  }  
+  
+  /**
+   * 
    */
   public function actionWeeklyDigest(){
-    echo $this->consoleCommand('rating','after1week');
-    
     echo $this->consoleCommand('mailer','weeklyDigest');
   }  
   

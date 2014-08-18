@@ -32,9 +32,9 @@ abstract class PlatformRating {
     $return['linkedin'] = $social->get_linkedin();
     $return['facebook'] = $social->get_fb();
     $return['google'] = $social->get_plusones();
-    $return['stumble'] = $social->get_stumble();
-    $return['delicious'] = $social->get_delicious();
-    $return['pinterest'] = $social->get_pinterest();
+    //$return['stumble'] = $social->get_stumble();
+    //$return['delicious'] = $social->get_delicious();
+    //$return['pinterest'] = $social->get_pinterest();
     
     return $return;
   }
