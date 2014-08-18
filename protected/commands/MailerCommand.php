@@ -59,7 +59,7 @@ class MailerCommand extends CConsoleCommand{
         $projects = Project::model()->findAll($sql);
         $count = count($projects);
         
-        $regularNull = array();
+        $featured = $regular = $regularNull = array();
         $i = 0;
         foreach ($projects as $project){
           $i++;
