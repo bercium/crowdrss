@@ -56,7 +56,10 @@ class IndiegogoRating extends PlatformRating{
     $text = $this->html;
     
     // check validity of data
-    if (false) return false;
+    if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
+      return false;
+    }
+    
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
@@ -87,6 +90,13 @@ class IndiegogoRating extends PlatformRating{
     // Money
     $pattern = '/raised of <span class="currency"><span>(.+)<\/span><\/span> goal/';
     preg_match($pattern, $text, $matches);
+    if (count($matches) < 1){
+      echo "<br /><br />";
+      print_r($matches);
+      echo "<br /><br />";
+      echo $text;
+      exit;
+    }
     $money = str_replace(',', '', $matches[1]);
     $pattern = '/\d+/';
     preg_match($pattern, $money, $matches);
