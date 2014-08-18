@@ -93,7 +93,7 @@ class shareCount {
 
 // Reddit
   function get_reddit() {
-    $jason_string = $this->file_get_contents_curl('' . $this->url);
+    $json_string = $this->file_get_contents_curl('' . $this->url);
     $json = json_decode($json_string, true);
     $score = isset($json['data']['children'][0]['data']['score']) ? intval($json['data']['children'][0]['data']['score']) : 0;
     $comments = isset($json['data']['children'][0]['data']['num_comments']) ? intval($json['data']['children'][0]['data']['num_comments']) : 0;
