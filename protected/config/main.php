@@ -114,7 +114,14 @@ $a = array(
             'logFile' => 'application.warning.log',
             'enabled'=>!YII_DEBUG,
             /*'categories'=>'system.db.*',*/
-        ),          
+        ),
+        array(
+					//'class'=>'CWebLogRoute',
+					'levels'=>'error, warning, trace, info',
+					'class'=>'CFileLogRoute',
+            'logFile' => 'application.log',
+            'enabled'=>!YII_DEBUG,
+				),
 				// uncomment the following to show log messages on web pages
 				/*
 				array(
