@@ -35,7 +35,11 @@ abstract class PlatformRating {
     //$return['stumble'] = $social->get_stumble();
     //$return['delicious'] = $social->get_delicious();
     //$return['pinterest'] = $social->get_pinterest();
-    
+    $all = 0;
+    foreach ($return as $rs){
+      $all += $rs; 
+    }
+    $return['all'] = $all;
     return $return;
   }
   
@@ -89,10 +93,18 @@ abstract class PlatformRating {
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     
-    
-    $social =  $this->getSocial();
-    
-    //$ows = $this->history();
+    $social = null;
+    if ($this->id != null && false){   //!!! skip for now
+      $project = Project::model()->findByPk($this->id);
+      
+      $social =  $this->getSocial();
+
+      $numOfHFromStart = timeDifference($project->time_added, time(),'hour');
+      $likes = ($social['all']/$numOfHFromStart)*24; // avg how many likes in a day
+      
+      //progress
+      
+      $this->history($cws, $social);
     
     //$this->calculateOverallRating($cws, $social, $ows);
     //$this->rssRating();  // when we have enough clicks
@@ -106,11 +118,17 @@ abstract class PlatformRating {
     RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
      
     */
+    }
     // save to DB
     $this->saveRating($cws, $social);
     
     return $rating;
   }
+  
+  
+  private function history($cws, $social){
+    $socialRating = $social['all'];
     
+  }
   
 }

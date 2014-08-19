@@ -15,6 +15,8 @@ class RatingCommand extends CConsoleCommand{
     $i = 0;
     
     foreach ($projects as $project){
+      if (strtotime($project->end) < time()) continue; // project ended
+      
       $rating_class = null;
 
       //echo ($i++).": ".date("c")." ";
@@ -78,7 +80,7 @@ class RatingCommand extends CConsoleCommand{
    */
   public function actionAfter1week(){
     $start = strtotime("-1 week");
-    $end = strtotime("now");
+    $end = strtotime("-1 day");
 //    $start = strtotime("-1 week -4 hours");
 //    $end = strtotime("-4 hours");
     
