@@ -75,12 +75,6 @@ class CronController extends Controller
     echo $this->consoleCommand('update','fundRazr');
   }
   
-  /**
-   * 
-   */
-  public function actionPoolKs(){
-    echo $this->consoleCommand('update','kickstarter');
-  }  
   
   /**
    * all hidden profiles will be notified every second week
@@ -105,6 +99,9 @@ class CronController extends Controller
     }
   }
   
+  /**
+   * 
+   */
   public function actionAfter3hRating(){
     echo $this->consoleCommand('rating','after3h');
   }
@@ -136,6 +133,13 @@ class CronController extends Controller
    */
   public function actionWeeklyDigest(){
     echo $this->consoleCommand('mailer','weeklyDigest');
-  }  
+  }
+  
+  /**
+   * 
+   */
+  public function actionValidateParsers(){
+    echo $this->consoleCommand('mailer','validateParsers');
+  }
   
 }

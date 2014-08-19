@@ -190,5 +190,33 @@ class MailerCommand extends CConsoleCommand{
     }
 
   }
+  
+  /**
+   * validates that parser has parsed something in the last few hours
+   */
+  public function actionValidateParsers(){
+    $hours = 8;
+    $ksCount = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -".$hours." HOUR) AND platform_id = 1");
+    $iggCount = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -".$hours." HOUR) AND platform_id = 2");
+    
+    if (($ksCount < 15) || ($iggCount < 15)){
+    
+      // create message
+      $message = new YiiMailMessage;
+      $message->view = 'system';
+      $message->subject = "Parser validation failed";  // 11 Dec title change
+      $message->from = Yii::app()->params['scriptEmail'];
+      
+      $content = 'Not enough projects parsed.<br /><br />';
+      if ($ksCount < 15) $content .= 'Kickstarter has '.$ksCount." new projects in last 8h!<br />";
+      if ($iggCount < 15) $content .= 'Indiegogo has '.$ksCount." new projects in last 8h!<br />";
+
+      $message->setBody(array("content"=>$content), 'text/html');
+      $message->setTo('info@crowdfundingrss.com');
+      Yii::app()->mail->send($message);
+    }
+    
+    return 0;
+  }
     
 }

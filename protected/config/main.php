@@ -146,6 +146,7 @@ $a = array(
 		// this is used in contact page
 		'noreplyEmail'=>array('no-reply@crowdfundingrss.com'=>'Crowdfunding RSS'),
 		'adminEmail'=>array('info@crowdfundingrss.com'=>'Crowdfunding RSS'),
+		'scriptEmail'=>array('script@crowdfundingrss.com'=>'Script CF RSS'),
 		'username'=>'',
 		'pass'=>'',
     'absoluteHost' => 'http://www.crowdfundingrss.com/',
