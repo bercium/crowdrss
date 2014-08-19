@@ -126,9 +126,9 @@ abstract class PlatformRating {
   }
   
   
-  private function history($cws, $social){
+ /* private function history($cws, $social){
     $socialRating = $social['all'];
     
-  }
+  }*/
   
 }
