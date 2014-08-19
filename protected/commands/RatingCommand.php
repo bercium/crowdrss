@@ -82,6 +82,7 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   public function actionAfter1week(){
+    set_time_limit(0);
     $start = strtotime("-1 week");
     $end = strtotime("-1 day");
 //    $start = strtotime("-1 week -4 hours");
