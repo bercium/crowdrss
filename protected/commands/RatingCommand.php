@@ -11,7 +11,7 @@ class RatingCommand extends CConsoleCommand{
    */
   private function loopProjects($projects){
     //echo count($projects)."\n<br>";
-    if (!$projects) return;
+    if (!$projects) return 0;
     $i = 0;
     
     foreach ($projects as $project){
@@ -33,7 +33,10 @@ class RatingCommand extends CConsoleCommand{
       //echo $project->rating."-".$rating." \n<br>";
       $project->rating = $rating;
       $project->save();
+      $i++;
     }
+    
+    return $i;
   }
   
   /**
@@ -89,7 +92,25 @@ class RatingCommand extends CConsoleCommand{
     
     $projects = Project::model()->findAll("time_added >= :start AND time_added < :end", array(":start"=>$start, ":end"=>$end));
     
-    $this->loopProjects($projects);
+    
+    $start = time();
+    
+    $parsed = $this->loopProjects($projects);
+    
+    $end = time();
+    
+    // create message
+    $message = new YiiMailMessage;
+    $message->view = 'system';
+    $message->subject = "Report: one week rating";  // 11 Dec title change
+    $message->from = Yii::app()->params['scriptEmail'];
+
+    $content = 'Projects: '.$parsed." / ".count($projects)."<br />";
+    $content = 'Time: '.  timeDifference($st, $end)."<br />";
+
+    $message->setBody(array("content"=>$content), 'text/html');
+    $message->setTo('info@crowdfundingrss.com');
+    Yii::app()->mail->send($message);    
     
     return 0;
   }
