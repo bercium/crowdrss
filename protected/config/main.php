@@ -87,13 +87,6 @@ $a = array(
           'ipFilters'=>array('127.0.0.1'),
           'enabled'=>YII_DEBUG,
 				),
-          array(
-					//'class'=>'CWebLogRoute',
-					'levels'=>'error, warning, trace, info',
-					'class'=>'CFileLogRoute',
-            'logFile' => 'application.log',
-            'enabled'=>!YII_DEBUG,
-				),
         array(
   					'levels'=>'error',
             'class'=>'CEmailLogRoute',
