@@ -341,7 +341,7 @@ EOD;
     
     $sitemapResponse .= "\n</urlset>"; // end sitemap
     
-    $this->render("//layouts/blank",array("content"=>$sitemapResponse));
+    $this->render("//layouts/none",array("content"=>$sitemapResponse));
   }    
 
 }
