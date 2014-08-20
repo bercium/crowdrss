@@ -43,7 +43,7 @@
               <div class="row">
                 <div class="columns mt30 text-center">
                   
-                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>"><input type="button" class="button success medium radius" value="Project site"></a>
+                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>"><input type="button" class="button success medium radius" value="Go to project site"></a>
                   
                 </div>
               </div>
