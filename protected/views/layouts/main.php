@@ -64,10 +64,20 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
         <div class="left">
           in beta ... with <i class="fa fa-heart" style="color:#f04124" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Love"></i>
         </div>
-        <dl class="sub-nav right">
-          <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-envelope"></i> Write us</a></dd> 
+        <dl class="sub-nav right" >
           <?php if (!Yii::app()->user->isGuest){ ?>
-          <dd><a href="#" onclick="contact(this);" trk="link_bottom_contact us"><i class="fa fa-sitemap"></i> Browse</a></dd> 
+          <dd><a href="#" onclick="contact(this);" trk="link_bottom_browse"><i class="fa fa-sitemap"></i> Browse</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('top100'); ?>"  trk="link_bottom_top100"><i class="fa fa-trophy"></i> Top 100</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('bottom100'); ?>" trk="link_bottom_bottom100"><i class="fa fa-bolt"></i> Bottom 100</a></dd> 
+          <?php } ?>
+          <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contact us" style="color:#666;"><i class="fa fa-envelope"></i> Write to us</a></dd> 
+        </dl>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column small-12">
+        <dl class="sub-nav right" >
+          <?php if (!Yii::app()->user->isGuest){ ?>
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 

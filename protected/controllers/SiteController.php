@@ -277,7 +277,7 @@ class SiteController extends Controller
     // don't allow any other strings before this
     Yii::app()->clientScript->reset();
     $this->layout = 'none'; // template blank
-    
+        
     $sitemapResponse=<<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -290,24 +290,46 @@ class SiteController extends Controller
       <changefreq>monthly</changefreq>
       <priority>1</priority>
     </url>
-    <url>
-      <loc></loc>
-      <changefreq>daily</changefreq>
-      <priority></priority>
-    </url>
-    <url>
-      <loc></loc>
-      <changefreq>weekly</changefreq>
-      <priority></priority>
-    </url>
-    
 EOD;
+    
+    // all platforms and number of projects
+    $platforms = Platform::model()->findAll();
+    foreach (array(10,25,50,100) as $c){
+      $sitemapResponse .= "
+        <url>
+          <loc>http://crowdfundingrss.com/top".$c."</loc>
+          <changefreq>weekly</changefreq>
+          <priority>0.9</priority>
+        </url>";
+      $sitemapResponse .= "
+        <url>
+          <loc>http://crowdfundingrss.com/bottom".$c."</loc>
+          <changefreq>weekly</changefreq>
+          <priority>0.8</priority>
+        </url>";
+      foreach ($platforms as $platform){
+        $sitemapResponse .= "
+          <url>
+            <loc>http://crowdfundingrss.com/top".$c."/".$platform->name."</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.9</priority>
+          </url>";
+        $sitemapResponse .= "
+          <url>
+            <loc>http://crowdfundingrss.com/bottom".$c."/".$platform->name."</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.8</priority>
+          </url>";
+      }
+    }
+    
     
     // go trough projects newer than 1 month
     $projects = Project::model()->findAll("time_added > :datum", array(":datum"=>date("Y-m-d H:i:s", strtotime("-1 month"))));
     foreach ($projects as $project){
       if ($project){
-        $priority = $project->rating/20+0.35;
+        $priority = 0.35;
+        if ($project->rating) $priority = $project->rating/20+0.35;
         $sitemapResponse .= "
         <url>
           <loc>". $project->link . "</loc>
