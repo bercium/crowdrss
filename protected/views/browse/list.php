@@ -10,7 +10,7 @@
     foreach ($projects as $project){
     ?>
   
-    <a href="" target="_blank" style="color:inherit;">
+    <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;">
     <div class="row panel <?php if ($i < 4) echo "callout"; ?>" style="padding: 1rem">
       <div class="columns small-1">
         <h4 style="margin:0;">
