@@ -12,12 +12,14 @@ class BrowseController extends Controller
     $count+=0;
     if ($count < 10) $count = 10;
     if ($count > 100) $count = 100;
-    $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",array(":date"=>date('Y-m-d',strtotime('-1 week')),":limit"=>$count));
+    $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
+                                          array(":date"=>date('Y-m-d',strtotime('-1 week')),
+                                                ":limit"=>$count));
     
     
     $title = "Top ".$count." projects";
     if ($platform) $title .= " on ".$platform;
-		$this->render('list',array("title"=>$title,"projects"=>$projects));
+		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == '')));
 	}
   
 	/**
@@ -36,7 +38,7 @@ class BrowseController extends Controller
     
     $title = "Bottom ".$count." projects";
     if ($platform) $title .= " on ".$platform;
-		$this->render('list',array("title"=>$title,"projects"=>$projects));
+		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == '')));
 	}
  
 
