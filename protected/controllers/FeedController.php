@@ -225,7 +225,7 @@ class FeedController extends Controller
   
   
   public function actionPreviewRss(){
-    $this->layout = 'blank';
+    //$this->layout = 'blank';
     
     $subcat = $cat = $plat = '';
     $rating = 0;    

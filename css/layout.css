@@ -33,6 +33,17 @@
   font-weight: bold;
 }
 
+.intro-defult{
+  color:#FFF;
+  background: #0088bb;
+  background-image: url('../images/bg.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  /*height: 50px;*/
+}
+
+
 .outro{
   color:#FFF;
   background: #0088bb;
@@ -52,6 +63,11 @@
   background: #0088bb;
 }
 
+.special_title{
+  font-family: 'Istok Web', sans-serif;
+  font-weight: bold;
+  text-shadow: 1px 0 0 #0088bb, -1px 0 0 #0088bb, 0 1px 0 #0088bb, 0 -1px 0 #0088bb, 1px 1px #0088bb, -1px -1px 0 #0088bb, 1px -1px 0 #0088bb, -1px 1px 0 #0088bb;
+}
 
 .intro h1{
   font-family: 'Istok Web', sans-serif;
