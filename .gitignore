@@ -25,3 +25,7 @@ protected/data/backup/
 protected/config/local-main.php
 protected/config/local-console.php
 protected/config/local-path.php
+
+protected/components/cookies.curl.txt
+time_added
+title
