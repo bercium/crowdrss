@@ -310,13 +310,13 @@ EOD;
       foreach ($platforms as $platform){
         $sitemapResponse .= "
           <url>
-            <loc>http://crowdfundingrss.com/top".$c."/".$platform->name."</loc>
+            <loc>".str_replace(" ", "+", "http://crowdfundingrss.com/top".$c."/".$platform->name)."</loc>
             <changefreq>weekly</changefreq>
             <priority>0.9</priority>
           </url>";
         $sitemapResponse .= "
           <url>
-            <loc>http://crowdfundingrss.com/bottom".$c."/".$platform->name."</loc>
+            <loc>".str_replace(" ", "+", "http://crowdfundingrss.com/bottom".$c."/".$platform->name)."</loc>
             <changefreq>weekly</changefreq>
             <priority>0.8</priority>
           </url>";
@@ -332,7 +332,7 @@ EOD;
         if ($project->rating) $priority = (($project->rating/20)+0.35);
         $sitemapResponse .= "
         <url>
-          <loc>". $project->link . "</loc>
+          <loc>". str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index",array("name"=>$project->title))) ) . "</loc>
           <changefreq>weekly</changefreq>
           <priority>" . $priority . "</priority>
         </url>";
