@@ -55,6 +55,7 @@ $a = array(
 			'rules'=>array(
         ''=>'site/index',
         'gii/<controller:\w+>/<action:[\w-]+>' => 'gii/<controller>/<action>',
+				'view/<name>'=>'view/index',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>/<data:\w+>'=>'<controller>/<action>',
