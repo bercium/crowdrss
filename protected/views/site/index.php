@@ -9,7 +9,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
        <a id="whatIsCRSS" class="anchor"></a>
        <div class="row">
          <div class="columns large-12 text-center">
-           <img src="images/logo.png" class="mt30 mb30">
+           <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30">
            <h1 class="white title show-for-medium-up">Crowdfunding RSS</h1>
            <h1 class="white title-small show-for-small">Crowdfunding RSS</h1>
          </div>
@@ -52,7 +52,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     <div class="mb20">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
-                        <img src="images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
+                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
@@ -300,9 +300,9 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
         </div>
         <div class="columns medium-6 social">
           <br />
-            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="images/fbw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Facebook"></a>
-            <a trk="social_twitter_share_bottom" href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/tww.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Tweet about us"></a>
-            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="images/gpw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Google+"></a>
+            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/fbw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Facebook"></a>
+            <a trk="social_twitter_share_bottom" href="https://twitter.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageDesc; ?>"  target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/tww.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Tweet about us"></a>
+            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/gpw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Google+"></a>
         </div>
       </div>
     </div>

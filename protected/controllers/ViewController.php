@@ -9,7 +9,7 @@ class ViewController extends Controller
 	 */
 	public function actionIndex($name)
 	{
-    $this->layout = 'blank';
+    //$this->layout = 'default';
 
     $project = Project::model()->findByAttributes(array("title"=>$name));
     
