@@ -334,11 +334,7 @@ EOD;
         <url>
           <loc>". $project->link . "</loc>
           <changefreq>weekly</changefreq>
-<<<<<<< HEAD
           <priority>" . $priority . "</priority>
-=======
-          <priority>".$priority."</priority>
->>>>>>> 0425e1ba68e00a98a576580ce38d7c43b6289b06
         </url>";
       }
     }
