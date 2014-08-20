@@ -19,7 +19,7 @@ class BrowseController extends Controller
     
     $title = "Top ".$count." projects";
     if ($platform) $title .= " on ".$platform;
-		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == '')));
+		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == ''),"listType"=>"top"));
 	}
   
 	/**
@@ -38,7 +38,7 @@ class BrowseController extends Controller
     
     $title = "Bottom ".$count." projects";
     if ($platform) $title .= " on ".$platform;
-		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == '')));
+		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == ''),"listType"=>"bottom"));
 	}
  
 

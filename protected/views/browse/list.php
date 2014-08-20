@@ -12,10 +12,11 @@
   
   <div class="row">
     <div class="columns">
-      <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;">
+      <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
         <div class="row panel <?php if ($i < 4) echo "callout"; ?>" style="padding: 1rem; margin-bottom:1.25rem">
-          <div class="columns small-1">
+          <div class="columns small-1 ">
             <h4 style="margin:0;">
+              
               <?php echo $i; ?>
 
               <?php 
@@ -35,7 +36,11 @@
 
             </h4>
           </div>
-          <div class="columns small-11 medium-8">
+          <div class="columns small-1 show-for-medium-up text-center">
+            <img src="<?php echo $project->image; ?>" <?php echo $project->title; ?> style="max-height:32px;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
+          </div>
+          <div class="columns small-11 medium-7">
+            
             <i class="fa fa-external-link right show-for-small"></i>
             <?php
               echo "<strong>".$project->title."</strong>";
