@@ -286,100 +286,36 @@ class SiteController extends Controller
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
-      <loc>http://www.cofinder.eu/</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.90</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/person/discover</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.90</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/project/discover</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.90</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/site/startupEvents</loc>
-      <changefreq>daily</changefreq>
-      <priority>0.60</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/site/about</loc>
+      <loc>http://crowdfundingrss.com/</loc>
       <changefreq>monthly</changefreq>
-      <priority>0.60</priority>
+      <priority>1</priority>
     </url>
     <url>
-      <loc>http://www.cofinder.eu/user/registration</loc>
-      <changefreq>monthly</changefreq>
-      <priority>0.30</priority>
+      <loc></loc>
+      <changefreq>daily</changefreq>
+      <priority></priority>
     </url>
     <url>
-      <loc>http://www.cofinder.eu/user/login</loc>
-      <changefreq>yearly</changefreq>
-      <priority>0.30</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/user/recovery</loc>
-      <changefreq>yearly</changefreq>
-      <priority>0.20</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/site/terms</loc>
-      <changefreq>monthly</changefreq>
-      <priority>0.40</priority>
-    </url>
-    <url>
-      <loc>http://www.cofinder.eu/site/cookies</loc>
-      <changefreq>monthly</changefreq>
-      <priority>0.40</priority>
+      <loc></loc>
+      <changefreq>weekly</changefreq>
+      <priority></priority>
     </url>
     
 EOD;
     
-    // get user completeness for setting priority
-    $usersStat = UserStat::model()->findAll();
-    $complete = array();
-    foreach ($usersStat as $us){
-      $complete[$us['user_id']] = $us['completeness'];
-    }
-    
-    // go trough all active users and write them out
-    $users = User::model()->findAllByAttributes(array('status'=>1));
-    foreach ($users as $user){
-      $priority = 60;
-      if (isset($complete[$user['id']])){
-        $priority += round($complete[$user['id']]/5,0);
-      }
-      $sitemapResponse .= "
-      <url>
-        <loc>".Yii::app()->createAbsoluteUrl('person',array("id"=>$user['id']))."</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.".$priority."</priority>
-      </url>";
-    }
-    
-    // go trough all active projects and write them out
-    $ideas = Idea::model()->findAllByAttributes(array('deleted'=>0));
-    foreach ($ideas as $idea){
-      IdeaTranslation::model();
-      $priority = 70;
-      foreach ($idea->ideaTranslations as $trans){
-        if ($trans->language->language_code != 'en'){
-          $ar = array("id"=>$idea['id'],"lang"=>$trans->language->language_code);
-        }else{
-          $ar = array("id"=>$idea['id']);
-        }
-        
+    // go trough projects newer than 1 month
+    $projects = Project::model()->findAll("time_added > :datum", array(":datum"=>date("Y-m-d H:i:s", strtotime("-1 month"))));
+    foreach ($projects as $project){
+      if ($project){
+        $priority = $project->rating/20+0.35;
         $sitemapResponse .= "
         <url>
-          <loc>".Yii::app()->createAbsoluteUrl('project',$ar)."</loc>
+          <loc>". $project->link . "</loc>
           <changefreq>weekly</changefreq>
           <priority>0.".$priority."</priority>
         </url>";
       }
-    }    
+    }
     
     $sitemapResponse .= "\n</urlset>"; // end sitemap
     
