@@ -329,12 +329,12 @@ EOD;
     foreach ($projects as $project){
       if ($project){
         $priority = 0.35;
-        if ($project->rating) $priority = $project->rating/20+0.35;
+        if ($project->rating) $priority = (($project->rating/20)+0.35);
         $sitemapResponse .= "
         <url>
           <loc>". $project->link . "</loc>
           <changefreq>weekly</changefreq>
-          <priority>0.".$priority."</priority>
+          <priority>" . $priority . "</priority>
         </url>";
       }
     }
