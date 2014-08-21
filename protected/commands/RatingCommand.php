@@ -9,26 +9,43 @@ class RatingCommand extends CConsoleCommand{
   /**
    * 
    */
-  private function loopProjects($projects){
+  private function loopProjects($projects,$filename=''){
     //echo count($projects)."\n<br>";
     if (!$projects) return 0;
-    $i = 0;
+    $i = 1;
     
     foreach ($projects as $project){
       if (strtotime($project->end) < time()) continue; // project ended
       
       $rating_class = null;
+      
+      if ($filename){
+        $fp = fopen($filename, "a");
+        fwrite($fp, $i.": ".$project->title);
+      }
 
       //echo ($i++).": ".date("c")." ";
       switch ($project->platform->name) {
         case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); /*echo "ks ".$project->link;*/ break;
         case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); /*echo "igg ".$project->link;*/ break;
 
-        default: continue; break;
+        default: /*continue;*/ break;
       }
-      if ($rating_class == null) continue;
+      if ($rating_class == null){
+        if ($filename){
+          fwrite($fp, "\n");
+          fclose($fp);
+        }
+        
+        continue;
+      }
       
       $rating = $rating_class->analize();
+      
+      if ($filename){
+        fwrite($fp, ": ".$project->link." - ".$rating."\n");
+        fclose($fp);
+      }
 
       //echo $project->rating."-".$rating." \n<br>";
       $project->rating = $rating;
@@ -60,6 +77,72 @@ class RatingCommand extends CConsoleCommand{
     $this->loopProjects($projects);
     return 0;
   }
+  
+  
+  /**
+   * 
+   */
+  public function actionAfterDays($days = 1){
+    if ($days > 8) return 0;
+    
+    $hours = -$days*24;
+    $start = strtotime(($hours-3)." hours");
+    $end = strtotime(($hours+24-3)." hours");
+    
+    $start = date('Y-m-d H:',$start)."00:00";
+    $end = date('Y-m-d H:',$end)."00:00";
+
+    $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
+    if (file_exists($filename)){
+      unlink($filename);
+    }
+    
+    // write a report and mail it
+    if ($days == '8'){
+      $content= '';
+      for ($c = 1; $c < 8; $c++){
+        $fn = Yii::app()->getRuntimePath()."/".$c."-ok.txt";
+        if (file_exists($fn)){
+          $content .= file_get_contents($fn)."\n";
+        }else $content .= $c.": FAILED";
+      }
+      
+      $message = new YiiMailMessage;
+      $message->view = 'system';
+      $message->subject = "Report for ".date("Y-m-d");  // 11 Dec title change
+      $message->from = Yii::app()->params['scriptEmail'];
+
+
+      $message->setBody(array("content"=>$content), 'text/html');
+      $message->setTo("info@crowdfundingrss.com");
+      Yii::app()->mail->send($message);
+      
+      return 0;
+    }
+    
+    $processStart = date('c');
+    
+    $projects = Project::model()->findAll("time_added >= :start AND time_added < :end", array(":start"=>$start, ":end"=>$end));
+    
+    
+    $fp = fopen($filename, "a");
+    fwrite($fp, 'Num of projects: '.count($projects)."\n\n");
+    fclose($fp);
+    
+    // do the magic
+    $checked = $this->loopProjects($projects,$filename);
+    
+    
+    $filename = Yii::app()->getRuntimePath()."/".$days."-ok.txt";
+    if (file_exists($filename)){
+      unlink($filename);
+    }
+    $fp = fopen($filename, "a");
+    fwrite($fp, $days.': '.$processStart." - ".date('c')."\n".$checked." / ".count($projects)."\n");
+    fclose($fp);    
+    
+    return 0;
+  }  
   
   /**
    * 
