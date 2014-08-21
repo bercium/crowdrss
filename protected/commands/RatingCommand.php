@@ -83,15 +83,15 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   public function actionAfterDays($days = null){
-    if ($days == null) $days = date("G");
+    if ($days == null) $days = date("G")+1;
     if ($days > 8) return 0;
     
-    $hours = -$days*24;
-    $start = strtotime(($hours-3)." hours");
-    $end = strtotime(($hours+24-3)." hours");
+    if ($days == 1) $date = strtotime("-1 day");
+    else $date = strtotime("-".$days." day");
     
-    $start = date('Y-m-d H:',$start)."00:00";
-    $end = date('Y-m-d H:',$end)."00:00";
+    $start = date('Y-m-d',$date)." 00:00:00";
+    $end = date('Y-m-d',$date)." 23:59:59";
+
 
     $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
     if (file_exists($filename)){
@@ -123,7 +123,7 @@ class RatingCommand extends CConsoleCommand{
     
     $processStart = date('c');
     
-    $projects = Project::model()->findAll("time_added >= :start AND time_added < :end", array(":start"=>$start, ":end"=>$end));
+    $projects = Project::model()->findAll("time_added BETWEEN :start AND :end", array(":start"=>$start, ":end"=>$end));
     
     
     $fp = fopen($filename, "a");
