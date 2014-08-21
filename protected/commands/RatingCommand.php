@@ -83,7 +83,7 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   public function actionAfterDays($days = null){
-    if ($days == null) $days = date("G")+1;
+    if ($days == null) $days = date("G")+1;    
     if ($days > 8) return 0;
     
     if ($days == 1) $date = strtotime("-1 day");
@@ -91,7 +91,8 @@ class RatingCommand extends CConsoleCommand{
     
     $start = date('Y-m-d',$date)." 00:00:00";
     $end = date('Y-m-d',$date)." 23:59:59";
-
+    
+//    echo $start." - ".$end;
 
     $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
     if (file_exists($filename)){
