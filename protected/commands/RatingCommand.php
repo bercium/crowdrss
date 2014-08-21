@@ -87,7 +87,7 @@ class RatingCommand extends CConsoleCommand{
     if ($days > 8) return 0;
     
     if ($days == 1) $date = strtotime("-1 day");
-    else $date = strtotime("-".$days." day");
+    else $date = strtotime("-".$days." days");
     
     $start = date('Y-m-d',$date)." 00:00:00";
     $end = date('Y-m-d',$date)." 23:59:59";
