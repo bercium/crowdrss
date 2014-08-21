@@ -67,9 +67,9 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
         <dl class="sub-nav right" >
           <?php if (!Yii::app()->user->isGuest){ ?>
           <dd><a href="#" onclick="contact(this);" trk="link_bottom_browse"><i class="fa fa-sitemap"></i> Browse</a></dd> 
+          <?php } ?>
           <dd><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy"></i> Top 50</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
-          <?php } ?>
           <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contact us" style="color:#666;"><i class="fa fa-envelope"></i> Write to us</a></dd> 
         </dl>
       </div>
