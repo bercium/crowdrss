@@ -2,7 +2,7 @@
     <div class="row">
       <div class="columns">
         <h2><?php echo $title; ?></h2>
-        <p>Just newcomers in the last 24h</p>
+        <p>Best newcomers in the last 24h</p>
       </div>
     </div>
     <?php 
