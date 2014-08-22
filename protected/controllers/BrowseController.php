@@ -9,7 +9,7 @@ class BrowseController extends Controller
 	 */
 	public function actionTop($count, $platform = '', $category = ''){
     //$this->layout = 'default';
-    $count+=0;
+    
     if ($count < 10) $count = 10;
     if ($count > 100) $count = 100;
     $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
@@ -29,7 +29,6 @@ class BrowseController extends Controller
 	public function actionBottom($count, $platform = '', $category = ''){
     //$this->layout = 'default';
 
-    $count+=0;
     if ($count < 10) $count = 10;
     if ($count > 100) $count = 100;
     $projects = Project::model()->findAll("time_added >= :date AND NOT ISNULL(rating) ORDER BY rating ASC, time_added DESC LIMIT :limit",
@@ -40,6 +39,23 @@ class BrowseController extends Controller
     if ($platform) $title .= " on ".$platform;
 		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == ''),"listType"=>"bottom"));
 	}
+  
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionTopDaily($count = 10){
+    //$this->layout = 'default';
+
+    if ($count < 10) $count = 10;
+    if ($count > 50) $count = 50;
+    $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
+                                          array(":date"=>date('Y-m-d',strtotime('-24 hours')),
+                                                ":limit"=>$count));
+    
+    $title = "Top projects for today";
+    $this->render('topDaily',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>false,"listType"=>"top"));
+	}  
  
 
 }
