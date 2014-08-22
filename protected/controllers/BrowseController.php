@@ -57,7 +57,7 @@ class BrowseController extends Controller
                                                 ":limit"=>$count));
     
     $title = "Top projects for today";
-    $this->render('topDaily',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>false,"listType"=>"top"));
+    $this->render('topDaily',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>true,"listType"=>"top"));
 	}  
  
 
