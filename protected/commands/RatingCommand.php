@@ -132,10 +132,12 @@ class RatingCommand extends CConsoleCommand{
           $content .= file_get_contents($fn)."<br />";
         }else $content .= $c.": FAILED";
       }
+      //if ($content == '' && !$firsttime) return 0;
       
       $message = new YiiMailMessage;
       $message->view = 'system';
-      $message->subject = "Report for ".date("Y-m-d");  // 11 Dec title change
+      if ($firsttime) $message->subject = "Report for ".date("Y-m-d");  
+      else  $message->subject = "Report for retry ".date("Y-m-d");  
       $message->from = Yii::app()->params['scriptEmail'];
 
 
