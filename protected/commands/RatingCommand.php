@@ -21,7 +21,7 @@ class RatingCommand extends CConsoleCommand{
       
       if ($filename){
         $fp = fopen($filename, "a");
-        fwrite($fp, $i.": ".$project->title);
+        fwrite($fp, $i.": ".$project->id.": ".$project->title);
       }
 
       //echo ($i++).": ".date("c")." ";
@@ -43,7 +43,7 @@ class RatingCommand extends CConsoleCommand{
       $rating = $rating_class->analize();
       
       if ($filename){
-        fwrite($fp, ": ".$project->link." - ".$rating."\n");
+        fwrite($fp, ": ".$project->link." - ".$rating."  <<".$project->id.">>\n");
         fclose($fp);
       }
 
@@ -83,8 +83,17 @@ class RatingCommand extends CConsoleCommand{
    * 
    */
   public function actionAfterDays($days = null){
+    set_time_limit(0);
     if ($days == null) $days = date("G")+1;    
-    if ($days > 8) return 0;
+    if (($days > 8 && $days < 11) || ($days > 18)) return 0;
+    
+    $firsttime = true;
+    if ($days > 10){ // redoo for failed days
+      $days -= 10;  
+      $firsttime = false;
+    }
+    $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
+
     
     if ($days == 1) $date = strtotime("-1 day");
     else $date = strtotime("-".$days." days");
@@ -93,10 +102,25 @@ class RatingCommand extends CConsoleCommand{
     $end = date('Y-m-d',$date)." 23:59:59";
     
 //    echo $start." - ".$end;
+    $ids = '';
+    if (!$firsttime){
+      if (file_exists(Yii::app()->getRuntimePath()."/".$days."-ok.txt")) return 0; // everything OK
+      $fp = fopen($filename, "a");
+      fwrite($fp, "\n\nRETRY\n");
+      
+      $getIds = file_get_contents($filename);
+      $ids = array();
+      preg_match_all("/<<(\d+)>>/",$getIds,$ids);
+      if (isset($ids[0])) $ids = implode(",", $ids[0]);
+      else $ids = '';
+      // load ids of unfailed projects
+      fwrite($fp, 'Exclude: '.$ids."\n\n");
 
-    $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
-    if (file_exists($filename)){
-      unlink($filename);
+      fclose($fp);
+    }else{
+      if (file_exists($filename)){
+        unlink($filename);
+      }
     }
     
     // write a report and mail it
@@ -105,7 +129,7 @@ class RatingCommand extends CConsoleCommand{
       for ($c = 1; $c < 8; $c++){
         $fn = Yii::app()->getRuntimePath()."/".$c."-ok.txt";
         if (file_exists($fn)){
-          $content .= file_get_contents($fn)."\n";
+          $content .= file_get_contents($fn)."<br />";
         }else $content .= $c.": FAILED";
       }
       
@@ -124,7 +148,9 @@ class RatingCommand extends CConsoleCommand{
     
     $processStart = date('c');
     
-    $projects = Project::model()->findAll("time_added BETWEEN :start AND :end", array(":start"=>$start, ":end"=>$end));
+    // do the projects
+    if ($ids) $projects = Project::model()->findAll("(time_added BETWEEN :start AND :end) AND id NOT IN (:ids)", array(":start"=>$start, ":end"=>$end, ":ids"=>$ids));
+    else $projects = Project::model()->findAll("time_added BETWEEN :start AND :end", array(":start"=>$start, ":end"=>$end));
     
     
     $fp = fopen($filename, "a");
