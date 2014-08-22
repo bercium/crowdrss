@@ -130,7 +130,7 @@ class RatingCommand extends CConsoleCommand{
         $fn = Yii::app()->getRuntimePath()."/".$c."-ok.txt";
         if (file_exists($fn)){
           $content .= file_get_contents($fn)."<br />";
-        }else $content .= $c.": FAILED";
+        }else $content .= $c.": FAILED<br />";
       }
       //if ($content == '' && !$firsttime) return 0;
       
