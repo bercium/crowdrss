@@ -132,7 +132,7 @@ class RatingCommand extends CConsoleCommand{
           $content .= file_get_contents($fn)."<br />";
         }else $content .= $c.": FAILED<br />";
       }
-      //if ($content == '' && !$firsttime) return 0;
+      if ($content == '' && !$firsttime) return 0;
       
       $message = new YiiMailMessage;
       $message->view = 'system';
