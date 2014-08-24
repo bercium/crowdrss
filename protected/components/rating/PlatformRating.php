@@ -51,16 +51,17 @@ abstract class PlatformRating {
     $return['linkedin'] = 0;
     $return['facebook'] = 0;
     $return['google'] = 0;
-    $return['stumble'] = 0;
-    $return['delicious'] = 0;
-    $return['pinterest'] = 0;
+    //$return['stumble'] = 0;
+    //$return['delicious'] = 0;
+    //$return['pinterest'] = 0;
+    $return['all'] = 0;
     return $return;
   }
 
   /**
    * save into DB
    */
-  protected function saveRating($cws,$social = null){
+  protected function saveRating($cws, $social = null){
     if ($this->id == null) return;
     
     if ($social == null) $social = $this->emptySocial();
