@@ -204,17 +204,17 @@ class StatisticController extends Controller
       
       if ($all < 0.15) $arrayCount[0] += 1;
       else 
-      if ($all >= 0.15) $arrayCount[0] += 1;
+      if ($all >= 0.15) $arrayCount[1] += 1;
       else 
-      if ($all >= 3.3) $arrayCount[1] += 1;
+      if ($all >= 3.3) $arrayCount[2] += 1;
       else 
-      if ($all >= 11.45) $arrayCount[2] += 1;
+      if ($all >= 11.45) $arrayCount[3] += 1;
       else 
-      if ($all >= 22.76) $arrayCount[3] += 1;
+      if ($all >= 22.76) $arrayCount[4] += 1;
       else 
-      if ($all >= 39) $arrayCount[4] += 1;
+      if ($all >= 39) $arrayCount[5] += 1;
       else 
-      if ($all >= 65.08) $arrayCount[5] += 1;
+      if ($all >= 65.08) $arrayCount[6] += 1;
     }
     
     $content = print_r($arrayCount, true);
