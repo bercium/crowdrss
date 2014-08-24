@@ -166,5 +166,53 @@ class StatisticController extends Controller
     $this->render('dbExecute',array('model'=>$model,'dataProvider'=>$dataProvider,'rawData'=>$rawData,'loadID'=>$loadID));
   }
   
+  
+  public function actionSocialAnalize(){
+    /*
+     
+    */
+    
+    $sql = "select rh.`project_id`,rh.`data`,rh.`time_rated`, p.*
+            from (
+               select project_id, max(`time_rated`) as maxdate
+               from rating_history group by project_id
+            ) as x inner join rating_history as rh on rh.`project_id` = x.`project_id` and rh.`time_rated` = x.maxdate
+            LEFT JOIN project AS p ON p.id = rh.project_id";
+
+		$connection=Yii::app()->db;
+		$command=$connection->createCommand($sql);
+		$dataReader=$command->query();
+		$arrayCount = array(0,0,0,0,0,0,0);
+
+		foreach($dataReader as $row) {
+      $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
+      
+      $data = json_decode($row['data'],true );
+      if (!isset($data['social'])) continue;
+      
+      $social = $data['social'];
+      if (!isset($social['all'])) continue;
+      $all = $social['all'];
+      if ($h_lapsed > 0) $all = $all / $h_lapsed;  // per hour
+      
+      $all = $all*24; // per day
+      
+      if ($all > 0.15) $arrayCount[0] += 1;
+      else 
+      if ($all > 3.3) $arrayCount[1] += 1;
+      else 
+      if ($all > 11.45) $arrayCount[2] += 1;
+      else 
+      if ($all > 22.76) $arrayCount[3] += 1;
+      else 
+      if ($all > 39) $arrayCount[4] += 1;
+      else 
+      if ($all > 65.08) $arrayCount[5] += 1;
+    }
+    
+    $content = print_r($arrayCount, true);
+    
+    $this->render('//site/message',array('content'=>$content));
+  }
 	
 }
