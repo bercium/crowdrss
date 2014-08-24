@@ -192,9 +192,6 @@ class StatisticController extends Controller
       if (!isset($data['social'])) continue;
       $social = $data['social'];
 
-      print_r($data);
-      break;
-      
       if (!isset($social['all'])) {
         foreach ($social as $rs){
           $all += $rs; 
