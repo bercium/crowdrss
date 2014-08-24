@@ -195,10 +195,12 @@ class StatisticController extends Controller
       print_r($data);
       break;
       
-      if (!isset($social['all'])) continue;
+      if (!isset($social['all'])) {
+        foreach ($social as $rs){
+          $all += $rs; 
+        }
+      }else $all = $social['all'];
       
-      
-      $all = $social['all'];
       if ($h_lapsed > 0) $all = $all / $h_lapsed;  // per hour
       
       $all = $all*24; // per day
