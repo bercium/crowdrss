@@ -188,10 +188,16 @@ class StatisticController extends Controller
       $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
       
       $data = json_decode($row['data'],true );
-      if (!isset($data['social'])) continue;
       
+      if (!isset($data['social'])) continue;
       $social = $data['social'];
+
+      print_r($data);
+      break;
+      
       if (!isset($social['all'])) continue;
+      
+      
       $all = $social['all'];
       if ($h_lapsed > 0) $all = $all / $h_lapsed;  // per hour
       
