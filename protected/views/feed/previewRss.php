@@ -1,4 +1,4 @@
-		<div class="pt30 outro">
+		<div class="pt30 outro" style="margin-top: -20px;">
       <div class="row">
         <div class="columns medium-12">
           <h2 class="white">Last 10 projects from your selection</h2>

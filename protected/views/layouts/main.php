@@ -83,6 +83,8 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('statistic/database'); ?>">Stat DB</a></dd> 
+          
           <?php } ?>
         </dl>
       </div>
