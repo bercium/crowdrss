@@ -95,6 +95,7 @@ abstract class PlatformRating {
     $rating = $this->calcContentRating($cws);
     
     $social = null;
+    $social =  $this->getSocial();
     if ($this->id != null && false){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
