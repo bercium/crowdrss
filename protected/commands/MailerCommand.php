@@ -124,12 +124,12 @@ class MailerCommand extends CConsoleCommand{
       foreach ($subscriptions  as $sub){
 
         $sql = $this->createSQL($sub, 7);
-
+        
         // get projects
         $projects = Project::model()->findAll($sql);
         $count = count($projects);
         
-        $regularNull = array();
+        $featured = $regular = $regularNull = array();
         $i = 0;
         foreach ($projects as $project){
           $i++;
@@ -172,9 +172,9 @@ class MailerCommand extends CConsoleCommand{
         $content = '';
 
         // not enough projects
-        //if ($count < 4){
+        if ($count < 4){
           $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
-        //}
+        }
 
         $editLink = absoluteURL()."site/index?id=".$sub->hash;
 
