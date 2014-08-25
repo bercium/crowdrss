@@ -126,13 +126,17 @@ class RatingCommand extends CConsoleCommand{
     // write a report and mail it
     if ($days == '8'){
       $content= '';
+      $failed = false;
       for ($c = 1; $c < 8; $c++){
         $fn = Yii::app()->getRuntimePath()."/".$c."-ok.txt";
         if (file_exists($fn)){
           $content .= file_get_contents($fn)."<br />";
-        }else $content .= $c.": FAILED<br />";
+        }else{
+          $content .= $c.": FAILED<br />";
+          $failed = true;
+        }
       }
-      if ($content == '' && !$firsttime) return 0;
+      if (!$failed && !$firsttime) return 0;
       
       $message = new YiiMailMessage;
       $message->view = 'system';
