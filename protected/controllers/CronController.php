@@ -67,8 +67,6 @@ class CronController extends Controller
    */
   public function actionPoolCrowd(){
     //set_time_limit(60*12); //5 min
-    ini_set('mysql.connect_timeout', 0);
-    ini_set('default_socket_timeout', 0);
     echo $this->consoleCommand('update','kickstarter');
     echo $this->consoleCommand('update','indiegogo');
     echo $this->consoleCommand('update','goGetFunding');

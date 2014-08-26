@@ -80,7 +80,7 @@ $a = array(
 		'db' => array(
                   'enableProfiling'=>YII_DEBUG,
                   'enableParamLogging'=>YII_DEBUG,
-                  'initSQLs'=>array("set time_zone='+00:00';"),
+                  'initSQLs'=>array("set time_zone='+00:00'; wait_timeout=60;"),
             ),
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
