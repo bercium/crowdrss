@@ -206,9 +206,8 @@ class StatisticController extends Controller
       $all = $all*24; // per day
       
       // less than 3 hours statisticaly too little
-      if ($h_lapsed < 4){
-        $all *= 0.8;
-      }
+      if ($h_lapsed == 3) $all *= 0.8;
+      if ($h_lapsed == 2) $all *= 0.75;
       
       if ($all < 0.15) $arrayCount[0] += 1;
       else 
