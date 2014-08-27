@@ -188,7 +188,6 @@ class StatisticController extends Controller
 
     $daysAgo = array();
     
-    echo count($dataReader);
 		foreach($dataReader as $row) {
       $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
       
@@ -250,7 +249,7 @@ class StatisticController extends Controller
     print_r($daysAgo);
     
     echo "<br /><br /><br />";
-    
+    asort($arrayCount);
     $content = print_r($arrayCount, true);
     
     $this->render('//site/message',array('content'=>$content));
