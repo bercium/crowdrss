@@ -184,7 +184,7 @@ class StatisticController extends Controller
 		$dataReader=$command->query();
 		$arrayCount = array(0,0,0,0,0,0,0);
 
-    $preview = array();
+    $daysAgo = array();
     
 		foreach($dataReader as $row) {
       $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
@@ -207,7 +207,11 @@ class StatisticController extends Controller
       
       if ($all < 0.15) $arrayCount[0] += 1;
       else 
-      if ($all >= 65.08) $arrayCount[6] += 1;
+      if ($all >= 65.08){
+        $arrayCount[6] += 1;
+        if (isset($daysAgo[$h_lapsed])) $daysAgo[$h_lapsed]++;
+        else $daysAgo[$h_lapsed] = 1;
+      }
       else 
       if ($all >= 39) $arrayCount[5] += 1;
       else 
@@ -223,6 +227,11 @@ class StatisticController extends Controller
         echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
       }
     }
+    
+    echo "Top days: ";
+    print_r($daysAgo);
+    
+    echo "<br />";
     
     $content = print_r($arrayCount, true);
     
