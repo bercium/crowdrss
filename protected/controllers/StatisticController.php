@@ -219,7 +219,7 @@ class StatisticController extends Controller
         if (isset($daysAgo[$h_lapsed]['da'])) $daysAgo[$h_lapsed]['da']++;
         else $daysAgo[$h_lapsed]['da'] = 1;
         $daysAgo[$h_lapsed]['p'][] = $all;
-        if ($all > 2000) echo $h_lapsed.": ".$row['link']."<br />";
+        if ($all > 1000) echo $h_lapsed.": ".$all." - ".$row['link']."<br />";
       }
       if ($all >= 278.88) $arrayCount[9] += 1;
       else
@@ -239,9 +239,9 @@ class StatisticController extends Controller
       else
       if ($all >= 0.15) $arrayCount[1] += 1;
       
-      if ($row['project_id'] == 32614){
+      /*if ($row['project_id'] == 32614){
         echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
-      }
+      }*/
     }
     
     echo "Top days: ";
