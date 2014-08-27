@@ -172,11 +172,12 @@ class StatisticController extends Controller
      
     */
     
-    $sql = "select rh.`project_id`,rh.`data`,rh.`time_rated`, p.*
-            from (
-               select project_id, max(`time_rated`) as maxdate
-               from rating_history group by project_id
-            ) as x inner join rating_history as rh on rh.`project_id` = x.`project_id` and rh.`time_rated` = x.maxdate
+    $sql = "SELECT rh.`project_id`,rh.`data`,rh.`time_rated`, p.*
+            FROM (
+               SELECT project_id, max(`time_rated`) AS maxdate
+               FROM rating_history group by project_id
+               WHERE time_rated >= '".date("Y-m-d",strtotime("-7 days"))."'
+            ) AS x INNER JOIN rating_history AS rh ON rh.`project_id` = x.`project_id` AND rh.`time_rated` = x.maxdate
             LEFT JOIN project AS p ON p.id = rh.project_id";
 
 		$connection=Yii::app()->db;
