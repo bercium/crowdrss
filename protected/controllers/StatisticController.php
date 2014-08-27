@@ -193,7 +193,7 @@ class StatisticController extends Controller
       
       $data = json_decode($row['data'],true );
       
-      //if ($h_lapsed < 4) continue;  // hard to evaluate project this young
+      if ($h_lapsed < 3) continue;  // hard to evaluate project this young
       if (!isset($data['social'])) continue;
       $social = $data['social'];
       
