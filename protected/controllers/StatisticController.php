@@ -229,6 +229,7 @@ class StatisticController extends Controller
     }
     
     echo "Top days: ";
+    sort($daysAgo);
     print_r($daysAgo);
     
     echo "<br />";
