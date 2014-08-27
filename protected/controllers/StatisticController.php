@@ -188,6 +188,7 @@ class StatisticController extends Controller
 
     $daysAgo = array();
     
+    echo count($dataReader);
 		foreach($dataReader as $row) {
       $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
       
