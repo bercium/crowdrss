@@ -184,6 +184,8 @@ class StatisticController extends Controller
 		$dataReader=$command->query();
 		$arrayCount = array(0,0,0,0,0,0,0);
 
+    $preview = array();
+    
 		foreach($dataReader as $row) {
       $h_lapsed = timeDifference($row['time_added'],$row['time_rated'],"hour");
       
@@ -216,6 +218,10 @@ class StatisticController extends Controller
       if ($all >= 39) $arrayCount[5] += 1;
       else 
       if ($all >= 65.08) $arrayCount[6] += 1;
+      
+      if ($row['project_id'] == 32614){
+        echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
+      }
     }
     
     $content = print_r($arrayCount, true);
