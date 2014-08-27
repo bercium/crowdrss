@@ -236,7 +236,7 @@ class StatisticController extends Controller
     asort($daysAgo);
     print_r($daysAgo);
     
-    echo "<br />";
+    echo "<br /><br /><br />";
     
     $content = print_r($arrayCount, true);
     
