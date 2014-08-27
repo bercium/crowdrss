@@ -193,7 +193,7 @@ class StatisticController extends Controller
       
       $data = json_decode($row['data'],true );
       
-      if ($h_lapsed < 4) continue;  // hard to evaluate project this young
+      //if ($h_lapsed < 4) continue;  // hard to evaluate project this young
       if (!isset($data['social'])) continue;
       $social = $data['social'];
       
@@ -209,8 +209,8 @@ class StatisticController extends Controller
       $all = $all*24; // per day
       
       // less than 3 hours statisticaly too little
-      if ($h_lapsed == 3) $all *= 0.6;
-      if ($h_lapsed == 2) $all *= 0.45;
+      /*if ($h_lapsed == 3) $all *= 0.6;
+      if ($h_lapsed == 2) $all *= 0.45;*/
       
       if ($all < 0.15) $arrayCount[0] += 1;
       else
@@ -219,8 +219,7 @@ class StatisticController extends Controller
         if (isset($daysAgo[$h_lapsed]['da'])) $daysAgo[$h_lapsed]['da']++;
         else $daysAgo[$h_lapsed]['da'] = 1;
         $daysAgo[$h_lapsed]['p'][] = $all;
-        if ($all > 2000) echo $row['link']."<br />";
-
+        if ($all > 2000) echo $h_lapsed.": ".$row['link']."<br />";
       }
       if ($all >= 278.88) $arrayCount[9] += 1;
       else
