@@ -175,8 +175,9 @@ class StatisticController extends Controller
     $sql = "SELECT rh.`project_id`,rh.`data`,rh.`time_rated`, p.*
             FROM (
                SELECT project_id, max(`time_rated`) AS maxdate
-               FROM rating_history group by project_id
+               FROM rating_history
                WHERE time_rated >= '".date("Y-m-d",strtotime("-7 days"))."'
+               GROUP BY project_id
             ) AS x INNER JOIN rating_history AS rh ON rh.`project_id` = x.`project_id` AND rh.`time_rated` = x.maxdate
             LEFT JOIN project AS p ON p.id = rh.project_id";
 
