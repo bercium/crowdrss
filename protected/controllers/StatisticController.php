@@ -215,7 +215,7 @@ class StatisticController extends Controller
       if ($all < 0.15) $arrayCount[0] += 1;
       else
       if ($all >= 169.93){
-        $arrayCount[7] += 1;
+        $arrayCount[8] += 1;
         if (isset($daysAgo[$h_lapsed]['da'])) $daysAgo[$h_lapsed]['da']++;
         else $daysAgo[$h_lapsed]['da'] = 1;
         $daysAgo[$h_lapsed]['p'][] = $all;
