@@ -34,17 +34,34 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Check if category exists
-  function checkCategory($category_check, $link){
+  function checkCategory($category_check, $link, $platform){
     $category_check = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $category_check);
-    $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+    if ($platform == "PledgeMusic") {
+      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15'));
+    }elseif ($platform == "PubSlush"){
+      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24'));
+    }else{
+      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+    }
     if ($category) {
       return $category;
     } else {
       $updateOrigCategory = new OrigCategory();
+      if ($platform == "PledgeMusic") {
+        $updateOrigCategory->category_id = 15;
+      }elseif ($platform == "PubSlush"){
+        $updateOrigCategory->category_id = 24;
+      }
       $updateOrigCategory->name = $category_check;
       $updateOrigCategory->save();
-      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
-      $this->errorMail($link, $category_check, $category->id);
+      if ($platform == "PledgeMusic") {
+        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15'));
+      }elseif ($platform == "PubSlush"){
+        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24'));
+      }else{
+        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+      }
+//      $this->errorMail($link, $category_check, $category->id);
       return $category;
     }
   }
@@ -264,42 +281,23 @@ class UpdateCommand extends CConsoleCommand {
   function parsePledgeMusic($link) {
     $htmlData = $this->getHtml($link, array());
 
-    // Goal
-    $pattern = '/raised of (.+) goal/';
+    // Description
+    $pattern = '/<div class=.copy.>(.+)<section/s';
     preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['goal'] = $matches[1];
-    } else {
-      $data['goal'] = NULL;
-    }
+    $description = strip_tags($matches[1]);
+    $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
+    $data['description'] = html_entity_decode($description) . " ...";
 
-    // Image
-    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    // Location 
+    $pattern = '/<a href="\/artists\?country=.+">(.+)<\/a>/';
     preg_match($pattern, $htmlData, $matches);
-    $data['image'] = $matches[1];
+    if (isset($matches[1])) $data['location'] = $matches[1];
 
     // Category
-    $pattern = '/category":"(.+)","commentsEnabled/';
+    $pattern = '/<div class=.genres.>(.+)<\/div>/';
     preg_match($pattern, $htmlData, $matches);
-    $data['category'] = $matches[1];
-
-    // Start date
-    $pattern = '/Launched (.+)</';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['start_date'] = $matches[1];
-    } else {
-      $data['start_date'] = NULL;
-    }
-
-    // End date
-    $pattern = '/Ends (.+) at(.+)<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['end_date'] = $matches[1] . $matches[2];
-    } else {
-      $data['end_date'] = NULL;
-    }
+    if (isset($matches[1])) { $data['category'] = strip_tags(html_entity_decode($matches[1])); }
+    else { $data['category'] = "Music";}
 
     return($data);
   }
@@ -341,7 +339,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $link);
+            $category = $this->checkCategory($data_single['category'], $link, "");
             $insert->orig_category_id = $category->id;
             if (isset($data_single['start_date']))
               $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -361,12 +359,19 @@ class UpdateCommand extends CConsoleCommand {
             
             $insert->save();
 
+            $id_project = $insert->id;
+	    // Category add
+            $insert_category = new ProjectOrigcategory;
+	    $insert_category->project_id = $id_project;
+            $category = $this->checkCategory($data_single['category'], $link, "");
+	    $insert_category->orig_category_id = $category->id;
+	    $insert_category->save();
+
             // get rating 
             $KsRating = new KickstarterRating($link, $insert->id, $htmlData);
             $rating = $KsRating->firstAnalize();
             $insert->rating = $rating;
             $insert->save();
-            
             $count = 0;
 //	    print_r($insert->getErrors());
           }
@@ -410,7 +415,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = $this->checkCategory($data->category, $link);
+          $category = $this->checkCategory($data->category, $link, "");
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
             $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
@@ -429,6 +434,15 @@ class UpdateCommand extends CConsoleCommand {
             $insert->type_of_funding = $typeOfFunding;
           }
           $insert->save();
+
+
+          $id_project = $insert->id;
+          // Category add
+          $insert_category = new ProjectOrigcategory;
+          $insert_category->project_id = $id_project;
+          $category = $this->checkCategory($data->category, $link, "");
+	  $insert_category->orig_category_id = $category->id;
+	  $insert_category->save();
           
           // get rating 
           $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
@@ -465,7 +479,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link);
+            $category = $this->checkCategory($data->category, $data->link, "");
 	    $insert->orig_category_id = $category->id;
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
@@ -476,6 +490,15 @@ class UpdateCommand extends CConsoleCommand {
             if (isset($data_single['goal']))
               $insert->goal = $data_single['goal'];
             $insert->save();
+
+            $id_project = $insert->id;
+	    // Category add
+            $insert_category = new ProjectOrigcategory;
+	    $insert_category->project_id = $id_project;
+            $category = $this->checkCategory($data->category, $link, "");
+	    $insert_category->orig_category_id = $category->id;
+	    $insert_category->save();
+
             $count = 0;
 //	    print_r($insert->getErrors());
           }
@@ -508,7 +531,8 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $data->link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category'], 'category_id' => '24'));
+	  $category = $this->checkCategory($data_single['category'], $data->link, "PubSlush");
+//          $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category'], 'category_id' => '24'));
           $insert->orig_category_id = $category->id;
           if (isset($data->creator))
             $insert->creator = $data->creator;
@@ -517,6 +541,15 @@ class UpdateCommand extends CConsoleCommand {
           if (isset($data_single['location']))
             $insert->location = $data_single['location'];
           $insert->save();
+
+          $id_project = $insert->id;
+	  // Category add
+          $insert_category = new ProjectOrigcategory;
+	  $insert_category->project_id = $id_project;
+	  $category = $this->checkCategory($data_single['category'], $data->link, "PubSlush");
+	  $insert_category->orig_category_id = $category->id;
+	  $insert_category->save();
+
 //          print_r($insert->getErrors());
         }
       }
@@ -545,7 +578,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link);
+            $category = $this->checkCategory($data->category, $data->link, "");
             $insert->orig_category_id = $category->id;
             if (isset($data->location))
               $insert->location = $data->location;
@@ -554,6 +587,15 @@ class UpdateCommand extends CConsoleCommand {
             if (isset($data_single['goal']))
               $insert->goal = $data_single['goal'];
             $insert->save();
+
+            $id_project = $insert->id;
+	    // Category add
+            $insert_category = new ProjectOrigcategory;
+	    $insert_category->project_id = $id_project;
+            $category = $this->checkCategory($data->category, $data->link, "");
+	    $insert_category->orig_category_id = $category->id;
+	    $insert_category->save();
+
 //	    print_r($insert->getErrors());
           }
         }
@@ -588,7 +630,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $data->link);
+            $category = $this->checkCategory($data_single['category'], $data->link, "");
 	    $insert->orig_category_id = $category->id;
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
@@ -603,6 +645,15 @@ class UpdateCommand extends CConsoleCommand {
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             $insert->save();
+
+            $id_project = $insert->id;
+	    // Category add
+            $insert_category = new ProjectOrigcategory;
+	    $insert_category->project_id = $id_project;
+            $category = $this->checkCategory($data_single['category'], $data->link, "");
+	    $insert_category->orig_category_id = $category->id;
+	    $insert_category->save();
+
 //	    print_r($insert->getErrors());
           }
           if ($count >= 10) {
@@ -615,44 +666,62 @@ class UpdateCommand extends CConsoleCommand {
     }
   }
 
-  /*
-    // PledgeMusic store to DB
-    public function actionPledgeMusic(){
+  
+// PledgeMusic store to DB
+  public function actionPledgeMusic(){
     $i = 1;
     $check = false;
     $count = 0;
     $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
-    $result = $this->query("", array("webpage/url" => "" . $i . "",), false);
-    if ($result->results) {
-    foreach ($result->results as $data){
-    $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-    if ($link_check){ $count = $count+1;} // Counter for checking if it missed some project in the next few projects
-    else{
-    $data_single = $this->parsePledgeMusic($data->link);
-    $insert=new Project;
-    $insert->title=$data->title;
-    $insert->description=$data->description;
-    $insert->image=$data->image;
-    $insert->link=$data->link;
-    $insert->time_added=date("Y-m-d H:i:s");
-    $insert->platform_id=$id;
-    $category = $this->checkCategory($data_single['category'], $data->link);
-    $insert->orig_category_id = $category->id;
-    if (isset($data_single['end_date'])) $insert->end=date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-    if (isset($data_single['location'])) $insert->location=$data_single['location'];
-    if (isset($data->creator)) $insert->creator=$data->creator;
-    if (isset($data_single['goal'])) $insert->goal=$data_single['goal'];
-    $insert->save();
-    $count = 0;
-    //	    print_r($insert->getErrors());
+      $result = $this->query("461c52ca-d2d4-4082-8839-b9d52fa24e7b", array("webpage/url" => "http://www.pledgemusic.com/projects/index/launched?page=" . $i), false);
+      if ($result->results) {
+        foreach ($result->results as $data){
+          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
+          if ($link_check){$count = $count+1;} // Counter for checking if it missed some project in the next few projects
+          else{
+            $data_single = $this->parsePledgeMusic($data->link);
+            $insert=new Project;
+            $insert->title=$data->title;
+            if (isset($data->description)) {
+	      $insert->description=$data->description;
+	    }else{
+              $insert->description=$data_single['description'];
+	    }
+            $insert->image=$data->image;
+            $insert->link=$data->link;
+            $insert->time_added=date("Y-m-d H:i:s");
+            $insert->platform_id=$id;
+            $insert->orig_category_id = 1;
+            if (isset($data->time)) {
+	      if ($data->time <> "In Progress"){
+	        $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data->time . "days"));
+	      }
+	    }
+            if (isset($data_single['location'])) $insert->location=$data_single['location'];
+            if (isset($data->creator)) $insert->creator=$data->creator;
+            $insert->save();
+
+            $id_project = $insert->id;
+	    // Category add
+	    $category_all = explode(', ', $data_single['category']);
+	    for ($i=0; $i< count($category_all); $i++){
+              $insert_category = new ProjectOrigcategory;
+              $insert_category->project_id = $id_project;
+              $category = $this->checkCategory($category_all[$i], $data->link, "PledgeMusic");
+	      $insert_category->orig_category_id = $category->id;
+	      $insert_category->save();
+	    }
+
+            $count = 0;
+//            print_r($insert->getErrors());
+          }
+          if ($count >= 40){ $check=true; break; }
+        }
+      }
+      $i=$i+1;
     }
-    if ($count >= 10){ $check=true; break; }
-    }
-    }
-    $i=$i+1;
-    }
-    }
-   */
+  }
+   
 }
