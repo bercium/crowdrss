@@ -267,7 +267,7 @@ class StatisticController extends Controller
         $arrayCount[1] += 1;
       }
       
-      if ($row['rating'] > 8) echo $row['rating']." ".$rating." = ".round(($row['rating']*0.8 + $rating*0.2),3).": ".$row['link']."<br />";
+      if ($row['rating'] == 8) echo $row['rating']." ".$rating." = ".round(($row['rating']*0.8 + $rating*0.2),3).": ".$row['link']."<br />";
       
       /*if ($row['project_id'] == 32614){
         echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
