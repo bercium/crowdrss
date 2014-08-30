@@ -80,7 +80,10 @@ abstract class PlatformRating {
     $i = 0;
     while ($i < 3){
       $cws = $this->currentWebStatus();
-      if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
+      if ($cws === false){
+        $this->html = null;
+        usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
+      }
       else break;
       $i++;
     }
