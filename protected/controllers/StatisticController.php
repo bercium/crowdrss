@@ -268,8 +268,8 @@ class StatisticController extends Controller
       }
       
       $sr = round(($row['rating']*0.7 + $rating*0.3),3);
-      if ($sr == $row['rating']){
-        if  ($sr > 7) echo $row['rating']." ".$rating." = <strong>".$sr."</strong>: ".$row['link']."<br />";
+      if ($sr > $row['rating']){
+        if  ($sr > 7) echo $row['rating']." ".$rating." = <strong>".$sr.": ".$row['link']."</strong><br />";
         else echo $row['rating']." ".$rating." = ".$sr.": ".$row['link']."<br />";
       }
       
