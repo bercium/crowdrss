@@ -220,7 +220,7 @@ class StatisticController extends Controller
         if (isset($daysAgo[$h_lapsed]['da'])) $daysAgo[$h_lapsed]['da']++;
         else $daysAgo[$h_lapsed]['da'] = 1;
         $daysAgo[$h_lapsed]['p'][] = $all;
-        if ($all > 1000) echo $h_lapsed.": ".round($all,2)." - ".$row['link']."<br />";
+        if ($all > 1000) echo $h_lapsed.": ".round($all,2)." - ".$row['rating']." ".round(($row['rating']*0.8 + $rating*0.2),3)." | ".$row['link']."<br />";
       }
       if ($all >= 278.88){
         $rating = 9;
