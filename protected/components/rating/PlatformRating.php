@@ -128,14 +128,14 @@ abstract class PlatformRating {
       //$this->history($cws, $social);
     
 
-    /* overall rating:
-    CONTENT
-    ABSOLUTE SOCIAL (koliko like-ov shareov v sestevku)
+      /* overall rating:
+      CONTENT
+      ABSOLUTE SOCIAL (koliko like-ov shareov v sestevku)
 
-    RELATIVE CONTENT project progress.. zbranih sredstev, komentarjev itd
-    RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
-     
-    */
+      RELATIVE CONTENT project progress.. zbranih sredstev, komentarjev itd
+      RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
+
+      */
       $rating = $rating*0.7 + $social_rating*0.3;
     }
     // save to DB
@@ -179,6 +179,31 @@ abstract class PlatformRating {
     // max 10
     return $rating;
   }
+  
+  /**
+   * calculate social rating
+   */
+  private function calcProgressRating($cws,$project){
+    $rating = 0;
+    
+    $h_lapsed = timeDifference($project->time_added,time(),"hour");
+      
+    // less than 3 hours statisticaly too little
+    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+      
+    $all = 0;
+    if (!isset($social['all'])) {
+      foreach ($social as $rs){
+        $all += $rs; 
+      }
+    }else $all = $social['all'];
+      
+    $all = ($all / $h_lapsed)*24;  // per hour
+
+    
+    // max 10
+    return $rating;
+  }  
   
   
  /* private function history($cws, $social){
