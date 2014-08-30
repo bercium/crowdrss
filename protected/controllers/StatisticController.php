@@ -268,7 +268,10 @@ class StatisticController extends Controller
       }
       
       $sr = round(($row['rating']*0.8 + $rating*0.2),3);
-      if ($sr > $row['rating']) echo $row['rating']." ".$rating." = ".$sr.": ".$row['link']."<br />";
+      if ($sr > $row['rating']){
+        if  ($sr > 7) echo $row['rating']." ".$rating." = <strong>".$sr."</strong>: ".$row['link']."<br />";
+        else echo $row['rating']." ".$rating." = ".$sr.": ".$row['link']."<br />";
+      }
       
       /*if ($row['project_id'] == 32614){
         echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
