@@ -77,7 +77,14 @@ abstract class PlatformRating {
    * first analize
    */
   public function firstAnalize(){
-    $cws = $this->currentWebStatus();
+    $i = 0;
+    while ($i < 3){
+      $cws = $this->currentWebStatus();
+      if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
+      else break;
+      $i++;
+    }
+    
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     // save to DB
@@ -90,7 +97,14 @@ abstract class PlatformRating {
    * every other analyze
    */
   public function analize(){
-    $cws = $this->currentWebStatus();
+    $i = 0;
+    while ($i < 3){
+      $cws = $this->currentWebStatus();
+      if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
+      else break;
+      $i++;
+    }
+    
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     

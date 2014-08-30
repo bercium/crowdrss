@@ -104,8 +104,8 @@ class FeedController extends Controller
   }
   
   /**
-* all hidden profiles will be notified every second week
-*/
+    * 
+    */
   public function actionRss($data){
     Yii::app()->clientScript->reset();
     $this->layout = 'none';
@@ -161,7 +161,7 @@ class FeedController extends Controller
     if ($sub->rating > 0)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
     
     $sql .= " ORDER BY time_added DESC";
-    $sql .= " LIMIT 10";
+    //$sql .= " LIMIT 10";
     
    // echo $sql;
     

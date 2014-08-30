@@ -50,7 +50,7 @@ class KickstarterRating extends PlatformRating{
      
     if ($webAgregtor["#pledges"] > 7) $rating += 2; // created
     
-    return round(($rating-$minRating)/($maxRating-$minRating)*9);  //normalize
+    return round(($rating-$minRating)/($maxRating-$minRating)*10,3);  //normalize
   }
   
 

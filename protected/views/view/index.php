@@ -9,7 +9,7 @@
                   <i class="fa fa-certificate fa-stack-1x" ></i>
                   <i style="font-size: 60%; " class="fa-stack-1x fa-inverse">
                     <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project">
-                      <?php echo $project->rating+1 ; ?>
+                      <?php echo round($project->rating); ?>
                     </span>
                   </i>
                 </span>
@@ -34,7 +34,7 @@
                       else echo " Flexible funding";
                     }
                     
-                     "<br />Rating: ".$project->rating;
+                     //"<br />Rating: ".round($project->rating);
                   ?>
                   </p>  
                 </div>
