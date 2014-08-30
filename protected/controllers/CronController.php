@@ -118,10 +118,10 @@ class CronController extends Controller
 
   /**
    * 
-   */
+   *//*
   public function actionDailyRating(){
     echo $this->consoleCommand('rating','after1day');
-  }
+  }*/
   
   /**
    * 
@@ -132,10 +132,10 @@ class CronController extends Controller
   
   /**
    * 
-   */
+   *//*
   public function actionWeeklyRating(){
     echo $this->consoleCommand('rating','after1week');
-  }  
+  }  */
   
   /**
    * 

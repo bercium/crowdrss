@@ -113,21 +113,20 @@ abstract class PlatformRating {
     
     $social = null;
     $social =  $this->getSocial();
+    
+    $social_rating = 0;
     if ($this->id != null && false){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
-      $social =  $this->getSocial();
-
-      $numOfHFromStart = timeDifference($project->time_added, time(),'hour');
-      $likes = ($social['all']/$numOfHFromStart)*24; // avg how many likes in a day
+      $social_rating = $this->calcSocialRating($social,$project);
+      
+      //$numOfHFromStart = timeDifference($project->time_added, time(),'hour');
+      //$likes = ($social['all']/$numOfHFromStart)*24; // avg how many likes in a day
       
       //progress
       
-      $this->history($cws, $social);
+      //$this->history($cws, $social);
     
-    //$this->calculateOverallRating($cws, $social, $ows);
-    //$this->rssRating();  // when we have enough clicks
-
 
     /* overall rating:
     CONTENT
@@ -137,10 +136,47 @@ abstract class PlatformRating {
     RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
      
     */
+      $rating = $rating*0.8 + $social_rating*0.2;
     }
     // save to DB
     $this->saveRating($cws, $social);
     
+    return $rating;
+  }
+  
+  /**
+   * calculate social rating
+   */
+  private function calcSocialRating($social,$project){
+    $rating = 0;
+    
+    $h_lapsed = timeDifference($project->time_added,time(),"hour");
+      
+    // less than 3 hours statisticaly too little
+    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+      
+    $all = 0;
+    if (!isset($social['all'])) {
+      foreach ($social as $rs){
+        $all += $rs; 
+      }
+    }else $all = $social['all'];
+      
+    $all = ($all / $h_lapsed)*24;  // per hour
+    
+      
+    if ($all >= 391.86) $rating++;
+    if ($all >= 278.88) $rating++;
+    if ($all >= 170.32) $rating++;
+    if ($all >= 108.17) $rating++;
+    if ($all >= 65.08) $rating++;
+    if ($all >= 39) $rating++;
+    if ($all >= 22.76) $rating++;
+    if ($all >= 11.45) $rating++;
+    if ($all >= 3.3) $rating++;
+    if ($all >= 0.15) $rating++;   
+    
+    // max 10
     return $rating;
   }
   

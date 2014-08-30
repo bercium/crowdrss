@@ -211,33 +211,63 @@ class StatisticController extends Controller
       // less than 3 hours statisticaly too little
       /*if ($h_lapsed == 3) $all *= 0.6;
       if ($h_lapsed == 2) $all *= 0.45;*/
-      
+      $rating = 0;
       if ($all < 0.15) $arrayCount[0] += 1;
       else
       if ($all >= 391.86){
+        $rating = 10;
         $arrayCount[10] += 1;
         if (isset($daysAgo[$h_lapsed]['da'])) $daysAgo[$h_lapsed]['da']++;
         else $daysAgo[$h_lapsed]['da'] = 1;
         $daysAgo[$h_lapsed]['p'][] = $all;
         if ($all > 1000) echo $h_lapsed.": ".round($all,2)." - ".$row['link']."<br />";
       }
-      if ($all >= 278.88) $arrayCount[9] += 1;
+      if ($all >= 278.88){
+        $rating = 9;
+        $arrayCount[9] += 1;
+      }
       else
-      if ($all >= 170.32) $arrayCount[8] += 1;
+      if ($all >= 170.32){
+        $rating = 8;
+        $arrayCount[8] += 1;
+      }
       else
-      if ($all >= 108.17) $arrayCount[7] += 1;
+      if ($all >= 108.17){
+        $rating = 7;
+        $arrayCount[7] += 1;
+      }
       else
-      if ($all >= 65.08) $arrayCount[6] += 1;
+      if ($all >= 65.08){
+        $rating = 6;
+        $arrayCount[6] += 1;
+      }
       else 
-      if ($all >= 39) $arrayCount[5] += 1;
+      if ($all >= 39){
+        $rating = 5;
+        $arrayCount[5] += 1;
+      }
       else 
-      if ($all >= 22.76) $arrayCount[4] += 1;
+      if ($all >= 22.76){
+        $rating = 4;
+        $arrayCount[4] += 1;
+      }
       else 
-      if ($all >= 11.45) $arrayCount[3] += 1;
+      if ($all >= 11.45){
+        $rating = 3;
+        $arrayCount[3] += 1;
+      }
       else 
-      if ($all >= 3.3) $arrayCount[2] += 1;
+      if ($all >= 3.3){
+        $rating = 2;
+        $arrayCount[2] += 1;
+      }
       else
-      if ($all >= 0.15) $arrayCount[1] += 1;
+      if ($all >= 0.15){
+        $rating = 1;
+        $arrayCount[1] += 1;
+      }
+      
+      if ($row['rating'] > 8) echo $row['rating']." ".round(($row['rating']*0.8 + $rating*0.2),3).": ".$row['link']."<br />";
       
       /*if ($row['project_id'] == 32614){
         echo $row['time_added']."-".$row['time_rated']." | ".$social['all']." / ".$h_lapsed." = ".$all;
