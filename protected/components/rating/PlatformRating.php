@@ -136,7 +136,7 @@ abstract class PlatformRating {
     RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
      
     */
-      $rating = $rating*0.8 + $social_rating*0.2;
+      $rating = $rating*0.7 + $social_rating*0.3;
     }
     // save to DB
     $this->saveRating($cws, $social);
