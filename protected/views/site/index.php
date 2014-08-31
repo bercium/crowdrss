@@ -37,6 +37,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
+          <a id="platform" class="anchor"></a>
           <h2>1. Choose a platform</h2>
           <p>Which platforms do you wish to follow?</p>
             
@@ -74,7 +75,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           <hr class="mt0">
           
-          
+          <a id="categories" class="anchor"></a>
           <h2>2. Choose categories</h2>
           <p>Which topics do you find interesting?</p>
             
@@ -146,6 +147,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           
           <?php // if (!Yii::app()->user->isGuest) { //* ?>
+          <a id="rating" class="anchor"></a>          
           <h2>3. Limit projects</h2>
           <p>
             Select the quantity and quality of projects you wish to receive.
@@ -174,7 +176,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
 
           <hr>
             
-            
+          <a id="preview" class="anchor"></a>
           <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
             and Finish</h2>
           <p>Instantly receive projects with RSS feed or subscribe to a mail digest.</p>
@@ -289,7 +291,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
 
 
 		<div class="mt30 pt30 pb30 outro">
-      <a id="whatIsCRSS" class="anchor"></a>
+      <a id="share" class="anchor"></a>
       <div class="row">
         <div class="columns medium-6">
           <h1 class="white">Sharing is caring</h1>
