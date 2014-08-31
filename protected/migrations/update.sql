@@ -17,3 +17,32 @@ CREATE TABLE IF NOT EXISTS `rating_history` (
 --
 ALTER TABLE `rating_history`
   ADD CONSTRAINT `rating_history_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
+CREATE TABLE IF NOT EXISTS `project_origcategory` (
+`id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `orig_category_id` int(11) NOT NULL
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=869 ;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `project_origcategory`
+--
+ALTER TABLE `project_origcategory`
+ ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `project_origcategory`
+--
+ALTER TABLE `project_origcategory`
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
