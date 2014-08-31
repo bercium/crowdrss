@@ -145,7 +145,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
           
           
-          <?php if (!Yii::app()->user->isGuest) { //* ?>
+          <?php // if (!Yii::app()->user->isGuest) { //* ?>
           <h2>3. Limit projects</h2>
           <p>
             Select the quantity and quality of projects you wish to receive.
@@ -239,7 +239,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
            
            
-          <?php }else{ //*/ ?>
+          <?php /* }else{  ?>
           
           
           <h2>3. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> and get the RSS link</h2>
