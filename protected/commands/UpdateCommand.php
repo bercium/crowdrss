@@ -388,6 +388,7 @@ class UpdateCommand extends CConsoleCommand {
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link = str_replace("/pinw", "", $data->link);
+        $link = str_replace("/qljw", "", $link);
         $link = str_replace("/pimf", "", $link);
         $link = str_replace("?sa=0&sp=0", "", $link);
         $link = str_replace("?sa=0&amp;sp=0", "", $link);
