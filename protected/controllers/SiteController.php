@@ -215,8 +215,6 @@ class SiteController extends Controller
     if(isset($_POST['checkLink'])){
       $link = beautifyLink($_POST['link'])."%";
       
-      echo $link;
-      
       $project = Project::model()->find("link LIKE :link1  OR  title LIKE :name",
                                         array(':link1' => $link,
                                               ':name' => $link
