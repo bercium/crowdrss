@@ -436,7 +436,7 @@ function absoluteURL($url = ''){
       $link = str_replace("?sa=0&amp;sp=0", "", $link);
     }
     if (strpos($link, "kickstarter.com") !== false){
-      $link = str_replace("?ref=discovery", "", $link);
+      $link = substr($string, 0, strpos($link,"?"));
     }
     
     return $link;
