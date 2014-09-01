@@ -331,7 +331,12 @@ EOD;
         if ($project->rating) $priority = (($project->rating/20)+0.35);
         $sitemapResponse .= "
         <url>
-          <loc>". str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index",array("name"=>$project->title))) ) . "</loc>
+          <loc>";
+        
+        if (strpos($project->title,"/") === false) $sitemapResponse .= str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index",array("name"=>$project->title))) );
+        else $sitemapResponse .= str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index")."?name=".$project->title));
+                
+        $sitemapResponse .= "</loc>
           <changefreq>weekly</changefreq>
           <priority>" . $priority . "</priority>
         </url>";
