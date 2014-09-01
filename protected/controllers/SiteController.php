@@ -209,7 +209,25 @@ class SiteController extends Controller
 	 */
 	public function actionOwners(){
 
-    $this->render('owners');
+    $inPlatform = $onPage = $project = null;
+    $error = '';
+    $link = '';
+    if(isset($_POST['checkLink'])){
+      $link = beautifyLink($_POST['link'])."%";
+      
+      $project = Project::model()->find("link LIKE :link1  OR  title LIKE :name",
+                                        array(':link1' => $link,
+                                              ':name' => $link
+                                              ));
+      if ($project){
+        $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating",array(":rating"=>$project->rating));
+        $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND platform_id = :platform",array(":rating"=>$project->rating,":platform"=>$project->platform_id));
+        //$inCategory = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND category_id = :category",array(":rating"=>$project->rating,":category"=>$project->category_id));
+      }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
+    }
+    if (isset($_POST['link'])) $link = $_POST['link'];
+    
+    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform));
 	}
 
 	/**

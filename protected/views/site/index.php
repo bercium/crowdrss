@@ -20,11 +20,9 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns ">
-          <?php if (!Yii::app()->user->isGuest){ ?>
           <a class="button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
             I am a project owner
           </a>
-          <?php } ?>
           <h3 class="white">Crowdfunding projects delivered to you!</h3>
           <p class="white-light">
             Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver <strong>the best projects</strong> right in your inbox or trough RSS feed.
@@ -159,7 +157,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <p>
             Select the quantity and quality of projects you wish to receive.
             <br />
-            <small><i>Currently we rate only projects from Kickstarter and Indiegogo</i></small>
+            <small><i>Rating is based on content quality, social impact and campaign progress (just for Kickstarter and Indiegogo)</i></small>
           </p>
 
           

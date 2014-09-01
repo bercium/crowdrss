@@ -425,3 +425,19 @@ function absoluteURL($url = ''){
     $html.= '>'.$name.'</a>';
     return $html;
   }
+  
+  
+  function beautifyLink($link){
+    if (strpos($link, "indiegogo.com") !== false){
+      $link = str_replace("/pinw", "", $link);
+      $link = str_replace("/qljw", "", $link);
+      $link = str_replace("/pimf", "", $link);
+      $link = str_replace("?sa=0&sp=0", "", $link);
+      $link = str_replace("?sa=0&amp;sp=0", "", $link);
+    }
+    if (strpos($link, "kickstarter.com") !== false){
+      $link = str_replace("?ref=discovery", "", $link);
+    }
+    
+    return $link;
+  }
