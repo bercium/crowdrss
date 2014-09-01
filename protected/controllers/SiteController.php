@@ -220,8 +220,8 @@ class SiteController extends Controller
                                               ':name' => $link
                                               ));
       if ($project){
-        $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating",array(":rating"=>$project->rating));
-        $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND platform_id = :platform",array(":rating"=>$project->rating,":platform"=>$project->platform_id));
+        $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating",array(":rating"=>$project->rating))+1;
+        $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND platform_id = :platform",array(":rating"=>$project->rating,":platform"=>$project->platform_id))+1;
         //$inCategory = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND category_id = :category",array(":rating"=>$project->rating,":category"=>$project->category_id));
       }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
     }
