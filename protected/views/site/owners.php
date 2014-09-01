@@ -66,7 +66,9 @@ $this->pageTitle = 'How does your project stack to others';
           <p>Our rating (0-10)</p>
           <h1 style="color:#0088bb;">
             <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating (0-10) based on content quality, social impact and campaign progress. <br />Higher is better.">
-            <?php echo round($project->rating ,1); ?>
+            <?php 
+            if ($project->rating != null) echo round($project->rating ,1);
+            else echo "n/a"; ?>
             </span>
           </h1>
         </div>
