@@ -1,4 +1,6 @@
-<div class="pt30 pb30">
+<?php 
+$this->pageTitle = $project->title;
+?><div class="pt30 pb30">
       <div class="row">
         <div class="columns medium-12">
 

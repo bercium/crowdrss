@@ -1,3 +1,6 @@
+<?php 
+$this->pageTitle = "Project voting";
+?>
 <script type="text/javascript">
   setTimeout(function(){ 
     window.history.back();
