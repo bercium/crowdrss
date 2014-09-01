@@ -159,7 +159,8 @@ class SiteController extends Controller
         $message->from = Yii::app()->params['noreplyEmail'];
         Yii::app()->mail->send($message);
         
-        $this->refresh();
+        //$this->refresh();
+        $this->redirect($editLink);
         Yii::app()->end();
         
       }else{
