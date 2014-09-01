@@ -214,7 +214,6 @@ class SiteController extends Controller
     $link = '';
     if(isset($_POST['checkLink'])){
       
-      
       if ((strpos($link, "www.") !== false) || 
           (strpos($link, "http://") !== false) || 
           (strpos($link, ".com") !== false)
@@ -226,7 +225,7 @@ class SiteController extends Controller
                                                 ':name' => $link
                                                 ));*/
       }else{
-        $project = Project::model()->find("title LIKE :name", array(':name' => $link) );
+        $project = Project::model()->find("title LIKE :name", array(':name' => $_POST['link']) );
       }
       
       if ($project){
