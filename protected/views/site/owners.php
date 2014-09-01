@@ -60,8 +60,9 @@ $this->pageTitle = 'How does your project stack to others';
         </div>
 
       </div>
-      <hr>
-      <div class="row mt30">
+      
+      <div class="mt30">
+      <div class="row panel">
         <div class="columns small-4 text-center">
           <p>Our rating (0-10)</p>
           <h1 style="color:#0088bb;">
@@ -87,10 +88,10 @@ $this->pageTitle = 'How does your project stack to others';
             <?php echo $inPlatform; ?>
             </span>
             
-            
           </h1>
         </div>
-      </div>      
+      </div>
+      </div>
       
       <?php } ?>
       

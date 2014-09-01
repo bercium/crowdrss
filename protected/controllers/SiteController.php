@@ -213,12 +213,22 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     if(isset($_POST['checkLink'])){
-      $link = beautifyLink($_POST['link'])."";
       
-      $project = Project::model()->find("link LIKE :link1  OR  title LIKE :name",
-                                        array(':link1' => $link,
-                                              ':name' => $link
-                                              ));
+      
+      if ((strpos($link, "www.") !== false) || 
+          (strpos($link, "http://") !== false) || 
+          (strpos($link, ".com") !== false)
+          ){
+        $link = beautifyLink($_POST['link'])."%";
+        $project = Project::model()->find("link LIKE :link", array(':link' => $link) );
+/*        $project = Project::model()->find("link LIKE :link1",
+                                          array(':link1' => $link,
+                                                ':name' => $link
+                                                ));*/
+      }else{
+        $project = Project::model()->find("title LIKE :name", array(':name' => $link) );
+      }
+      
       if ($project){
         if ($project->rating != null) $rating = $project->rating;
         else{
