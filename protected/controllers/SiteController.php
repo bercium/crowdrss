@@ -221,11 +221,14 @@ class SiteController extends Controller
                                               ));
       if ($project){
         if ($project->rating != null) $rating = $project->rating;
-        else $rating = 0;
+        else{
+          $rating = 0;
+          setFlash ("projectCompare", "We haven't rated this project yet. Positions are just aproximated.", "info", false);
+        }
         $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating",array(":rating"=>$rating))+1;
         $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$project->platform_id))+1;
         //$inCategory = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND category_id = :category",array(":rating"=>$project->rating,":category"=>$project->category_id));
-        setFlash ("projectCompare", "We haven't rated this project yet. Positions are just aproximated.", "info", false);
+        
       }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
     }
     if (isset($_POST['link'])) $link = $_POST['link'];
