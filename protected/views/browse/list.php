@@ -1,6 +1,8 @@
 <?php 
 $this->pageTitle = $title;
-?><div class="pb30">
+?>
+
+  <div class="pb30">
     <div class="row">
       <div class="columns">
         <h2><?php echo $title; ?></h2>
