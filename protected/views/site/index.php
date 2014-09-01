@@ -152,7 +152,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           
           
           <?php // if (!Yii::app()->user->isGuest) { //* ?>
-          <a id="rating" class="anchor"></a>          
+          <a id="limitProjects" class="anchor"></a>          
           <h2>3. Limit projects</h2>
           <p>
             Select the quantity and quality of projects you wish to receive.
