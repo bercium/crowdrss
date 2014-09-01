@@ -213,7 +213,7 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     if(isset($_POST['checkLink'])){
-      $link = beautifyLink($_POST['link'])."%";
+      $link = beautifyLink($_POST['link'])."";
       
       $project = Project::model()->find("link LIKE :link1  OR  title LIKE :name",
                                         array(':link1' => $link,
