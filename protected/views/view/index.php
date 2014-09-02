@@ -10,7 +10,7 @@ $this->pageTitle = $project->title;
                 <span class="fa-stack fa-5x fa-lg" style="color:#0088bb; right:-20px; top:-50px; margin:0; padding:0; position: absolute;" >
                   <i class="fa fa-certificate fa-stack-1x" ></i>
                   <i style="font-size: 60%; " class="fa-stack-1x fa-inverse">
-                    <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project based on content quality, social impact and campaign progress">
+                    <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project based on content quality, social reach and campaign progress">
                       <?php echo round($project->rating); ?>
                     </span>
                   </i>

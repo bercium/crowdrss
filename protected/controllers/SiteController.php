@@ -167,7 +167,7 @@ class SiteController extends Controller
         if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
         else setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
       }
-    }
+    } // end subscription
 
     
     //platforms
@@ -200,7 +200,8 @@ class SiteController extends Controller
       $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
     }
     
-		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'subscription'=>$subscription));
+    $subscribers = Subscription::model()->countBySql("SELECT COUNT(*) FROM subscription");
+		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'subscription'=>$subscription,"subscribers"=>$subscribers));
     
 	}
   

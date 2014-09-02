@@ -158,7 +158,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <p>
             Select the quantity and quality of projects you wish to receive.
             <br />
-            <small><i>Rating is based on content quality, social impact and campaign progress (just for Kickstarter and Indiegogo)</i></small>
+            <small><i>Rating is based on content quality, social reach and campaign progress (just for Kickstarter and Indiegogo)</i></small>
           </p>
 
           
