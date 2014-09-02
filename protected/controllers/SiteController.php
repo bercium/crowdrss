@@ -207,13 +207,16 @@ class SiteController extends Controller
  	/**
 	 * This is the action to handle external exceptions.
 	 */
-	public function actionOwners(){
+	public function actionOwners($s = ''){
 
     $inPlatform = $onPage = $project = null;
     $error = '';
     $link = '';
-    if(isset($_POST['checkLink'])){
-      $link = $_POST['link'];
+    
+    if(isset($_POST['checkLink']) || $s){
+      if ($s =='') $link = $s;
+      else $link = $_POST['link'];
+      
       if ((strpos($link, "www.") !== false) || 
           (strpos($link, "http://") !== false) || 
           (strpos($link, "https://") !== false) || 
