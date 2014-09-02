@@ -213,14 +213,14 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     if(isset($_POST['checkLink'])){
-      
+      $link = $_POST['link'];
       if ((strpos($link, "www.") !== false) || 
           (strpos($link, "http://") !== false) || 
           (strpos($link, "https://") !== false) || 
           (strpos($link, ".com") !== false)
           ){
         $link = beautifyLink($_POST['link'])."%";
-        setFlash ("sdfsdf",$link);
+        //setFlash ("sdfsdf",$link);
         $project = Project::model()->find("link LIKE :link", array(':link' => $link) );
 /*        $project = Project::model()->find("link LIKE :link1",
                                           array(':link1' => $link,
