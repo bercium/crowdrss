@@ -12,6 +12,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30">
            <h1 class="white title show-for-medium-up">Crowdfunding RSS</h1>
            <h1 class="white title-small show-for-small">Crowdfunding RSS</h1>
+           <?php if (!Yii::app()->user->isGuest()) echo $subscribers." subscribers"; ?>
          </div>
        </div>
     </div>
