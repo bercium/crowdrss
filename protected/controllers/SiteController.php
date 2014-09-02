@@ -214,7 +214,7 @@ class SiteController extends Controller
     $link = '';
     
     if(isset($_POST['checkLink']) || $s != ''){
-      if ($s =='') $link = $s;
+      if ($s != '') $link = $s;
       else $link = $_POST['link'];
       
       if ((strpos($link, "www.") !== false) || 
