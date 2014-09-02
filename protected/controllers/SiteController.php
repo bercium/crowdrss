@@ -216,9 +216,11 @@ class SiteController extends Controller
       
       if ((strpos($link, "www.") !== false) || 
           (strpos($link, "http://") !== false) || 
+          (strpos($link, "https://") !== false) || 
           (strpos($link, ".com") !== false)
           ){
         $link = beautifyLink($_POST['link'])."%";
+        echo $link;
         $project = Project::model()->find("link LIKE :link", array(':link' => $link) );
 /*        $project = Project::model()->find("link LIKE :link1",
                                           array(':link1' => $link,
