@@ -220,7 +220,7 @@ class SiteController extends Controller
           (strpos($link, ".com") !== false)
           ){
         $link = beautifyLink($_POST['link'])."%";
-        echo $link;
+        setFlash ("sdfsdf",$link);
         $project = Project::model()->find("link LIKE :link", array(':link' => $link) );
 /*        $project = Project::model()->find("link LIKE :link1",
                                           array(':link1' => $link,
