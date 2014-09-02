@@ -213,7 +213,7 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     
-    if(isset($_POST['checkLink']) || $s){
+    if(isset($_POST['checkLink']) || $s != ''){
       if ($s =='') $link = $s;
       else $link = $_POST['link'];
       
