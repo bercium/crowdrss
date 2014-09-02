@@ -222,15 +222,14 @@ class SiteController extends Controller
           (strpos($link, "https://") !== false) || 
           (strpos($link, ".com") !== false)
           ){
-        $link = beautifyLink($_POST['link'])."%";
         //setFlash ("sdfsdf",$link);
-        $project = Project::model()->find("link LIKE :link", array(':link' => $link) );
+        $project = Project::model()->find("link LIKE :link", array(':link' => beautifyLink($link)."%") );
 /*        $project = Project::model()->find("link LIKE :link1",
                                           array(':link1' => $link,
                                                 ':name' => $link
                                                 ));*/
       }else{
-        $project = Project::model()->find("title LIKE :name", array(':name' => $_POST['link']) );
+        $project = Project::model()->find("title LIKE :name", array(':name' => $link) );
       }
       
       if ($project){
@@ -245,8 +244,6 @@ class SiteController extends Controller
         
       }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
     }
-    if (isset($_POST['link'])) $link = $_POST['link'];
-    if ($s != '') $link = $s;
     
     $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform));
 	}
