@@ -187,7 +187,20 @@ abstract class PlatformRating {
     $rating = 0;
     
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
-      
+    
+    $g = filter_var($project->goal, FILTER_SANITIZE_NUMBER_INT);
+    $r = filter_var($cws['$raised'], FILTER_SANITIZE_NUMBER_INT);
+    
+    $p = ($r/$g);
+    
+    if ($p >= 2) $rating++;
+    if ($p >= 1) $rating++;
+    if (($p >= 0.2) && ($h_lapsed <= 48)) $rating++;
+    if (($p >= 0.3) && ($h_lapsed <= 48)) $rating++;
+    if (($p >= 0.45) && ($h_lapsed <= 48)) $rating++;
+    if (($p >= 0.30) && ($h_lapsed <= 24)) $rating++;
+    if (($p <= 0.25) && ($h_lapsed >= 144)) $rating--;  // after 6 days not even 30%
+    
     // less than 3 hours statisticaly too little
     if ($h_lapsed < 3) continue;  // hard to evaluate project this young
       

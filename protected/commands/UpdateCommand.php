@@ -318,7 +318,7 @@ class UpdateCommand extends CConsoleCommand {
         foreach ($result->results as $data) {
           //$link = str_replace("?ref=discovery", "", $data->link);
           $link = $data->link;
-          $link = substr($link, 0, strpos($link,"?"));
+          if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
           //$link_check_old = Project::model()->findByAttributes(array('link' => $data->link));
