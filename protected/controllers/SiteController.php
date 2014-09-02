@@ -246,6 +246,7 @@ class SiteController extends Controller
       }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
     }
     if (isset($_POST['link'])) $link = $_POST['link'];
+    if ($s != '') $link = $s;
     
     $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform));
 	}
