@@ -70,5 +70,15 @@ function showSubCat(id){
 $(function() {
   if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
   $('#slider').foundation('slider', 'set_value', slider_value);
+  
+  setTimeout(function(){
+    if ($('html, body').scrollTop() == 0){
+      $('html, body').animate({scrollTop: 70},400,"swing",
+        function(){
+          $('html, body').animate({scrollTop: 0});
+        }
+      );
+    }
+  },300);
    //$('#preview').show();
 });
