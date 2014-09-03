@@ -321,13 +321,15 @@ class UpdateCommand extends CConsoleCommand {
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
+          
           //$link_check_old = Project::model()->findByAttributes(array('link' => $data->link));
           //$link_check = Project::model()->findByAttributes(array('link' => $link));
           //$link_part_check = Project::model()->findByAttributes(array('link' => ));
-          $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 ",
+          $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
                                                   array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
                                                         ':link2' => $data->link, 
-                                                        ':link3' => $link));
+                                                        ':link3' => $link,
+                                                        ':image' => $data->image));
           
           if ($project_check) {
             $count = $count + 1;
