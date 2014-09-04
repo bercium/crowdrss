@@ -136,7 +136,7 @@ class RatingCommand extends CConsoleCommand{
           $failed = true;
         }
       }
-      if (!$failed && !$firsttime) return 0;
+      if (!$failed) return 0;
       
       $message = new YiiMailMessage;
       $message->view = 'system';
