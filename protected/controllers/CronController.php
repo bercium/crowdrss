@@ -103,7 +103,7 @@ class CronController extends Controller
    * 
    */
   public function actionAfter3hRating(){
-    echo $this->consoleCommand('rating','after3h');
+    echo $this->consoleCommand('rating','firstDays');
   }
   
   
