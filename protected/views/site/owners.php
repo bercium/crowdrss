@@ -64,7 +64,8 @@ $this->pageTitle = 'How does your project stack to others';
       <div class="mt30">
       <div class="row panel">
         <div class="columns small-4 text-center">
-          <p>Our rating (0-10)</p>
+          <p>Our rating <a href="<?php echo Yii::app()->createUrl('site/rating'); ?>"  trk="link_content_ratingInfo" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Rating is based on content quality, social reach and campaign progress. <br />Click for more info."><i class="fa fa-question-circle"></i></a>
+          </p>
           <h1 style="color:#0088bb;">
             <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating (0-10) based on content quality, social reach and campaign progress. <br />Higher is better.">
             <?php 

@@ -156,9 +156,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <a id="limitProjects" class="anchor"></a>          
           <h2>3. Limit projects</h2>
           <p>
-            Select the quantity and quality of projects you wish to receive.
-            <br />
-            <small><i>Rating is based on content quality, social reach and campaign progress (just for Kickstarter and Indiegogo)</i></small>
+            Select the quantity and quality of projects you wish to receive. <a href="<?php echo Yii::app()->createUrl('site/rating'); ?>"  trk="link_content_ratingInfo" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Rating is based on content quality, social reach and campaign progress. <br />Click for more info."><i class="fa fa-question-circle"></i></a>
           </p>
 
           
@@ -183,7 +181,7 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <hr>
             
           <a id="preview" class="anchor"></a>
-          <h2>4. <a onclick="previewForm()" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
+          <h2>4. <a onclick="previewForm()" trk="link_content_preview" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
             and Finish</h2>
           <p>Instantly receive projects with RSS feed or subscribe to a mail digest.</p>
 
