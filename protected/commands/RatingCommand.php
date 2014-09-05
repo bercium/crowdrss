@@ -59,7 +59,7 @@ class RatingCommand extends CConsoleCommand{
   /**
    * 
    */
-  public function actionAfter3h(){
+  public function actionFirstDays(){
 
     $time = strtotime("-3 hours");
     
@@ -121,6 +121,9 @@ class RatingCommand extends CConsoleCommand{
       if (file_exists($filename)){
         unlink($filename);
       }
+      if (file_exists(Yii::app()->getRuntimePath()."/".$days."-ok.txt")){
+        unlink(Yii::app()->getRuntimePath()."/".$days."-ok.txt");
+      }
     }
     
     // write a report and mail it
@@ -167,10 +170,8 @@ class RatingCommand extends CConsoleCommand{
     $checked = $this->loopProjects($projects,$filename);
     
     
+    //summary
     $filename = Yii::app()->getRuntimePath()."/".$days."-ok.txt";
-    if (file_exists($filename)){
-      unlink($filename);
-    }
     $fp = fopen($filename, "a");
     fwrite($fp, $days.': '.$processStart." - ".date('c')."\n".$checked." / ".count($projects)."\n");
     fclose($fp);    
