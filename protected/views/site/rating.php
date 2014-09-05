@@ -66,16 +66,16 @@
     <hr>
     <h2>How high should you set the threshold?</h2>
     <p>
-      There some guidelines we wrote to help you decide:
+      Here are some guidelines to help you decide:
       <br />
       <ul>
-        <li>If you don't want to miss out on anything drag it to the left side.</li>
+        <li>If you don't want to miss out on anything drag it all the way to the left and there won't be any rating limit.</li>
         <li>Preview what kind of projects different rating levels give you and then decide how high to set it.</li>
         <li>Or start with a lower rating and in time raise the bar if you get overwhelmed with the number of projects each day.</li>
       </ul>
       <br />
       We strive to push as many interesting and successful projects in the upper half of the rating, 
-      but this is a process  and we will have to improve it over time.
+      but this is a learning process and we will improve it over time.
     </p>
 
   </div>
