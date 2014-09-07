@@ -379,7 +379,7 @@ EOD;
     foreach ($projects as $project){
       if ($project){
         $priority = 0.35;
-        if ($project->rating) $priority = (($project->rating/20)+0.35);
+        if ($project->rating) $priority = round(($project->rating/20)+0.35,3);
         $sitemapResponse .= "
         <url>
           <loc>";
