@@ -384,8 +384,8 @@ EOD;
         <url>
           <loc>";
         
-        if (strpos($project->title,"/") === false) $sitemapResponse .= str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index",array("name"=>$project->title))) );
-        else $sitemapResponse .= str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index")."?name=".$project->title));
+        if (strpos($project->title,"/") === false) $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index",array("name"=>$project->title))) ));
+        else $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index")."?name=".$project->title)));
                 
         $sitemapResponse .= "</loc>
           <changefreq>weekly</changefreq>
