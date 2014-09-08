@@ -61,7 +61,7 @@ class UpdateCommand extends CConsoleCommand {
       }else{
         $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
       }
-//      $this->errorMail($link, $category_check, $category->id);
+      $this->errorMail($link, $category_check, $category->id);
       return $category;
     }
   }
@@ -339,8 +339,8 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $link, "");
-            $insert->orig_category_id = $category->id;
+            $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
+            $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
             if (isset($data_single['start_date']))
               $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
             if (isset($data_single['end_date']))
@@ -389,9 +389,10 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2400",), false);
+    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2000",), false);
     if (isset($result->results)) {
       foreach ($result->results as $data) {
+      echo $data->link . "\n";
         $link = str_replace("/pinw", "", $data->link);
         $link = str_replace("/pimf", "", $link);
         $link = str_replace("?sa=0&sp=0", "", $link);
@@ -415,8 +416,8 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = $this->checkCategory($data->category, $link, "");
-          $insert->orig_category_id = $category->id;
+          $category = $this->checkCategory($data->category, $link, ""); // ZAČASNO*****************************************************************
+          $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
           if (isset($data_single['start_date']))
             $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
           if (isset($data_single['end_date']))
@@ -479,8 +480,8 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link, "");
-	    $insert->orig_category_id = $category->id;
+            $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
+	    $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data_single['location']))
@@ -531,9 +532,9 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $data->link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-	  $category = $this->checkCategory($data_single['category'], $data->link, "PubSlush");
-//          $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category'], 'category_id' => '24'));
-          $insert->orig_category_id = $category->id;
+	  $category = $this->checkCategory($data_single['category'], $data->link, "PubSlush"); // ZAČASNO*****************************************************************
+//          $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category'], 'category_id' => '24')); // ZAČASNO*****************************************************************
+          $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
           if (isset($data->creator))
             $insert->creator = $data->creator;
           if (isset($data_single['goal']))
@@ -578,8 +579,8 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link, "");
-            $insert->orig_category_id = $category->id;
+            $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
+            $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
             if (isset($data->location))
               $insert->location = $data->location;
             if (isset($data_single['creator']))
@@ -630,8 +631,8 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $data->link, "");
-	    $insert->orig_category_id = $category->id;
+            $category = $this->checkCategory($data_single['category'], $data->link, ""); // ZAČASNO*****************************************************************
+	    $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
             if (isset($data_single['end_date']))
               $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
             if (isset($data->location))
@@ -693,7 +694,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
-            $insert->orig_category_id = 1;
+            $insert->orig_category_id = 14; // ZAČASNO***************************************************************** 
             if (isset($data->time)) {
 	      if ($data->time <> "In Progress"){
 	        $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data->time . "days"));
