@@ -112,7 +112,7 @@ class RatingCommand extends CConsoleCommand{
       $getIds = file_get_contents($filename);
       $ids = array();
       $succFailed = preg_match_all("/<<(\d+)>>/",$getIds,$ids);
-      if (isset($ids[0])) $ids = implode(",", $ids[0]);
+      if (isset($ids[0])) $ids = str_replace ("<<", "", str_replace (">>", "", implode(",", $ids[0])));
       else $ids = '';
       // load ids of unfailed projects
       fwrite($fp, 'Exclude: '.$ids."\n\n");
