@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `project_origcategory` (
 `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
   `orig_category_id` int(11) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=869 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Indexes for dumped tables
