@@ -21,7 +21,7 @@ class RatingCommand extends CConsoleCommand{
       
       if ($filename){
         $fp = fopen($filename, "a");
-        fwrite($fp, $i.": ".$project->id.": ".$project->title);
+        fwrite($fp, $i." - ".$project->id." (".date("H:i:s")."): ".$project->title);
       }
 
       //echo ($i++).": ".date("c")." ";
@@ -102,6 +102,7 @@ class RatingCommand extends CConsoleCommand{
     $end = date('Y-m-d',$date)." 23:59:59";
     
 //    echo $start." - ".$end;
+    $succFailed = 0;
     $ids = '';
     if (!$firsttime){
       if (file_exists(Yii::app()->getRuntimePath()."/".$days."-ok.txt")) return 0; // everything OK
@@ -115,7 +116,7 @@ class RatingCommand extends CConsoleCommand{
       else $ids = '';
       // load ids of unfailed projects
       fwrite($fp, 'Exclude: '.$ids."\n\n");
-
+      $succFailed = count($ids[0]);
       fclose($fp);
     }else{
       if (file_exists($filename)){
@@ -135,7 +136,11 @@ class RatingCommand extends CConsoleCommand{
         if (file_exists($fn)){
           $content .= file_get_contents($fn)."<br />";
         }else{
-          $content .= $c.": FAILED<br />";
+          $content .= $c.": FAILED";
+          if ($succFailed) $content .= " ".$succFailed." rated in first try".
+                  
+          $content .="<br />";
+          
           $failed = true;
         }
       }
