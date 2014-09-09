@@ -9,13 +9,16 @@ class RatingCommand extends CConsoleCommand{
   /**
    * 
    */
-  private function loopProjects($projects,$filename=''){
+  private function loopProjects($projects,$filename='',$exclude = ''){
     //echo count($projects)."\n<br>";
     if (!$projects) return 0;
     $i = 1;
+    if ($exclude != array()) $exclude = explode (",", $exclude);
+    else $exclude = array();
     
     foreach ($projects as $project){
       if (strtotime($project->end) < time()) continue; // project ended
+      if (in_array($project->id, $exclude)) continue; //exclude projects
       
       $rating_class = null;
       
@@ -162,7 +165,7 @@ class RatingCommand extends CConsoleCommand{
     $processStart = date('c');
     
     // do the projects
-    if ($ids) $projects = Project::model()->findAll("(time_added BETWEEN :start AND :end) AND id NOT IN (:ids)", array(":start"=>$start, ":end"=>$end, ":ids"=>$ids));
+    if ($ids != '') $projects = Project::model()->findAll("(time_added BETWEEN :start AND :end) AND id NOT IN (:ids)", array(":start"=>$start, ":end"=>$end, ":ids"=>$ids));
     else $projects = Project::model()->findAll("time_added BETWEEN :start AND :end", array(":start"=>$start, ":end"=>$end));
     
     
@@ -171,7 +174,7 @@ class RatingCommand extends CConsoleCommand{
     fclose($fp);
     
     // do the magic
-    $checked = $this->loopProjects($projects,$filename);
+    $checked = $this->loopProjects($projects,$filename,$ids);
     
     
     //summary
