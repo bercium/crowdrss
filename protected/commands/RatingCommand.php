@@ -136,7 +136,7 @@ class RatingCommand extends CConsoleCommand{
           $content .= file_get_contents($fn)."<br />";
         }else{
           $content .= $c.": FAILED";
-          if ($succFailed) $content .= " ".$succFailed." rated in first try".
+          if ($succFailed) $content .= " ".$succFailed." rated in first try";
                   
           $content .="<br />";
           
