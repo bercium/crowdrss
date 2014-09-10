@@ -16,6 +16,29 @@ div.switch input:checked + label.success{
   background-color: #43ac6a;
 }
 
+.top-menu{
+  transition:background-color 0.5s ease;
+  opacity:0.75;
+}
+
+.top-menu.bg  {
+  background-color: #0088bb;
+  opacity:0.95;
+  border-bottom: 1px solid #87c7df;
+}
+
+.top-menu .sub-nav{
+  margin-bottom: 8px;
+  
+}
+
+.top-menu .sub-nav dd a{
+  color:#FFF;
+  text-transform: uppercase;
+  margin-left: 0;
+  font-weight: bold;
+}
+
 
 .mt0{
   margin-top: 0px;
@@ -23,6 +46,10 @@ div.switch input:checked + label.success{
 
 .mt10{
   margin-top: 10px;
+}
+
+.pt15{
+  padding-top: 15px;
 }
 
 .ml15{
@@ -59,4 +86,8 @@ div.switch input:checked + label.success{
 
 .pt30{
   padding-top : 30px;
+}
+
+.pt50{
+  padding-top : 50px;
 }

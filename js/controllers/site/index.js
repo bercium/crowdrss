@@ -82,3 +82,14 @@ $(function() {
   },300);
    //$('#preview').show();
 });
+
+$(window).scroll(function () {
+  if (!$('.top-menu').is(":animated") && $('html, body').scrollTop() > 80) {
+    $('.top-menu').addClass('bg');
+     //$('.top-menu').animate({ background-color: '#222' }, "slow");
+  }else{
+    if (!$('.top-menu').is(":animated") && $('html, body').scrollTop() <= 80) {
+      $('.top-menu').removeClass('bg');
+    }    
+  }
+});
