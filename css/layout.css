@@ -36,7 +36,7 @@
 .intro-defult{
   color:#FFF;
   background: #0088bb;
-  /*background-image: url('../images/bg.png'); */
+  background-image: url('../images/bg.png'); /**/
   background-position: center center;
   background-repeat: no-repeat;
   font-weight: bold;
