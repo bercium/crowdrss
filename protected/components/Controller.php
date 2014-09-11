@@ -29,6 +29,8 @@ public function init(){
       
     $cs->registerCssFile($baseUrl.'/css/foundation.css');
     $cs->registerCssFile($baseUrl.'/css/layout.css');   
+    $cs->registerCssFile($baseUrl.'/css/chosen/chosen.min.css');
+    
     //$cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
     $cs->registerCssFile('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
     
@@ -42,6 +44,7 @@ public function init(){
     $cs->registerScriptFile($baseUrl.'/js/vendor/fastclick.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
+    $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
     
     $cs->registerScriptFile($baseUrl.'/js/jquery.timers.min.js');  // new dropdown
     $cs->registerScriptFile($baseUrl.'/js/jquery.scrolldepth.min.js'); //scroll tracker
