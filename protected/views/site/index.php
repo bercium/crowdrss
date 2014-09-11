@@ -155,7 +155,11 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                                            
                     </div>
                   </div>
-                  <?php } ?>
+                  <?php }else{ 
+                    foreach ($cat['subcat'] as $subcat) { ?>
+                    <input id="subcat_<?php echo $subcat['id']; ?>" name="subcat[<?php echo $subcat['id']; ?>]" value="1" type="hidden">
+                  <?php }
+                      }?>
                   
                 </li>
                 <?php
