@@ -36,7 +36,7 @@ class MailerCommand extends CConsoleCommand{
     }
     //$sql .= ' 1 ';
     $hours = $days*24+3;
-    $sql .= " (time_added < DATE_ADD(NOW(),INTERVAL -3 HOUR)) AND (time_added >= DATE_ADD(NOW(),INTERVAL -".$hours." HOUR)) ";  // one day slot with 3h delay
+    $sql .= " (removed = 0) AND (time_added < DATE_ADD(NOW(),INTERVAL -3 HOUR)) AND (time_added >= DATE_ADD(NOW(),INTERVAL -".$hours." HOUR)) ";  // one day slot with 3h delay
     if ($sub->rating > 0)  $sql .= " AND ((rating IS NULL) OR (rating >= ".$sub->rating.")) ";
 
     $sql .= " ORDER BY rating DESC, time_added ASC";
@@ -51,9 +51,30 @@ class MailerCommand extends CConsoleCommand{
 	public function actionDailyDigest(){
     $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
     if ($subscriptions){
+      
+      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      
       foreach ($subscriptions  as $sub){
 
-        $sql = $this->createSQL($sub, 1);
+        $paidProject = null;
+        
+        foreach ($paidProjects as $pp){
+          $platA = explode(",",$sub->platform);
+          $catA = explode(",",$sub->category);
+          $subCatA = explode(",",$sub->exclude_orig_category);
+
+          if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
+          if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
+          if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
+
+          $pp->show_count++;
+          $pp->save();
+          $paidProject = $pp->project; //get one project
+          break;
+        }
+        
+        
+        $sql = $this->createSQL($sub, 1); 
         
         // get projects
         $projects = Project::model()->findAll($sql);
@@ -69,6 +90,12 @@ class MailerCommand extends CConsoleCommand{
             else $regular[] = $project;
           }
         }
+        
+        // set the rating higher so we know it's special
+        if ($paidProject->rating) $paidProject->rating += 11;
+        else $paidProject->rating = 11;
+        array_unshift($featured,$paidProject);  //add to the beginning of the queue
+        
         
         shuffle($regularNull);
         $regularNull = array_slice($regularNull,0,4);
@@ -102,7 +129,7 @@ class MailerCommand extends CConsoleCommand{
         }
 
         $editLink = absoluteURL()."/?id=".$sub->hash;
-
+        
         $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
                                 "content"=>$content, "title"=>$title,
                                 "featuredProjects"=>$featured, "projects"=>$regular,
@@ -121,8 +148,34 @@ class MailerCommand extends CConsoleCommand{
   public function actionWeeklyDigest(){
     $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
     if ($subscriptions){
+
+      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      
       foreach ($subscriptions  as $sub){
 
+        $paidProject = null;
+        
+        foreach ($paidProjects as $pp){
+          $platA = explode(",",$sub->platform);
+          $catA = explode(",",$sub->category);
+          $subCatA = explode(",",$sub->exclude_orig_category);
+
+          if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
+          if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
+          if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
+
+          $pp->show_count++;
+          $pp->save();
+          $paidProject = $pp->project; //get one project
+          break;
+        }
+        
+        // set the rating higher so we know it's special
+        if ($paidProject->rating) $paidProject->rating += 11;
+        else $paidProject->rating = 11;
+        array_unshift($featured,$paidProject);  //add to the beginning of the queue
+        
+        
         $sql = $this->createSQL($sub, 7);
         
         // get projects

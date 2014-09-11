@@ -366,13 +366,16 @@ background: #970b0e !important;
                         </tr></table></td>
                   </tr></table>
                 <?php 
-                if (count($featuredProjects)){ 
+                if (count($featuredProjects)){
                   $i = 1;
                   foreach ($featuredProjects as $project){
                     $i++;
                  
-                    
-                 if ($i%2 == 0){ ?>
+                  if ($project->rating >= 11){ ?>
+                    <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; background: #ecfaff; padding: 0px; border: 1px solid #b6edff;" bgcolor="#ecfaff">
+                  <?php 
+                    } else
+                    if ($i%2 == 0){ ?>
                     <table class="row project even" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; background: #f2f2f2; padding: 0px; border: 1px solid #d9d9d9;" bgcolor="#f2f2f2">
                    <?php }else{ ?>
                     <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;" >
