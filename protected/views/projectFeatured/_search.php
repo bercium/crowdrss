@@ -12,7 +12,8 @@
 
 	<div class="row">
 		<?php echo $form->label($model, 'project_id'); ?>
-		<?php echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)), array('prompt' => Yii::t('app', 'All'))); ?>
+		<?php echo $form->textField($model, 'project_id'); ?>
+		<?php //echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)), array('prompt' => Yii::t('app', 'All'))); ?>
 	</div>
 
 	<div class="row">
