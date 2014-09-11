@@ -5,18 +5,18 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
 
 ?>
 
-<?php /* ?>
+<?php //* ?>
 <div class="top-menu fixed pt15"> 
   <div class="row">
     <div class="columns large-12 text-center">
       <dl class="sub-nav  right" >
-        <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
-        <dd><a href="<?php echo Yii::app()->createUrl('statistic/socialAnalize'); ?>">Social analize</a></dd> 
+        <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_top_topDaily">Best of today</a></dd> 
+        <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>">Get featured</a></dd> 
       </dl>
     </div>
   </div>
 </div>
-<?php */ ?>
+<?php //*/ ?>
 
     <div class="intro pt50">
        <a id="whatIsCRSS" class="anchor"></a>
