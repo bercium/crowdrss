@@ -15,7 +15,7 @@
 
 		<div class="row">
 		<?php echo $form->labelEx($model,'project_id'); ?>
-		<?php echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true," time_added > DATE_ADD(NOW(),INTERVAL -7 DAYS) ORDER BY id DESC"))); ?>
+		<?php echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true," time_added > DATE_ADD(NOW(),INTERVAL -7 DAY) ORDER BY id DESC"))); ?>
 		<?php echo $form->error($model,'project_id'); ?>
 		</div><!-- row -->
 		<div class="row">
