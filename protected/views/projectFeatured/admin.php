@@ -43,11 +43,12 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 	'filter' => $model,
 	'columns' => array(
 		'id',
-		array(
+		/*array(
 				'name'=>'project_id',
 				'value'=>'GxHtml::valueEx($data->project)',
 				'filter'=>GxHtml::listDataEx(Project::model()->findAllAttributes(null, true)),
-				),
+				),*/
+    'project_id',
 		'feature_date',
 		'feature_where',
 		'show_count',
