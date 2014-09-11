@@ -15,7 +15,7 @@
 
 		<div class="row">
 		<?php echo $form->labelEx($model,'project_id'); ?>
-		<?php echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true," ORDER BY id DESC LIMIT 1,5000 "))); ?>
+		<?php echo $form->dropDownList($model, 'project_id', GxHtml::listDataEx(Project::model()->findAllAttributes(null, true," time_added > NOW() ORDER BY id DESC"))); ?>
 		<?php echo $form->error($model,'project_id'); ?>
 		</div><!-- row -->
 		<div class="row">
