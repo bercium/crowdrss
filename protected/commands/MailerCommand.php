@@ -48,8 +48,11 @@ class MailerCommand extends CConsoleCommand{
   /**
    * daily digest
    */
-	public function actionDailyDigest(){
-    $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
+	public function actionDailyDigest($test = false){
+    
+    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
+    
     if ($subscriptions){
       
       $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
@@ -70,9 +73,11 @@ class MailerCommand extends CConsoleCommand{
           $pp->show_count++;
           $pp->save();
           $paidProject = $pp->project; //get one project
+          // set the rating higher so we know it's special
+          if ($paidProject->rating) $paidProject->rating += 11;
+          else $paidProject->rating = 11;
           break;
         }
-        
         
         $sql = $this->createSQL($sub, 1); 
         
@@ -90,11 +95,8 @@ class MailerCommand extends CConsoleCommand{
             else $regular[] = $project;
           }
         }
-        
-        // set the rating higher so we know it's special
-        if ($paidProject->rating) $paidProject->rating += 11;
-        else $paidProject->rating = 11;
-        array_unshift($featured,$paidProject);  //add to the beginning of the queue
+
+        if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
         
         
         shuffle($regularNull);
@@ -142,11 +144,18 @@ class MailerCommand extends CConsoleCommand{
     }
   }
   
+  public function actionTestDailyDigest(){
+    $this->actionDailyDigest(true);
+  }
+  
   /**
    * 
    */
-  public function actionWeeklyDigest(){
-    $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
+  public function actionWeeklyDigest($test = false){
+    
+    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
+
     if ($subscriptions){
 
       $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
@@ -167,13 +176,11 @@ class MailerCommand extends CConsoleCommand{
           $pp->show_count++;
           $pp->save();
           $paidProject = $pp->project; //get one project
+          // set the rating higher so we know it's special
+          if ($paidProject->rating) $paidProject->rating += 11;
+          else $paidProject->rating = 11;
           break;
         }
-        
-        // set the rating higher so we know it's special
-        if ($paidProject->rating) $paidProject->rating += 11;
-        else $paidProject->rating = 11;
-        array_unshift($featured,$paidProject);  //add to the beginning of the queue
         
         
         $sql = $this->createSQL($sub, 7);
@@ -192,6 +199,9 @@ class MailerCommand extends CConsoleCommand{
             else $regular[] = $project;
           }
         }
+        
+        if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
+        
         
         shuffle($regularNull);
         $regularNull = array_slice($regularNull,0,4);
@@ -243,6 +253,10 @@ class MailerCommand extends CConsoleCommand{
     }
 
   }
+  
+  public function actionTestWeeklyDigest(){
+    $this->actionWeeklyDigest(true);
+  }  
   
   /**
    * validates that parser has parsed something in the last few hours

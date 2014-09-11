@@ -130,6 +130,10 @@ class CronController extends Controller
     echo $this->consoleCommand('mailer','dailyDigest');
   }
   
+  public function actionTestDailyDigest(){
+    echo $this->consoleCommand('mailer','testDailyDigest');
+  }
+  
   /**
    * 
    *//*
@@ -142,6 +146,10 @@ class CronController extends Controller
    */
   public function actionWeeklyDigest(){
     echo $this->consoleCommand('mailer','weeklyDigest');
+  }
+  
+  public function actionTestWeeklyDigest(){
+    echo $this->consoleCommand('mailer','testWeeklyDigest');
   }
   
   /**
