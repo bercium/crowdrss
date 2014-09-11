@@ -46,3 +46,34 @@ ALTER TABLE `project_origcategory`
 --
 ALTER TABLE `project_origcategory`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+
+
+------------------
+
+ALTER TABLE `project` ADD `removed` BOOLEAN NOT NULL DEFAULT FALSE ;
+
+
+-
+-- Table structure for table `project_featured`
+--
+
+CREATE TABLE IF NOT EXISTS `project_featured` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL,
+  `feature_date` datetime NOT NULL,
+  `feature_where` int(11) NOT NULL,
+  `show_count` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `project_featured`
+--
+ALTER TABLE `project_featured`
+  ADD CONSTRAINT `project_featured_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

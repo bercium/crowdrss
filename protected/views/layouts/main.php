@@ -78,6 +78,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
         <dl class="sub-nav " >
           <?php if (!Yii::app()->user->isGuest){ ?>
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('projectFeatured/index'); ?>">Feature a project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 

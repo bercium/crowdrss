@@ -26,6 +26,7 @@
  * @property integer $type_of_funding
  * @property double $rating
  * @property string $time_added
+ * @property integer $removed
  *
  * @property FeedClickLog[] $feedClickLogs
  * @property FeedOpenLog[] $feedOpenLogs
@@ -55,14 +56,15 @@ abstract class BaseProject extends GxActiveRecord {
 		return array(
 			array('platform_id, orig_category_id, title, description, image, link', 'required'),
       array('time_added', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),        
-			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding', 'numerical', 'integerOnly'=>true),
+			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding, removed', 'numerical', 'integerOnly'=>true),
 			array('rating', 'numerical'),
 			array('title, image, link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
 			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
+      array('removed', 'default', 'value' => 0, 'setOnEmpty' => true),
 			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added', 'safe', 'on'=>'search'),
+			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added, removed', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +75,7 @@ abstract class BaseProject extends GxActiveRecord {
 			'feedRates' => array(self::HAS_MANY, 'FeedRate', 'project_id'),
 			'platform' => array(self::BELONGS_TO, 'Platform', 'platform_id'),
 			'origCategory' => array(self::BELONGS_TO, 'OrigCategory', 'orig_category_id'),
+			'featured' => array(self::HAS_MANY, 'ProjectFeatured', 'project_id'),
 		);
 	}
 
@@ -104,6 +107,7 @@ abstract class BaseProject extends GxActiveRecord {
 			'feedOpenLogs' => null,
 			'feedRates' => null,
 			'platform' => null,
+			'removed' => null,
 			'origCategory' => null,
 		);
 	}
@@ -128,6 +132,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('type_of_funding', $this->type_of_funding);
 		$criteria->compare('rating', $this->rating);
 		$criteria->compare('time_added', $this->time_added, true);
+		$criteria->compare('removed', $this->removed, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
