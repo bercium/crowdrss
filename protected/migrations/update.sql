@@ -68,6 +68,8 @@ CREATE TABLE IF NOT EXISTS `project_featured` (
   KEY `project_id` (`project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
+ALTER TABLE `project_featured` ADD `active` INT NOT NULL DEFAULT '0';
+
 --
 -- Constraints for dumped tables
 --

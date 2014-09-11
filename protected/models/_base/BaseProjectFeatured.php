@@ -14,6 +14,7 @@
  * @property string $feature_date
  * @property integer $feature_where
  * @property integer $show_count
+ * @property integer $active
  *
  * @property Project $project
  */
@@ -38,10 +39,10 @@ abstract class BaseProjectFeatured extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('project_id, feature_date, feature_where', 'required'),
-			array('project_id, feature_where, show_count', 'numerical', 'integerOnly'=>true),
+			array('project_id, feature_where, show_count, active', 'numerical', 'integerOnly'=>true),
 			array('show_count', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('show_count', 'default', 'setOnEmpty' => true, 'value' => 0),
-			array('id, project_id, feature_date, feature_where, show_count', 'safe', 'on'=>'search'),
+			array('show_count, active', 'default', 'setOnEmpty' => true, 'value' => 0),
+			array('id, project_id, feature_date, feature_where, show_count, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +65,7 @@ abstract class BaseProjectFeatured extends GxActiveRecord {
 			'feature_where' => Yii::t('app', 'Feature Where'),
 			'show_count' => Yii::t('app', 'Show Count'),
 			'project' => null,
+       'active' => null,
 		);
 	}
 
@@ -75,6 +77,8 @@ abstract class BaseProjectFeatured extends GxActiveRecord {
 		$criteria->compare('feature_date', $this->feature_date, true);
 		$criteria->compare('feature_where', $this->feature_where);
 		$criteria->compare('show_count', $this->show_count);
+		$criteria->compare('active', $this->active);
+    
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

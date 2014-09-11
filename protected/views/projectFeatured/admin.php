@@ -51,6 +51,7 @@ You may optionally enter a comparison operator (&lt;, &lt;=, &gt;, &gt;=, &lt;&g
 		'feature_date',
 		'feature_where',
 		'show_count',
+		'active',
 		array(
 			'class' => 'CButtonColumn',
 		),

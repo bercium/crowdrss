@@ -16,5 +16,8 @@
 	<?php echo GxHtml::encode($data->getAttributeLabel('show_count')); ?>:
 	<?php echo GxHtml::encode($data->show_count); ?>
 	<br />
+	<?php echo GxHtml::encode($data->getAttributeLabel('active')); ?>:
+	<?php echo GxHtml::encode($data->active); ?>
+	<br />
 
 </div>

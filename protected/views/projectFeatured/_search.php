@@ -30,6 +30,11 @@
 		<?php echo $form->textField($model, 'show_count'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model, 'active'); ?>
+		<?php echo $form->textField($model, 'active'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo GxHtml::submitButton(Yii::t('app', 'Search')); ?>
 	</div>

@@ -29,6 +29,11 @@
 		<?php echo $form->textField($model, 'feature_where'); ?>
 		<?php echo $form->error($model,'feature_where'); ?>
 		</div><!-- row -->
+		<div class="row">
+		<?php echo $form->labelEx($model,'active'); ?>
+		<?php echo $form->textField($model, 'active'); ?>
+		<?php echo $form->error($model,'active'); ?>
+		</div><!-- row -->
     <?php /* ?>
 		<div class="row">
 		<?php echo $form->labelEx($model,'show_count'); ?>

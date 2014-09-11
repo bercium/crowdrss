@@ -28,6 +28,7 @@ array(
 'feature_date',
 'feature_where',
 'show_count',
+'active',
 	),
 )); ?>
 
