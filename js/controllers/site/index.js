@@ -90,6 +90,16 @@ $(window).scroll(function () {
   }else{
     if (!$('.top-menu').is(":animated") && $('html, body').scrollTop() <= 80) {
       $('.top-menu').removeClass('bg');
-    }    
+    }
+  }
+  
+  // hide top menu after intro
+  $switch = 0;
+  if ($('html, body').scrollTop() > $('.intro').height()+$('.intro-desc').height()+30){
+    if ($('.top-menu').hasClass('fixed')) $('html, body').scrollTop($('html, body').scrollTop()+41+15);
+    $('.top-menu').removeClass('fixed');
+  }else{
+    if (!$('.top-menu').hasClass('fixed')) $('html, body').scrollTop($('html, body').scrollTop()-41-15);
+    $('.top-menu').addClass('fixed');
   }
 });
