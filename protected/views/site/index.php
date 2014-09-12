@@ -1,7 +1,7 @@
 <?php
 /* @var $this SiteController */
 $this->pageTitle = 'Crowdfunding projects delivered to you';
-$this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one place.";
+$this->pageDesc = "Select your favorite platform, chose your interests and we will deliver the best projects right in your inbox or trough RSS feed.";
 
 ?>
 
@@ -60,7 +60,6 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
           <h2>1. Choose a platform</h2>
           <p>Which platforms do you wish to follow?</p>
             
-            
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
               <?php
               $i = 0;
@@ -115,7 +114,12 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
                     </div>
                     <div class="columns small-8">
                         <?php if(count($cat['subcat']) > 1){ ?>
-                        <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" onclick="showSubCat(<?php echo $cat['id']; ?>);" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
+                        <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" <?php 
+                        
+                           if ($subscription) echo 'onclick="showSubCat('.$cat['id'].');"';
+                           else echo 'data-reveal-id="tweettounlock" dref="'.$cat['id'].'"';
+                        
+                           ?> data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
                           <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
                         </a>
                         <?php } ?>
@@ -329,3 +333,27 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
         </div>
       </div>
     </div>
+
+
+<div id="tweettounlock" class="reveal-modal medium" data-reveal>
+  <h2>Tweet to unlock</h2>
+  <p>
+    This functionality is locked. To unlock it please tweet about us :)
+    <br />
+    If you don't have twitter <a onclick="contact(this);" trk="link_bottom_noTwitter">contact us</a>
+    <br />
+    <div class="text-center">
+      <a href="http://twitter.com/share" class="twitter-share-button" data-text="<?php echo $this->pageTitle; ?>" data-hashtags="crowdfunding,kickstarter" data-via="eberce_ltd" data-dnt="true" data-count="none" data-size="large">Tweet</a>
+    </div>
+    <br />
+    <br />
+    <i>
+      If you already subscribed please use "edit your feed" button from your verification email to hide this message.
+    </i>
+  </p>
+  <a class="close-reveal-modal">&#215;</a>
+</div>
+
+<script type="text/javascript">
+  sessionID = '<?php echo base64_encode(session_id());?>';
+</script>

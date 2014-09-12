@@ -104,7 +104,7 @@ $this->pageTitle = 'How does your project stack to others';
   <div class="row">
     <div class="columns text-center">
       <h2 class="white">Get featured in our daily or weekly digest!</h2>
-      <a href="#" onclick="contact(this);" class="button success radius large">Contact us</a>
+      <a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button success radius large">Contact us</a>
     </div>
   </div>
 </div>

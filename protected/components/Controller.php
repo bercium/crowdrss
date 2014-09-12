@@ -40,15 +40,18 @@ public function init(){
 
 		$cs->registerScriptFile($baseUrl.'/js/vendor/modernizr.js',CClientScript::POS_HEAD);  //modernizer
     
+  
     //$cs->registerScriptFile($baseUrl.'/js/respond.min.js');
     $cs->registerScriptFile($baseUrl.'/js/vendor/fastclick.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
     $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
     
-    $cs->registerScriptFile($baseUrl.'/js/jquery.timers.min.js');  // new dropdown
+    $cs->registerScriptFile($baseUrl.'/js/jquery.timers.min.js');  // timers
     $cs->registerScriptFile($baseUrl.'/js/jquery.scrolldepth.min.js'); //scroll tracker
-
+    
+    $cs->registerScriptFile('https://platform.twitter.com/widgets.js');  // 
+    
 
     //$cs->registerCoreScript($baseUrl.'jquery.ui');
     //$cs->registerCoreScript($baseUrl.'autocomplete');

@@ -103,3 +103,36 @@ $(window).scroll(function () {
     $('.top-menu').addClass('fixed');
   }
 });
+
+var sessionID = '';
+twttr.ready(function (twttr) {
+
+    //######## trigger when the user publishes his tweet
+    twttr.events.bind('tweet', function(event) {
+
+        /*
+        To make locked items little more private, let's send our base64 encoded session key
+        which will work as key in send_resources.php to acquire locked items.
+        */
+        var data = {unlock_key : sessionID};
+        $('[id^="subCatLink_"]').each(function(index){
+          $(this).removeAttr('data-reveal-id');
+          $(this).click(function(){
+                          showSubCat($(this).attr('dref'));
+                        });
+        });
+        $('#tweettounlock').foundation('reveal', 'close');
+    
+        //Load data from the server using a HTTP POST request.
+        /*$.post("send_resources.php", data, function(data)
+        {
+            //Append unlocked content into div element
+            $('#tweet_content').html(data);
+
+        }).error(function(xhr, ajaxOptions, thrownError) {
+            //Output any errors from server.
+            alert( thrownError);
+        });*/
+    });
+
+});
