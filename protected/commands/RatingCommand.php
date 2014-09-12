@@ -36,7 +36,8 @@ class RatingCommand extends CConsoleCommand{
       }
       if ($rating_class == null){
         if ($filename){
-          fwrite($fp, "\n");
+          fwrite($fp, "  <<".$project->id.">>\n");
+          //fwrite($fp, "\n");
           fclose($fp);
         }
         
@@ -165,7 +166,7 @@ class RatingCommand extends CConsoleCommand{
     $processStart = date('c');
     
     // do the projects
-    if ($ids != '') $projects = Project::model()->findAll("(time_added BETWEEN :start AND :end) AND id NOT IN (:ids)", array(":start"=>$start, ":end"=>$end, ":ids"=>$ids));
+    if ($ids != '') $projects = Project::model()->findAll("(time_added BETWEEN :start AND :end) AND id NOT IN (".$ids.")", array(":start"=>$start, ":end"=>$end));
     else $projects = Project::model()->findAll("time_added BETWEEN :start AND :end", array(":start"=>$start, ":end"=>$end));
     
     
