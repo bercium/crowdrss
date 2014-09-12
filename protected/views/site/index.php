@@ -340,10 +340,10 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
   <p>
     This functionality is locked. To unlock it please tweet about us :)
     <br />
-    If you don't have twitter <a onclick="contact(this);" trk="link_bottom_noTwitter">contact us</a>
+    If you don't have twitter <a onclick="contact(this);" trk="link_bottom_noTwitter">contact us</a>.
     <br />
     <div class="text-center">
-      <a href="http://twitter.com/share" class="twitter-share-button" data-text="<?php echo $this->pageTitle; ?>" data-hashtags="crowdfunding,kickstarter" data-via="eberce_ltd" data-dnt="true" data-count="none" data-size="large">Tweet</a>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-text="<?php echo $this->pageTitle; ?>" data-hashtags="crowdfunding,kickstarter" data-via="eberce_ltd" data-dnt="true" data-count="none" data-size="large">Tweet to unlock</a>
     </div>
     <br />
     <br />
