@@ -6,10 +6,10 @@ $this->pageDesc = "Follow projects from Kickstarter, Indiegogo and others in one
 ?>
 
 <?php //* ?>
-<div class="top-menu fixed pt15"> 
+<div class="top-menu fixed pt15 show-for-medium-up">
   <div class="row">
     <div class="columns large-12 text-center">
-      <dl class="sub-nav  right" >
+      <dl class="sub-nav right" >
         <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_top_topDaily">Best of today</a></dd> 
         <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>">Get featured</a></dd> 
       </dl>
