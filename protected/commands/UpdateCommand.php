@@ -399,10 +399,10 @@ class UpdateCommand extends CConsoleCommand {
         /*$link_check_old = Project::model()->findByAttributes(array()));
         $link_deform = Project::model()->findByAttributes(array());
         $link_check = Project::model()->findByAttributes(array());*/
-        $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3  OR  title LIKE :title ",
+        $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3  OR  image LIKE :image ",
                                                 array(':link1' => str_replace("?sa=0&sp=0", "", $data->link),
                                                       ':link2' => $data->link, 
-                                                      ':title' => $data->title, 
+                                                      ':image' => $data->image, 
                                                       ':link3' => $link));
         if (!$project_check) {
           $htmlData = $this->getHtml($link, array());
