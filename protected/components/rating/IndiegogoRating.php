@@ -202,9 +202,9 @@ class IndiegogoRating extends PlatformRating{
 
     if (($tmp['$goal'] == null) or ($tmp['Bfinished'] == 1)){
       if ($this->id) {
-        $update = Project::model()->find(array('id' => $this->id));
+        $update = Project::model()->findByPk($this->id);
 	if ($update){
-          $update->=1;
+          $update->removed=1;
  	  $upadte->save();
 	}
       }

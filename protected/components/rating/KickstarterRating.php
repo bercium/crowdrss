@@ -223,7 +223,18 @@ class KickstarterRating extends PlatformRating{
 //      }
       }
     }
-    return $tmp;
+    if (($tmp['$goal'] == null) or ($tmp['Bfinished'] == 1)){
+      if ($this->id) {
+        $update = Project::model()->findByPk($this->id);
+	if ($update){
+	  $update->removed=1;
+	  $upadte->save();
+	}
+      }
+      return false;
+    }else{
+      return $tmp;
+    }
   }
 
 
