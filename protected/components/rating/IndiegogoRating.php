@@ -57,6 +57,15 @@ class IndiegogoRating extends PlatformRating{
     
     // check validity of data
     if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
+      if (strpos($text, "i-illustration-not_found"){
+        if ($this->id) {
+          $update = Project::model()->findByPk($this->id);
+  	  if ($update){
+            $update->removed=1;
+ 	    $upadte->save();
+	  }
+        }
+      }
       return false;
     }
     
@@ -200,7 +209,7 @@ class IndiegogoRating extends PlatformRating{
       else { $tmp['Bsuccessful'] = 1; }
     }else{ $tmp['Bsuccessful'] = 0; }
 
-    if (($tmp['$goal'] == null) or ($tmp['Bfinished'] == 1)){
+    if ($tmp['Bfinished'] == 1){
       if ($this->id) {
         $update = Project::model()->findByPk($this->id);
 	if ($update){
