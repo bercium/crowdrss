@@ -57,7 +57,7 @@ class IndiegogoRating extends PlatformRating{
     
     // check validity of data
     if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
-      if (strpos($text, "i-illustration-not_found"){
+      if (strpos($text, "i-illustration-not_found")){
         if ($this->id) {
           $update = Project::model()->findByPk($this->id);
   	  if ($update){
