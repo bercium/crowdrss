@@ -93,7 +93,7 @@ $this->pageTitle = 'How does your project stack to others';
         </div>
           <?php if ($onPage > 15){ ?>
             <div class="columns text-center">
-              Find out how to improve your campaign <a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button success radius large">Contact us</a>
+              <br /><a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button success radius large">Contact us and improve your campaign</a>
             </div>
           <?php } ?>
       </div>
