@@ -88,7 +88,7 @@ class RatingCommand extends CConsoleCommand{
    */
   public function actionAfterDays($days = null){
     set_time_limit(0);
-    if ($days == null) $days = date("G")+1;    
+    if ($days == null) $days = date("G")+1;
     if (($days > 8 && $days < 11) || ($days > 18)) return 0;
     
     $firsttime = true;
