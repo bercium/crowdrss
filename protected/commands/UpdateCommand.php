@@ -67,6 +67,7 @@ class UpdateCommand extends CConsoleCommand {
     $json = html_entity_decode($match[1]);
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
+    if ($jsonData == null){ return false; }
     
     // Goal
     $money = Yii::app()->numberFormatter->formatCurrency($jsonData->goal, $jsonData->currency);
@@ -90,23 +91,31 @@ class UpdateCommand extends CConsoleCommand {
     // Created
     $pattern = '/<span class="text">\s(.+) created/';
     preg_match($pattern, $htmlData, $matches);
-    if ($matches[1] == "First") {
-      $data['created'] = 1;
-    } else {
-      $pattern = '/\/created">(.+) created/';
-      preg_match($pattern, $htmlData, $fixedMatches);
-      $data['created'] = $fixedMatches[1];
+    if (isset($matches[1])){
+      if ($matches[1] == "First") {
+        $data['created'] = 1;
+      } else {
+        $pattern = '/\/created">(.+) created/';
+        preg_match($pattern, $htmlData, $fixedMatches);
+	if (isset($matches[1])){
+	  $data['created'] = $fixedMatches[1];
+	}
+      }
     }
 
     // Backed
     $pattern = '/span>\s(.+) backed/';
     preg_match($pattern, $htmlData, $matches);
-    if ($matches[1] == "0") {
-      $data['backed'] = $matches[1];
-    } else {
-      $pattern = '/\/backed">(.+) backed/';
-      preg_match($pattern, $htmlData, $fixedMatches);
-      $data['backed'] = $fixedMatches[1];
+    if (isset($matches[1])){
+      if ($matches[1] == "0") {
+        $data['backed'] = $matches[1];
+      } else {
+        $pattern = '/\/backed">(.+) backed/';
+        preg_match($pattern, $htmlData, $fixedMatches);
+	if (isset($matches[1])){
+          $data['backed'] = $fixedMatches[1];
+	}
+      }
     }
     return($data);
   }
@@ -119,6 +128,7 @@ class UpdateCommand extends CConsoleCommand {
     $json = html_entity_decode($match[1]);
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
+    if ($jsonData == null){ return false; }
 
     // Goal
     $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'campaign_goal_amount'}, $jsonData->{'site_currency'});
@@ -305,7 +315,7 @@ class UpdateCommand extends CConsoleCommand {
     $count = 0;
     $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
     $id = $platform->id;
-    while (($i <= 5) and ($check == false)) { // POPRAVI NA 50 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    while (($i <= 50) and ($check == false)) { 
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=newest",), false);
       if (isset($result->results)) {
         
@@ -329,9 +339,10 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
+            $count = 0;
             $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
-            
+	    if ($data_single == false) { continue; }
             $insert = new Project;
             $insert->title = $data->title;
             $insert->description = $data->description;
@@ -365,7 +376,6 @@ class UpdateCommand extends CConsoleCommand {
             $insert->rating = $rating;
             $insert->save();
             
-            $count = 0;
 //	    print_r($insert->getErrors());
           }
           if ($count >= 30) {
@@ -382,7 +392,7 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=50",), false); // popravi na 2000 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2000",), false);
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link = str_replace("/pinw", "", $data->link);
@@ -402,6 +412,7 @@ class UpdateCommand extends CConsoleCommand {
           $htmlData = $this->getHtml($link, array());
           $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
           $data_single = $this->parseIndiegogo($htmlData);
+	  if ($data_single == false) { continue; }
           $insert = new Project;
           $insert->title = $data->title;
           $insert->description = $data->description;
@@ -427,7 +438,7 @@ class UpdateCommand extends CConsoleCommand {
             }
             $insert->type_of_funding = $typeOfFunding;
           }
-//          $insert->save();
+          $insert->save();
           
           // get rating 
           $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
