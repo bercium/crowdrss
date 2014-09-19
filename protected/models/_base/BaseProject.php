@@ -62,7 +62,7 @@ abstract class BaseProject extends GxActiveRecord {
 			array('description', 'length', 'max'=>1000),
 			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
-      array('removed', 'default', 'value' => 0, 'setOnEmpty' => true),
+      array('removed', 'default', 'value' => 0, 'setOnEmpty' => true, 'on' => 'insert'),
 			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating', 'default', 'setOnEmpty' => true, 'value' => null),
 			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added, removed', 'safe', 'on'=>'search'),
 		);

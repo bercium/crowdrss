@@ -60,10 +60,10 @@ class IndiegogoRating extends PlatformRating{
       if (strpos($text, "i-illustration-not_found")){
         if ($this->id) {
           $update = Project::model()->findByPk($this->id);
-  	  if ($update){
+          if ($update){
             $update->removed=1;
- 	    $upadte->save();
-	  }
+            $upadte->save();
+          }
         }
       }
       return false;
@@ -204,23 +204,23 @@ class IndiegogoRating extends PlatformRating{
     $tmp['#teamMembers'] = substr_count($teamMembers, 'class="i-name">');
 
     // Succesful
-    if ( $tmp['Bfinished'] == 1 ) {  
-      if ($tmp['$goal'] > $tmp['$raised']) { $tmp['Bsuccessful'] = 0; }
-      else { $tmp['Bsuccessful'] = 1; }
-    }else{ $tmp['Bsuccessful'] = 0; }
-
-    if ($tmp['Bfinished'] == 1){
+    if ( $tmp['Bfinished'] == 1 ) {
+      //if ($tmp['$goal'] > $tmp['$raised']) $tmp['Bsuccessful'] = 0;
+      //else $tmp['Bsuccessful'] = 1;
+      
       if ($this->id) {
         $update = Project::model()->findByPk($this->id);
-	if ($update){
+        if ($update){
           $update->removed=1;
- 	  $upadte->save();
-	}
+          $upadte->save();
+        }
       }
-      return false;
-    }else{
-      return $tmp;
-    }
+      $tmp = false;
+      
+    }else $tmp['Bsuccessful'] = 0;
+
+   
+    return $tmp;
   }
 
 

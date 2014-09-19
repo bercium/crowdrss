@@ -221,20 +221,22 @@ class KickstarterRating extends PlatformRating{
 //      for ($i=0; $i<$pledgesNumber; $i++){
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
+        
+        if ($tmp['Bfinished'] == 1){
+          if ($this->id) {
+            $update = Project::model()->findByPk($this->id);
+            if ($update){
+              $update->removed=1;
+              $upadte->save();
+            }
+          }
+          $tmp = false;
+        }
+    
       }
     }
-    if ($tmp['Bfinished'] == 1){
-      if ($this->id) {
-        $update = Project::model()->findByPk($this->id);
-	if ($update){
-	  $update->removed=1;
-	  $upadte->save();
-	}
-      }
-      return false;
-    }else{
-      return $tmp;
-    }
+    
+    return $tmp;
   }
 
 
