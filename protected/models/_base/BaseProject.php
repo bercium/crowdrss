@@ -132,7 +132,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('type_of_funding', $this->type_of_funding);
 		$criteria->compare('rating', $this->rating);
 		$criteria->compare('time_added', $this->time_added, true);
-		$criteria->compare('removed', $this->removed, true);
+		$criteria->compare('removed', $this->removed);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
