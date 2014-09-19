@@ -65,10 +65,11 @@ class UpdateCommand extends CConsoleCommand {
     $pattern = '/window.current_project = "(.+)";/'; 
     preg_match($pattern, $htmlData, $match);
     $json = html_entity_decode($match[1]);
+    $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
-
+    
     // Goal
-    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'goal'}, $jsonData->{'currency'});
+    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->goal, $jsonData->currency);
     $money_split = explode(".", $money);
     if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
     } else {$data['goal'] = $money;}
@@ -116,6 +117,7 @@ class UpdateCommand extends CConsoleCommand {
     $pattern = '/var utag_data = (.+);/'; 
     preg_match($pattern, $htmlData, $match);
     $json = html_entity_decode($match[1]);
+    $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
 
     // Goal
