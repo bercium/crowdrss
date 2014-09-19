@@ -150,8 +150,9 @@ class UpdateCommand extends CConsoleCommand {
     $pattern = '/gon.ga_impression_data=(.+);gon.env=/';
     preg_match($pattern, $htmlData, $match);
     $json = html_entity_decode($match[1]);
+    $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
-    $data['location'] = $jsonData->{'list'};
+    if ($jsonData != null) { $data['location'] = $jsonData->{'list'}; }
 
     return($data);
   }
