@@ -62,7 +62,7 @@ class IndiegogoRating extends PlatformRating{
           $update = Project::model()->findByPk($this->id);
           if ($update){
             $update->removed=1;
-            $upadte->save();
+            $update->save();
           }
         }
       }
