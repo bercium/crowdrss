@@ -62,39 +62,29 @@ class UpdateCommand extends CConsoleCommand {
 // Parser for KS
   function parseKickstarter($htmlData) {
 
+    $pattern = '/window.current_project = "(.+)";/'; 
+    preg_match($pattern, $htmlData, $match);
+    $json = html_entity_decode($match[1]);
+    $jsonData = json_decode($json);
+
     // Goal
-    $pattern = '/data-goal="(.+)" data-percent-raised/';
-    preg_match($pattern, $htmlData, $matchesGoal);
-    $pattern = '/data-currency="(.+)" data-format/';
-    preg_match($pattern, $htmlData, $matchesCurrency);
-    $money = Yii::app()->numberFormatter->formatCurrency($matchesGoal[1], $matchesCurrency[1]);
+    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'goal'}, $jsonData->{'currency'});
     $money_split = explode(".", $money);
-    if ($money_split[1] == "00") {
-      $data['goal'] = $money_split[0];
-    } else {
-      $data['goal'] = $money;
-    }
+    if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
+    } else {$data['goal'] = $money;}
 
     // Location
-    $pattern = '/<a href="\/discover\/places\/.+">(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['location'] = $matches[1];
+    $data['location'] = $jsonData->{'location'}->{'displayable_name'};
 
     // Category
-    $pattern = '/class="category".+\s.+<\/span>\s(.*)\s<\/a><\/li>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['category'] = html_entity_decode($matches[1]);
+    $data['category'] = $jsonData->{'category'}->{'name'};
 
     // Creator
-    $pattern = '/id="name">(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['creator'] = html_entity_decode($matches[1]);
+    $data['creator'] = $jsonData->{'creator'}->{'name'};
 
     // Date
-    $pattern = '/<time class="js-adjust" data-format="ll" datetime="(.+)">/';
-    preg_match_all($pattern, $htmlData, $matches);
-    $data['start_date'] = $matches[1][0];
-    $data['end_date'] = $matches[1][1];
+    $data['start_date'] = date("Y-m-d H:i:s", $jsonData->{'launched_at'});
+    $data['end_date'] = date("Y-m-d H:i:s", $jsonData->{'deadline'});
 
     // Created
     $pattern = '/<span class="text">\s(.+) created/';
@@ -117,37 +107,39 @@ class UpdateCommand extends CConsoleCommand {
       preg_match($pattern, $htmlData, $fixedMatches);
       $data['backed'] = $fixedMatches[1];
     }
-
     return($data);
   }
 
 // Parser for IGG
   function parseIndiegogo($htmlData) {
+    
+    $pattern = '/var utag_data = (.+);/'; 
+    preg_match($pattern, $htmlData, $match);
+    $json = html_entity_decode($match[1]);
+    $jsonData = json_decode($json);
 
     // Goal
-    $pattern = '/class="currency"><span>(.+)<\/span><\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['goal'] = $matches[1];
+    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'campaign_goal_amount'}, $jsonData->{'site_currency'});
+    $money_split = explode(".", $money);
+    if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
+    } else {$data['goal'] = $money;}
 
     // Type of funding
-    $pattern = '/<span>(.+ Funding)<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['type_of_funding'] = $matches[1];
+    if ($jsonData->{'campaign_type'} == "flexible_funding") {$data['type_of_funding'] = 1;}
+    else{$data['type_of_funding'] = 0;}
 
     // Start date
-    $pattern = '/started on (.+)and will/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['start_date'] = $matches[1];
+    $data['start_date'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_start_date'}));
 
     // End date
-    $pattern = '/close on (.+)\(/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['end_date'] = $matches[1];
+    $data['end_date'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_end_date'}));
 
     // Location
-    $pattern = '/location-link">(.+)<\/a/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) $data['location'] = $matches[1];
+    $pattern = '/gon.ga_impression_data=(.+);gon.env=/';
+    preg_match($pattern, $htmlData, $match);
+    $json = html_entity_decode($match[1]);
+    $jsonData = json_decode($json);
+    $data['location'] = $jsonData->{'list'};
 
     return($data);
   }
@@ -311,7 +303,7 @@ class UpdateCommand extends CConsoleCommand {
     $count = 0;
     $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
     $id = $platform->id;
-    while (($i <= 50) and ($check == false)) {
+    while (($i <= 5) and ($check == false)) { // POPRAVI NA 50 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=newest",), false);
       if (isset($result->results)) {
         
@@ -348,9 +340,9 @@ class UpdateCommand extends CConsoleCommand {
             $category = $this->checkCategory($data_single['category'], $link);
             $insert->orig_category_id = $category->id;
             if (isset($data_single['start_date']))
-              $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+              $insert->start = $data_single['start_date'];
             if (isset($data_single['end_date']))
-              $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+              $insert->end = $data_single['end_date'];
             if (isset($data_single['location']))
               $insert->location = $data_single['location'];
             if (isset($data_single['creator']))
@@ -362,7 +354,7 @@ class UpdateCommand extends CConsoleCommand {
               $insert->creator_backed = $data_single['backed'];
             if (isset($data_single['goal']))
               $insert->goal = $data_single['goal'];
-            
+
             $insert->save();
 
             // get rating 
@@ -388,7 +380,7 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2000",), false);
+    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=50",), false); // popravi na 2000 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link = str_replace("/pinw", "", $data->link);
@@ -418,9 +410,9 @@ class UpdateCommand extends CConsoleCommand {
           $category = $this->checkCategory($data->category, $link);
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
-            $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+            $insert->start = $data_single['start_date'];
           if (isset($data_single['end_date']))
-            $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+            $insert->end = $data_single['end_date'];
           if (isset($data_single['goal']))
             $insert->goal = $data_single['goal'];
           if (isset($data_single['location']))
@@ -433,7 +425,7 @@ class UpdateCommand extends CConsoleCommand {
             }
             $insert->type_of_funding = $typeOfFunding;
           }
-          $insert->save();
+//          $insert->save();
           
           // get rating 
           $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
