@@ -60,13 +60,7 @@ class RatingCommand extends CConsoleCommand{
     return $i;
   }
   
-  /**
-   * 
-   */
-  public function actionFirstDays(){
-
-    $time = strtotime("-3 hours");
-    
+  private function min15Span($time){
     $start = floor(date("i",$time) / 15)*15;
     $end = $start+14;
     
@@ -74,13 +68,93 @@ class RatingCommand extends CConsoleCommand{
     
     $start = date('Y-m-d H:',$time).$start.":00";
     $end = date('Y-m-d H:',$time).$end.":59";
+    
+    return array('start'=>$start,'end'=>$end);
+  }
+  
+  /**
+   * 
+   */
+  public function actionFirstDay(){
+    
+    $time3 = min15Span(strtotime("-3 hours"));
+    $time9 = min15Span(strtotime("-9 hours"));
+    $time18 = min15Span(strtotime("-18 hours"));
+    //3,9,18 // ,30,42
     //echo $start." - ".$end;
     
-    $projects = Project::model()->findAll("time_added >= :start AND time_added <= :end", array(":start"=>$start, ":end"=>$end));
+    $projects = Project::model()->findAll("(time_added BETWEEN :start3 AND :end3) OR 
+                                           (time_added BETWEEN :start9 AND :end9) OR 
+                                           (time_added BETWEEN :start18 AND :end18)", 
+                                          array(":start3"=>$time3['start'], ":end3"=>$time3['end'],
+                                                ":start9"=>$time9['start'], ":end9"=>$time9['end'],
+                                                ":start18"=>$time18['start'], ":end18"=>$time18['end'],
+                                               )
+                                         );
     
     $this->loopProjects($projects);
     return 0;
   }
+  
+  
+  public function actionAfterFirstDay(){
+    set_time_limit(0);
+    
+    $filename = Yii::app()->getRuntimePath()."/rating-log.txt";
+    
+    if (file_exists($filename)){
+      $nfn = "failed-".date("Y-m-d H:i").".txt";
+              
+      $message = new YiiMailMessage;
+      $message->view = 'system';
+      $message->subject = "Failed rating".date("Y-m-d");  
+      $message->from = Yii::app()->params['scriptEmail'];
+
+      $content = "File: ".$nfn;
+      $message->setBody(array("content"=>$content), 'text/html');
+      $message->setTo("info@crowdfundingrss.com");
+      Yii::app()->mail->send($message);      
+      
+      // do a backup of faild file
+      rename($filename, Yii::app()->getRuntimePath()."/".$nfn);
+    }
+    
+    $time1 = min15Span(strtotime("-24 hours"));
+    $time2 = min15Span(strtotime("-48 hours"));
+    $time3 = min15Span(strtotime("-72 hours"));
+    $time4 = min15Span(strtotime("-96 hours"));
+    $time5 = min15Span(strtotime("-128 hours"));
+    $time6 = min15Span(strtotime("-144 hours"));
+    $time7 = min15Span(strtotime("-168 hours"));
+
+    $projects = Project::model()->findAll("(time_added BETWEEN :start1 AND :end1) OR 
+                                           (time_added BETWEEN :start2 AND :end2) OR 
+                                           (time_added BETWEEN :start3 AND :end3) OR 
+                                           (time_added BETWEEN :start4 AND :end4) OR 
+                                           (time_added BETWEEN :start5 AND :end5) OR 
+                                           (time_added BETWEEN :start6 AND :end6) OR 
+                                           (time_added BETWEEN :start7 AND :end7)", 
+                                          array(":start1"=>$time1['start'], ":end1"=>$time1['end'],
+                                                ":start2"=>$time2['start'], ":end2"=>$time2['end'],
+                                                ":start3"=>$time3['start'], ":end3"=>$time3['end'],
+                                                ":start4"=>$time3['start'], ":end4"=>$time3['end'],
+                                                ":start5"=>$time3['start'], ":end5"=>$time3['end'],
+                                                ":start6"=>$time3['start'], ":end6"=>$time3['end'],
+                                                ":start7"=>$time3['start'], ":end7"=>$time3['end'],
+                                               )
+                                         );
+    
+    $fp = fopen($filename, "a");
+    fwrite($fp, 'Date-time: '.date("Y-m-d H:i:s")."\n");
+    fwrite($fp, 'Num of projects: '.count($projects)."\n\n");
+    fclose($fp);
+    
+    $checked = $this->loopProjects($projects,$filename);
+    
+    unlink($filename);
+    
+    return 0;
+  }  
   
   
   /**
@@ -88,17 +162,14 @@ class RatingCommand extends CConsoleCommand{
    */
   public function actionAfterDays($days = null){
     set_time_limit(0);
-    if ($days == null) $days = date("G")+1;    
+    if ($days == null) $days = date("G")+1;
     if (($days > 8 && $days < 11) || ($days > 18)) return 0;
-    
     $firsttime = true;
     if ($days > 10){ // redoo for failed days
-      $days -= 10;  
-      $firsttime = false;
+    $days -= 10;
+    $firsttime = false;
     }
     $filename = Yii::app()->getRuntimePath()."/".$days.".txt";
-
-    
     if ($days == 1) $date = strtotime("-1 day");
     else $date = strtotime("-".$days." days");
     
