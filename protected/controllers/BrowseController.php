@@ -53,7 +53,7 @@ class BrowseController extends Controller
     if ($count < 10) $count = 10;
     if ($count > 50) $count = 50;
     $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
-                                          array(":date"=>date('Y-m-d',strtotime('-24 hours')),
+                                          array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
                                                 ":limit"=>$count));
     
     $title = "Top projects for today";
