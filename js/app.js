@@ -1,7 +1,6 @@
 
 ;(function ($, window, undefined) {
-  $(document).foundation();
-  $('#scope').foundation();
+  //$(document).foundation();
 
   //$.cookieCuttr();
   
