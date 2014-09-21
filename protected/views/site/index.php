@@ -226,7 +226,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                <div class="row" trk="switch_delivery_dailyDigest">
                   <div class="columns small-2 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="daily_digest" name="daily_digest" <?php if (isset($subscription->daily_digest) && $subscription->daily_digest == 1) echo 'checked'; ?> type="checkbox">
+                      <input id="daily_digest" name="daily_digest" <?php if (!isset($subscription->daily_digest)) echo 'checked'; else if ($subscription->daily_digest) echo 'checked'; ?> type="checkbox">
                       <label for="daily_digest"></label>
                     </div>
                   </div>

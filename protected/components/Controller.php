@@ -45,6 +45,8 @@ public function init(){
     $cs->registerScriptFile($baseUrl.'/js/vendor/fastclick.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
+    //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.tooltips.js'); //scroll tracker
+    
     $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
     
     $cs->registerScriptFile($baseUrl.'/js/jquery.timers.min.js');  // timers

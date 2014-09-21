@@ -1,6 +1,7 @@
 
 ;(function ($, window, undefined) {
-  //$(document).foundation();
+  $(document).foundation();
+  //$(document).foundation({tooltip : {disable_for_touch: true}});
 
   //$.cookieCuttr();
   
