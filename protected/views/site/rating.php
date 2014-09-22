@@ -48,8 +48,10 @@
     
     <h3>Rating project progress</h3>
     <p>
-      We haven't implemented that yet but the idea is to follow projects progress and to see how it changes over time.
-      Here we are still doing some analytics to determine the best way to measure progress.
+      We check how much funds the project has gathered sofar. In combination with the elapsed time we predict the probability of project finishing successfully.
+      This is just a rough approximation since we don't have enough time to see any emerging trends.
+      <br />
+      This is the smallest weight in the overall rating.
     </p>
 
     
