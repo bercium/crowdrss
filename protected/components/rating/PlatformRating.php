@@ -124,19 +124,17 @@ abstract class PlatformRating {
       //$likes = ($social['all']/$numOfHFromStart)*24; // avg how many likes in a day
       
       //progress
-      
-      //$this->history($cws, $social);
+      $money_rating = $this->calcProgressRating($cws, $project);
     
 
       /* overall rating:
       CONTENT
       ABSOLUTE SOCIAL (koliko like-ov shareov v sestevku)
-
       RELATIVE CONTENT project progress.. zbranih sredstev, komentarjev itd
       RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
 
       */
-      $rating = $rating*0.7 + $social_rating*0.3;
+      $rating = $rating*0.5 + $social_rating*0.3 + $money_rating*0.2;
     }
     // save to DB
     $this->saveRating($cws, $social);
@@ -183,35 +181,77 @@ abstract class PlatformRating {
   /**
    * calculate social rating
    */
-  private function calcProgressRating($cws,$project){
+  private function calcProgressRating($cws, $project){
     $rating = 0;
     
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
+    
+    // less than 3 hours statisticaly too little
+    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+    
     
     $g = filter_var($project->goal, FILTER_SANITIZE_NUMBER_INT);
     $r = filter_var($cws['$raised'], FILTER_SANITIZE_NUMBER_INT);
     
     $p = ($r/$g);
     
-    if ($p >= 2) $rating++;
-    if ($p >= 1) $rating++;
+    //30% in first week  better chance
+            
+    $sp = 0;  // sucess probability
+    if ($g < 10000){
+      if ($p > 0.05) $sp = 70;
+      if ($p > 0.1) $sp = 78;
+      if ($p > 0.15) $sp = 80;
+      if ($p > 0.2) $sp = 84;
+      if ($p > 0.25) $sp = 87;
+      if ($p > 0.35) $sp = 90;
+      if ($p > 0.57) $sp = 95;
+      if ($p > 0.99) $sp = 98;
+      if ($p > 1) $sp = 100;
+    }else
+    if ($g < 100000){
+      if ($p > 0.05) $sp = 52;
+      if ($p > 0.1) $sp = 62;
+      if ($p > 0.15) $sp = 68;
+      if ($p > 0.2) $sp = 74;
+      if ($p > 0.25) $sp = 79;
+      if ($p > 0.35) $sp = 85;
+      if ($p > 0.45) $sp = 90;
+      if ($p > 0.65) $sp = 95;
+      if ($p > 0.99) $sp = 98;
+      if ($p > 1) $sp = 100;
+    }
+    else{
+      if ($p > 0.05) $sp = 26;
+      if ($p > 0.1) $sp = 37;
+      if ($p > 0.15) $sp = 44;
+      if ($p > 0.2) $sp = 49;
+      if ($p > 0.25) $sp = 55;
+      if ($p > 0.35) $sp = 65;
+      if ($p > 0.45) $sp = 74;
+      if ($p > 0.65) $sp = 80;
+      if ($p > 0.95) $sp = 88;
+      if ($p > 1) $sp = 100;
+    }
+    
+    $rating = $sp / 10; //10 points
+    
+    $mp = 1; //multiplier
+    if ($h_lapsed <= 24) $mp = 1.3;
+    else
+    if ($h_lapsed <= 48) $mp = 1.2;
+    //if ($h_lapsed <= 144) $mp = 1.1;
+    $rating = $rating * $mp;
+    
+    if ($rating > 10) $rating = 10;
+    
+      /*
     if (($p >= 0.2) && ($h_lapsed <= 48)) $rating++;
     if (($p >= 0.3) && ($h_lapsed <= 48)) $rating++;
     if (($p >= 0.45) && ($h_lapsed <= 48)) $rating++;
     if (($p >= 0.30) && ($h_lapsed <= 24)) $rating++;
     if (($p <= 0.25) && ($h_lapsed >= 144)) $rating--;  // after 6 days not even 30%
-    
-    // less than 3 hours statisticaly too little
-    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
-      
-    $all = 0;
-    if (!isset($social['all'])) {
-      foreach ($social as $rs){
-        $all += $rs; 
-      }
-    }else $all = $social['all'];
-      
-    $all = ($all / $h_lapsed)*24;  // per hour
+    */
 
     
     // max 10
