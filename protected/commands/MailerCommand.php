@@ -89,6 +89,8 @@ class MailerCommand extends CConsoleCommand{
         $i = 0;
         foreach ($projects as $project){
           $i++;
+          if ($paidProject->id == $project->id) continue; // skip featured project from the list
+          
           if ($i <= 4) $featured[] = $project;
           else{
             if ($project->rating == null) $regularNull[] = $project;
