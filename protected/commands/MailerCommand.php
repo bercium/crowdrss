@@ -55,28 +55,32 @@ class MailerCommand extends CConsoleCommand{
     
     if ($subscriptions){
       
-      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-      
+      $hasPP = true;
       foreach ($subscriptions  as $sub){
 
         $paidProject = null;
         
-        foreach ($paidProjects as $pp){
-          $platA = explode(",",$sub->platform);
-          $catA = explode(",",$sub->category);
-          $subCatA = explode(",",$sub->exclude_orig_category);
+        if ($hasPP){ // skip if there are no paid projects in a day
+          $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+          if (count($paidProjects) > 0){
+            foreach ($paidProjects as $pp){
+              $platA = explode(",",$sub->platform);
+              $catA = explode(",",$sub->category);
+              $subCatA = explode(",",$sub->exclude_orig_category);
 
-          if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
-          if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
-          if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
+              if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
+              if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
+              if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
 
-          $pp->show_count++;
-          $pp->save();
-          $paidProject = $pp->project; //get one project
-          // set the rating higher so we know it's special
-          if ($paidProject->rating) $paidProject->rating += 11;
-          else $paidProject->rating = 11;
-          break;
+              $pp->show_count++;
+              $pp->save();
+              $paidProject = $pp->project; //get one project
+              // set the rating higher so we know it's special
+              if ($paidProject->rating) $paidProject->rating += 11;
+              else $paidProject->rating = 11;
+              break;
+            }
+          }else $hasPP = false;
         }
         
         $sql = $this->createSQL($sub, 1); 
@@ -89,7 +93,7 @@ class MailerCommand extends CConsoleCommand{
         $i = 0;
         foreach ($projects as $project){
           $i++;
-          if ($paidProject->id == $project->id) continue; // skip featured project from the list
+          if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
           
           if ($i <= 4) $featured[] = $project;
           else{
