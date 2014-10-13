@@ -1,0 +1,13 @@
+Send and opened mail during a time period
+----
+SELECT COUNT(*) AS sent, COUNT(time_open) AS opened, DATE(time_send) AS x FROM mail_log 
+WHERE DATE(time_send) >= '2014-09-01'
+GROUP BY DATE(time_send)
+
+
+Subscriptions created over time
+----
+SELECT COUNT(*) AS c, DATE(time_created) AS x FROM subscription
+GROUP BY DATE(time_created)
+
+

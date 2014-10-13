@@ -398,5 +398,10 @@ EOD;
     
     $this->render("//layouts/none",array("content"=>$sitemapResponse));
   }    
+  
+  public function actionTest(){
+    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/strive-for-gold--2', 62571);
+    $rating_class->analize();
+  }
 
 }

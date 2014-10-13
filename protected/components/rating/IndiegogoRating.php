@@ -55,12 +55,17 @@ class IndiegogoRating extends PlatformRating{
     }
     $text = $this->html;
     
+    echo "1";
     // check validity of data
     if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
+      echo "2";
       if (strpos($text, "i-illustration-not_found")){
+        echo "3";
         if ($this->id) {
+          echo "4";
           $update = Project::model()->findByPk($this->id);
           if ($update){
+            echo "5";
             $update->removed=1;
             $update->save();
           }
@@ -68,7 +73,7 @@ class IndiegogoRating extends PlatformRating{
       }
       return false;
     }
-    
+    return false;
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
