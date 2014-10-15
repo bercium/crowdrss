@@ -37,6 +37,7 @@ public function init(){
 
 		// JAVASCRIPTS
     $cs->registerCoreScript('jquery');  //core jquery lib
+    //$cs->registerCoreScript('jquery-ui');  //core jquery lib
 
 		$cs->registerScriptFile($baseUrl.'/js/vendor/modernizr.js',CClientScript::POS_HEAD);  //modernizer
     

@@ -47,3 +47,18 @@ echo GxHtml::submitButton(Yii::t('app', 'Save'));
 $this->endWidget();
 ?>
 </div><!-- form -->
+
+ <script>
+$(function() {
+  $( "#birds" ).autocomplete({
+    source: "<?php echo Yii::app()->createUrl('ProjectFeatured/autocomplete'); ?>",
+    minLength: 2,
+    select: function( event, ui ) {
+    
+    //ui.item.value
+    //ui.item.id
+    //ui.item.label
+    }
+  });
+});
+</script>

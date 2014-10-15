@@ -99,5 +99,19 @@ class ProjectFeaturedController extends GxController {
 			'model' => $model,
 		));
 	}
+  
+  
+  public function actionAutocomplete(){
+    $return = array();
+    if (isset($_GET['term'])){
+      $result = Project::model()->findAllByAttributtes('');
+      if ($result)
+      foreach ($result as $data){
+        $return[] = array('id'=>$data->id,'label'=>$data->title,'value'=>$data->title);
+      }
+      
+    }
+    return json_encode ($return);
+  }
 
 }
