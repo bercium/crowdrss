@@ -308,6 +308,20 @@ class UpdateCommand extends CConsoleCommand {
 
     return($data);
   }
+  
+  private function importioError($error, $platform){
+    $message = new YiiMailMessage;
+    $message->view = 'system';
+    $message->subject = "Importio problem";
+    $message->from = Yii::app()->params['noreplyEmail'];
+
+    $content = 'Error text: '.$error;
+    $title = $platform;
+
+    $message->setBody(array("content"=>$content, "title"=>$title,), 'text/html');
+    $message->to = Yii::app()->params['scriptEmail'];
+    Yii::app()->mail->send($message);
+  }
 
 // Kickstarter store in to DB
   public function actionKickstarter() {
@@ -318,6 +332,10 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 50) and ($check == false)) { 
       $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=newest",), false);
+      if (isset($result->error)){
+        $this->importioError($result->error,'Kickstarter');
+        break;
+      }
       if (isset($result->results)) {
         
         foreach ($result->results as $data) {
@@ -394,6 +412,11 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2000",), false);
+    if (isset($result->error)){
+      $this->importioError($result->error,'IndieGoGo');
+      return;
+    }
+    
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link = str_replace("/pinw", "", $data->link);
@@ -461,6 +484,11 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
       $result = $this->query("4b6e0d90-3728-4135-b308-560d238de82b", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
+      if (isset($result->error)){
+        $this->importioError($result->error,'GoGetFunding');
+        break;
+      }
+      
     if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -505,6 +533,11 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Pubslush'));
     $id = $platform->id;
     $result = $this->query("c25cf290-ca42-45d8-a506-683d1a3e1fe7", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/",), false);
+      if (isset($result->error)){
+        $this->importioError($result->error,'PubSlush');
+        return;
+      }
+    
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -541,6 +574,11 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 3) {
       $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
+      if (isset($result->error)){
+        $this->importioError($result->error,'FundAnything');
+        break;
+      }
+
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -584,6 +622,11 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 5) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
+      if (isset($result->error)){
+        $this->importioError($result->error,'FundRazr');
+        break;
+      }
+      
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
