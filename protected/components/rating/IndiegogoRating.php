@@ -68,7 +68,7 @@ class IndiegogoRating extends PlatformRating{
       }
       return false;
     }
-    return false;
+    
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
@@ -182,7 +182,7 @@ class IndiegogoRating extends PlatformRating{
     $tmp['#pledges'] = $pledgesNumber;
 
     // Type of funding
-    $pattern = '/<span>(.+) Funding<\/span>/';
+    $pattern = '/<span.+>(.+) Funding<\/span>/';
     preg_match($pattern, $text, $matches);
     if ($matches[1] == "Flexible"){ $tmp['Bfunding'] = 0;  }
     else{ $tmp['Bfunding'] = 1;}

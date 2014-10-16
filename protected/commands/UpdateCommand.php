@@ -4,15 +4,16 @@
 class UpdateCommand extends CConsoleCommand {
 
 // Import.io function to get jason result for a webpage
-  function query($connectorGuid, $input, $additionalInput) {
+  function query($connectorGuid, $input) {
     $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
-    $data = array("input" => $input);
-    if ($additionalInput) {
-      $data["additionalInput"] = $additionalInput;
-    }
     $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		"Content-Type: application/json",
+		"import-io-client: import.io PHP client",
+		"import-io-client-version: 2.0.0"
+    ));
     curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array("input" => $input)));
     curl_setopt($ch, CURLOPT_POST, 1);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_HEADER, 0);
@@ -68,6 +69,12 @@ class UpdateCommand extends CConsoleCommand {
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
+    
+    // Description
+    $data['description'] = $jsonData->blurb;
+    
+    // Title
+    $data['title'] = $jsonData->name;
     
     // Goal
     $money = Yii::app()->numberFormatter->formatCurrency($jsonData->goal, $jsonData->currency);
@@ -129,6 +136,16 @@ class UpdateCommand extends CConsoleCommand {
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
+    if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
+    
+    // Title
+    $data['title'] = $jsonData->campaign_name;
+            
+    // Description
+    $data['description'] = $jsonData->campaign_description;
+            
+    // Category
+    $data['category'] = $jsonData->campaign_category;
 
     // Goal
     $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'campaign_goal_amount'}, $jsonData->{'site_currency'});
@@ -308,7 +325,7 @@ class UpdateCommand extends CConsoleCommand {
 
     return($data);
   }
-  
+
   private function importioError($error, $platform){
     $message = new YiiMailMessage;
     $message->view = 'system';
@@ -331,28 +348,28 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
     $id = $platform->id;
     while (($i <= 50) and ($check == false)) { 
-      $result = $this->query("c2adefcc-3a4a-4bf3-b7e1-2d8f4168a411", array("webpage/url" => "https://www.kickstarter.com/discover/advanced?page=" . $i . "&state=live&sort=newest",), false);
-      if (isset($result->error)){
-        $this->importioError($result->error,'Kickstarter');
-        break;
-      }
-      if (isset($result->results)) {
+      $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
+      $htmlData = $this->getHtml($link, array());
+      $pattern = '/<a href="(.+).ref=discovery" target="">/';
+      preg_match_all($pattern, $htmlData, $matches);
+      $data['links'] = $matches[1];
+      $pattern = '/<img alt="Project image".+src="(.+)" width=/';
+      preg_match_all($pattern, $htmlData, $matches);
+      $data['images'] = $matches[1];
+      
+      if (isset($data['links'])&&isset($data['images'])) {
         
-        foreach ($result->results as $data) {
-          //$link = str_replace("?ref=discovery", "", $data->link);
-          $link = $data->link;
+        for ($j=0; $j< 20; $j++) {
+          $link = "https://www.kickstarter.com/".$data['links'][$j];
+          //echo $link."\n";
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
-          
-          //$link_check_old = Project::model()->findByAttributes(array('link' => $data->link));
-          //$link_check = Project::model()->findByAttributes(array('link' => $link));
-          //$link_part_check = Project::model()->findByAttributes(array('link' => ));
           $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
                                                   array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                        ':link2' => $data->link, 
+                                                        ':link2' => $data['links'][$j], 
                                                         ':link3' => $link,
-                                                        ':image' => $data->image));
+                                                        ':image' => $data['images'][$j]));
           
           if ($project_check) {
             $count = $count + 1;
@@ -363,9 +380,9 @@ class UpdateCommand extends CConsoleCommand {
             $data_single = $this->parseKickstarter($htmlData);
 	    if ($data_single == false) { continue; }
             $insert = new Project;
-            $insert->title = $data->title;
-            $insert->description = $data->description;
-            $insert->image = $data->image;
+            $insert->title = $data_single['title'];
+            $insert->description = $data_single['description'];
+            $insert->image = $data['links'][$j];
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
@@ -379,7 +396,7 @@ class UpdateCommand extends CConsoleCommand {
               $insert->location = $data_single['location'];
             if (isset($data_single['creator']))
               $insert->creator = $data_single['creator'];
-            if (isset($data_single['created'])) {
+                  if (isset($data_single['created'])) {
               $insert->creator_created = $data_single['created'];
             }
             if (isset($data_single['backed']))
@@ -411,40 +428,42 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $result = $this->query("de02d0eb-346b-431d-a5e0-cfa2463d086e", array("webpage/url" => "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=2000",), false);
-    if (isset($result->error)){
-      $this->importioError($result->error,'IndieGoGo');
-      return;
-    }
-    
-    if (isset($result->results)) {
-      foreach ($result->results as $data) {
-        $link = str_replace("/pinw", "", $data->link);
+    $numberOfPages = 20;
+    $link = "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=$numberOfPages";
+    $htmlData = $this->getHtml($link, array());
+    $pattern = '/<a href="(.+)" class="i-project">/';
+    preg_match_all($pattern, $htmlData, $matches);
+    $data['links'] = $matches[1];
+    $pattern = '/<div class="i-img" data-src="(.+)">/';
+    preg_match_all($pattern, $htmlData, $matches);
+    $data['images'] = $matches[1];
+    if (isset($data['links'])&&isset($data['images'])) {
+        for ($j=0; $j< $numberOfPages; $j++) {
+        $link = "https://www.indiegogo.com".$data['links'][$j];
+        $link = str_replace("/pinw", "", $link);
         $link = str_replace("/qljw", "", $link);
         $link = str_replace("/pimf", "", $link);
         $link = str_replace("?sa=0&sp=0", "", $link);
         $link = str_replace("?sa=0&amp;sp=0", "", $link);
-        /*$link_check_old = Project::model()->findByAttributes(array()));
-        $link_deform = Project::model()->findByAttributes(array());
-        $link_check = Project::model()->findByAttributes(array());*/
         $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3  OR  image LIKE :image ",
-                                                array(':link1' => str_replace("?sa=0&sp=0", "", $data->link),
-                                                      ':link2' => $data->link, 
-                                                      ':image' => $data->image, 
+                                                array(':link1' => str_replace("?sa=0&sp=0", "", $data['links'][$j]),
+                                                      ':link2' => $data['links'][$j], 
+                                                      ':image' => $data['images'][$j], 
                                                       ':link3' => $link));
         if (!$project_check) {
+          //  echo $link;
           $htmlData = $this->getHtml($link, array());
           $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
           $data_single = $this->parseIndiegogo($htmlData);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
-          $insert->title = $data->title;
-          $insert->description = $data->description;
-          $insert->image = $data->image;
+          $insert->title = $data_single['title'];
+          $insert->description = $data_single['description'];
+          $insert->image = $data['images'][$j];
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = $this->checkCategory($data->category, $link);
+          $category = $this->checkCategory($data_single['category'], $link);
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
             $insert->start = $data_single['start_date'];
@@ -484,11 +503,6 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
       $result = $this->query("4b6e0d90-3728-4135-b308-560d238de82b", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
-      if (isset($result->error)){
-        $this->importioError($result->error,'GoGetFunding');
-        break;
-      }
-      
     if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -532,17 +546,11 @@ class UpdateCommand extends CConsoleCommand {
   public function actionPubSlush() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Pubslush'));
     $id = $platform->id;
-    $result = $this->query("c25cf290-ca42-45d8-a506-683d1a3e1fe7", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/",), false);
-      if (isset($result->error)){
-        $this->importioError($result->error,'PubSlush');
-        return;
-      }
-    
+    $result = $this->query("88be9a33-d1f6-4920-b81d-3b5394ce7a22", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/"), false);
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link_check = Project::model()->findByAttributes(array('link' => $data->link));
-        if ($link_check) {
-          
+        if ($link_check) {          
         } else {
           $data_single = $this->parsePubSlush($data->link);
           $insert = new Project;
@@ -552,7 +560,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $data->link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = OrigCategory::model()->findByAttributes(array('name' => $data_single['category'], 'category_id' => '24'));
+          $category = OrigCategory::model()->findByAttributes(array('name' => $data->category, 'category_id' => '24'));
           $insert->orig_category_id = $category->id;
           if (isset($data->creator))
             $insert->creator = $data->creator;
@@ -560,6 +568,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->goal = $data_single['goal'];
           if (isset($data_single['location']))
             $insert->location = $data_single['location'];
+          //echo "deluje ";
           $insert->save();
 //          print_r($insert->getErrors());
         }
@@ -574,11 +583,6 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 3) {
       $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
-      if (isset($result->error)){
-        $this->importioError($result->error,'FundAnything');
-        break;
-      }
-
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -622,11 +626,6 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while ($i <= 5) {
       $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
-      if (isset($result->error)){
-        $this->importioError($result->error,'FundRazr');
-        break;
-      }
-      
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
