@@ -360,7 +360,7 @@ class UpdateCommand extends CConsoleCommand {
       if (isset($data['links'])&&isset($data['images'])) {
         
         for ($j=0; $j< 20; $j++) {
-          $link = "https://www.kickstarter.com/".$data['links'][$j];
+          $link = "https://www.kickstarter.com".$data['links'][$j];
           //echo $link."\n";
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
