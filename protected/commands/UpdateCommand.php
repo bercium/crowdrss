@@ -382,7 +382,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert = new Project;
             $insert->title = $data_single['title'];
             $insert->description = $data_single['description'];
-            $insert->image = $data['links'][$j];
+            $insert->image = $data['images'][$j];
             $insert->link = $link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
