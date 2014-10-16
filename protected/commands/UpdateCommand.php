@@ -360,7 +360,7 @@ class UpdateCommand extends CConsoleCommand {
       if (isset($data['links'])&&isset($data['images'])) {
         
         for ($j=0; $j< 20; $j++) {
-          $link = "https://www.kickstarter.com/".$data['links'][$j];
+          $link = "https://www.kickstarter.com".$data['links'][$j];
           //echo $link."\n";
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
@@ -428,7 +428,7 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $numberOfPages = 20;
+    $numberOfPages = 2000;
     $link = "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array());
     $pattern = '/<a href="(.+)" class="i-project">/';
