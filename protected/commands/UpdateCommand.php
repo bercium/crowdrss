@@ -350,10 +350,10 @@ class UpdateCommand extends CConsoleCommand {
     while (($i <= 50) and ($check == false)) { 
       $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
       $htmlData = $this->getHtml($link, array());
-      $pattern = '/<a href="(.+).ref=discovery" target="">/';
+      $pattern = '/(\/projects\/.+)\?ref=discovery/';
       preg_match_all($pattern, $htmlData, $matches);
-      $data['links'] = $matches[1];
-      $pattern = '/<img alt="Project image".+src="(.+)" width=/';
+      $data['links'] = array_unique($matches[1]);
+      $pattern = '/src="(.+amazon.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
       $data['images'] = $matches[1];
       
@@ -431,10 +431,10 @@ class UpdateCommand extends CConsoleCommand {
     $numberOfPages = 2000;
     $link = "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array());
-    $pattern = '/<a href="(.+)" class="i-project">/';
+    $pattern = '/(\/projects\/.+)\/pinw/';
     preg_match_all($pattern, $htmlData, $matches);
     $data['links'] = $matches[1];
-    $pattern = '/<div class="i-img" data-src="(.+)">/';
+    $pattern = '/src="(.+cloudinary.+)"/';
     preg_match_all($pattern, $htmlData, $matches);
     $data['images'] = $matches[1];
     if (isset($data['links'])&&isset($data['images'])) {
