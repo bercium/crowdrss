@@ -163,7 +163,7 @@ abstract class PlatformRating {
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
       
     // less than 3 hours statisticaly too little
-    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+    if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
       
     $all = 0;
     if (!isset($social['all'])) {
@@ -199,7 +199,7 @@ abstract class PlatformRating {
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
     
     // less than 3 hours statisticaly too little
-    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+    if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
     
     
     $g = filter_var($project->goal, FILTER_SANITIZE_NUMBER_INT);
