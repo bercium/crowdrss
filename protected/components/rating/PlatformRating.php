@@ -121,7 +121,7 @@ abstract class PlatformRating {
     $detail['social']['social'] = $social;
     
     $social_rating = 0;
-    if ($this->id != null && false){   //!!! skip for now
+    if ($this->id != null){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
       $social_rating = $this->calcSocialRating($social,$project);
