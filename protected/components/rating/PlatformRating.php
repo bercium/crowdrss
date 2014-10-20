@@ -133,7 +133,8 @@ abstract class PlatformRating {
       
       //progress
       $money_rating = $this->calcProgressRating($cws, $project);
-      $detail['money']['money'] = $project;
+      $detail['money']['money']['goal'] = $project->goal;
+      $detail['money']['money']['time_added'] = $project->time_added;
       $detail['money']['rating'] = $money_rating;
     
 
