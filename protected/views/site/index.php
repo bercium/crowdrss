@@ -11,7 +11,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
     <div class="columns large-12 text-center">
       <dl class="sub-nav right" >
         <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_top_topDaily">Best of today</a></dd> 
-        <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>">Get featured</a></dd> 
+        <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="link_top_owners">Get featured</a></dd> 
       </dl>
     </div>
   </div>
