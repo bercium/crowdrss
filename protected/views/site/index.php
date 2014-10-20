@@ -95,7 +95,13 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           
           <a id="categories" class="anchor"></a>
           <h2>2. Choose categories</h2>
-          <p>Which topics do you find interesting?</p>
+          <p>Which topics do you find interesting? 
+            
+            <br /><i style="color:#888;">Access sub-categories with a click on</i>
+            
+            <i class="fa fa-sort-down" style="color:#888;font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+            
+          </p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
               <?php
