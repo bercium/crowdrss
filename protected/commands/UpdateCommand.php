@@ -352,16 +352,16 @@ class UpdateCommand extends CConsoleCommand {
       $htmlData = $this->getHtml($link, array());
       $pattern = '/(\/projects\/.+)\?ref=discovery/';
       preg_match_all($pattern, $htmlData, $matches);
-      $data['links'] = array_unique($matches[1]);
+      foreach ($matches[1] as $key => $val){ $links[$val] = true; }
+      $data['links'] = array_keys($links);
       $pattern = '/src="(.+amazon.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
       $data['images'] = $matches[1];
       
       if (isset($data['links'])&&isset($data['images'])) {
-        
         for ($j=0; $j< 20; $j++) {
           $link = "https://www.kickstarter.com".$data['links'][$j];
-          //echo $link."\n";
+//          echo $link."\n";
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
