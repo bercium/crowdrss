@@ -99,6 +99,13 @@ $this->pageTitle = 'How does your project stack to others';
       </div>
       </div>
       
+      
+      <?php if ($rating_detail){
+        print_r($rating_detail);
+        ?>
+      
+      <?php } ?>
+      
       <?php } ?>
       
     </div>

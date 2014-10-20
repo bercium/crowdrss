@@ -213,6 +213,7 @@ class SiteController extends Controller
     $inPlatform = $onPage = $project = null;
     $error = '';
     $link = '';
+    $rating_detail = null;
     
     if(isset($_POST['checkLink']) || $s != ''){
       if ($s != '') $link = $s;
@@ -243,10 +244,22 @@ class SiteController extends Controller
         $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$project->platform_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
         //$inCategory = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND category_id = :category",array(":rating"=>$project->rating,":category"=>$project->category_id));
         
+        
+        if (Yii::app()->user->isGuest()){
+          //recalculate rating with details
+          switch ($project->platform->name) {
+            case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); /*echo "ks ".$project->link;*/ break;
+            case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); /*echo "igg ".$project->link;*/ break;
+          }
+
+          $rating_class->save = false;
+          $rating_detail = $rating_class->analize();
+        }
+        
       }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
     }
     
-    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform));
+    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail));
 	}
 
 	/**
