@@ -245,7 +245,7 @@ class SiteController extends Controller
         //$inCategory = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND rating > :rating AND category_id = :category",array(":rating"=>$project->rating,":category"=>$project->category_id));
         
         
-        if (Yii::app()->user->isGuest()){
+        if (Yii::app()->user->isGuest){
           //recalculate rating with details
           switch ($project->platform->name) {
             case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); /*echo "ks ".$project->link;*/ break;
