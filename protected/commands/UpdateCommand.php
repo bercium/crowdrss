@@ -352,8 +352,10 @@ class UpdateCommand extends CConsoleCommand {
       $htmlData = $this->getHtml($link, array());
       $pattern = '/(\/projects\/.+)\?ref=discovery/';
       preg_match_all($pattern, $htmlData, $matches);
-      foreach ($matches[1] as $key => $val){ $links[$val] = true; }
-      $data['links'] = array_keys($links);
+      if (is_array($matches)){
+          foreach ($matches[1] as $key => $val){ $links[$val] = true; }
+          $data['links'] = array_keys($links);
+      }
       $pattern = '/src="(.+amazon.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
       $data['images'] = $matches[1];
