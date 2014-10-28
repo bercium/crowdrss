@@ -39,6 +39,17 @@ div.switch input:checked + label.success{
   font-weight: bold;
 }
 
+.sub-nav.white-top{
+  margin-top: 15px;
+  margin-bottom:0;
+}
+.sub-nav.white-top dd a{
+  color:#FFF;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+
 
 .mt0{
   margin-top: 0px;

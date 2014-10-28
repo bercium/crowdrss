@@ -3,6 +3,7 @@ abstract class PlatformRating {
   protected $html = null;
   protected $link = '';
   protected $id = null;
+  public $save = true;
   
   abstract protected function history();
   abstract protected function calcContentRating($webAgregtor);
@@ -62,6 +63,7 @@ abstract class PlatformRating {
    * save into DB
    */
   protected function saveRating($cws, $social = null){
+    if (!$this->save) return;
     if ($this->id == null) return;
     
     if ($social == null) $social = $this->emptySocial();
@@ -107,24 +109,33 @@ abstract class PlatformRating {
       else break;
       $i++;
     }
+    $detail = array();
     
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
+    $detail['cws']['rating'] = $rating;
+    $detail['cws']['cws'] = $cws;
     
     $social = null;
     $social =  $this->getSocial();
+    $detail['social']['social'] = $social;
     
     $social_rating = 0;
-    if ($this->id != null && false){   //!!! skip for now
+    if ($this->id != null){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
       $social_rating = $this->calcSocialRating($social,$project);
+      $detail['social']['rating'] = $social_rating;
+      
       
       //$numOfHFromStart = timeDifference($project->time_added, time(),'hour');
       //$likes = ($social['all']/$numOfHFromStart)*24; // avg how many likes in a day
       
       //progress
       $money_rating = $this->calcProgressRating($cws, $project);
+      $detail['money']['money']['goal'] = $project->goal;
+      $detail['money']['money']['time_added'] = $project->time_added;
+      $detail['money']['rating'] = $money_rating;
     
 
       /* overall rating:
@@ -134,12 +145,14 @@ abstract class PlatformRating {
       RELATIVE SOCIAL (koliko loke-ov  relativno na prejšni dan)  progress
 
       */
-      $rating = $rating*0.55 + $social_rating*0.3 + $money_rating*0.15;
+      $rating = $rating*0.60 + $social_rating*0.25 + $money_rating*0.15;
     }
     // save to DB
     $this->saveRating($cws, $social);
     
-    return $rating;
+    $detail['rating'] = $rating;
+    if ($this->save) return $rating;
+    else return $detail;
   }
   
   /**
@@ -151,7 +164,7 @@ abstract class PlatformRating {
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
       
     // less than 3 hours statisticaly too little
-    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+    if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
       
     $all = 0;
     if (!isset($social['all'])) {
@@ -187,7 +200,7 @@ abstract class PlatformRating {
     $h_lapsed = timeDifference($project->time_added,time(),"hour");
     
     // less than 3 hours statisticaly too little
-    if ($h_lapsed < 3) continue;  // hard to evaluate project this young
+    if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
     
     
     $g = filter_var($project->goal, FILTER_SANITIZE_NUMBER_INT);

@@ -11,7 +11,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
     <div class="columns large-12 text-center">
       <dl class="sub-nav right" >
         <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_top_topDaily">Best of today</a></dd> 
-        <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>">Get featured</a></dd> 
+        <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="link_top_owners">Get featured</a></dd> 
       </dl>
     </div>
   </div>
@@ -95,7 +95,13 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           
           <a id="categories" class="anchor"></a>
           <h2>2. Choose categories</h2>
-          <p>Which topics do you find interesting?</p>
+          <p>Which topics do you find interesting? 
+            
+            <br /><i style="color:#888;">Access sub-categories with a click on</i>
+            
+            <i class="fa fa-sort-down" style="color:#888;font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+            
+          </p>
             
             <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
               <?php
