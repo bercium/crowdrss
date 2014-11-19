@@ -58,25 +58,48 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
     
 	<?php echo $content; ?>
 
+  
   <div class="footer">
+    <div class="row mt30">
+      <div class="columns large-12 large-centered mt30">
+          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+            <li class="text-center ">
+              <a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star fa-5x"></i><br />Top daily</a>
+            </li>
+            <li class="text-center ">
+                <a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy fa-5x"></i><br />Top 50</a>
+            </li>
+            <li class="text-center ">
+              <a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt fa-5x"></i><br />Bottom 50</a>
+            </li>
+            <li class="text-center ">
+              <a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle fa-5x"></i><br />Project owners</a>
+            </li>  
+          </ul>
+        </div>
+    </div>
+    <hr>
     <div class="row">
       <div class="column small-12 pt30 text-center">
         <div class="left">
           in beta ... with <i class="fa fa-heart" style="color:#f04124" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Love"></i>
         </div>
         <dl class="sub-nav right" >
+          <?php /* ?>
           <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star-o"></i> Daily top</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy"></i> Top 50</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd> 
+          <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd>
+          <?php */ ?>
           <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#666;"><i class="fa fa-envelope"></i> Write to us</a></dd> 
         </dl>
       </div>
     </div>
+    <?php if (!Yii::app()->user->isGuest){ ?>
     <div class="row">
       <div class="column small-12">
         <dl class="sub-nav " >
-          <?php if (!Yii::app()->user->isGuest){ ?>
+          
           <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('projectFeatured/index'); ?>">Feature a project</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
@@ -85,12 +108,13 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           <dd><a href="<?php echo Yii::app()->createUrl('statistic/database'); ?>">Stat DB</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('statistic/socialAnalize'); ?>">Social analize</a></dd> 
           
-          <?php } ?>
+          
         </dl>
       </div>
     </div>
+    <?php } ?>
     <div class="row">
-      <div class="column small-12 text-center mb20 light">
+      <div class="column small-12 text-center mb30 light">
         <small>
            All published platforms and their related content and Trademarks are owned by individual platform and their respective project owners ⋅ Crowdfunding RSS is not affiliated with any of them.
         </small>
