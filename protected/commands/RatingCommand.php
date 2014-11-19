@@ -153,8 +153,8 @@ class RatingCommand extends CConsoleCommand{
     
     $checked = $this->loopProjects($projects,$filename);
 
-    $fc = count($projects).' - '.$checked;
-    file_put_contents(Yii::app()->getRuntimePath()."/info-".date("Y-m-d H:i").".txt", $fc);
+    //$fc = count($projects).' - '.$checked;
+    //file_put_contents(Yii::app()->getRuntimePath()."/info-".date("Y-m-d H:i").".txt", $fc);
     
     unlink($filename);
     
