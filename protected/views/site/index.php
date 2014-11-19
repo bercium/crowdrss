@@ -65,7 +65,20 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
               $i = 0;
               foreach ($platforms as $plat){
                 $i++;
-                
+
+                if ($i == 5){
+                ?>
+                </ul>
+                <div class="more-platforms-btn" style="width:100%; text-align: center; margin-bottom: 25px;">
+                  <a onclick="$('.more-platforms').slideDown(); $('.more-platforms-btn').slideUp();">
+                    <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+                    More platforms
+                    <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
+                  </a>
+                </div>
+                <ul class="more-platforms small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+                <?php
+                }
                 ?>
                 <li class="text-center mb30" trk="switch_platform_<?php echo $plat['name']; ?>">
                     <div class="mb20">
@@ -87,6 +100,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
               
                 </li>
                 <?php
+                //if ($i == count($platforms)) echo '</span>';
               } ?>
           </ul>
           

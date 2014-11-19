@@ -81,6 +81,8 @@ $(function() {
     }
   },300);
    //$('#preview').show();
+   
+   $('.more-platforms').hide();
 });
 
 $(window).scroll(function () {
