@@ -60,5 +60,8 @@ class BrowseController extends Controller
     $this->render('topDaily',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>true,"listType"=>"top"));
 	}  
  
+	public function actionTopdaily($count = 10){
+    $this->actionTopDaily($count);
+  }
 
 }
