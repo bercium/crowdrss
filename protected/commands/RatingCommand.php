@@ -77,9 +77,9 @@ class RatingCommand extends CConsoleCommand{
    */
   public function actionFirstDay(){
     
-    $time3 = min15Span(strtotime("-3 hours"));
-    $time9 = min15Span(strtotime("-9 hours"));
-    $time18 = min15Span(strtotime("-18 hours"));
+    $time3 = $this->min15Span(strtotime("-3 hours"));
+    $time9 = $this->min15Span(strtotime("-9 hours"));
+    $time18 = $this->min15Span(strtotime("-18 hours"));
     //3,9,18 // ,30,42
     //echo $start." - ".$end;
     
@@ -121,13 +121,13 @@ class RatingCommand extends CConsoleCommand{
       Yii::app()->mail->send($message);      
     }
     
-    $time1 = min15Span(strtotime("-24 hours"));
-    $time2 = min15Span(strtotime("-48 hours"));
-    $time3 = min15Span(strtotime("-72 hours"));
-    $time4 = min15Span(strtotime("-96 hours"));
-    $time5 = min15Span(strtotime("-128 hours"));
-    $time6 = min15Span(strtotime("-144 hours"));
-    $time7 = min15Span(strtotime("-168 hours"));
+    $time1 = $this->min15Span(strtotime("-24 hours"));
+    $time2 = $this->min15Span(strtotime("-48 hours"));
+    $time3 = $this->min15Span(strtotime("-72 hours"));
+    $time4 = $this->min15Span(strtotime("-96 hours"));
+    $time5 = $this->min15Span(strtotime("-128 hours"));
+    $time6 = $this->min15Span(strtotime("-144 hours"));
+    $time7 = $this->min15Span(strtotime("-168 hours"));
 
     $projects = Project::model()->findAll("(time_added BETWEEN :start1 AND :end1) OR 
                                            (time_added BETWEEN :start2 AND :end2) OR 
