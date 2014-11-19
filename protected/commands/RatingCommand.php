@@ -103,7 +103,12 @@ class RatingCommand extends CConsoleCommand{
     $filename = Yii::app()->getRuntimePath()."/rating-log.txt";
     
     if (file_exists($filename)){
+      // do a backup of failed file
       $nfn = "failed-".date("Y-m-d H:i").".txt";
+      if (!rename($filename, Yii::app()->getRuntimePath()."/".$nfn)){
+        $fc = file_get_contents($filename);
+        file_put_contents(Yii::app()->getRuntimePath()."/".$nfn,$fc);
+      }
               
       $message = new YiiMailMessage;
       $message->view = 'system';
@@ -114,9 +119,6 @@ class RatingCommand extends CConsoleCommand{
       $message->setBody(array("content"=>$content), 'text/html');
       $message->setTo("info@crowdfundingrss.com");
       Yii::app()->mail->send($message);      
-      
-      // do a backup of faild file
-      rename($filename, Yii::app()->getRuntimePath()."/".$nfn);
     }
     
     $time1 = min15Span(strtotime("-24 hours"));
@@ -150,6 +152,9 @@ class RatingCommand extends CConsoleCommand{
     fclose($fp);
     
     $checked = $this->loopProjects($projects,$filename);
+
+    $fc = count($projects).' - '.$checked;
+    file_put_contents(Yii::app()->getRuntimePath()."/info-".date("Y-m-d H:i").".txt", $fc);
     
     unlink($filename);
     
