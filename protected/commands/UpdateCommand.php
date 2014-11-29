@@ -588,6 +588,8 @@ class UpdateCommand extends CConsoleCommand {
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
           $category = OrigCategory::model()->findByAttributes(array('name' => $data->category, 'category_id' => '24'));
+          //$category = $this->checkCategory($data_single['category'], $data->link, "PubSlush");          
+          
           $insert->orig_category_id = $category->id;
           if (isset($data->creator))
             $insert->creator = $data->creator;
