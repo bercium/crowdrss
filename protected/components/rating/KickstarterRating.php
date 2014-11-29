@@ -68,6 +68,16 @@ class KickstarterRating extends PlatformRating{
 //        $link = "https://www.kickstarter.com/projects/" . $link;
 //        $tmp[] = $link
 
+          
+        $pattern = '/window.current_project = "(.+)";/'; 
+        preg_match($pattern, $htmlData, $match);
+        $json = html_entity_decode($match[1]);
+        $json = str_replace('\\"', "\'", $json);
+        $jsonData = json_decode($json);
+        if ($jsonData == null){ return false; }
+        
+        
+          
         // Words Full Description 
         $beginingPosition = strpos($text, 'class="full-description"');
         $risksPosition = strpos($text, 'id="risks"');
@@ -93,12 +103,8 @@ class KickstarterRating extends PlatformRating{
         $tmp['#videos'] = $videoNumber; 
 
         // Money
-        $pattern = '/data-goal="(.+)" data-percent-raised/';
-        preg_match($pattern, $text, $matches);
-        $money = $matches[1];
-        $pattern = '/data-currency="(.+)" data-format="/';
-        preg_match($pattern, $text, $matches);
-        switch ($matches[1]) {
+        $money = $jsonData->goal;
+        switch ($jsonData->currency) {
             case "GBP": $convert = 1.69; break; 
             case "EUR": $convert = 1.34; break; 
             case "AUD": $convert = 0.93; break;
@@ -108,7 +114,7 @@ class KickstarterRating extends PlatformRating{
         $tmp['$goal'] = $money * $convert;
 
         // Video/Image
-        $pattern = '/data-has-video="(\w+)" id="/';
+        $pattern = '/data-has-video="(\w+)" id/';
         preg_match($pattern, $text, $matches);
         if ($matches[1] == "true"){$vid_img = 1;}
         elseif($matches[1] == "false"){$vid_img = 0;}

@@ -710,4 +710,27 @@ class UpdateCommand extends CConsoleCommand {
     }
     }
    */
+  
+  
+  
+  
+  
+  public function actionTest() {
+    Yii::import('ext.ECurrencyHelper.*');
+    $link = "https://www.kickstarter.com/projects/40210402/gaylocale-we-have-arrived";
+    $htmlData = $this->getHtml($link, array());
+    $pattern = '/window.current_project = "(.+)";/';
+    preg_match($pattern, $htmlData, $match);
+    $json = html_entity_decode($match[1]);
+    $json = str_replace('\\"', "\'", $json);
+    $jsonData = json_decode($json);
+    if ($jsonData == null){ return false; }
+    
+    echo $jsonData->goal."\n";
+    
+    $cc = new ECurrencyHelper();
+    echo $cc->convert($jsonData->currency, 'EUR', $jsonData->goal, ECurrencyHelper::USE_GOOGLE).',';
+  }
+  
+  
 }
