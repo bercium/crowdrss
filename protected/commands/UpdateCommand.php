@@ -354,7 +354,8 @@ class UpdateCommand extends CConsoleCommand {
       preg_match_all($pattern, $htmlData, $matches);
       if (is_array($matches)){
           foreach ($matches[1] as $key => $val){ $links[$val] = true; }
-          $data['links'] = array_keys($links);
+          if (is_array($links)) $data['links'] = array_keys($links);
+          else $data['links'] = array();
       }
       $pattern = '/src="(.+amazon.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);

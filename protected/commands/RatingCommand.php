@@ -77,9 +77,9 @@ class RatingCommand extends CConsoleCommand{
    */
   public function actionFirstDay(){
     
-    $time3 = min15Span(strtotime("-3 hours"));
-    $time9 = min15Span(strtotime("-9 hours"));
-    $time18 = min15Span(strtotime("-18 hours"));
+    $time3 = $this->min15Span(strtotime("-3 hours"));
+    $time9 = $this->min15Span(strtotime("-9 hours"));
+    $time18 = $this->min15Span(strtotime("-18 hours"));
     //3,9,18 // ,30,42
     //echo $start." - ".$end;
     
@@ -103,7 +103,12 @@ class RatingCommand extends CConsoleCommand{
     $filename = Yii::app()->getRuntimePath()."/rating-log.txt";
     
     if (file_exists($filename)){
+      // do a backup of failed file
       $nfn = "failed-".date("Y-m-d H:i").".txt";
+      if (!rename($filename, Yii::app()->getRuntimePath()."/".$nfn)){
+        $fc = file_get_contents($filename);
+        file_put_contents(Yii::app()->getRuntimePath()."/".$nfn,$fc);
+      }
               
       $message = new YiiMailMessage;
       $message->view = 'system';
@@ -114,18 +119,15 @@ class RatingCommand extends CConsoleCommand{
       $message->setBody(array("content"=>$content), 'text/html');
       $message->setTo("info@crowdfundingrss.com");
       Yii::app()->mail->send($message);      
-      
-      // do a backup of faild file
-      rename($filename, Yii::app()->getRuntimePath()."/".$nfn);
     }
     
-    $time1 = min15Span(strtotime("-24 hours"));
-    $time2 = min15Span(strtotime("-48 hours"));
-    $time3 = min15Span(strtotime("-72 hours"));
-    $time4 = min15Span(strtotime("-96 hours"));
-    $time5 = min15Span(strtotime("-128 hours"));
-    $time6 = min15Span(strtotime("-144 hours"));
-    $time7 = min15Span(strtotime("-168 hours"));
+    $time1 = $this->min15Span(strtotime("-24 hours"));
+    $time2 = $this->min15Span(strtotime("-48 hours"));
+    $time3 = $this->min15Span(strtotime("-72 hours"));
+    $time4 = $this->min15Span(strtotime("-96 hours"));
+    $time5 = $this->min15Span(strtotime("-128 hours"));
+    $time6 = $this->min15Span(strtotime("-144 hours"));
+    $time7 = $this->min15Span(strtotime("-168 hours"));
 
     $projects = Project::model()->findAll("(time_added BETWEEN :start1 AND :end1) OR 
                                            (time_added BETWEEN :start2 AND :end2) OR 
@@ -150,6 +152,9 @@ class RatingCommand extends CConsoleCommand{
     fclose($fp);
     
     $checked = $this->loopProjects($projects,$filename);
+
+    //$fc = count($projects).' - '.$checked;
+    //file_put_contents(Yii::app()->getRuntimePath()."/info-".date("Y-m-d H:i").".txt", $fc);
     
     unlink($filename);
     
