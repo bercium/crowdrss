@@ -24,18 +24,16 @@ ALTER TABLE `rating_history`
 CREATE TABLE IF NOT EXISTS `project_origcategory` (
 `id` int(11) NOT NULL,
   `project_id` int(11) NOT NULL,
-  `orig_category_id` int(11) NOT NULL
+  `orig_category_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `orig_category_id` (`orig_category_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Indexes for dumped tables
 --
 
---
--- Indexes for table `project_origcategory`
---
-ALTER TABLE `project_origcategory`
- ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -46,6 +44,15 @@ ALTER TABLE `project_origcategory`
 --
 ALTER TABLE `project_origcategory`
 MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=1;
+
+
+ALTER TABLE `project_origcategory` ADD FOREIGN KEY ( `project_id` ) REFERENCES `project` (
+`id`
+) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `project_origcategory` ADD FOREIGN KEY ( `orig_category_id` ) REFERENCES `orig_category` (
+`id`
+) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 
 
