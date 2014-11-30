@@ -218,9 +218,10 @@ class UpdateCommand extends CConsoleCommand {
     $htmlData = $this->getHtml($link, array());
 
     // Goal
-    $pattern = '/aised of (.+) goal/';
+    $pattern = '/raised of (.+) goal/';
     preg_match($pattern, $htmlData, $matches);
-    $data['goal'] = $matches[1];
+    if (isset($matches[1])) $data['goal'] = $matches[1];
+    else $data['goal'] = null;
 
     // Location and Category
     $pattern = '/meta-info.>\s.+i> (.+)<\/span>\s.+i> (.+)<\/span>/';
@@ -472,7 +473,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
-          $category = $this->checkCategory($data_single['category'], $link);
+          $category = $this->checkCategory($data_single['category'], $link, "");
           $insert->orig_category_id = $category->id;
           if (isset($data_single['start_date']))
             $insert->start = $data_single['start_date'];
@@ -497,7 +498,7 @@ class UpdateCommand extends CConsoleCommand {
           // Category add
           $insert_category = new ProjectOrigcategory;
           $insert_category->project_id = $id_project;
-          $category = $this->checkCategory($data->category, $link, "");
+          $category = $this->checkCategory($data_single['category'], $link, "");
 	  $insert_category->orig_category_id = $category->id;
 	  $insert_category->save();
           
@@ -552,7 +553,7 @@ class UpdateCommand extends CConsoleCommand {
 	    // Category add
             $insert_category = new ProjectOrigcategory;
 	    $insert_category->project_id = $id_project;
-            $category = $this->checkCategory($data->category, $link, "");
+            $category = $this->checkCategory($data->category, $data->link, "");
 	    $insert_category->orig_category_id = $category->id;
 	    $insert_category->save();
 
@@ -573,7 +574,7 @@ class UpdateCommand extends CConsoleCommand {
   public function actionPubSlush() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Pubslush'));
     $id = $platform->id;
-    $result = $this->query("88be9a33-d1f6-4920-b81d-3b5394ce7a22", array("webpage/url" => "http://pubslush.com/discover/results/current/all-categories/all-currencies/launch-date/"), false);
+    $result = $this->query("88be9a33-d1f6-4920-b81d-3b5394ce7a22", array("webpage/url" => "http://pubslush.com/discover/results/all-campaigns/all-categories/all-currencies/launch-date/"), false);
     if (isset($result->results)) {
       foreach ($result->results as $data) {
         $link_check = Project::model()->findByAttributes(array('link' => $data->link));
