@@ -725,7 +725,7 @@ class UpdateCommand extends CConsoleCommand {
     }
   }
 
-  
+  /*
 // PledgeMusic store to DB
   public function actionPledgeMusic(){
     $i = 1;
