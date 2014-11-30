@@ -70,7 +70,7 @@ class KickstarterRating extends PlatformRating{
 
           
         $pattern = '/window.current_project = "(.+)";/'; 
-        preg_match($pattern, $htmlData, $match);
+        preg_match($pattern, $this->html, $match);
         $json = html_entity_decode($match[1]);
         $json = str_replace('\\"', "\'", $json);
         $jsonData = json_decode($json);
