@@ -725,7 +725,6 @@ class UpdateCommand extends CConsoleCommand {
     }
   }
 
-  /*
 // PledgeMusic store to DB
   public function actionPledgeMusic(){
     $i = 1;
@@ -743,56 +742,43 @@ class UpdateCommand extends CConsoleCommand {
             $data_single = $this->parsePledgeMusic($data->link);
             $insert=new Project;
             $insert->title=$data->title;
-            if (isset($data->description)) {
-	      $insert->description=$data->description;
-	    }else{
-              $insert->description=$data_single['description'];
-	    }
+            if (isset($data->description)) { $insert->description=$data->description; }
+            else{ $insert->description=$data_single['description']; }
             $insert->image=$data->image;
             $insert->link=$data->link;
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
-            $insert->orig_category_id = 14; // ZAČASNO***************************************************************** 
+            $insert->orig_category_id = 14; // ZAČASNO*****************************************************************
             if (isset($data->time)) {
-	      if ($data->time <> "In Progress"){
-	        $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data->time . "days"));
-	      }
-	    }
+              if ($data->time <> "In Progress"){
+                $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data->time . "days"));
+              }
+            }
             if (isset($data_single['location'])) $insert->location=$data_single['location'];
             if (isset($data->creator)) $insert->creator=$data->creator;
             $insert->save();
 
             $id_project = $insert->id;
-	    // Category add
-	    $category_all = explode(', ', $data_single['category']);
-	    for ($i=0; $i< count($category_all); $i++){
+            // Category add
+            $category_all = explode(', ', $data_single['category']);
+            for ($i=0; $i< count($category_all); $i++){
               $insert_category = new ProjectOrigcategory;
               $insert_category->project_id = $id_project;
               $category = $this->checkCategory($category_all[$i], $data->link, "PledgeMusic");
-	      $insert_category->orig_category_id = $category->id;
-	      $insert_category->save();
-	    }
-
+              $insert_category->orig_category_id = $category->id;
+              $insert_category->save();
+            }
             $count = 0;
-//            print_r($insert->getErrors());
+            // print_r($insert->getErrors());
           }
           if ($count >= 40){ $check=true; break; }
         }
       }
       $i=$i+1;
     }
-    if ($count >= 10){ $check=true; break; }
-    }
-    }
-    $i=$i+1;
-    }
-    }
-   */
-  
-  
-  
-  
-  
+  }
+   
+   
   public function actionTest() {
     Yii::import('ext.ECurrencyHelper.*');
     $link = "https://www.kickstarter.com/projects/40210402/gaylocale-we-have-arrived";
@@ -809,6 +795,5 @@ class UpdateCommand extends CConsoleCommand {
     $cc = new ECurrencyHelper();
     echo $cc->convert($jsonData->currency, 'EUR', $jsonData->goal, ECurrencyHelper::USE_GOOGLE).',';
   }
-  
   
 }
