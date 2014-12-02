@@ -108,6 +108,42 @@ $this->pageTitle = 'How does your project stack to others';
       
       <?php } ?>
       
+      <?php }else{ ?>
+      
+      <div class="mt30">
+      <div class="row panel">
+        <div class="columns small-6 text-center">
+          <p>Overall position</p>
+          <h1>
+            <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Position out of this weeks projects. <br />Lower is better.">
+            <?php echo $onPage; ?>
+            </span>
+          </h1>
+        </div>
+        <div class="columns small-6 text-center">
+          <p><?php echo $project->platform->name; ?> position</p>
+          <h1>
+            <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Position out of this weeks projects inside the same platform. <br />Lower is better.">
+            <?php echo $inPlatform; ?>
+            </span>
+            
+          </h1>
+        </div>
+          <?php if ($onPage > 15){ ?>
+            <div class="columns text-center">
+              <br /><a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button radius large">Improve your position<br /><small>contact us</small></a>
+            </div>
+          <?php } ?>
+      </div>
+      </div>
+      
+      
+      <?php if ($rating_detail){
+        echo "<pre>";
+        print_r($rating_detail);
+        echo"</pre>";
+       } ?>      
+      
       <?php } ?>
       
     </div>
