@@ -29,6 +29,7 @@ $this->pageTitle = 'How does your project stack to others';
       </form>
       
       <?php 
+      if (isset($_POST['checkLink'])){
       if (!empty($project)){ ?>
       <hr>
       
@@ -99,15 +100,6 @@ $this->pageTitle = 'How does your project stack to others';
       </div>
       </div>
       
-      
-      <?php if ($rating_detail){
-        echo "<pre>";
-        print_r($rating_detail);
-        echo"</pre>";
-        ?>
-      
-      <?php } ?>
-      
       <?php }else{ ?>
       
       <div class="mt30">
@@ -149,13 +141,15 @@ $this->pageTitle = 'How does your project stack to others';
       </div>
       
       
+      <?php } ?>
+      
       <?php if ($rating_detail){
         echo "<pre>";
         print_r($rating_detail);
         echo"</pre>";
-       } ?>      
+       } ?>
       
-      <?php } ?>
+    <?php } //submit ?>
       
     </div>
   </div>
