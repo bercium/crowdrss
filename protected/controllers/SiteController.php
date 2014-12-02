@@ -259,7 +259,7 @@ class SiteController extends Controller
         
       }else{
         setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
-        if (Yii::app()->user->isGuest){
+        //if (!Yii::app()->user->isGuest){
           //recalculate rating with details
           if (strpos($link, "kickstarter.com") !== false){
             $rating_class = new KickstarterRating($link);
@@ -279,7 +279,7 @@ class SiteController extends Controller
           $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating",array(":rating"=>$rating,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
           $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$plat_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
           
-        }
+        //}
         
       }
       
