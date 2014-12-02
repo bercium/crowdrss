@@ -142,20 +142,21 @@ class KickstarterRating extends PlatformRating{
 //      $tmp['#wordsFaq'] = 0;
       
         // Created
-        $pattern = '/<span .+>(.+) created</span>/';
+        $pattern = '/<span .+>(.+) created<\/span>/';
         preg_match($pattern, $text, $matches);
-        if ($matches[1] == "First"){ $matches[1] = 1; }
-        else {
-          $pattern = '/">(.+) created</a>/';
+        if (isset($matches[1])){
+          if ($matches[1] == "First"){ $matches[1] = 1; }
+        } else {
+          $pattern = '/">(.+) created<\/a>/';
   	  preg_match($pattern, $text, $matches);
         }
         $tmp['#personCreated'] = $matches[1];
 
         // Backed
-        $pattern = '/<span .+>(.+) backed/';
+        $pattern = '/<span .+>(.+) backed<\/span>/';
         preg_match($pattern, $text, $matches);
-        if ($matches[1] != "0" ){
-          $pattern = '/">(.+) backed</a>/';
+        if (isset($matches[1]) != true ){
+          $pattern = '/">(.+) backed<\/a>/';
           preg_match($pattern, $text, $matches);
         }
         if (isset($matches[1])) $tmp['#personBacked'] = $matches[1];
@@ -195,12 +196,12 @@ class KickstarterRating extends PlatformRating{
         }
 
         // Number of comments
-        $pattern = '/data-comments-count="(\d+)" id=/';
+        $pattern = '/data-comments-count="(\d+)"/';
         preg_match($pattern, $text, $matches);
         $tmp['#comments'] = $matches[1];
 
         // Number of updates
-        $pattern = '/data-updates-count="(\d+)" id=/';
+        $pattern = '/data-updates-count="(\d+)"/';
         preg_match($pattern, $text, $matches);
         $tmp['#updates'] = $matches[1];
 
@@ -227,6 +228,7 @@ class KickstarterRating extends PlatformRating{
 //      for ($i=0; $i<$pledgesNumber; $i++){
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
+
         
         if ($tmp['Bfinished'] == 1){
           if ($this->id) {
