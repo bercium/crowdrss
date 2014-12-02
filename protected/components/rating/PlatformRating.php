@@ -110,7 +110,7 @@ abstract class PlatformRating {
       $i++;
     }
     $detail = array();
-    
+
     if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     $detail['cws']['rating'] = $rating;

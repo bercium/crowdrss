@@ -147,7 +147,7 @@ class KickstarterRating extends PlatformRating{
         if ($matches[1] == "First"){ $matches[1] = 1; }
         else {
           $pattern = '/\/created">(.+) created/';
-  	  preg_match($pattern, $text, $matches);
+          preg_match($pattern, $text, $matches);
         }
         $tmp['#personCreated'] = $matches[1];
 
@@ -164,14 +164,18 @@ class KickstarterRating extends PlatformRating{
         // Days running
         $pattern = '/data-duration="(.+)" data-end_time=/';
         preg_match($pattern, $text, $matches);
-        $days = floor($matches[1]);
-        $tmp['#daysActive'] = $days;
+        if (isset($matches[1])){
+          $days = floor($matches[1]);
+          $tmp['#daysActive'] = $days;
+        }else $tmp['#daysActive'] = 0;
 
         // How long allready
         $pattern = '/data-hours-remaining="(.+)" id=/';
         preg_match($pattern, $text, $matches);
-        $running = floor($matches[1]/24);
-        $tmp['#daysLong'] = $days-$running;
+        if (isset($matches[1])){
+          $running = floor($matches[1]/24);
+          $tmp['#daysLong'] = $days-$running;
+        }else $tmp['#daysLong'] = 0;
 
         // If project ended
         $pattern = '/Project-ended-(.+) Project-is_/';
@@ -197,17 +201,20 @@ class KickstarterRating extends PlatformRating{
         // Number of comments
         $pattern = '/data-comments-count="(\d+)" id=/';
         preg_match($pattern, $text, $matches);
-        $tmp['#comments'] = $matches[1];
+        if (isset($matches[1])) $tmp['#comments'] = $matches[1];
+        else $tmp['#comments'] = 0;
 
         // Number of updates
         $pattern = '/data-updates-count="(\d+)" id=/';
         preg_match($pattern, $text, $matches);
-        $tmp['#updates'] = $matches[1];
+        if (isset($matches[1])) $tmp['#updates'] = $matches[1];
+        else $tmp['#updates'] = 0;
 
         // Number of backers
         $pattern = '/backers" content="(.+)"\/>/';
         preg_match($pattern, $text, $matches);
-        $tmp['#backers'] = $matches[1];
+        if (isset($matches[1])) $tmp['#backers'] = $matches[1];
+        else $tmp['#backers'] = 0;
 
         // % Rased calc to money
         $pattern = '/data-percent-raised="(.+)" data-pledged=/';
@@ -228,7 +235,7 @@ class KickstarterRating extends PlatformRating{
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
         
-        if ($tmp['Bfinished'] == 1){
+        if (isset($tmp['Bfinished']) && ($tmp['Bfinished'] == 1)){
           if ($this->id) {
             $update = Project::model()->findByPk($this->id);
             if ($update){
