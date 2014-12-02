@@ -256,7 +256,19 @@ class SiteController extends Controller
           $rating_detail = $rating_class->analize();
         }
         
-      }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
+      }else{
+        setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
+        if (!Yii::app()->user->isGuest){
+          //recalculate rating with details
+          if (strpos($link, "kickstarter.com")) $rating_class = new KickstarterRating($link);
+          if (strpos($link, "indiegogo.com")) $rating_class = new IndiegogoRating($link);
+
+          $rating_class->save = false;
+          $rating_detail = $rating_class->analize();
+        }
+        
+      }
+      
     }
     
     $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail));
