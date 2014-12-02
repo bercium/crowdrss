@@ -30,6 +30,7 @@ public function init(){
     $cs->registerCssFile($baseUrl.'/css/foundation.css');
     $cs->registerCssFile($baseUrl.'/css/layout.css');   
     $cs->registerCssFile($baseUrl.'/css/chosen/chosen.min.css');
+    $cs->registerCssFile($baseUrl.'/css/tipr.css');
     
     //$cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
     $cs->registerCssFile('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
@@ -53,6 +54,8 @@ public function init(){
     
     $cs->registerScriptFile($baseUrl.'/js/jquery.timers.min.js');  // timers
     $cs->registerScriptFile($baseUrl.'/js/jquery.scrolldepth.min.js'); //scroll tracker
+    
+    $cs->registerScriptFile($baseUrl.'/js/tipr.min.js');
     
     $cs->registerScriptFile('https://platform.twitter.com/widgets.js');  // 
     

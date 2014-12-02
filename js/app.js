@@ -1,6 +1,12 @@
 
 ;(function ($, window, undefined) {
-  $('*').removeAttr('data-tooltip');
+  $('[data-tooltip]').each(function(){
+    $(this).removeAttr('data-tooltip');
+    $(this).addClass('tip');
+    $(this).attr('data-tip',$(this).attr('title'));
+  });
+  $('.tip').tipr();
+  //$('*').removeAttr('data-tooltip');
   $(document).foundation();
   //$(document).foundation({tooltip : {disable_for_touch: true}});
 
