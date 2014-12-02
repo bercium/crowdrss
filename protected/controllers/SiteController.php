@@ -265,6 +265,11 @@ class SiteController extends Controller
 
           $rating_class->save = false;
           $rating_detail = $rating_class->analize();
+          
+          $rating = $rating_detail['rating'];
+          $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating",array(":rating"=>$rating,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
+          $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$project->platform_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
+          
         }
         
       }
