@@ -62,7 +62,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
   <div class="footer">
     <div class="row mt30">
       <div class="columns large-12 large-centered mt30">
-          <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
+          <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
             <li class="text-center ">
               <a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star fa-5x"></i><br />Top daily</a>
             </li>

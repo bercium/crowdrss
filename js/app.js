@@ -1,5 +1,6 @@
 
 ;(function ($, window, undefined) {
+  $('*').removeAttr('data-tooltip');
   $(document).foundation();
   //$(document).foundation({tooltip : {disable_for_touch: true}});
 
@@ -22,7 +23,7 @@
       });
   });
   
-  $('select').chosen({no_results_text: 'Oops, nothing found!', allow_single_deselect: true, width:'100%' });
+  $('select').chosen({no_results_text: 'Oops, nothing found!', allow_single_deselect: true, width:'100%'});
 
   
 })(jQuery, this);
