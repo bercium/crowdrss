@@ -239,7 +239,7 @@ class SiteController extends Controller
         if ($project->rating != null) $rating = $project->rating;
         else{
           $rating = 0;
-          setFlash ("projectCompare", "We haven't rated this project yet. Positions are just aproximated.", "info", false);
+          setFlash ("projectCompare", "We haven't rated this project yet. Positions are aproximated.", "info", false);
         }
         $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating",array(":rating"=>$rating,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
         $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$project->platform_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
@@ -258,7 +258,7 @@ class SiteController extends Controller
         }
         
       }else{
-        setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
+          setFlash ("projectCompare", "Sorry we couldn't find this project in our database! Positions are aproximated.", "info", false);
         //if (!Yii::app()->user->isGuest){
           //recalculate rating with details
           if (strpos($link, "kickstarter.com") !== false){

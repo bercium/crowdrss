@@ -51,10 +51,11 @@ class IndiegogoRating extends PlatformRating{
   protected function currentWebStatus(){
     if (!$this->html){
       $this->html = $this->getData();  //load data if not loaded
+      //<a href="#home" class="js-tab-link" data-url="/projects/fear-and-fail-at-crowdfunding-conference/show_tab/home">Story</a>
       $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest"));  //load secondary data if not loaded
     }
     $text = $this->html;
-    
+    echo "a".substr_count($text,'<html>');
     // check validity of data
     if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
       if (strpos($text, "i-illustration-not_found")){
@@ -68,7 +69,7 @@ class IndiegogoRating extends PlatformRating{
       }
       return false;
     }
-    
+    echo "b";
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
