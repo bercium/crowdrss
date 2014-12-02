@@ -214,6 +214,7 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     $rating_detail = null;
+    $rating = null;
     
     if(isset($_POST['checkLink']) || $s != ''){
       if ($s != '') $link = $s;
@@ -260,8 +261,9 @@ class SiteController extends Controller
         setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
         if (!Yii::app()->user->isGuest){
           //recalculate rating with details
-          if (strpos($link, "kickstarter.com")) $rating_class = new KickstarterRating($link);
-          if (strpos($link, "indiegogo.com")) $rating_class = new IndiegogoRating($link);
+          if (strpos($link, "kickstarter.com") !== false) $rating_class = new KickstarterRating($link);
+          else
+          if (strpos($link, "indiegogo.com") !== false ) $rating_class = new IndiegogoRating($link);
 
           $rating_class->save = false;
           $rating_detail = $rating_class->analize();
@@ -276,7 +278,7 @@ class SiteController extends Controller
       
     }
     
-    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail));
+    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail,"rating"=>$rating));
 	}
 
 	/**
