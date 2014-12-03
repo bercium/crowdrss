@@ -113,34 +113,26 @@ class UpdateCommand extends CConsoleCommand {
     $data['end_date'] = date("Y-m-d H:i:s", $jsonData->{'deadline'});
 
     // Created
-    $pattern = '/<span class="text">\s(.+) created/';
-    preg_match($pattern, $htmlData, $matches);
+    $pattern = '/<span .+>(.+) created<\/span>/';
+    preg_match($pattern, $text, $matches);
     if (isset($matches[1])){
-      if ($matches[1] == "First") {
-        $data['created'] = 1;
-      } else {
-        $pattern = '/\/created">(.+) created/';
-        preg_match($pattern, $htmlData, $fixedMatches);
-	if (isset($matches[1])){
-	  $data['created'] = $fixedMatches[1];
-	}
-      }
+      if ($matches[1] == "First"){ $matches[1] = 1; }
+    } else {
+      $pattern = '/">(.+) created<\/a>/';
+      preg_match($pattern, $text, $matches);
     }
+    $data['created'] = $matches[1];
 
     // Backed
-    $pattern = '/span>\s(.+) backed/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])){
-      if ($matches[1] == "0") {
-        $data['backed'] = $matches[1];
-      } else {
-        $pattern = '/\/backed">(.+) backed/';
-        preg_match($pattern, $htmlData, $fixedMatches);
-	if (isset($matches[1])){
-          $data['backed'] = $fixedMatches[1];
-	}
-      }
+    $pattern = '/<span .+>(.+) backed<\/span>/';
+    preg_match($pattern, $text, $matches);
+    if (isset($matches[1]) != true ){
+      $pattern = '/">(.+) backed<\/a>/';
+      preg_match($pattern, $text, $matches);
     }
+    if (isset($matches[1])) $data['backed'] = $matches[1];
+    else $data['backed'] = 0;
+    
     return($data);
   }
 
