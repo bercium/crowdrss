@@ -124,7 +124,7 @@ abstract class PlatformRating {
     if ($this->id != null){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
-      $social_rating = $this->calcSocialRating($social,$project);
+      $social_rating = $this->calcSocialRating($social,$project->time_added);
       $detail['social']['rating'] = $social_rating;
       
       
@@ -158,10 +158,10 @@ abstract class PlatformRating {
   /**
    * calculate social rating
    */
-  private function calcSocialRating($social,$project){
+  private function calcSocialRating($social,$timeAdded){
     $rating = 0;
     
-    $h_lapsed = timeDifference($project->time_added,time(),"hour");
+    $h_lapsed = timeDifference($timeAdded,time(),"hour");
       
     // less than 3 hours statisticaly too little
     if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
