@@ -295,7 +295,7 @@ abstract class PlatformRating {
           $update->removed=1;
           if (!$update->save()){
             print_r($update->getErrors());;
-          }else " SAVED <br />";
+          }else " SAVED <br /> ";
           
         }
       }
