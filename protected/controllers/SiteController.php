@@ -439,7 +439,7 @@ EOD;
   }    
   
   public function actionTest(){
-    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/compra-de-play-4', 120348);
+    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/new-pc--34', 117840);
     $rating_class->analize();
   }
 
