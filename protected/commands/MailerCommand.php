@@ -1,6 +1,44 @@
 <?php
 
 class MailerCommand extends CConsoleCommand{
+  
+  /** 
+   * mark project removed from DB
+   */
+  private function removeFromDB($id){
+    $update = Project::model()->findByPk($id);
+    if ($update){
+      $update->removed=1;
+      $update->save();
+    }
+  }
+  
+  /** 
+   * check project link if it's OK
+   */
+  private function checkProjectLink($link, $id = ''){
+    $httpClient = new elHttpClient();
+    $httpClient->setUserAgent("ff3");
+    $httpClient->enableRedirects();
+    $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")));
+    $htmlDataObject = $httpClient->get($link,array("X-Requested-With" => "XMLHttpRequest"));
+    $text = $htmlDataObject->httpBody;
+    if (strpos($link, "indiegogo.com") !== false){
+      if (strpos($text, "i-illustration-not_found") !== false){
+        $this->removeFromDB($id);
+        return false;
+      }
+    }else{
+      if (strpos($link, "kickstarter.com") !== false){
+        if (strlen($text) < 2000){
+          $this->removeFromDB($id);
+          return false;
+        }
+      }
+    }
+    
+    return true;
+  }
 
   private function createSQL($sub, $days = 1){
     $sql = '';
@@ -94,6 +132,8 @@ class MailerCommand extends CConsoleCommand{
         foreach ($projects as $project){
           $i++;
           if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
+          
+          if (!checkProjectLink($project->link,$project->id)) continue;
           
           if ($i <= 4) $featured[] = $project;
           else{
@@ -199,6 +239,10 @@ class MailerCommand extends CConsoleCommand{
         $i = 0;
         foreach ($projects as $project){
           $i++;
+          if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
+          
+          if (!checkProjectLink($project->link,$project->id)) continue;
+          
           if ($i <= 4) $featured[] = $project;
           else{
             if ($project->rating == null) $regularNull[] = $project;

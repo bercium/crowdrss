@@ -278,12 +278,12 @@ abstract class PlatformRating {
    * mark project as removed
    */
   protected function projectRemoved($checkLink = false){
-    echo "remove ";
+    //echo "remove ";
     if ($this->id) {
-      echo "has ID ";
+      //echo "has ID ";
       $update = Project::model()->findByPk($this->id);
       if ($update){
-        echo " is updated ";
+        //echo " is updated ";
         // check for page
         if ($checkLink){
           if (false){
@@ -291,14 +291,9 @@ abstract class PlatformRating {
             $update->save();
           }
         }else{
-          echo " REMOVED ";
           $update->removed=1;
+          $update->save();
           //print_r($update);
-          if (!$update->save()){
-            echo " FAILED <br /> ";
-            print_r($update->getErrors());;
-          }else echo " SAVED <br /> ";
-          
         }
       }
       
