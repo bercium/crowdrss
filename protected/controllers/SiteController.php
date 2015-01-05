@@ -439,7 +439,7 @@ EOD;
   }    
   
   public function actionTest(){
-    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/prueba--18', 63472);
+    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/compra-de-play-4', 120348);
     $rating_class->analize();
   }
 

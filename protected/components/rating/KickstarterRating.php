@@ -129,6 +129,17 @@ class KickstarterRating extends PlatformRating{
         $risks = substr($risks, $beginingPosition);
         $riskNumber = str_word_count(strip_tags($risks));
         $tmp['#wordsRisk'] = $riskNumber;
+        
+        // If project ended
+        $pattern = '/Project-ended-(.+) Project-is_/';
+        preg_match($pattern, $text, $matches);
+        if ($matches[1] == "true") $tmp['Bfinished'] = 1;
+        elseif ($matches[1] == "false") $tmp['Bfinished'] = 0;
+        
+        if (isset($tmp['Bfinished']) && ($tmp['Bfinished'] == 1)){
+          $this->projectRemoved();
+          return false;
+        }        
 
       // Words FAQ
 //      $beginingPosition = strpos($text, 'id="project-faqs"');
@@ -177,12 +188,6 @@ class KickstarterRating extends PlatformRating{
           $running = floor($matches[1]/24);
           $tmp['#daysLong'] = $days-$running;
         }else $tmp['#daysLong'] = 0;
-
-        // If project ended
-        $pattern = '/Project-ended-(.+) Project-is_/';
-        preg_match($pattern, $text, $matches);
-        if ($matches[1] == "true") $tmp['Bfinished'] = 1;
-        elseif ($matches[1] == "false") $tmp['Bfinished'] = 0;
 
         // State of project
         $pattern = '/Project-state-(.+) Project/';
@@ -236,18 +241,6 @@ class KickstarterRating extends PlatformRating{
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
 
-        
-        if (isset($tmp['Bfinished']) && ($tmp['Bfinished'] == 1)){
-          if ($this->id) {
-            $update = Project::model()->findByPk($this->id);
-            if ($update){
-              $update->removed=1;
-              $update->save();
-            }
-          }
-          $tmp = false;
-        }
-    
       }
     }
     

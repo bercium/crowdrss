@@ -106,7 +106,10 @@ abstract class PlatformRating {
     while ($i < 3){
       $cws = $this->currentWebStatus();
       if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
-      else break;
+      else{
+        $this->projectRemoved();  // if fails 3 times but have succeded before there must be something wrong
+        break;
+      }
       $i++;
     }
     $detail = array();
@@ -269,7 +272,29 @@ abstract class PlatformRating {
     
     // max 10
     return $rating;
-  }  
+  }
+  
+  /**
+   * mark project as removed
+   */
+  protected function projectRemoved($checkLink = false){
+    if ($this->id) {
+      $update = Project::model()->findByPk($this->id);
+      if ($update){
+        // check for page
+        if ($checkLink){
+          if (false){
+            $update->removed=1;
+            $update->save();
+          }
+        }else{
+          $update->removed=1;
+          $update->save();
+        }
+      }
+      
+    }
+  }
   
   
  /* private function history($cws, $social){

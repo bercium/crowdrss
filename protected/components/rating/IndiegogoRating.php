@@ -55,21 +55,15 @@ class IndiegogoRating extends PlatformRating{
       $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest"));  //load secondary data if not loaded
     }
     $text = $this->html;
-    echo "a".substr_count($text,'<html>');
+    //echo "a".substr_count($text,'<html>');
     // check validity of data
     if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
       if (strpos($text, "i-illustration-not_found")){
-        if ($this->id) {
-          $update = Project::model()->findByPk($this->id);
-          if ($update){
-            $update->removed=1;
-            $update->save();
-          }
-        }
+        $this->projectRemoved();
       }
       return false;
     }
-    echo "b";
+    //echo "b";
 
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
@@ -209,14 +203,8 @@ class IndiegogoRating extends PlatformRating{
       //if ($tmp['$goal'] > $tmp['$raised']) $tmp['Bsuccessful'] = 0;
       //else $tmp['Bsuccessful'] = 1;
       
-      if ($this->id) {
-        $update = Project::model()->findByPk($this->id);
-        if ($update){
-          $update->removed=1;
-          $update->save();
-        }
-      }
-      $tmp = false;
+      $this->projectRemoved();
+      return false;
       
     }else $tmp['Bsuccessful'] = 0;
 
