@@ -293,9 +293,11 @@ abstract class PlatformRating {
         }else{
           echo " REMOVED ";
           $update->removed=1;
+          print_r($update);
           if (!$update->save()){
+            echo " FAILED <br /> ";
             print_r($update->getErrors());;
-          }else " SAVED <br /> ";
+          }else echo " SAVED <br /> ";
           
         }
       }
