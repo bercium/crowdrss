@@ -106,15 +106,15 @@ abstract class PlatformRating {
     while ($i < 3){
       $cws = $this->currentWebStatus();
       if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
-      else{
-        $this->projectRemoved();  // if fails 3 times but have succeded before there must be something wrong
-        break;
-      }
+      else break;
       $i++;
+      if ($i==3){
+        $this->projectRemoved();  // if fails 3 times but have succeded before there must be something wrong
+        return null;
+      }
     }
     $detail = array();
 
-    if ($cws === false) return null;
     $rating = $this->calcContentRating($cws);
     $detail['cws']['rating'] = $rating;
     $detail['cws']['cws'] = $cws;
