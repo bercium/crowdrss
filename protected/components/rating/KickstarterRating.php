@@ -206,7 +206,7 @@ class KickstarterRating extends PlatformRating{
         $tmp['#updates'] = $matches[1];
 
         // Number of backers
-        $pattern = '/backers" content="(.+)"\/>/';
+        $pattern = '/data-backers-count="(.+)"/';
         preg_match($pattern, $text, $matches);
         $tmp['#backers'] = $matches[1];
 

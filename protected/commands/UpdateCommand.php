@@ -114,21 +114,21 @@ class UpdateCommand extends CConsoleCommand {
 
     // Created
     $pattern = '/<span .+>(.+) created<\/span>/';
-    preg_match($pattern, $text, $matches);
+    preg_match($pattern, $htmlData, $matches);
     if (isset($matches[1])){
       if ($matches[1] == "First"){ $matches[1] = 1; }
     } else {
       $pattern = '/">(.+) created<\/a>/';
-      preg_match($pattern, $text, $matches);
+      preg_match($pattern, $htmlData, $matches);
     }
     $data['created'] = $matches[1];
 
     // Backed
     $pattern = '/<span .+>(.+) backed<\/span>/';
-    preg_match($pattern, $text, $matches);
+    preg_match($pattern, $htmlData, $matches);
     if (isset($matches[1]) != true ){
       $pattern = '/">(.+) backed<\/a>/';
-      preg_match($pattern, $text, $matches);
+      preg_match($pattern, $htmlData, $matches);
     }
     if (isset($matches[1])) $data['backed'] = $matches[1];
     else $data['backed'] = 0;
@@ -348,9 +348,10 @@ class UpdateCommand extends CConsoleCommand {
           if (is_array($links)) $data['links'] = array_keys($links);
           else $data['links'] = array();
       }
-      $pattern = '/src="(.+amazon.+)" \w/';
+      $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
-      $data['images'] = $matches[1];
+      $data['images'] = str_replace("&amp;", "&", $matches[1]);      
+//      var_dump($data['images']); die;
       
       if (isset($data['links'])&&isset($data['images'])) {
         for ($j=0; $j< 20; $j++) {
