@@ -29,6 +29,7 @@ $this->pageTitle = 'How does your project stack to others';
       </form>
       
       <?php 
+      if (isset($_POST['checkLink'])){
       if (!empty($project)){ ?>
       <hr>
       
@@ -99,16 +100,57 @@ $this->pageTitle = 'How does your project stack to others';
       </div>
       </div>
       
+      <?php }else{ ?>
+      
+      <div class="mt30">
+        
+      <div class="row panel">
+         <div class="columns small-4 text-center">
+          <p>Our rating <a href="<?php echo Yii::app()->createUrl('site/rating'); ?>"  trk="link_content_ratingInfo" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Rating is based on content quality, social reach and campaign progress. <br />Click for more info."><i class="fa fa-question-circle"></i></a>
+          </p>
+          <h1 style="color:#0088bb;">
+            <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating (0-10) based on content quality, social reach and campaign progress. <br />Higher is better.">
+            <?php 
+            if (isset($rating)) echo round($rating ,1);
+            else echo "n/a"; ?>
+            </span>
+          </h1>
+        </div>
+        <div class="columns small-4 text-center">
+          <p>Overall position</p>
+          <h1>
+            <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Position out of this weeks projects. <br />Lower is better.">
+            <?php echo $onPage; ?>
+            </span>
+          </h1>
+        </div>
+        <div class="columns small-4 text-center">
+          <p>Platform specific position</p>
+          <h1>
+            <span style="font-size:150%"  data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Position out of this weeks projects inside the same platform. <br />Lower is better.">
+            <?php echo $inPlatform; ?>
+            </span>
+            
+          </h1>
+        </div>
+          <?php if ($onPage > 15){ ?>
+            <div class="columns text-center">
+              <br /><a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button radius large">Improve your position<br /><small>contact us</small></a>
+            </div>
+          <?php } ?>
+      </div>
+      </div>
+      
+      
+      <?php } ?>
       
       <?php if ($rating_detail){
         echo "<pre>";
         print_r($rating_detail);
         echo"</pre>";
-        ?>
+       } ?>
       
-      <?php } ?>
-      
-      <?php } ?>
+    <?php } //submit ?>
       
     </div>
   </div>

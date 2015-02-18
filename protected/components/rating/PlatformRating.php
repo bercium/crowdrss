@@ -108,10 +108,13 @@ abstract class PlatformRating {
       if ($cws === false) usleep(100000+rand(30,120)*1000);  //1 000 000 = 1 sec
       else break;
       $i++;
+      if ($i==3){
+        $this->projectRemoved();  // if fails 3 times but have succeded before there must be something wrong
+        return null;
+      }
     }
     $detail = array();
-    
-    if ($cws === false) return null;
+
     $rating = $this->calcContentRating($cws);
     $detail['cws']['rating'] = $rating;
     $detail['cws']['cws'] = $cws;
@@ -124,7 +127,7 @@ abstract class PlatformRating {
     if ($this->id != null){   //!!! skip for now
       $project = Project::model()->findByPk($this->id);
       
-      $social_rating = $this->calcSocialRating($social,$project);
+      $social_rating = $this->calcSocialRating($social,$project->time_added);
       $detail['social']['rating'] = $social_rating;
       
       
@@ -158,10 +161,10 @@ abstract class PlatformRating {
   /**
    * calculate social rating
    */
-  private function calcSocialRating($social,$project){
+  private function calcSocialRating($social,$timeAdded){
     $rating = 0;
     
-    $h_lapsed = timeDifference($project->time_added,time(),"hour");
+    $h_lapsed = timeDifference($timeAdded,time(),"hour");
       
     // less than 3 hours statisticaly too little
     if ($h_lapsed < 3) return 0;  // hard to evaluate project this young
@@ -269,7 +272,33 @@ abstract class PlatformRating {
     
     // max 10
     return $rating;
-  }  
+  }
+  
+  /**
+   * mark project as removed
+   */
+  protected function projectRemoved($checkLink = false){
+    //echo "remove ";
+    if ($this->id) {
+      //echo "has ID ";
+      $update = Project::model()->findByPk($this->id);
+      if ($update){
+        //echo " is updated ";
+        // check for page
+        if ($checkLink){
+          if (false){
+            $update->removed=1;
+            $update->save();
+          }
+        }else{
+          $update->removed=1;
+          $update->save();
+          //print_r($update);
+        }
+      }
+      
+    }
+  }
   
   
  /* private function history($cws, $social){

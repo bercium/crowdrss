@@ -129,6 +129,17 @@ class KickstarterRating extends PlatformRating{
         $risks = substr($risks, $beginingPosition);
         $riskNumber = str_word_count(strip_tags($risks));
         $tmp['#wordsRisk'] = $riskNumber;
+        
+        // If project ended
+        $pattern = '/Project-ended-(.+) Project-is_/';
+        preg_match($pattern, $text, $matches);
+        if ($matches[1] == "true") $tmp['Bfinished'] = 1;
+        elseif ($matches[1] == "false") $tmp['Bfinished'] = 0;
+        
+        if (isset($tmp['Bfinished']) && ($tmp['Bfinished'] == 1)){
+          $this->projectRemoved();
+          return false;
+        }        
 
       // Words FAQ
 //      $beginingPosition = strpos($text, 'id="project-faqs"');
@@ -165,20 +176,18 @@ class KickstarterRating extends PlatformRating{
         // Days running
         $pattern = '/data-duration="(.+)" data-end_time=/';
         preg_match($pattern, $text, $matches);
-        $days = floor($matches[1]);
-        $tmp['#daysActive'] = $days;
+        if (isset($matches[1])){
+          $days = floor($matches[1]);
+          $tmp['#daysActive'] = $days;
+        }else $tmp['#daysActive'] = 0;
 
         // How long allready
         $pattern = '/data-hours-remaining="(.+)" id=/';
         preg_match($pattern, $text, $matches);
-        $running = floor($matches[1]/24);
-        $tmp['#daysLong'] = $days-$running;
-
-        // If project ended
-        $pattern = '/Project-ended-(.+) Project-is_/';
-        preg_match($pattern, $text, $matches);
-        if ($matches[1] == "true") $tmp['Bfinished'] = 1;
-        elseif ($matches[1] == "false") $tmp['Bfinished'] = 0;
+        if (isset($matches[1])){
+          $running = floor($matches[1]/24);
+          $tmp['#daysLong'] = $days-$running;
+        }else $tmp['#daysLong'] = 0;
 
         // State of project
         $pattern = '/Project-state-(.+) Project/';
@@ -198,17 +207,20 @@ class KickstarterRating extends PlatformRating{
         // Number of comments
         $pattern = '/data-comments-count="(\d+)"/';
         preg_match($pattern, $text, $matches);
-        $tmp['#comments'] = $matches[1];
+        if (isset($matches[1])) $tmp['#comments'] = $matches[1];
+        else $tmp['#comments'] = 0;
 
         // Number of updates
         $pattern = '/data-updates-count="(\d+)"/';
         preg_match($pattern, $text, $matches);
-        $tmp['#updates'] = $matches[1];
+        if (isset($matches[1])) $tmp['#updates'] = $matches[1];
+        else $tmp['#updates'] = 0;
 
         // Number of backers
         $pattern = '/data-backers-count="(.+)"/';
         preg_match($pattern, $text, $matches);
-        $tmp['#backers'] = $matches[1];
+        if (isset($matches[1])) $tmp['#backers'] = $matches[1];
+        else $tmp['#backers'] = 0;
 
         // % Rased calc to money
         $pattern = '/data-percent-raised="(.+)" data-pledged=/';
@@ -229,18 +241,6 @@ class KickstarterRating extends PlatformRating{
 //        $tmp[] = $matches[1][$i] . " ";
 //      }
 
-        
-        if ($tmp['Bfinished'] == 1){
-          if ($this->id) {
-            $update = Project::model()->findByPk($this->id);
-            if ($update){
-              $update->removed=1;
-              $update->save();
-            }
-          }
-          $tmp = false;
-        }
-    
       }
     }
     

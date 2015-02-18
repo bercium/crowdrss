@@ -214,6 +214,7 @@ class SiteController extends Controller
     $error = '';
     $link = '';
     $rating_detail = null;
+    $rating = null;
     
     if(isset($_POST['checkLink']) || $s != ''){
       if ($s != '') $link = $s;
@@ -238,7 +239,7 @@ class SiteController extends Controller
         if ($project->rating != null) $rating = $project->rating;
         else{
           $rating = 0;
-          setFlash ("projectCompare", "We haven't rated this project yet. Positions are just aproximated.", "info", false);
+          setFlash ("projectCompare", "We haven't rated this project yet. Positions are aproximated.", "info", false);
         }
         $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating",array(":rating"=>$rating,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
         $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$project->platform_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
@@ -256,10 +257,35 @@ class SiteController extends Controller
           $rating_detail = $rating_class->analize();
         }
         
-      }else setFlash ("projectCompare", "Sorry we couldn't find this project in our database!", "alert");
+      }else{
+          setFlash ("projectCompare", "Sorry we couldn't find this project in our database! Positions are aproximated.", "info", false);
+        //if (!Yii::app()->user->isGuest){
+          //recalculate rating with details
+          if (strpos($link, "kickstarter.com") !== false){
+            $rating_class = new KickstarterRating($link);
+            $plat_id = 1;
+          }
+          else
+          if (strpos($link, "indiegogo.com") !== false ){
+            $rating_class = new IndiegogoRating($link);
+            $plat_id = 2;
+          }
+
+          $rating_class->save = false;
+          $rating_detail = $rating_class->analize();
+
+          //print_r($rating_detail);
+          $rating = $rating_detail['rating'];
+          $onPage = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating",array(":rating"=>$rating,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
+          $inPlatform = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > :date AND rating > :rating AND platform_id = :platform",array(":rating"=>$rating,":platform"=>$plat_id,":date"=>date('Y-m-d',strtotime('-1 week'))))+1;
+          
+        //}
+        
+      }
+      
     }
     
-    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail));
+    $this->render('owners',array("project"=>$project,"link"=>$link,"onPage"=>$onPage,"inPlatform"=>$inPlatform, 'rating_detail'=>$rating_detail,"rating"=>$rating));
 	}
 
 	/**
@@ -413,7 +439,7 @@ EOD;
   }    
   
   public function actionTest(){
-    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/prueba--18', 63472);
+    $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/new-pc--34', 117840);
     $rating_class->analize();
   }
 
