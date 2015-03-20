@@ -48,7 +48,7 @@ public function init(){
     $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.js');
     $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
-    //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.tooltip.js'); //scroll tracker
+    $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.reveal.js'); //scroll tracker
     
     $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
     
