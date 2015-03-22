@@ -83,6 +83,99 @@ class MailerCommand extends CConsoleCommand{
   }
   
   
+   
+  /**
+   * 
+   */
+  private function sortProjects($sub, $projects, $paidProjects){
+    if (count($paidProjects) > 0){
+        foreach ($paidProjects as $pp){
+            $platA = explode(",",$sub->platform);
+            $catA = explode(",",$sub->category);
+            $subCatA = explode(",",$sub->exclude_orig_category);
+
+            if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
+            if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
+            if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
+
+            $pp->show_count++;
+            $pp->save();
+            $paidProject = $pp->project; //get one project
+            // set the rating higher so we know it's special
+            if ($paidProject->rating) $paidProject->rating += 11;
+            else $paidProject->rating = 11;
+            break;
+        }
+    }
+        
+    
+    $featured = $regular = $regularNull = array();
+    $i = 0;
+    foreach ($projects as $project){
+      $i++;
+      if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
+
+      if (!$this->checkProjectLink($project->link,$project->id)) continue;
+
+      if ($i <= 4) $featured[] = $project;
+      else{
+        if ($project->rating == null) $regularNull[] = $project;
+        else $regular[] = $project;
+      }
+    }
+
+    if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
+
+
+    shuffle($regularNull);
+    $regularNull = array_slice($regularNull,0,4);
+    $regular = array_merge(array_slice($regular,0,8-count($regularNull)),$regularNull);
+
+    if (count($regular) < 4) $regular = array();
+    else if (count($regular) < 8) $regular = array_slice($regular, 0, 4);
+    
+    return array("featured"=>$featured, "regular"=>$regular);
+  }
+
+  
+   /**
+   * 
+   */
+  private function sendNewsletter($sub, $title, $subject, $trackingCode, $projects){
+    //set mail tracking
+    $tc = mailTrackingCode();
+    $ml = new MailLog();
+    $ml->tracking_code = mailTrackingCodeDecode($tc);
+    $ml->type = $trackingCode;
+    $ml->subscription_id = $sub->id;
+    $ml->save();
+
+
+    // create message
+    $message = new YiiMailMessage;
+    $message->view = 'digest';
+    $message->subject = $subject; 
+    $message->from = Yii::app()->params['noreplyEmail'];
+
+    $content = '';
+
+    // not enough projects
+    if ($count < 4){
+      $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
+    }
+
+    $editLink = absoluteURL()."site/index?id=".$sub->hash;
+
+    $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
+                            "content"=>$content, "title"=>$title,
+                            "featuredProjects"=>$projects['featured'], "projects"=>$projects['regular'],
+                            "showEdit"=>true,"editLink"=>$editLink
+                            ), 'text/html');
+    $message->setTo($sub->email);
+    if ($count > 0) Yii::app()->mail->send($message);
+  }
+  
+  
   /**
    * daily digest
    */
@@ -93,98 +186,23 @@ class MailerCommand extends CConsoleCommand{
     
     if ($subscriptions){
       
-      $hasPP = true;
+      
+      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+       
       foreach ($subscriptions  as $sub){
-
-        $paidProject = null;
-        
-        if ($hasPP){ // skip if there are no paid projects in a day
-          $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-          if (count($paidProjects) > 0){
-            foreach ($paidProjects as $pp){
-              $platA = explode(",",$sub->platform);
-              $catA = explode(",",$sub->category);
-              $subCatA = explode(",",$sub->exclude_orig_category);
-
-              if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
-              if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
-              if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
-
-              $pp->show_count++;
-              $pp->save();
-              $paidProject = $pp->project; //get one project
-              // set the rating higher so we know it's special
-              if ($paidProject->rating) $paidProject->rating += 11;
-              else $paidProject->rating = 11;
-              break;
-            }
-          }else $hasPP = false;
-        }
-        
         $sql = $this->createSQL($sub, 1); 
         
         // get projects
         $projects = Project::model()->findAll($sql);
-        $count = count($projects);
         
-        $featured = $regular = $regularNull = array();
-        $i = 0;
-        foreach ($projects as $project){
-          $i++;
-          if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
-          
-          if (!$this->checkProjectLink($project->link,$project->id)) continue;
-          
-          if ($i <= 4) $featured[] = $project;
-          else{
-            if ($project->rating == null) $regularNull[] = $project;
-            else $regular[] = $project;
-          }
-        }
+        $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
-        if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
-        
-        
-        shuffle($regularNull);
-        $regularNull = array_slice($regularNull,0,4);
-        $regular = array_merge(array_slice($regular,0,8-count($regularNull)),$regularNull);
-        
-        if (count($regular) < 4) $regular = array();
-        else if (count($regular) < 8) $regular = array_slice($regular, 0, 4);
-        
-        
-        //set mail tracking
-        $tc = mailTrackingCode();
-        $ml = new MailLog();
-        $ml->tracking_code = mailTrackingCodeDecode($tc);
-        $ml->type = 'daily-digest';
-        $ml->subscription_id = $sub->id;
-        $ml->save();
-
-        $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
-        // create message
-        $message = new YiiMailMessage;
-        $message->view = 'digest';
-        $message->subject = "Your Daily Dose Of Crowdfunding Projects for ".$date;  // 11 Dec title change
-        $message->from = Yii::app()->params['noreplyEmail'];
-
-        $title = 'Top crowdfunding projects for '.$date;
-        $content = '';
-
-        // not enough projects
-        if ($count < 4){
-          $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
-        }
-
-        $editLink = absoluteURL()."/?id=".$sub->hash;
-        
-        $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
-                                "content"=>$content, "title"=>$title,
-                                "featuredProjects"=>$featured, "projects"=>$regular,
-                                "showEdit"=>true,"editLink"=>$editLink
-                                ), 'text/html');
-        $message->setTo($sub->email);
-        Yii::app()->mail->send($message);
+        $this->sendNewsletter($sub,
+                'Top crowdfunding projects for '.$date,
+                "Your Daily Dose Of Crowdfunding Projects for ".$date,
+                'daily-digest',
+                $sorted);
         
       }
     }
@@ -193,6 +211,7 @@ class MailerCommand extends CConsoleCommand{
   public function actionTestDailyDigest(){
     $this->actionDailyDigest(true);
   }
+  
   
   /**
    * 
@@ -204,102 +223,31 @@ class MailerCommand extends CConsoleCommand{
 
     if ($subscriptions){
 
-      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-      
-      foreach ($subscriptions  as $sub){
+        $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
 
-        $paidProject = null;
-        
-        foreach ($paidProjects as $pp){
-          $platA = explode(",",$sub->platform);
-          $catA = explode(",",$sub->category);
-          $subCatA = explode(",",$sub->exclude_orig_category);
 
-          if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
-          if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
-          if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
-
-          $pp->show_count++;
-          $pp->save();
-          $paidProject = $pp->project; //get one project
-          // set the rating higher so we know it's special
-          if ($paidProject->rating) $paidProject->rating += 11;
-          else $paidProject->rating = 11;
-          break;
-        }
-        
-        
-        $sql = $this->createSQL($sub, 7);
-        
-        // get projects
-        $projects = Project::model()->findAll($sql);
-        $count = count($projects);
-        
-        $featured = $regular = $regularNull = array();
-        $i = 0;
-        foreach ($projects as $project){
-          $i++;
-          if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
-          
-          if (!$this->checkProjectLink($project->link,$project->id)) continue;
-          
-          if ($i <= 4) $featured[] = $project;
-          else{
-            if ($project->rating == null) $regularNull[] = $project;
-            else $regular[] = $project;
-          }
-        }
-        
-        if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
-        
-        
-        shuffle($regularNull);
-        $regularNull = array_slice($regularNull,0,4);
-        $regular = array_merge(array_slice($regular,0,8-count($regularNull)),$regularNull);
-        
-        if (count($regular) < 4) $regular = array();
-        else if (count($regular) < 8) $regular = array_slice($regular, 0, 4);
-        
-        
-        //set mail tracking
-        $tc = mailTrackingCode();
-        $ml = new MailLog();
-        $ml->tracking_code = mailTrackingCodeDecode($tc);
-        $ml->type = 'weekly-digest';
-        $ml->subscription_id = $sub->id;
-        $ml->save();
-
-        
         if (date("M", strtotime("-1 days")) == date("M", strtotime("-8 days"))){
-          $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+            $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
         }else{
-          $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." ".date("M", strtotime("-8 days"))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
-        }
-        // create message
-        $message = new YiiMailMessage;
-        $message->view = 'digest';
-        $message->subject = "Your Weekly Dose Of Crowdfunding Projects for ".$date;  // 11 Dec title change
-        $message->from = Yii::app()->params['noreplyEmail'];
-
-        $title = 'Top crowdfunding projects for week '.$date;
-        $content = '';
-
-        // not enough projects
-        if ($count < 4){
-          $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
+            $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." ".date("M", strtotime("-8 days"))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
         }
 
-        $editLink = absoluteURL()."site/index?id=".$sub->hash;
+        foreach ($subscriptions  as $sub){
 
-        $message->setBody(array("tc"=>$tc,"user_id"=>$sub->id,
-                                "content"=>$content, "title"=>$title,
-                                "featuredProjects"=>$featured, "projects"=>$regular,
-                                "showEdit"=>true,"editLink"=>$editLink
-                                ), 'text/html');
-        $message->setTo($sub->email);
-        Yii::app()->mail->send($message);
-        
-      }
+            $sql = $this->createSQL($sub, 7);
+
+            // get projects
+            $projects = Project::model()->findAll($sql);
+
+            $sorted = $this->sortProjects($sub,$projects,$paidProjects);
+
+            $this->sendNewsletter($sub,
+                    'Top crowdfunding projects for week '.$date,
+                    "Your Weekly Dose Of Crowdfunding Projects for ".$date,
+                    'weekly-digest',
+                    $sorted);
+
+        }
     }
 
   }
@@ -307,6 +255,48 @@ class MailerCommand extends CConsoleCommand{
   public function actionTestWeeklyDigest(){
     $this->actionWeeklyDigest(true);
   }  
+  
+  
+  
+  /**
+   * daily digest
+   */
+	public function actionTwiceAWeekDigest($test = false){
+    
+    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
+    
+    if ($subscriptions){
+      
+      
+      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      $date = addOrdinalNumberSuffix(date("l j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+       
+      foreach ($subscriptions  as $sub){
+          
+        // sunday
+        if (date("w") == 0) $sql = $this->createSQL($sub, 4); 
+            //wednesday
+        if (date("w") == 3) $sql = $this->createSQL($sub, 3); 
+        
+        // get projects
+        $projects = Project::model()->findAll($sql);
+        
+        $sorted = $this->sortProjects($sub,$projects,$paidProjects);
+
+        $this->sendNewsletter($sub,
+                'Top crowdfunding projects for '.$date,
+                "Your Dose Of Crowdfunding Projects for ".$date,
+                'weekly-digest-twice',
+                $sorted);
+        
+      }
+    }
+  }
+  
+  public function actionTestTwiceAWeekDigest(){
+    $this->actionTwiceAWeekDigest(true);
+  }
   
   /**
    * validates that parser has parsed something in the last few hours
