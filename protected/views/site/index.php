@@ -23,8 +23,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
        <div class="row">
          <div class="columns large-12 text-center">
            <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30">
-           <h1 class="white title show-for-medium-up">Crowdfunding RSS</h1>
-           <h1 class="white title-small show-for-small">Crowdfunding RSS</h1>
+           <h1 class="white title">Crowdfunding projects delivered to you</h1>
            <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
          </div>
        </div>
@@ -37,10 +36,9 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           <a class="button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
             I am a project owner
           </a>
-          <h3 class="white">Crowdfunding projects delivered to you!</h3>
-          <p class="white-light">
+          <h3 class="white">
             Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver <strong>the best projects</strong> right in your inbox or trough RSS feed.
-          </p>
+          </h3>
           
 
         </div>

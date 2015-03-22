@@ -96,3 +96,9 @@ div.switch label:hover{
   transition: background-color 300ms ease-out;
   background-color: #007095;
 }
+
+@media only screen and (max-width: 40em) {
+    .title{
+      font-size: 5em;
+    }
+}
