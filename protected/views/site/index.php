@@ -18,27 +18,29 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
 </div>
 <?php //*/ ?>
 
-    <div class="intro pt50">
+    <div class="intro">
+       <div class="pt60 hide-for-small"></div>
        <a id="whatIsCRSS" class="anchor"></a>
        <div class="row">
          <div class="columns large-12 text-center">
-           <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30">
+           <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt-20 mb30">
            <h1 class="white title">Crowdfunding projects delivered to you</h1>
            <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
          </div>
        </div>
     </div>
   
-		<div class="intro-desc pb30">
+    <div class="intro-desc pb30">
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
         <div class="columns ">
-          <a class="button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
+          <h3 class="white">
+            Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver 
+            <strong>the best projects</strong> right in your <span style="color:#222">inbox <i class="fa fa-envelope-o"></i></span> or trough <span style="color:#222">RSS feed <i class="fa fa-rss"></i></span>
+          </h3>
+          <a class="project-owner button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
             I am a project owner
           </a>
-          <h3 class="white">
-            Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver <strong>the best projects</strong> right in your inbox or trough RSS feed.
-          </h3>
           
 
         </div>
@@ -228,43 +230,57 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
              <div class="columns small-12 medium-4">
                
                <div class="row" trk="switch_delivery_rss">
-                  <div class="columns small-2 medium-5 large-4">
+                  <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
                       <input id="rss_feed" name="rss_feed" <?php if (!isset($subscription->rss)) echo 'checked'; else if ($subscription->rss) echo 'checked'; ?> type="checkbox">
                       <label for="rss_feed"></label>
                     </div>
                   </div>
-                  <div class="columns small-10 medium-6 large-8">
+                  <div class="columns small-9 medium-6 large-8">
                     <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Instantly get all projects in your favorit RSS reader.">
-                      RSS feed
+                      RSS feed link<i class="fa fa-rss"></i>
                     </label>
                   </div>
                 </div>
                
                <div class="row" trk="switch_delivery_dailyDigest">
-                  <div class="columns small-2 medium-5 large-4">
+                  <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
                       <input id="daily_digest" name="daily_digest" <?php if (!isset($subscription->daily_digest)) echo 'checked'; else if ($subscription->daily_digest) echo 'checked'; ?> type="checkbox">
                       <label for="daily_digest"></label>
                     </div>
                   </div>
-                  <div class="columns small-10 medium-6 large-8">
-                    <label for="daily_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a day recieve an email with top 10 projects that day.">
-                      Daily digest
+                  <div class="columns small-9 medium-6 large-8">
+                    <label for="daily_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Daily update with top 10 projects of that day.">
+                       Daily email digest <i class="fa fa-envelope-o"></i>
                     </label>
                   </div>
                 </div>
                
+               <div class="row" trk="switch_delivery_twoTimesWeeklyDigest">
+                  <div class="columns small-3 medium-5 large-4">
+                    <div class="switch round small">
+                      <input id="two_times_weekly_digest" name="two_times_weekly_digest" <?php if (isset($subscription->two_times_weekly_digest) && $subscription->two_times_weekly_digest == 1) echo 'checked'; ?> type="checkbox">
+                      <label for="two_times_weekly_digest"></label>
+                    </div>
+                  </div>
+                  <div class="columns small-9 medium-6 large-8">
+                    <label for="two_times_weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week get an overview of most popular projects in the last week.">
+                      Two emails per week<i class="fa fa-envelope-o"></i>
+                    </label>
+                  </div>
+                </div>
+                 
                <div class="row" trk="switch_delivery_weeklyDigest">
-                  <div class="columns small-2 medium-5 large-4">
+                  <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
                       <input id="weekly_digest" name="weekly_digest" <?php if (isset($subscription->weekly_digest) && $subscription->weekly_digest == 1) echo 'checked'; ?> type="checkbox">
                       <label for="weekly_digest"></label>
                     </div>
                   </div>
-                  <div class="columns small-10 medium-6 large-8">
+                  <div class="columns small-9 medium-6 large-8">
                     <label for="weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week get an overview of most popular projects in the last week.">
-                      Weekly digest
+                      Weekly email digest <i class="fa fa-envelope-o"></i>
                     </label>
                   </div>
                 </div>
