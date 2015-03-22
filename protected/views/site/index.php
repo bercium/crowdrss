@@ -266,7 +266,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                   </div>
                   <div class="columns small-9 medium-6 large-8">
                     <label for="two_times_weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week get an overview of most popular projects in the last week.">
-                      Two emails per week<i class="fa fa-envelope-o"></i>
+                      Two emails per week <i class="fa fa-envelope-o"></i>
                     </label>
                   </div>
                 </div>
