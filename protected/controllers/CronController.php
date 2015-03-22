@@ -158,6 +158,19 @@ class CronController extends Controller
     echo $this->consoleCommand('mailer','testWeeklyDigest');
   }
   
+  
+    /**
+   * 
+   */
+  public function actionTwiceAWeekDigest(){
+    echo $this->consoleCommand('mailer','twiceAWeekDigest');
+  }
+  
+  public function actionTestTwiceAWeekDigest(){
+    echo $this->consoleCommand('mailer','testTwiceAWeekDigest');
+  }
+  
+  
   /**
    * 
    */
