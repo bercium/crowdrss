@@ -123,6 +123,9 @@ class SiteController extends Controller
       if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
       else $subscription->weekly_digest = 0;
       
+      if (isset($_POST['two_times_weekly_digest'])) $subscription->two_times_weekly_digest = 1;
+      else $subscription->two_times_weekly_digest = 0;
+      
       if (isset($_POST['rating'])) $subscription->rating = $_POST['rating'];
       $subscription->time_updated = date("Y-m-d H:i:s");
       
