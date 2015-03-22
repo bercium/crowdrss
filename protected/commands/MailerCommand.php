@@ -271,14 +271,20 @@ class MailerCommand extends CConsoleCommand{
       
       
       $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-      $date = addOrdinalNumberSuffix(date("l j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
+      $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
        
       foreach ($subscriptions  as $sub){
           
         // sunday
-        if (date("w") == 0) $sql = $this->createSQL($sub, 4); 
+        if (date("w") == 0){
+            $sql = $this->createSQL($sub, 4); 
+            $date = "last 4 days";
+        }
         else    //wednesday
-        if (date("w") == 3) $sql = $this->createSQL($sub, 3); 
+        if (date("w") == 3){
+            $date = "last 3 days";
+            $sql = $this->createSQL($sub, 3); 
+        }
         else continue;
         
         // get projects
