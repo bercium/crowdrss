@@ -265,7 +265,7 @@ class MailerCommand extends CConsoleCommand{
 	public function actionTwiceAWeekDigest($test = false){
     
     if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
-    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
+    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>2));
     
     if ($subscriptions){
       
@@ -277,8 +277,9 @@ class MailerCommand extends CConsoleCommand{
           
         // sunday
         if (date("w") == 0) $sql = $this->createSQL($sub, 4); 
-            //wednesday
+        else    //wednesday
         if (date("w") == 3) $sql = $this->createSQL($sub, 3); 
+        else continue;
         
         // get projects
         $projects = Project::model()->findAll($sql);
