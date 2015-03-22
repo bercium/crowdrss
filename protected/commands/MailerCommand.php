@@ -159,6 +159,7 @@ class MailerCommand extends CConsoleCommand{
 
     $content = '';
 
+    $count = count($projects['featured'])+count($projects['regular']);
     // not enough projects
     if ($count < 4){
       $content = 'We found just a few projects for you. <br />Maybe your rules are too strict? Consider editing your feed.<hr>';
