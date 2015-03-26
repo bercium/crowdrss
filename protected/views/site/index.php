@@ -238,7 +238,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                   </div>
                   <div class="columns small-9 medium-6 large-8">
                     <label for="rss_feed" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Instantly get all projects in your favorit RSS reader.">
-                      RSS feed link<i class="fa fa-rss"></i>
+                      RSS feed link <i class="fa fa-rss"></i>
                     </label>
                   </div>
                 </div>
