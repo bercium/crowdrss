@@ -182,8 +182,8 @@ class MailerCommand extends CConsoleCommand{
    */
 	public function actionDailyDigest($test = false){
     
-    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
-    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
+    /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else */$subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>1));
     
     if ($subscriptions){
       
@@ -199,6 +199,12 @@ class MailerCommand extends CConsoleCommand{
         
         $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
+         if ($test){
+            echo $sub->email."\n";
+            print_r($sorted);
+            echo "\n\n";
+        }
+        if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
                 'Top crowdfunding projects for '.$date,
                 "Your Daily Dose Of Crowdfunding Projects for ".$date,
@@ -219,8 +225,9 @@ class MailerCommand extends CConsoleCommand{
    */
   public function actionWeeklyDigest($test = false){
     
-    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
-    else $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
+    /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else*/ 
+        $subscriptions = Subscription::model()->findAllByAttributes(array('weekly_digest'=>1));
 
     if ($subscriptions){
 
@@ -242,6 +249,12 @@ class MailerCommand extends CConsoleCommand{
 
             $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
+            if ($test){
+                echo $sub->email."\n";
+                print_r($sorted);
+                echo "\n\n";
+            }
+            if (!$test || $sub->id == 1 || $sub->id == 2)
             $this->sendNewsletter($sub,
                     'Top crowdfunding projects for week '.$date,
                     "Your Weekly Dose Of Crowdfunding Projects for ".$date,
@@ -264,8 +277,8 @@ class MailerCommand extends CConsoleCommand{
    */
 	public function actionTwiceAWeekDigest($test = false){
     
-    if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
-    else $subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>2));
+    /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
+    else */$subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>2));
     
     if ($subscriptions){
       
@@ -292,6 +305,12 @@ class MailerCommand extends CConsoleCommand{
         
         $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
+         if ($test){
+            echo $sub->email."\n";
+            print_r($sorted);
+            echo "\n\n";
+        }
+        if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
                 'Top crowdfunding projects for '.$date,
                 "Your Dose Of Crowdfunding Projects for ".$date,
