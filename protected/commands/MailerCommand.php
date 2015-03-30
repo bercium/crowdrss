@@ -117,7 +117,8 @@ class MailerCommand extends CConsoleCommand{
       $i++;
       if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
 
-      if (!$this->checkProjectLink($project->link,$project->id)) continue;
+      if (rand(0, 10) == 1)
+        if (!$this->checkProjectLink($project->link,$project->id)) continue;
 
       if ($i <= 4) $featured[] = $project;
       else{
