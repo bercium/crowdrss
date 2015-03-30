@@ -88,6 +88,8 @@ class MailerCommand extends CConsoleCommand{
    * 
    */
   private function sortProjects($sub, $projects, $paidProjects){
+    $paidProject = null;
+    
     if (count($paidProjects) > 0){
         foreach ($paidProjects as $pp){
             $platA = explode(",",$sub->platform);
