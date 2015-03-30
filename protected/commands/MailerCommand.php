@@ -87,7 +87,7 @@ class MailerCommand extends CConsoleCommand{
   /**
    * 
    */
-  private function sortProjects($sub, $projects, $paidProjects){
+  private function sortProjects($sub, $projects, $paidProjects, $checkProject = false){
     $paidProject = null;
     
     if (count($paidProjects) > 0){
@@ -117,7 +117,7 @@ class MailerCommand extends CConsoleCommand{
       $i++;
       if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
 
-      if (rand(0, 10) == 1)
+      if ($checkProject)
         if (!$this->checkProjectLink($project->link,$project->id)) continue;
 
       if ($i <= 4) $featured[] = $project;
@@ -200,7 +200,7 @@ class MailerCommand extends CConsoleCommand{
         // get projects
         $projects = Project::model()->findAll($sql);
         
-        $sorted = $this->sortProjects($sub,$projects,$paidProjects);
+        $sorted = $this->sortProjects($sub,$projects,$paidProjects, true);
 
          if ($test){
             echo $sub->email."\n";
