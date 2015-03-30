@@ -202,11 +202,6 @@ class MailerCommand extends CConsoleCommand{
         
         $sorted = $this->sortProjects($sub,$projects,$paidProjects, true);
 
-         if ($test){
-            echo $sub->email."\n";
-            print_r($sorted);
-            echo "\n\n";
-        }
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
                 'Top crowdfunding projects for '.$date,
@@ -252,11 +247,6 @@ class MailerCommand extends CConsoleCommand{
 
             $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
-            if ($test){
-                echo $sub->email."\n";
-                print_r($sorted);
-                echo "\n\n";
-            }
             if (!$test || $sub->id == 1 || $sub->id == 2)
             $this->sendNewsletter($sub,
                     'Top crowdfunding projects for week '.$date,
@@ -308,11 +298,6 @@ class MailerCommand extends CConsoleCommand{
         
         $sorted = $this->sortProjects($sub,$projects,$paidProjects);
 
-         if ($test){
-            echo $sub->email."\n";
-            print_r($sorted);
-            echo "\n\n";
-        }
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
                 'Top crowdfunding projects for '.$date,
