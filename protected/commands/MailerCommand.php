@@ -271,7 +271,7 @@ class MailerCommand extends CConsoleCommand{
 	public function actionTwiceAWeekDigest($test = false){
     
     /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
-    else */$subscriptions = Subscription::model()->findAllByAttributes(array('daily_digest'=>2));
+    else */$subscriptions = Subscription::model()->findAllByAttributes(array('two_times_weekly_digest'=>1));
     
     if ($subscriptions){
       
