@@ -1,4 +1,5 @@
 <?php 
+if ($project->removed == 0){
 $this->pageTitle = $project->title;
 ?><div class="pt30 pb30">
       <div class="row">
@@ -6,7 +7,7 @@ $this->pageTitle = $project->title;
 
               <div class="row">
                 <div class="columns medium-4">
-                <?php if (($project->rating) and ($project->deleted = 0)){ ?>
+                <?php if ($project->rating){ ?>
                 <span class="fa-stack fa-5x fa-lg" style="color:#0088bb; right:-20px; top:-50px; margin:0; padding:0; position: absolute;" >
                   <i class="fa fa-certificate fa-stack-1x" ></i>
                   <i style="font-size: 60%; " class="fa-stack-1x fa-inverse">
@@ -53,3 +54,7 @@ $this->pageTitle = $project->title;
         </div>
       </div>
     </div>
+<?php }else{
+    header("Location: http://crowdfundingrss.com/"); /* Redirect browser */
+    exit();
+}?>

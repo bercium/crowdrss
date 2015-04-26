@@ -29,3 +29,5 @@ protected/config/local-path.php
 protected/components/cookies.curl.txt
 time_added
 title
+
+protected/commands/parser.php
