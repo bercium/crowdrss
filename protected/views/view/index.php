@@ -1,6 +1,6 @@
 <?php 
 if ($project->removed == 0){
-$this->pageTitle = $project->title;
+    $this->pageTitle = $project->title;
 ?><div class="pt30 pb30">
       <div class="row">
         <div class="columns medium-12">
@@ -54,7 +54,12 @@ $this->pageTitle = $project->title;
         </div>
       </div>
     </div>
-<?php }else{
-    header("Location: http://crowdfundingrss.com/"); /* Redirect browser */
-    exit();
-}?>
+<?php }else{ ?>
+<div class="pt30 pb30">
+      <div class="row">
+        <div class="columns medium-12">
+            <h4>This project has been removed.</h4>
+        </div>
+      </div>
+    </div>
+<?php } ?>
