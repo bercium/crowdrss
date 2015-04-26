@@ -58,7 +58,7 @@ if ($project->removed == 0){
 <div class="pt30 pb30">
       <div class="row">
         <div class="columns medium-12">
-            <h4>This project has been removed.</h4>
+            <h4>Project has been removed.</h4>
         </div>
       </div>
     </div>
