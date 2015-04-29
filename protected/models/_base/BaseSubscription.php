@@ -42,7 +42,7 @@ abstract class BaseSubscription extends GxActiveRecord {
 	}
 
 	public static function representingColumn() {
-		return 'hash';
+		return 'id';
 	}
 
 	public function rules() {

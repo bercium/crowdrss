@@ -176,9 +176,28 @@ class MailerCommand extends CConsoleCommand{
                             "showEdit"=>true,"editLink"=>$editLink
                             ), 'text/html');
     $message->setTo($sub->email);
-    if ($count > 0) Yii::app()->mail->send($message);
+    if ($count > 0){
+        //Yii::app()->mail->send($message);
+        $filename = Yii::app()->getRuntimePath()."/dry-emails.txt";
+        $fc = '';
+        if (file_exists($filename)) $fc = file_get_contents($filename);
+        $fc .= date("Y-m-d [H:i]").": ".$sub->email."\n";
+        file_put_contents($filename,$fc);
+    }
   }
   
+  /**
+   * 
+   * @param string $type - type of log tracking code
+   */
+  private function getSubsSent($type){
+      $mailsRec = MailLog::model()->findAll("type = :type AND DATE(time_send) = :date",array(":type"=>$type,":date"=>date('Y-m-d')));
+      $mails = array();
+      foreach ($mailsRec as $mail){
+          $mails[$mail->subscription_id] = 1;
+      }
+      return $mails;
+  }
   
   /**
    * daily digest
@@ -193,8 +212,14 @@ class MailerCommand extends CConsoleCommand{
       
       $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
-       
-      foreach ($subscriptions  as $sub){
+      
+      $sentMails = $this->getSubsSent('daily-digest');
+      $i = 0;
+      foreach ($subscriptions as $sub){
+        // only send arround 100 emails per hour
+        if (isset($sentMails[$sub->id])) continue;
+        if ($i++ > 95) break;
+
         $sql = $this->createSQL($sub, 1); 
         
         // get projects
@@ -222,6 +247,8 @@ class MailerCommand extends CConsoleCommand{
    * 
    */
   public function actionWeeklyDigest($test = false){
+    $week_day = date("w");
+    if ($week_day != 1) exit; // mondays only
     
     /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
     else*/ 
@@ -238,8 +265,13 @@ class MailerCommand extends CConsoleCommand{
             $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." ".date("M", strtotime("-8 days"))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
         }
 
+        $sentMails = $this->getSubsSent('weekly-digest');
+        $i = 0;
         foreach ($subscriptions  as $sub){
-
+            // only send arround 100 emails per hour
+            if (isset($sentMails[$sub->id])) continue;
+            if ($i++ > 95) break;
+        
             $sql = $this->createSQL($sub, 7);
 
             // get projects
@@ -268,8 +300,11 @@ class MailerCommand extends CConsoleCommand{
   /**
    * daily digest
    */
-	public function actionTwiceAWeekDigest($test = false){
-    
+  public function actionTwiceAWeekDigest($test = false){
+    // only on sundays and wednesdays  
+    $week_day = date("w");
+    if ($week_day != 0 && $week_day != 3) exit;
+        
     /*if ($test) $subscriptions = Subscription::model()->findAll("id = 1 OR id = 2");
     else */$subscriptions = Subscription::model()->findAllByAttributes(array('two_times_weekly_digest'=>1));
     
@@ -278,20 +313,25 @@ class MailerCommand extends CConsoleCommand{
       
       $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
-       
+      
+      $sentMails = $this->getSubsSent('weekly-digest-twice');
+      $i = 0;
       foreach ($subscriptions  as $sub){
-          
+        
         // sunday
-        if (date("w") == 0){
+        if ($week_day == 0){
             $sql = $this->createSQL($sub, 4); 
             $date = "last 4 days";
         }
         else    //wednesday
-        if (date("w") == 3){
+        if ($week_day == 3){
             $date = "last 3 days";
             $sql = $this->createSQL($sub, 3); 
         }
-        else continue;
+        
+        // only send arround 100 emails per hour
+        if (isset($sentMails[$sub->id])) continue;
+        if ($i++ > 95) break;
         
         // get projects
         $projects = Project::model()->findAll($sql);

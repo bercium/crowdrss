@@ -34,13 +34,13 @@ abstract class BaseMailLog extends GxActiveRecord {
 	}
 
 	public static function representingColumn() {
-		return 'time_send';
+		return 'id';
 	}
 
 	public function rules() {
 		return array(
 			array('tracking_code', 'required'),
-      array('time_send', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
+            array('time_send', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
         
 			array('tracking_code, subscription_id, extra_id', 'numerical', 'integerOnly'=>true),
 			array('type', 'length', 'max'=>100),
@@ -53,6 +53,7 @@ abstract class BaseMailLog extends GxActiveRecord {
 	public function relations() {
 		return array(
 			'mailClickLogs' => array(self::HAS_MANY, 'MailClickLog', 'mail_tracking_code'),
+            'subscriptionId' => array(self::BELONGS_TO, 'Subscription', 'subscription_id'),
 		);
 	}
 
