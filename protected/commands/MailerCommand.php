@@ -177,11 +177,11 @@ class MailerCommand extends CConsoleCommand{
                             ), 'text/html');
     $message->setTo($sub->email);
     if ($count > 0){
-        //Yii::app()->mail->send($message);
+        Yii::app()->mail->send($message);
         $filename = Yii::app()->getRuntimePath()."/dry-emails.txt";
         $fc = '';
         if (file_exists($filename)) $fc = file_get_contents($filename);
-        $fc .= date("Y-m-d [H:i]").": ".$sub->email."\n";
+        $fc .= date("Y-m-d [H:i]")." (".$trackingCode."): ".$sub->email."\n";
         file_put_contents($filename,$fc);
     }
   }
