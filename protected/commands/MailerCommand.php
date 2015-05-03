@@ -158,7 +158,7 @@ class MailerCommand extends CConsoleCommand{
     $message = new YiiMailMessage;
     $message->view = 'digest';
     $message->subject = $subject; 
-    $message->from = Yii::app()->params['noreplyEmail'];
+    $message->from = Yii::app()->params['adminEmail'];
 
     $content = '';
 

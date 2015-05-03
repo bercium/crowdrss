@@ -159,7 +159,7 @@ class SiteController extends Controller
         }
 
         $message->addTo($subscription->email);
-        $message->from = Yii::app()->params['noreplyEmail'];
+        $message->from = Yii::app()->params['adminEmail'];
         Yii::app()->mail->send($message);
         
         //$this->refresh();
