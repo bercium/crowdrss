@@ -23,7 +23,8 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
        <a id="whatIsCRSS" class="anchor"></a>
        <div class="row">
          <div class="columns large-12 text-center">
-           <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt-20 mb30">
+           <div class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt20 mb30 "></div>
+           <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
            <h1 class="white title">Crowdfunding projects delivered to you</h1>
            <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
          </div>
