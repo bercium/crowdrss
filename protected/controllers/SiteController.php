@@ -1,7 +1,7 @@
 <?php
 
-class SiteController extends Controller
-{
+class SiteController extends Controller { 
+	public $social = false;
 	/**
 	 * Declares class-based actions.
 	 */
@@ -37,173 +37,173 @@ class SiteController extends Controller
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionIndex()
-	{
-    $this->layout = 'blank';
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-    
-    $cat_sel = array();
-    $platform_sel = array();
-    $subcat_sel = array();
-    $email = '';
-    $subscription = null;
-    
-    $OrigCategories = array();
-    $SelOrigCategories = OrigCategory::model()->findAll();
-    foreach ($SelOrigCategories as $origcat){
-      $OrigCategories[$origcat->category_id][] = $origcat;
-    }
-    
-    //load previous feed
-    if (isset($_GET['id'])){
-      $subscription = Subscription::model()->findByAttributes(array('hash'=>$_GET['id']));
-      if ($subscription){
-        $cat_sel = explode(',',$subscription->category);
-        $platform_sel = explode(',',$subscription->platform);
-        $subcat_sel = explode(',',$subscription->exclude_orig_category);
-        
-        $email = $subscription->email;
-      }else{
-        setFlash("save", "Subscription not found! Pleas check that you have the right ID.", "alert", false);
-      }
-    }
-    
-    
-    //subscribe to feed
-    if(isset($_POST['subscribe'])){
-      $plat = '';
-      if (isset($_POST['plat'])) $plat = implode(",",array_keys($_POST['plat']));
-      if ($plat == '0') $plat = '';
-      $platform_sel = explode(',',$plat);
-      
-      $cat = '';
-      if (isset($_POST['cat'])) $cat = implode(",",array_keys($_POST['cat']));
-      $cat_sel = explode(',',$cat);
-      
-      $subcat = '';
-      $subcat_sel_inv = array();
-      if (isset($_POST['subcat'])) $subcat_sel_inv = array_keys($_POST['subcat']);
-      //$subcat_sel_inv = explode(',',$subcat);
-      
-      $subcat_sel = array();
-      foreach ($cat_sel as $id){
-        //if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
-          foreach ($OrigCategories[$id] as $origCat){
-            //echo ",".$origCat->id." ";
-            if (!in_array($origCat->id,$subcat_sel_inv)){
-              $subcat_sel[] = $origCat->id;
-            }
-          }
-      }
-      
-      $subcat = implode(",",$subcat_sel);
-      
-      $email = $_POST['email']; 
-      
-      $subscription = Subscription::model()->findByAttributes(array('email'=>$email));
-      $subupdate = 'update';
-      if (!$subscription){
-        $subupdate = 'new';
-        $subscription = new Subscription();
-        //$subscription->time_created = date("Y-m-d H:i:s");
-        $subscription->hash = mailTrackingCode();
-      }
-      
-      
-      $subscription->email = $email;
-      $subscription->platform = $this->validateId($plat);
-      $subscription->category = $this->validateId($cat);
-      $subscription->exclude_orig_category = $this->validateId($subcat);
-      
-      if (isset($_POST['rss_feed'])) $subscription->rss = 1;
-      else $subscription->rss = 0;
-      if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
-      else $subscription->daily_digest = 0;
-      if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
-      else $subscription->weekly_digest = 0;
-      
-      if (isset($_POST['two_times_weekly_digest'])) $subscription->two_times_weekly_digest = 1;
-      else $subscription->two_times_weekly_digest = 0;
-      
-      if (isset($_POST['rating'])) $subscription->rating = $_POST['rating'];
-      $subscription->time_updated = date("Y-m-d H:i:s");
-      
-      if ($subscription->save()){
-        setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
-        
-        $message = new YiiMailMessage;
-        $message->view = 'subscribe';
-        $message->subject = 'Crowdfunding RSS subscription link';
-        $tc = mailTrackingCode();
-        $ml = new MailLog();
-        $ml->tracking_code = mailTrackingCodeDecode($tc);
-        $ml->type = 'subscription-'.$subupdate;
-        $ml->subscription_id = $subscription->id;
-        $ml->save();
-        
-        $rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
-        $editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$subscription->hash));
-        
-        if ($subscription->rss){
-          $content = 'Thank you for subscribing to Crowdfunding RSS.<br /><br />
-                      We have send you the link to personalized RSS feed for crowdfunding campaigns.<br />
-                      Just copy and paste the following link in your favourite RSS reader and enjoy.';
+	public function actionIndex() {
+		$this->layout = 'blank';
+			// renders the view file 'protected/views/site/index.php'
+			// using the default layout 'protected/views/layouts/main.php'
 
-          $message->setBody(array("content"=>$content,"linkToFeed"=>$rss_link,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
-        }else{
-          $content = "Thank you for subscribing to Crowdfunding RSS.<br />
-                      We hope you will enjoy our service.";
+		$cat_sel = array();
+		$platform_sel = array();
+		$subcat_sel = array();
+		$email = '';
+		$subscription = null;
 
-          $message->setBody(array("content"=>$content,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
-        }
+		$OrigCategories = array();
+		$SelOrigCategories = OrigCategory::model()->findAll();
+		foreach ($SelOrigCategories as $origcat){
+		  $OrigCategories[$origcat->category_id][] = $origcat;
+		}
 
-        $message->addTo($subscription->email);
-        $message->from = Yii::app()->params['adminEmail'];
-        Yii::app()->mail->send($message);
-        
-        //$this->refresh();
-        $this->redirect($editLink);
-        Yii::app()->end();
-        
-      }else{
-        if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
-        else setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
-      }
-    } // end subscription
+		//load previous feed
+		if (isset($_GET['id'])){
+		  $subscription = Subscription::model()->findByAttributes(array('hash'=>$_GET['id']));
+		  if ($subscription){
+			$cat_sel = explode(',',$subscription->category);
+			$platform_sel = explode(',',$subscription->platform);
+			$subcat_sel = explode(',',$subscription->exclude_orig_category);
 
+			$email = $subscription->email;
+		  }else{
+			setFlash("save", "Subscription not found! Please check that you have the right ID.", "alert", false);
+		  }
+		}
+
+
+		//subscribe to feed
+		if(isset($_POST['subscribe'])){
+		  $plat = '';
+		  if (isset($_POST['plat'])) $plat = implode(",",array_keys($_POST['plat']));
+		  if ($plat == '0') $plat = '';
+		  $platform_sel = explode(',',$plat);
+
+		  $cat = '';
+		  if (isset($_POST['cat'])) $cat = implode(",",array_keys($_POST['cat']));
+		  $cat_sel = explode(',',$cat);
+
+		  $subcat = '';
+		  $subcat_sel_inv = array();
+		  if (isset($_POST['subcat'])) $subcat_sel_inv = array_keys($_POST['subcat']);
+		  //$subcat_sel_inv = explode(',',$subcat);
+
+		  $subcat_sel = array();
+		  foreach ($cat_sel as $id){
+			//if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
+			  foreach ($OrigCategories[$id] as $origCat){
+				//echo ",".$origCat->id." ";
+				if (!in_array($origCat->id,$subcat_sel_inv)){
+				  $subcat_sel[] = $origCat->id;
+				}
+			  }
+		  }
+
+		  $subcat = implode(",",$subcat_sel);
+
+		  $email = $_POST['email']; 
+
+		  $subscription = Subscription::model()->findByAttributes(array('email'=>$email));
+		  $subupdate = 'update';
+		  if (!$subscription){
+			$subupdate = 'new';
+			$subscription = new Subscription();
+			//$subscription->time_created = date("Y-m-d H:i:s");
+			$subscription->hash = mailTrackingCode();
+		  }
+
+
+		  $subscription->email = $email;
+		  $subscription->platform = $this->validateId($plat);
+		  $subscription->category = $this->validateId($cat);
+		  $subscription->exclude_orig_category = $this->validateId($subcat);
+
+		  if (isset($_POST['rss_feed'])) $subscription->rss = 1;
+		  else $subscription->rss = 0;
+		  if (isset($_POST['daily_digest'])) $subscription->daily_digest = 1;
+		  else $subscription->daily_digest = 0;
+		  if (isset($_POST['weekly_digest'])) $subscription->weekly_digest = 1;
+		  else $subscription->weekly_digest = 0;
+
+		  if (isset($_POST['two_times_weekly_digest'])) $subscription->two_times_weekly_digest = 1;
+		  else $subscription->two_times_weekly_digest = 0;
+
+		  if (isset($_POST['rating'])) $subscription->rating = $_POST['rating'];
+		  $subscription->time_updated = date("Y-m-d H:i:s");
+
+		  if ($subscription->save()){
+			setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
+
+			$message = new YiiMailMessage;
+			$message->view = 'subscribe';
+			$message->subject = 'Crowdfunding RSS subscription link';
+			$tc = mailTrackingCode();
+			$ml = new MailLog();
+			$ml->tracking_code = mailTrackingCodeDecode($tc);
+			$ml->type = 'subscription-'.$subupdate;
+			$ml->subscription_id = $subscription->id;
+			$ml->save();
+
+			$rss_link = Yii::app()->createAbsoluteUrl("feed/rss",array("data"=>$subscription->hash));
+			$editLink = Yii::app()->createAbsoluteUrl("site/index",array("id"=>$subscription->hash));
+
+			if ($subscription->rss){
+			  $content = 'Thank you for subscribing to Crowdfunding RSS.<br /><br />
+						  We have send you the link to personalized RSS feed for crowdfunding campaigns.<br />
+						  Just copy and paste the following link in your favourite RSS reader and enjoy.';
+
+			  $message->setBody(array("content"=>$content,"linkToFeed"=>$rss_link,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
+			}else{
+			  $content = "Thank you for subscribing to Crowdfunding RSS.<br />
+						  We hope you will enjoy our service.";
+
+			  $message->setBody(array("content"=>$content,"editLink"=>$editLink,"tc"=>$tc), 'text/html');
+			}
+
+			$message->addTo($subscription->email);
+			$message->from = Yii::app()->params['noreplyEmail'];
+			Yii::app()->mail->send($message);
+
+			//$this->refresh();
+			$this->redirect($editLink);
+			Yii::app()->end();
+
+		  }else{
+			if (YII_DEBUG) setFlash("save", "Problem saving your subscription! Please try later or contact us. ".print_r($subscription->getErrors(),true), "alert", false);
+			else setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
+		  }
+		} // end subscription
+
+
+		//platforms
+		$platforms = Platform::model()->findAll("active = :active",array(":active"=>1));
+		$selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true,"projPerDay"=>0));
+		$all = 0;
+		foreach ($platforms as $platform){
+		  $numofp = round(Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id)) / 7);
+		  //$numofp = round(count(Project::model()->findAll("time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id))) / 7);
+		  $all += $numofp;
+		  $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel),"projPerDay"=>$numofp);
+		  if (in_array($platform->id, $platform_sel)) $selplat[0]['selected'] = false;
+		}
+		$selplat[0]['projPerDay'] = $all;
+
+		//categories
+		$categories = Category::model()->findAll(array("order"=>"name"));
+		$selcat = array();
+		foreach ($categories as $category){
+		  //$OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
+		  $hint = '';
+		  $subCat = array();
+		  if (isset($OrigCategories[$category->id])){
+			foreach ($OrigCategories[$category->id] as $origCat){
+			  if ($hint) $hint .= '<br />';
+			  $hint .= $origCat->name;
+			  $subCat[] = array("name"=>$origCat->name, "id"=>$origCat->id, "selected"=>!in_array($origCat->id, $subcat_sel));
+			}
+		  }
+		  $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
+		}
     
-    //platforms
-    $platforms = Platform::model()->findAll("active = :active",array(":active"=>1));
-    $selplat = array(array("name"=>'All platforms', "id"=>0, "selected"=>true,"projPerDay"=>0));
-    $all = 0;
-    foreach ($platforms as $platform){
-      $numofp = round(Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id)) / 7);
-      //$numofp = round(count(Project::model()->findAll("time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR) AND platform_id = :platform",array(":platform"=>$platform->id))) / 7);
-      $all += $numofp;
-      $selplat[] = array("name"=>$platform->name, "id"=>$platform->id, "selected"=>in_array($platform->id, $platform_sel),"projPerDay"=>$numofp);
-      if (in_array($platform->id, $platform_sel)) $selplat[0]['selected'] = false;
-    }
-    $selplat[0]['projPerDay'] = $all;
-    
-    //categories
-    $categories = Category::model()->findAll(array("order"=>"name"));
-    $selcat = array();
-    foreach ($categories as $category){
-      //$OrigCategories = OrigCategory::model()->findAllByAttributes(array('category_id'=>$platform->id));
-      $hint = '';
-      $subCat = array();
-      if (isset($OrigCategories[$category->id])){
-        foreach ($OrigCategories[$category->id] as $origCat){
-          if ($hint) $hint .= '<br />';
-          $hint .= $origCat->name;
-          $subCat[] = array("name"=>$origCat->name, "id"=>$origCat->id, "selected"=>!in_array($origCat->id, $subcat_sel));
-        }
-      }
-      $selcat[] = array("name"=>$category->name, "id"=>$category->id, "selected"=>in_array($category->id, $cat_sel), "hint"=>$hint, "subcat"=>$subCat);
-    }
-    
-    $subscribers = Subscription::model()->countBySql("SELECT COUNT(*) FROM subscription");
+		$subscribers = Subscription::model()->countBySql("SELECT COUNT(*) FROM subscription");
+		$this->social = true;
 		$this->render('index',array('platforms'=>$selplat,'categories'=>$selcat,'subscription'=>$subscription,"subscribers"=>$subscribers));
     
 	}

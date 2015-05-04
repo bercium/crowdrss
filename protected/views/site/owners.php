@@ -155,11 +155,12 @@ $this->pageTitle = 'How does your project stack to others';
     </div>
   </div>
 </div>
-
-<div class="pt30 outro pb30">
+<hr>
+<div class="pt30 outr-o pb30">
+	
   <div class="row">
     <div class="columns text-center">
-      <h2 class="white">Get featured in our daily or weekly digest!</h2>
+      <h2 class="mb20">Get featured in our daily or weekly digest!</h2>
       <a href="#" onclick="contact(this);" trk="link_content_featureMe" class="button success radius large">Contact us</a>
     </div>
   </div>

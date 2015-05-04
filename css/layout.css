@@ -52,6 +52,15 @@
   border-top: 2px #666 solid;  */
 }
 
+
+.outro a{
+	color:#fff;
+}
+
+.outro a:hover{
+	color:#c2dbef;
+}
+
 .footer{
   border-top: 2px #0088bb solid;
 }
@@ -64,13 +73,13 @@
 .special_title{
   font-family: 'Istok Web', sans-serif;
   font-weight: bold;
-  text-shadow: 1px 0 0 #0088bb, -1px 0 0 #0088bb, 0 1px 0 #0088bb, 0 -1px 0 #0088bb, 1px 1px #0088bb, -1px -1px 0 #0088bb, 1px -1px 0 #0088bb, -1px 1px 0 #0088bb;
+  text-shadow: 1px 0 0 #3c96b7, -1px 0 0 #3c96b7, 0 1px 0 #3c96b7, 0 -1px 0 #3c96b7, 1px 1px #3c96b7, -1px -1px 0 #3c96b7, 1px -1px 0 #3c96b7, -1px 1px 0 #3c96b7;
 }
 
 .intro h1{
   font-family: 'Istok Web', sans-serif;
   font-weight: bold;
-  text-shadow: 1px 0 0 #0088bb, -1px 0 0 #0088bb, 0 1px 0 #0088bb, 0 -1px 0 #0088bb, 1px 1px #0088bb, -1px -1px 0 #0088bb, 1px -1px 0 #0088bb, -1px 1px 0 #0088bb;
+  text-shadow: 1px 0 0 #3c96b7, -1px 0 0 #3c96b7, 0 1px 0 #3c96b7, 0 -1px 0 #3c96b7, 1px 1px #3c96b7, -1px -1px 0 #3c96b7, 1px -1px 0 #3c96b7, -1px 1px 0 #3c96b7;
 }
 
 

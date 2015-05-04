@@ -24,7 +24,7 @@ if ($project->removed == 0){
                 <div class="columns medium-8">
                   <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
                   <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
-                  <p style="margin-top: 10px;" class="mb0">
+                  <p style="margin-top: 10px;" class="mb20">
                   <?php echo $project->description; ?>
                   <br />
                   <?php 
@@ -33,21 +33,23 @@ if ($project->removed == 0){
                     //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
                     if (!empty($project->goal)) echo "<br />Project goal: <strong>".$project->goal."</strong>";
                     if (!empty($project->type_of_funding)){
-                      if ($project->type_of_funding == 0) echo " Fixed funding";
-                      else echo " Flexible funding";
+                      if ($project->type_of_funding == 0) echo " <i>fixed funding</i>";
+                      else echo " <i>flexible funding</i>";
                     }
                     
                      //"<br />Rating: ".round($project->rating);
                   ?>
-                  </p>  
+                  </p>
+				  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">Go to project site <i class="fa fa-external-link"></i></a>
                 </div>
 
               </div>
               <div class="row">
                 <div class="columns mt30 text-center">
                   
-                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>"><input type="button" class="button success medium radius" value="Go to project site"></a>
-                  
+                  <a href="/" trk="button_view_index">
+					  <input type="button" class="button success medium radius" value="Find similar projects" style=" font-weight: bold;">
+				  </a>
                 </div>
               </div>
            
