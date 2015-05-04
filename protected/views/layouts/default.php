@@ -10,8 +10,8 @@
           </dl>
            
            <h2 class="white special_title" style="margin-bottom: 0px;">
-             <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" style="color: inherit">
-               <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px" trk="link_header_index"> Crowdfunding RSS
+             <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" style="color: inherit" trk="link_top_index">
+               <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"> Crowdfunding
              </a>
            </h2>
            

@@ -59,26 +59,52 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 	<?php echo $content; ?>
 
   
-  <div class="footer">
-    <div class="row mt30">
-      <div class="columns large-12 large-centered mt30">
-          <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
-            <li class="text-center ">
-              <a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star fa-5x"></i><br />Top daily</a>
-            </li>
-            <li class="text-center ">
-                <a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy fa-5x"></i><br />Top 50</a>
-            </li>
-            <li class="text-center ">
-              <a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt fa-5x"></i><br />Bottom 50</a>
-            </li>
-            <li class="text-center ">
-              <a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle fa-5x"></i><br />Project owners</a>
-            </li>  
-          </ul>
+  <div class="footer-">
+	  
+	<?php if (isset($this->social)  && $this->social){ ?>
+	<div class="mt30 pt30 pb30 outro">
+      <a id="share" class="anchor"></a>
+      <div class="row">
+        <div class="columns medium-6">
+          <h1 class="white">Sharing is caring</h1>
+          <p class="white-light">
+            Share with your friends and help us spread the word!<br />
+          </p>
+          
         </div>
+        <div class="columns medium-6 social">
+          <br />
+            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/fbw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Facebook"></a>
+            <a trk="social_twitter_share_bottom" href="https://twitter.com/intent/tweet?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageTitle; ?>&hashtags=crowdfunding,kickstarter" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/tww.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Tweet about us"></a>
+            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/gpw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Google+"></a>
+        </div>
+      </div>
     </div>
-    <hr>
+	<?php } ?>
+	  
+	
+	<div class=" pt30 pb30 <?php if (!isset($this->social) || !$this->social) echo "mt30 outro" ?>">
+		<div class="row ">
+		  <div class="columns large-12 large-centered mt30">
+			  <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
+				<li class="text-center ">
+				  <strong><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star fa-5x"></i><br />Top daily</a></strong>
+				</li>
+				<li class="text-center ">
+					<strong><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy fa-5x"></i><br />Top 50</a></strong>
+				</li>
+				<li class="text-center ">
+				  <strong><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt fa-5x"></i><br />Bottom 50</a></strong>
+				</li>
+				<li class="text-center ">
+				  <strong><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle fa-5x"></i><br />Project owners</a></strong>
+				</li>  
+			  </ul>
+			</div>
+		</div>
+	</div>
+	<?php if (isset($this->social) && $this->social){ ?>
+	<hr style="margin:0;"><?php } ?>
     <div class="row">
       <div class="column small-12 pt30 text-center">
         <div class="left">
@@ -91,7 +117,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
           <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
           <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd>
           <?php */ ?>
-          <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#666;"><i class="fa fa-envelope"></i> Write to us</a></dd> 
+          <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#666;"><i class="fa fa-envelope"></i> Write us</a></dd> 
         </dl>
       </div>
     </div>

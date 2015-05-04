@@ -57,7 +57,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           <form method="post" id="rssfeed_form" action="<?php echo Yii::app()->createUrl('site/index'); ?>" data-abide>
           
           <a id="platform" class="anchor"></a>
-          <h2>1. Choose a platform</h2>
+          <h2>1. Select a platform</h2>
           <p>Which platforms do you wish to follow?</p>
             
           <ul class="small-block-grid-1 medium-block-grid-2 large-block-grid-4">
@@ -348,25 +348,6 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
     </div>
 
 
-
-		<div class="mt30 pt30 pb30 outro">
-      <a id="share" class="anchor"></a>
-      <div class="row">
-        <div class="columns medium-6">
-          <h1 class="white">Sharing is caring</h1>
-          <p class="white-light">
-            Share with your friends and help us spread the word!<br />
-          </p>
-          
-        </div>
-        <div class="columns medium-6 social">
-          <br />
-            <a trk="social_facebook_share_bottom" href="https://www.facebook.com/sharer/sharer.php?u=<?php echo Yii::app()->params['absoluteHost']; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/fbw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Facebook"></a>
-            <a trk="social_twitter_share_bottom" href="https://twitter.com/intent/tweet?url=<?php echo Yii::app()->params['absoluteHost']; ?>&text=<?php echo $this->pageTitle; ?>&hashtags=crowdfunding,kickstarter" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/tww.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Tweet about us"></a>
-            <a trk="social_google_share_bottom" href="https://plus.google.com/share?url=<?php echo Yii::app()->params['absoluteHost']; ?>&title=<?php echo $this->pageTitle; ?>&summary=<?php echo $this->pageDesc; ?>" target="_none" ><img style="height:80px" src="<?php echo Yii::app()->request->baseUrl; ?>/images/gpw.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Share us on Google+"></a>
-        </div>
-      </div>
-    </div>
 
 
 <div id="tweettounlock" class="reveal-modal medium" data-reveal>
