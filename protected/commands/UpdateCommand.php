@@ -5,7 +5,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Import.io function to get jason result for a webpage
   function query($connectorGuid, $input) {
-    $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
+    $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9:cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
 		"Content-Type: application/json",
@@ -62,7 +62,7 @@ class UpdateCommand extends CConsoleCommand {
       }else{
         $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
       }
-      $this->errorMail($link, $category_check, $category->id);
+      //$this->errorMail($link, $category_check, $category->id);
       return $category;
     }
   }
@@ -206,7 +206,7 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Parser for PS
-  function parsePubSlush($link) {
+/*  function parsePubSlush($link) {
     $htmlData = $this->getHtml($link, array());
 
     // Goal
@@ -222,7 +222,7 @@ class UpdateCommand extends CConsoleCommand {
     $data['category'] = $matches[2];
 
     return($data);
-  }
+  }*/
 
 // Parser for FA
   function parseFundAnything($link) {
@@ -262,13 +262,14 @@ class UpdateCommand extends CConsoleCommand {
     }
 
     // Image
-    $pattern = '/<meta property="og:image" content="(.+)" \/>/';
+    /*$pattern = '/<meta property="og:image" content="(.+)" \/>/';
     preg_match($pattern, $htmlData, $matches);
-    $data['image'] = $matches[1];
+    $data['image'] = $matches[1];*/
 
     // Category
-    $pattern = '/"category":"(.+)","commentsEnabled/';
+    $pattern = '/"category":"(.+)","contributionAmount/';
     preg_match($pattern, $htmlData, $matches);
+    //var_dump($matches[1]); Die;
     $data['category'] = $matches[1];
 
     // Start date
@@ -514,7 +515,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
-      $result = $this->query("4b6e0d90-3728-4135-b308-560d238de82b", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
+      $result = $this->query("20e3c3aa-4727-477a-9b9e-4aa40e1c0ecd", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
     if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -564,7 +565,7 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // PubSlush store to DB
-  public function actionPubSlush() {
+/*  public function actionPubSlush() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Pubslush'));
     $id = $platform->id;
     $result = $this->query("88be9a33-d1f6-4920-b81d-3b5394ce7a22", array("webpage/url" => "http://pubslush.com/discover/results/all-campaigns/all-categories/all-currencies/launch-date/"), false);
@@ -606,7 +607,7 @@ class UpdateCommand extends CConsoleCommand {
         }
       }
     }
-  }
+  }*/
 
 // FundAnything store in to DB
   public function actionFundAnything() {
@@ -614,7 +615,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
     $id = $platform->id;
     while ($i <= 3) {
-      $result = $this->query("2f7d701e-5144-430d-b0f2-a8c6517a4dc7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
+      $result = $this->query("61381ca5-efb9-4525-b384-63238681f1a7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -666,7 +667,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Fundrazr'));
     $id = $platform->id;
     while ($i <= 5) {
-      $result = $this->query("ad4abdf0-64f8-4ab8-9cbf-12f8f40605d9", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
+      $result = $this->query("ef6bf213-17bb-4b2e-8459-7cec991cb375", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
       if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -674,11 +675,13 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
+            //echo $data->title; die;
             $data_single = $this->parseFundRazr($data->link);
             $insert = new Project;
             $insert->title = $data->title;
             $insert->description = $data->description;
-            $insert->image = $data_single['image'];
+            //$insert->image = $data_single['image'];
+            $insert->image = $data->image;
             $insert->link = $data->link;
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
@@ -726,7 +729,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
-      $result = $this->query("461c52ca-d2d4-4082-8839-b9d52fa24e7b", array("webpage/url" => "http://www.pledgemusic.com/projects/index/launched?page=" . $i), false);
+      $result = $this->query("708739b9-8d2e-4517-bf56-c02736e1c78b", array("webpage/url" => "http://www.pledgemusic.com/projects/index/launched?page=" . $i), false);
       if ($result->results) {
         foreach ($result->results as $data){
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
