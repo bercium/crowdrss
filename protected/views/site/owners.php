@@ -146,7 +146,7 @@ $this->pageTitle = 'How does your project stack to others';
       
       <?php if ($rating_detail){
         echo "<pre>";
-        print_r($rating_detail);
+        echo htmlentities(print_r($rating_detail,true));
         echo"</pre>";
        } ?>
       
