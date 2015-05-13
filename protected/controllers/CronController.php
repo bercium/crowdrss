@@ -70,7 +70,7 @@ class CronController extends Controller
     echo $this->consoleCommand('update','kickstarter');
     echo $this->consoleCommand('update','indiegogo');
     echo $this->consoleCommand('update','goGetFunding');
-    echo $this->consoleCommand('update','pubSlush');
+    //echo $this->consoleCommand('update','pubSlush');
     echo $this->consoleCommand('update','fundAnything');
     echo $this->consoleCommand('update','fundRazr');
   }
@@ -87,14 +87,14 @@ class CronController extends Controller
         break;
       case "ggf":echo $this->consoleCommand('update','goGetFunding');
         break;
-      case "ps":echo $this->consoleCommand('update','pubSlush');
-        break;
+      //case "ps":echo $this->consoleCommand('update','pubSlush');
+      //  break;
       case "fa":echo $this->consoleCommand('update','fundAnything');
         break;
       case "fr":echo $this->consoleCommand('update','fundRazr');
         break;
 
-      default: echo "Chose from: ks, igg, ggf, ps, fa, fr";
+      default: echo "Chose from: ks, igg, ggf, fa, fr"; //ps,
         break;
     }
   }
