@@ -63,8 +63,15 @@ class IndiegogoRating extends PlatformRating{
       }
       return false;
     }
-    //echo "b";
 
+    $pattern = '/var utag_data = (.+);/'; 
+    preg_match($pattern, $text, $match);
+    $json = html_entity_decode($match[1]);
+    $json = str_replace('\\"', "\'", $json);
+    $jsonData = json_decode($json);
+    if ($jsonData == null){ return false; }
+    if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
+    
     // Words Full Description 
     $beginingPosition = strpos($text, 'class="i-description');
     $endPosition = strpos($text, '<div class="i-lined-header">');
@@ -92,15 +99,8 @@ class IndiegogoRating extends PlatformRating{
     $tmp['#videos'] = $videoNumber; 
 
     // Money
-    $pattern = '/raised of <span class="currency"><span>(.+)<\/span><\/span> goal/';
-    preg_match($pattern, $text, $matches);
-    $money = str_replace(',', '', $matches[1]);
-    $pattern = '/\d+/';
-    preg_match($pattern, $money, $matches);
-    $money = $matches[0];
-    $pattern = '/span><em>(.+)<\/em>/';
-    preg_match($pattern, $text, $matches);
-    switch ($matches[1]) {
+    $money = $jsonData->{'campaign_raised_amount'};
+    switch ($jsonData->{'site_currency'}) {
       case "GBP": $convert = 1.69; break; 
       case "EUR": $convert = 1.34; break; 
       case "AUD": $convert = 0.93; break;
@@ -117,27 +117,13 @@ class IndiegogoRating extends PlatformRating{
     $tmp['Bvideo'] = $vid_img;
       
     // Days running
-    $pattern = '/and will close on (.+) \(.+\)\.<\/div>/';
-    preg_match($pattern, $text, $matches);
-    if (!isset($matches[1])){
-      $pattern = '/and closed on (.+) \(.+\)\.<\/div>/';
-      preg_match($pattern, $text, $matches);
-    }
-    $date_end = strtotime($matches[1]);
-    $year = explode(" ", $matches[1]);
-    $pattern = '/campaign started on (.+) and/';
-    preg_match($pattern, $text, $matches);
-    $date_start = $matches[1] . ", " . $year[2];
-    $date_start = strtotime($date_start);
-    if ($date_start > $date_end){
-      $date_start =  $matches[1] . ", " . ($year[2] - 1);
-      $date_start = strtotime($date_start);
-    }
-    $datediff = $date_end - $date_start;
-    $tmp['#daysActive'] = floor($datediff/(60*60*24));
+    $pattern = '/<span.*>in (\d)+ day.*<\/span>/';
+    preg_match($pattern, $text, $match);
+    if (isset($match[1])){$tmp['#daysActive'] = $match[1];}
+    else {$tmp['#daysActive'] = 0;}
 
     // Start date
-    $tmp['Dlaunched'] = $date_start;
+    $tmp['Dlaunched'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_start_date'}));
 
     // If project ended
     $pattern = '/i-contribute-button i-campaign-closed/';
@@ -147,15 +133,7 @@ class IndiegogoRating extends PlatformRating{
 
     // How long allready
     if ($tmp['Bfinished'] == 0){
-      $pattern = '/<span>(\d+) days left<\/span>/';
-      preg_match($pattern, $text, $matches);
-      if (isset($matches[1])){ $running = $matches[1]; }
-      else {
-        $pattern = '/<span>(\d+) hours/';
-        preg_match($pattern, $text, $matches);
-        $running = floor($matches[1]/24);
-      }
-      $tmp['#daysLong'] = $running;
+      $tmp['#daysLong'] = $jsonData->{'campaign_days_left'};
     }else{ $tmp['#daysLong'] = 0; }
 
     // Number of comments, updates, backers
@@ -177,9 +155,7 @@ class IndiegogoRating extends PlatformRating{
     $tmp['#pledges'] = $pledgesNumber;
 
     // Type of funding
-    $pattern = '/<span.+>(.+) Funding<\/span>/';
-    preg_match($pattern, $text, $matches);
-    if ($matches[1] == "Flexible"){ $tmp['Bfunding'] = 0;  }
+    if ($jsonData->{'campaign_type'} == "flexible_funding"){ $tmp['Bfunding'] = 0;  }
     else{ $tmp['Bfunding'] = 1;}
       
     // External pages
