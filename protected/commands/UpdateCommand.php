@@ -3,6 +3,7 @@
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
 
+    
 // Import.io function to get jason result for a webpage
   function query($connectorGuid, $input) {
     $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9:cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
@@ -141,7 +142,8 @@ class UpdateCommand extends CConsoleCommand {
     
     $pattern = '/var utag_data = (.+);/'; 
     preg_match($pattern, $htmlData, $match);
-    $json = html_entity_decode($match[1]);
+    if (isset($match[1])){$json = html_entity_decode($match[1]);}
+    else{return false;}
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
@@ -442,7 +444,8 @@ class UpdateCommand extends CConsoleCommand {
     preg_match_all($pattern, $htmlData, $matches);
     $data['images'] = $matches[1];
     if (isset($data['links'])&&isset($data['images'])) {
-        for ($j=0; $j< $numberOfPages; $j++) {
+        $count_links = count($data['links'])-1;
+        for ($j=0; $j< $count_links; $j++) {
         $link = "https://www.indiegogo.com".$data['links'][$j];
         $link = str_replace("/pinw", "", $link);
         $link = str_replace("/qljw", "", $link);

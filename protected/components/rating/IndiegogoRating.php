@@ -66,7 +66,8 @@ class IndiegogoRating extends PlatformRating{
 
     $pattern = '/var utag_data = (.+);/'; 
     preg_match($pattern, $text, $match);
-    $json = html_entity_decode($match[1]);
+    if (isset($match[1])){$json = html_entity_decode($match[1]);}
+    else{return false;}
     $json = str_replace('\\"', "\'", $json);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
