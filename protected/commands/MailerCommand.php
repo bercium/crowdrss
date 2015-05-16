@@ -371,7 +371,7 @@ class MailerCommand extends CConsoleCommand{
       
       $content = 'Not enough projects parsed.<br /><br />';
       if ($ksCount < 15) $content .= 'Kickstarter has '.$ksCount." new projects in last 8h!<br />";
-      if ($iggCount < 15) $content .= 'Indiegogo has '.$ksCount." new projects in last 8h!<br />";
+      if ($iggCount < 15) $content .= 'Indiegogo has '.$iggCount." new projects in last 8h!<br />";
 
       $message->setBody(array("content"=>$content), 'text/html');
       $message->setTo('info@crowdfundingrss.com');
