@@ -144,7 +144,8 @@ class UpdateCommand extends CConsoleCommand {
     preg_match($pattern, $htmlData, $match);
     if (isset($match[1])){$json = html_entity_decode($match[1]);}
     else{return false;}
-    $json = str_replace('\\"', "\'", $json);
+    $json = str_replace('\\"', "", $json);
+    $json = str_replace('\"', "", $json);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
     if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
@@ -458,10 +459,11 @@ class UpdateCommand extends CConsoleCommand {
                                                       ':image' => $data['images'][$j], 
                                                       ':link3' => $link));
         if (!$project_check) {
-          //  echo $link;
+          echo $link."\n";
           $htmlData = $this->getHtml($link, array());
           $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
           $data_single = $this->parseIndiegogo($htmlData);
+          var_dump($data_single);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
           $insert->title = $data_single['title'];
