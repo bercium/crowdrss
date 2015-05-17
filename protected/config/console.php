@@ -48,8 +48,17 @@ $a = array(
 				array(
 					'class'=>'CFileLogRoute',
 					'levels'=>'error, warning',
-          'logFile' => 'console.log',
+                    'logFile' => 'console.log',
+                    'enabled'=>true,
 				),
+                array(
+  					'levels'=>'trace, info',
+                    'class'=>'CFileLogRoute',
+                    'logFile' => 'console-info.log',
+                    'enabled'=>true,
+                    //'enabled'=>YII_DEBUG,
+                    /*'categories'=>'system.db.*',*/
+                ),
 			),
 		),
       
