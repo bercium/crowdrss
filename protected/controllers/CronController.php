@@ -80,6 +80,7 @@ class CronController extends Controller
    * all hidden profiles will be notified every second week
    */
   public function actionPoolSingle($type){
+      ini_set('display_errors',1); ini_set('display_startup_errors',1); error_reporting(-1);
     switch ($type) {
       case "ks":echo $this->consoleCommand('update','kickstarter');
         break;
