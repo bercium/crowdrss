@@ -69,9 +69,13 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Function for geting HTML data
-  function getHtml($link, $header) {
+  function getHtml($link, $header, $proxy = false) {
+    $proxy_ip = array("202.104.208.1", "50.62.134.171", "111.161.126.100", "157.7.201.140", "180.250.44.43", "111.161.126.99", "61.19.42.242");
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
+    if ($proxy == true) {
+        $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
+    }
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link, $header);
@@ -435,9 +439,9 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $numberOfPages = 2000;
+    $numberOfPages = 300;
     $link = "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=$numberOfPages";
-    $htmlData = $this->getHtml($link, array());
+    $htmlData = $this->getHtml($link, array(), true);
     $pattern = '/(\/projects\/.+)\/pinw/';
     preg_match_all($pattern, $htmlData, $matches);
     $data['links'] = $matches[1];
@@ -446,7 +450,7 @@ class UpdateCommand extends CConsoleCommand {
     $data['images'] = $matches[1];
     if (isset($data['links'])&&isset($data['images'])) {
         $count_links = count($data['links'])-1;
-        for ($j=0; $j< $count_links; $j++) {
+        for ($j=0; $j<= $count_links; $j++) {
         $link = "https://www.indiegogo.com".$data['links'][$j];
         $link = str_replace("/pinw", "", $link);
         $link = str_replace("/qljw", "", $link);
@@ -460,8 +464,8 @@ class UpdateCommand extends CConsoleCommand {
                                                       ':link3' => $link));
         if (!$project_check) {
           //echo $link."\n";
-          $htmlData = $this->getHtml($link, array());
-          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"));
+          $htmlData = $this->getHtml($link, array(), true);
+          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), true);
           $data_single = $this->parseIndiegogo($htmlData);
           //var_dump($data_single);
 	  if ($data_single == false) { continue; }

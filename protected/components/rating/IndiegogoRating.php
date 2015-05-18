@@ -50,9 +50,9 @@ class IndiegogoRating extends PlatformRating{
   //get all 
   protected function currentWebStatus(){
     if (!$this->html){
-      $this->html = $this->getData();  //load data if not loaded
+      $this->html = $this->getData("","",true);  //load data if not loaded
       //<a href="#home" class="js-tab-link" data-url="/projects/fear-and-fail-at-crowdfunding-conference/show_tab/home">Story</a>
-      $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest"));  //load secondary data if not loaded
+      $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest",true));  //load secondary data if not loaded
     }
     $text = $this->html;
     //echo "a".substr_count($text,'<html>');
@@ -138,7 +138,7 @@ class IndiegogoRating extends PlatformRating{
     }else{ $tmp['#daysLong'] = 0; }
 
     // Number of comments, updates, backers
-    $pattern = '/<span class="i-count">(.+)<\/span>/';
+    $pattern = '/<span id="js-tab-.+-count" class="i-count">(.+)<\/span>/';
     preg_match_all($pattern, $text, $matches);
     $tmp['#comments'] = $matches[1][1];
     $tmp['#updates'] = $matches[1][0];
