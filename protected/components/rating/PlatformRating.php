@@ -15,7 +15,7 @@ abstract class PlatformRating {
    * get web data
    */
   protected function getData($sufix = '', $headers = array(), $proxy = false){
-    $proxy_ip = array("202.104.208.1", "50.62.134.171", "111.161.126.100", "157.7.201.140", "180.250.44.43", "111.161.126.99", "61.19.42.242");
+    $proxy_ip = array("50.62.134.171", "111.161.126.100", "111.161.126.99", "61.19.42.242");
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
     if ($proxy == true) {
