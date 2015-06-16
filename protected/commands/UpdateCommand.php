@@ -70,7 +70,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Function for geting HTML data
   function getHtml($link, $header, $proxy = false) {
-    $proxy_ip = array("50.62.134.171", "111.161.126.100", "111.161.126.99", "61.19.42.242");
+    $proxy_ip = array("111.161.126.100", "111.161.126.99", "61.19.42.244");
     //$proxy_ip = "61.19.42.242";
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
@@ -441,15 +441,17 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $numberOfPages = 500;
+    $numberOfPages = 2000;
     $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);
+    $htmlDataSplit = explode('{"campaigns":', $htmlData);
+    $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
     $jsonData = json_decode($json);
     if ($jsonData == null){ return false; }
     if (count($jsonData->campaigns)>$numberOfPages/2) {
-        for ($j=0; $j<=count($jsonData->campaigns); $j++) {
+        for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
         $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
         $image = $jsonData->campaigns[$j]->compressed_image_url;
         $title = $jsonData->campaigns[$j]->title;
