@@ -70,11 +70,13 @@ class UpdateCommand extends CConsoleCommand {
 
 // Function for geting HTML data
   function getHtml($link, $header, $proxy = false) {
-    $proxy_ip = array("202.104.208.1", "50.62.134.171", "111.161.126.100", "157.7.201.140", "180.250.44.43", "111.161.126.99", "61.19.42.242");
+    $proxy_ip = array("50.62.134.171", "111.161.126.100", "111.161.126.99", "61.19.42.242");
+    //$proxy_ip = "61.19.42.242";
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
     if ($proxy == true) {
         $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
+        //$httpClient->setProxy($proxy_ip, 80);
     }
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
@@ -155,7 +157,7 @@ class UpdateCommand extends CConsoleCommand {
     if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
     
     // Title
-    $data['title'] = $jsonData->campaign_name;
+    //$data['title'] = $jsonData->campaign_name;
             
     // Description
     $data['description'] = $jsonData->campaign_description;
@@ -439,40 +441,30 @@ class UpdateCommand extends CConsoleCommand {
   public function actionIndiegogo() {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
-    $numberOfPages = 300;
-    $link = "https://www.indiegogo.com/explore?filter_browse_balance=true&filter_quick=new&per_page=$numberOfPages";
-    $htmlData = $this->getHtml($link, array(), true);
-    $pattern = '/(\/projects\/.+)\/pinw/';
-    preg_match_all($pattern, $htmlData, $matches);
-    $data['links'] = $matches[1];
-    $pattern = '/src="(.+cloudinary.+)"/';
-    preg_match_all($pattern, $htmlData, $matches);
-    $data['images'] = $matches[1];
-    if (isset($data['links'])&&isset($data['images'])) {
-        $count_links = count($data['links'])-1;
-        for ($j=0; $j<= $count_links; $j++) {
-        $link = "https://www.indiegogo.com".$data['links'][$j];
-        $link = str_replace("/pinw", "", $link);
-        $link = str_replace("/qljw", "", $link);
-        $link = str_replace("/pimf", "", $link);
-        $link = str_replace("?sa=0&sp=0", "", $link);
-        $link = str_replace("?sa=0&amp;sp=0", "", $link);
-        $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3  OR  image LIKE :image ",
-                                                array(':link1' => str_replace("?sa=0&sp=0", "", $data['links'][$j]),
-                                                      ':link2' => $data['links'][$j], 
-                                                      ':image' => $data['images'][$j], 
-                                                      ':link3' => $link));
+    $numberOfPages = 500;
+    $proxy_set = true;
+    $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
+    $htmlData = $this->getHtml($link, array(), $proxy_set);
+    $json = html_entity_decode($htmlData);
+    $jsonData = json_decode($json);
+    if ($jsonData == null){ return false; }
+    if (count($jsonData->campaigns)>$numberOfPages/2) {
+        for ($j=0; $j<=count($jsonData->campaigns); $j++) {
+        $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
+        $image = $jsonData->campaigns[$j]->compressed_image_url;
+        $title = $jsonData->campaigns[$j]->title;
+        //$category = $jsonData->campaigns[$j]->category_name;
+        $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
+                                                array(':link' => $link, ':image' => $image));
         if (!$project_check) {
-          //echo $link."\n";
-          $htmlData = $this->getHtml($link, array(), true);
-          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), true);
+          $htmlData = $this->getHtml($link, array(), $proxy_set);
+          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), $proxy_set);
           $data_single = $this->parseIndiegogo($htmlData);
-          //var_dump($data_single);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
-          $insert->title = $data_single['title'];
+          $insert->title = $title;
           $insert->description = $data_single['description'];
-          $insert->image = $data['images'][$j];
+          $insert->image = $image;
           $insert->link = $link;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
