@@ -182,12 +182,7 @@ class UpdateCommand extends CConsoleCommand {
     $data['end_date'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_end_date'}));
 
     // Location
-    $pattern = '/gon.ga_impression_data=(.+);gon.env=/';
-    preg_match($pattern, $htmlData, $match);
-    $json = html_entity_decode($match[1]);
-    $json = str_replace('\\"', "\'", $json);
-    $jsonData = json_decode($json);
-    if ($jsonData != null) { $data['location'] = $jsonData->{'list'}; }
+    $data['location'] = $jsonData->campaign_city . ", " . $jsonData->campaign_country;
 
     return($data);
   }
