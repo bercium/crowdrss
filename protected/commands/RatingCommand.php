@@ -109,16 +109,24 @@ class RatingCommand extends CConsoleCommand{
         $fc = file_get_contents($filename);
         file_put_contents(Yii::app()->getRuntimePath()."/".$nfn,$fc);
       }
-              
-      $message = new YiiMailMessage;
-      $message->view = 'system';
-      $message->subject = "Failed rating".date("Y-m-d");  
-      $message->from = Yii::app()->params['scriptEmail'];
+      
+      if (date("H") == '04'){
+        $failedFiles = array();
+        $content = "Failed file(s): ";
+        foreach (glob(Yii::app()->getRuntimePath()."/".date("Y-m-d")."*.txt") as $filename) {
+            $content .= "<br />".basename($filename);
+        }
 
-      $content = "File: ".$nfn;
-      $message->setBody(array("content"=>$content), 'text/html');
-      $message->setTo("info@crowdfundingrss.com");
-      Yii::app()->mail->send($message);      
+        $message = new YiiMailMessage;
+        $message->view = 'system';
+        $message->subject = "Failed rating".date("Y-m-d");  
+        $message->from = Yii::app()->params['scriptEmail'];
+
+        //$content = "File: ".$nfn;
+        $message->setBody(array("content"=>$content), 'text/html');
+        $message->setTo("info@crowdfundingrss.com");
+        Yii::app()->mail->send($message);
+      }
     }
     
     $time1 = $this->min15Span(strtotime("-24 hours"));
