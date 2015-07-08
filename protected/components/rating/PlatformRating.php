@@ -14,9 +14,13 @@ abstract class PlatformRating {
   /**
    * get web data
    */
-  protected function getData($sufix = '', $headers = array()){
+  protected function getData($sufix = '', $headers = array(), $proxy = false){
+    $proxy_ip = array("111.161.126.100", "111.161.126.99", "61.19.42.244");
     $httpClient = new elHttpClient();
     $httpClient->setUserAgent("ff3");
+    if ($proxy == true) {
+        $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
+    }
     $httpClient->enableRedirects();
     $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")));
     $htmlDataObject = $httpClient->get($this->link.$sufix,$headers);
