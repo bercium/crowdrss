@@ -4,8 +4,8 @@ class TestController extends Controller {
     
     public function actionIndex(){
         echo '<form method="post">';
-        echo 'St. projektou: <input type="text" name="num_proj" value="100">';
-        echo 'Proxy: <input type="text" name="proxy_ip" value="61.19.42.244">';
+        echo 'St. projektou: <input type="text" name="num_proj" value="10">';
+        echo 'Proxy: <input type="text" name="proxy_ip" value="">';
         //echo 'Proxy: <input type="text" name="proxy_ip" value="">';
         echo '<input type="submit" value="Submit">';
         echo '</form></br></br></br>';

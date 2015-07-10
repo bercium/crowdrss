@@ -70,11 +70,11 @@ class UpdateCommand extends CConsoleCommand {
 
 // Function for geting HTML data
   function getHtml($link, $header, $proxy = false) {
-    $proxy_ip = array("111.161.126.100", "111.161.126.99", "61.19.42.244");
-    //$proxy_ip = "61.19.42.242";
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
     if ($proxy == true) {
+        $proxy_ip = array("111.161.126.100", "111.161.126.99", "61.19.42.244");
+        //$proxy_ip = "61.19.42.242";
         $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
         //$httpClient->setProxy($proxy_ip, 80);
     }
@@ -146,15 +146,16 @@ class UpdateCommand extends CConsoleCommand {
 // Parser for IGG
   function parseIndiegogo($htmlData) {
     
-    $pattern = '/var utag_data = (.+);/'; 
+    $pattern = '/gon.tealium_data_layer=(.+);gon.subdomain/'; 
     preg_match($pattern, $htmlData, $match);
     if (isset($match[1])){$json = html_entity_decode($match[1]);}
     else{return false;}
     $json = str_replace('\\"', "", $json);
     $json = str_replace('\"', "", $json);
     $jsonData = json_decode($json);
+    //var_dump($jsonData); die;
     if ($jsonData == null){ return false; }
-    if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
+    if (!$jsonData->campaign_name) {return false;}
     
     // Title
     //$data['title'] = $jsonData->campaign_name;
@@ -455,11 +456,12 @@ class UpdateCommand extends CConsoleCommand {
                                                 array(':link' => $link, ':image' => $image));
         if (!$project_check) {
           $htmlData = $this->getHtml($link, array(), $proxy_set);
-          $htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), $proxy_set);
+          //$htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), $proxy_set);
           $data_single = $this->parseIndiegogo($htmlData);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
           $insert->title = $title;
+//          echo "$title \n";
           $insert->description = $data_single['description'];
           $insert->image = $image;
           $insert->link = $link;
@@ -495,10 +497,10 @@ class UpdateCommand extends CConsoleCommand {
 	  $insert_category->save();
           
           // get rating 
-          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+          /*$IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
           $rating = $IggRating->firstAnalize();
           $insert->rating = $rating;
-          $insert->save();          
+          $insert->save();*/
 //          print_r($insert->getErrors());
         }
       }
