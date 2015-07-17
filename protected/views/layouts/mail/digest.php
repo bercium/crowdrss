@@ -589,7 +589,7 @@ background: #970b0e !important;
                                 powered by: <a href="<?php if (!empty($tc)) echo mailLinkTracking($tc,Yii::app()->params['absoluteHost'],"footer-page"); else echo Yii::app()->params['absoluteHost']; ?>" style="color: #2ba6cb; text-decoration: none;">Crowdfunding RSS</a>
                               </p>
                               <p style="text-align: center; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0 0 10px; padding: 0;" align="center">
-                                Don't want to keep getting email digests? That's okay, you can <a href="<?php echo mailLinkTracking($tc,$editLink,'subscription-edit'); ?>#preview" style="color: #2ba6cb; text-decoration: none;">unsubscribe</a>
+                                Don't want to keep getting email digests? That's okay, you can <a href="<?php echo mailLinkTracking($tc,$editLink,'unsubscribe'); ?>#preview" style="color: #2ba6cb; text-decoration: none;">unsubscribe</a>
                               </p>
                             </center>
                           </td>
