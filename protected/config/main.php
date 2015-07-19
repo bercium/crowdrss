@@ -109,7 +109,7 @@ $a = array(
             'enabled'=>(!YII_DEBUG),  // send mail only from production
             //'enabled'=>YII_DEBUG,
             //*'categories'=>'system.db.*',* /
-            'except'=>'exception.CHttpException.*,system.db.CDbCommand'
+            'except'=>'exception.CHttpException.*,system.db.CDbCommand,exception.CDbException'
         ),
         array(
   					'levels'=>'error',
