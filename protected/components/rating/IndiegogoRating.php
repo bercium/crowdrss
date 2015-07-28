@@ -50,60 +50,53 @@ class IndiegogoRating extends PlatformRating{
   //get all 
   protected function currentWebStatus(){
     if (!$this->html){
-      $this->html = $this->getData("","",true);  //load data if not loaded
+      //$this->html = $this->getData();  
+      $this->html = $this->getData("","",true); //load data if not loaded
       //<a href="#home" class="js-tab-link" data-url="/projects/fear-and-fail-at-crowdfunding-conference/show_tab/home">Story</a>
-      $this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest",true));  //load secondary data if not loaded
+      //$this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest",true));  //load secondary data if not loaded
     }
     $text = $this->html;
     //echo "a".substr_count($text,'<html>');
     // check validity of data
-    if ((substr_count($text,'<html>') > 1) || (strpos($text, "i-illustration-not_found"))){
-      if (strpos($text, "i-illustration-not_found")){
-        $this->projectRemoved();
-      }
+    if (strpos($text, "i-illustration-not_found")){
+      $this->projectRemoved();
       return false;
     }
 
-    $pattern = '/var utag_data = (.+);/'; 
+    $pattern = '/gon.campaign=(.+);gon./';
     preg_match($pattern, $text, $match);
-    if (isset($match[1])){$json = html_entity_decode($match[1]);}
+    if (isset($match[1])){$json = html_entity_decode($match[1]."}]}");}
     else{return false;}
-    $json = str_replace('\\"', "\'", $json);
+    $split_json = explode(";gon.", $json);
+    $json = $split_json[0];
     $jsonData = json_decode($json);
-    if ($jsonData == null){ return false; }
-    if ($jsonData->page_name == "Invalid Page | Indiegogo") {return false;}
+    if ($jsonData == null){ return false;}
     
     // Words Full Description 
-    $beginingPosition = strpos($text, 'class="i-description');
-    $endPosition = strpos($text, '<div class="i-lined-header">');
-    $endPosition = $endPosition - $beginingPosition;
-    $description = substr($text, $beginingPosition, $endPosition);
-    $beginingPosition = strpos($description, '>');
-    $description = substr($description, $beginingPosition);
-    $descriptionNumber = str_word_count(strip_tags($description));
-    $tmp['#wordsContent'] = $descriptionNumber;
+    $description = $jsonData->description_html;
+    $tmp['#wordsContent'] = str_word_count(strip_tags($description));
 
     // Image number
-    $imageNumber = substr_count($description, '<img');
-    $tmp['#images'] = $imageNumber;
+    $tmp['#images'] = substr_count($description, '<img');
 
     // Subtitles Number
-    $subtitlesNumber = substr_count($description, '</h1>');
-    $subtitlesNumber = substr_count($description, '</h2>');
-    $subtitlesNumber = substr_count($description, '</h3>');
+    $subtitlesNumber = substr_count($description, '<h1>');
+    $subtitlesNumber += substr_count($description, '<h2>');
+    $subtitlesNumber += substr_count($description, '<h3>');
+    $subtitlesNumber += substr_count($description, '<h4>');
     $tmp['#subtitle'] = $subtitlesNumber;
 
     // Video number
     $videoNumber = substr_count($description, '</embed>');
     $videoNumber += substr_count($description, '</video>');
     $videoNumber += substr_count($description, '</iframe>');
-    $tmp['#videos'] = $videoNumber; 
+    $tmp['#videos'] = $videoNumber;
 
     // Money
-    $money = $jsonData->{'campaign_raised_amount'};
-    switch ($jsonData->{'site_currency'}) {
+    $money = $jsonData->collected_funds;
+    switch ($jsonData->currency->iso_code) {
       case "GBP": $convert = 1.69; break; 
-      case "EUR": $convert = 1.34; break; 
+      case "EUR": $convert = 1.14; break; 
       case "AUD": $convert = 0.93; break;
       case "CAD": $convert = 0.92; break;
       default: $convert = 1; break;
@@ -111,7 +104,7 @@ class IndiegogoRating extends PlatformRating{
     $tmp['$goal'] = $money * $convert;
 
     // Video/Image
-    $pattern = '/<div id="pitchvideo">/';
+    $pattern = '/id="pitchvideo"/';
     preg_match($pattern, $text, $matches);
     if (isset($matches[0])){$vid_img = 1;}
     else{$vid_img = 0;}
@@ -124,7 +117,7 @@ class IndiegogoRating extends PlatformRating{
     else {$tmp['#daysActive'] = 0;}
 
     // Start date
-    $tmp['Dlaunched'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_start_date'}));
+    $tmp['Dlaunched'] = date("Y-m-d H:i:s", strtotime($jsonData->funding_started_at));
 
     // If project ended
     $pattern = '/i-contribute-button i-campaign-closed/';
@@ -134,7 +127,7 @@ class IndiegogoRating extends PlatformRating{
 
     // How long allready
     if ($tmp['Bfinished'] == 0){
-      $tmp['#daysLong'] = $jsonData->{'campaign_days_left'};
+      $tmp['#daysLong'] = $jsonData->funding_days;
     }else{ $tmp['#daysLong'] = 0; }
 
     // Number of comments, updates, backers
@@ -145,18 +138,14 @@ class IndiegogoRating extends PlatformRating{
     $tmp['#backers'] = $matches[1][2];
 
     // Rased money
-    $pattern = '/currency-xlarge"><span>.(.+)<\/span><em>/';
-    preg_match($pattern, $text, $matches);
-    $tmp['$raised'] = str_replace(",", "", $matches[1]) * $convert;
+    $tmp['$raised'] = $jsonData->collected_funds * $convert;
 
     // Pledges
-    $pattern = '/i-perk-title">/';
-    preg_match_all($pattern, $text, $matches);
-    $pledgesNumber = count($matches[0]);
+    $pledgesNumber = count($jsonData->perks);
     $tmp['#pledges'] = $pledgesNumber;
 
     // Type of funding
-    if ($jsonData->{'campaign_type'} == "flexible_funding"){ $tmp['Bfunding'] = 0;  }
+    if ($jsonData->funding_type == "flexible"){ $tmp['Bfunding'] = 0;  }
     else{ $tmp['Bfunding'] = 1;}
       
     // External pages
@@ -169,11 +158,8 @@ class IndiegogoRating extends PlatformRating{
     }else{ $tmp['#externalPages'] = 0; }
 
     // Team members
-    $beginingPosition = strpos($text, 'Team</div>');
-    $endPosition = strlen($text);
-    $endPosition = $endPosition - $beginingPosition;
-    $teamMembers = substr($text, $beginingPosition, $endPosition);
-    $tmp['#teamMembers'] = substr_count($teamMembers, 'class="i-name">');
+    $teamMembers = count($jsonData->team_members);
+    $tmp['#teamMembers'] = $teamMembers;
 
     // Succesful
     if ( $tmp['Bfinished'] == 1 ) {
@@ -185,9 +171,7 @@ class IndiegogoRating extends PlatformRating{
       
     }else $tmp['Bsuccessful'] = 0;
 
-   
+    var_dump($tmp); die;
     return $tmp;
   }
-
-
 }

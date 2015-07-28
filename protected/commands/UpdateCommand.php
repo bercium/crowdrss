@@ -436,9 +436,11 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $numberOfPages = 2000;
+    $numberOfPages = 20;
     $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);
+    //$htmlData = $this->getHtml($link, array());
     $htmlDataSplit = explode('{"campaigns":', $htmlData);
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
@@ -454,15 +456,16 @@ class UpdateCommand extends CConsoleCommand {
                                                 array(':link' => $link, ':image' => $image));
         if (!$project_check) {
           $htmlData = $this->getHtml($link, array(), $proxy_set);
+          //$htmlData = $this->getHtml($link, array());
           //$htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), $proxy_set);
           $data_single = $this->parseIndiegogo($htmlData);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
           $insert->title = $title;
-          echo "$title \n";
           $insert->description = $data_single['description'];
           $insert->image = $image;
           $insert->link = $link;
+          //echo $link."\n";
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
           $category = $this->checkCategory($data_single['category'], $link, "");
@@ -495,10 +498,10 @@ class UpdateCommand extends CConsoleCommand {
 	  $insert_category->save();
           
           // get rating 
-          /*$IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
           $rating = $IggRating->firstAnalize();
           $insert->rating = $rating;
-          $insert->save();*/
+          $insert->save();
 //          print_r($insert->getErrors());
         }
       }
