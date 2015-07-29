@@ -436,7 +436,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $numberOfPages = 2000;
-    $numberOfPages = 20;
+    //$numberOfPages = 20;
     $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);

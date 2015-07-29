@@ -171,7 +171,7 @@ class IndiegogoRating extends PlatformRating{
       
     }else $tmp['Bsuccessful'] = 0;
 
-    var_dump($tmp); die;
+    //var_dump($tmp); die;
     return $tmp;
   }
 }
