@@ -233,7 +233,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                <div class="row" trk="switch_delivery_rss">
                   <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="rss_feed" name="rss_feed" <?php if (!isset($subscription->rss)) echo 'checked'; else if ($subscription->rss) echo 'checked'; ?> type="checkbox">
+                      <input id="rss_feed" name="rss_feed" <?php if (!isset($subscription->rss)) echo ''; else if ($subscription->rss) echo 'checked'; ?> type="checkbox">
                       <label for="rss_feed"></label>
                     </div>
                   </div>
@@ -247,7 +247,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                <div class="row" trk="switch_delivery_dailyDigest">
                   <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="daily_digest" name="daily_digest" <?php if (!isset($subscription->daily_digest)) echo 'checked'; else if ($subscription->daily_digest) echo 'checked'; ?> type="checkbox">
+                      <input id="daily_digest" name="daily_digest" <?php if (!isset($subscription->daily_digest)) echo ''; else if ($subscription->daily_digest) echo 'checked'; ?> type="checkbox">
                       <label for="daily_digest"></label>
                     </div>
                   </div>
@@ -275,7 +275,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                <div class="row" trk="switch_delivery_weeklyDigest">
                   <div class="columns small-3 medium-5 large-4">
                     <div class="switch round small">
-                      <input id="weekly_digest" name="weekly_digest" <?php if (isset($subscription->weekly_digest) && $subscription->weekly_digest == 1) echo 'checked'; ?> type="checkbox">
+                      <input id="weekly_digest" name="weekly_digest" <?php if (!isset($subscription->weekly_digest)) echo 'checked'; else  if ($subscription->weekly_digest == 1) echo 'checked'; ?> type="checkbox">
                       <label for="weekly_digest"></label>
                     </div>
                   </div>
