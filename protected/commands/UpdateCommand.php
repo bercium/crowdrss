@@ -446,7 +446,7 @@ class UpdateCommand extends CConsoleCommand {
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
     $jsonData = json_decode($json);
-    var_dump(count($jsonData->campaigns)); die;
+    //var_dump(count($jsonData->campaigns)); die;
     if ($jsonData == null){ return false; }
     if (count($jsonData->campaigns)>$numberOfPages) {
         for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
@@ -467,7 +467,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->description = $data_single['description'];
           $insert->image = $image;
           $insert->link = $link;
-          echo $link."\n"; die;
+          //echo $link."\n"; die;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
           $category = $this->checkCategory($data_single['category'], $link, "");
