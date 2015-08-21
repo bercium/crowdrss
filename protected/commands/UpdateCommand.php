@@ -448,7 +448,7 @@ class UpdateCommand extends CConsoleCommand {
     $jsonData = json_decode($json);
     //var_dump(count($jsonData->campaigns)); die;
     if ($jsonData == null){ return false; }
-    if (count($jsonData->campaigns)>$numberOfPages) {
+    if (count($jsonData->campaigns)>$numberOfPages/2) {
         for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
         $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
         $image = $jsonData->campaigns[$j]->compressed_image_url;
