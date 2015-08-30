@@ -399,15 +399,21 @@ background: #970b0e !important;
                               <h5 style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 1.3; word-break: normal; font-size: 24px; margin: 0; padding: 0;" align="left">
                                 <?php echo $project->title; ?>
                               </h5></a>
+                            <?php /*?>
                             <small style="font-size: 10px;">
-                                <?php echo date("D, d M Y H:i:s e",strtotime($project->time_added)); ?>
-                            </small>
+                                <?php //echo date("D, d M Y H:i:s e",strtotime($project->time_added)); 
+                                echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                                ?>
+                            </small><?php */ ?>
+                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal;font-size: 14px; line-height: 19px;">
+                                <?php echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." "; ?>
+                            </p>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <?php echo $project->description."<br />";
                               
 
-                              echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
-                              if (!empty($project->creator)) echo "<br />Creator of project: <i>".$project->creator."</i> ";
+                              echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
+                              //if (!empty($project->creator)) echo "<br />Creator of project: <i>".$project->creator."</i> ";
                               //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
                               if (!empty($project->goal)) echo "<br />Project goal: <strong>".$project->goal."</strong>";
                               if (!empty($project->type_of_funding)){
@@ -501,7 +507,7 @@ background: #970b0e !important;
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
                             <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img alt="<?php echo $project->rating; ?>" src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none;" align="left" />
+                              <img alt="<?php echo $project->rating; ?>" src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none; padding-bottom: 8px;" align="left" />
                             </a>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <strong>
@@ -511,7 +517,7 @@ background: #970b0e !important;
                               </strong>
                               <small style="font-size: 10px;">
                                 <?php 
-                                  echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+                                  echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
                                 ?>
                                </small>
                              </p>
@@ -521,10 +527,10 @@ background: #970b0e !important;
 
                                 echo $project->description;
 
-                                if (!empty($project->goal)) echo "<br /><strong>".$project->goal."</strong>";
+                                if (!empty($project->goal)) echo "<br />-- <strong>".$project->goal."</strong>";
                                 if (!empty($project->type_of_funding)){
-                                  if ($project->type_of_funding == 0) echo " Fixed";
-                                  else echo " Flexible";
+                                  if ($project->type_of_funding == 0) echo ", Fixed";
+                                  else echo ", Flexible";
                                 }
 
                               ?>                                
