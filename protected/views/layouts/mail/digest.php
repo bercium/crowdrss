@@ -406,13 +406,12 @@ background: #970b0e !important;
                                 ?>
                             </small><?php */ ?>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal;font-size: 14px; line-height: 19px;">
-                                <?php echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." "; ?>
+                                <?php echo "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." "; ?>
                             </p>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <?php echo $project->description."<br />";
-                              
 
-                              echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
+                              //echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
                               //if (!empty($project->creator)) echo "<br />Creator of project: <i>".$project->creator."</i> ";
                               //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
                               if (!empty($project->goal)) echo "<br />Project goal: <strong>".$project->goal."</strong>";
