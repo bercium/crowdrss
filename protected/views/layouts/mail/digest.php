@@ -408,7 +408,7 @@ background: #970b0e !important;
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal;font-size: 14px; line-height: 19px;">
                                 <?php echo "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." "; ?>
                             </p>
-                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                            <p style="font-style: italic; margin-top:5px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <?php echo $project->description."<br />";
 
                               //echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
@@ -520,7 +520,7 @@ background: #970b0e !important;
                                 ?>
                                </small>
                              </p>
-                            <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
+                            <p style="font-style: italic; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <small style="font-size: 10px;">
                               <?php 
 
@@ -528,8 +528,8 @@ background: #970b0e !important;
 
                                 if (!empty($project->goal)) echo "<br />-- <strong>".$project->goal."</strong>";
                                 if (!empty($project->type_of_funding)){
-                                  if ($project->type_of_funding == 0) echo ", Fixed";
-                                  else echo ", Flexible";
+                                  if ($project->type_of_funding == 0) echo " Fixed";
+                                  else echo " Flexible";
                                 }
 
                               ?>                                
