@@ -5,13 +5,50 @@ $this->pageTitle = $title;
   <div class="pb30">
     <div class="row">
       <div class="columns">
-        <h2><?php echo $title; ?></h2>
-        <p>List is generated from new projects from past 7 days</p>
+		<?php if ($title == 'Top projects for today'){ ?>
+			<h2><?php echo $title; ?></h2>
+			<p>Best newcomers in the last 24h</p>
+		<?php }else{ ?>
+			<h2><?php echo $title; ?></h2>
+			<p>List is generated from new projects from past 7 days</p>
+		<?php } ?>
       </div>
     </div>
+	 
+	<div class='row' style='margin-bottom: 20px;'>
     <?php 
-    $i = 1;
+    $i = 0;
     foreach ($projects as $project){
+		$i++;
+		if ($i > 3) break;
+    ?>		
+		<div class="columns medium-4 text-center">
+			<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
+				<div class="panel callout">
+					<i class="fa fa-external-link right" style="color:#999;"></i>
+					
+					<h4 style=""><?php echo $i; ?></h4>
+					<img src="<?php echo $project->image; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
+
+					<h1 style="font-size: 16px; font-weight: bold; margin-top:8px;"><?php echo $project->title; if ($project->creator) echo '<i style="font-weight: normal"> by '.$project->creator."</i>"; ?></h1>
+					<div style="padding-top:5px; text-align: left; line-height: 18px;">
+					  <strong><?php echo $project->platform->name; ?></strong><?php if (isset($project->origCategory)) echo ": ".$project->origCategory->name; ?>
+					  <br />Goal: <?php echo $project->goal; ?><br />
+					   <small>Ends on: <?php echo $project->end; ?></small>
+					</div>
+				</div>
+			</a>
+		</div>
+		
+	<?php } ?>
+	</div>
+	
+	
+    <?php 
+    $i = 0;
+    foreach ($projects as $project){
+		$i++;
+		if ($i < 4) continue;
     ?>
   
   <div class="row">
@@ -41,7 +78,7 @@ $this->pageTitle = $title;
             </h4>
           </div>
           <div class="columns small-1 show-for-medium-up text-center">
-            <img src="<?php echo $project->image; ?>" <?php echo $project->title; ?> style="max-height:32px;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
+            <img src="<?php echo $project->image; ?>" style="max-height:32px;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
           </div>
           <div class="columns small-11 medium-7">
             
@@ -54,8 +91,8 @@ $this->pageTitle = $title;
             <div style="padding-top:5px;">
               <small>
               <?php
-                if ($allPlatforms) echo "<strong>".$project->platform->name."</strong> - ";
-                if (isset($project->origCategory)) echo $project->origCategory->name;
+                if ($allPlatforms) echo "<strong>".$project->platform->name."</strong>";
+                if (isset($project->origCategory)) echo ": ".$project->origCategory->name;
               ?>
               </small>
             </div>
@@ -64,12 +101,12 @@ $this->pageTitle = $title;
             <i class="fa fa-external-link right"></i>
             <?php 
             //
-            echo "Goal: ".$project->goal."</strong>"; ?>
+            echo "Goal: ".$project->goal; ?>
             <br />
             <div style="padding-top:5px;">
               <small>
               <?php
-                echo "Ends on ".$project->end;
+                echo "Ends on: ".$project->end;
               ?>
               </small>
             </div>
@@ -80,8 +117,6 @@ $this->pageTitle = $title;
       </a>
     </div>
   </div>
-   <?php 
-     $i++;
-     } ?>
+   <?php } ?>
   
 </div>

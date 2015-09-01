@@ -14,7 +14,7 @@ class BrowseController extends Controller
     if ($count < 10) $count = 10;
     if ($count > 100) $count = 100;
     $projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
-                                          array(":date"=>date('Y-m-d',strtotime('-1 week')),
+                                          array(":date"=>date('Y-m-d',strtotime('-100 week')),
                                                 ":limit"=>$count));
     
     
@@ -57,7 +57,7 @@ class BrowseController extends Controller
                                                 ":limit"=>$count));
     
     $title = "Top projects for today";
-    $this->render('topDaily',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>true,"listType"=>"top"));
+    $this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>true,"listType"=>"top"));
 	}  
 
 }
