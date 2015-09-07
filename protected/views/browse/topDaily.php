@@ -7,9 +7,38 @@ $this->pageTitle = $title;
         <p>Best newcomers in the last 24h</p>
       </div>
     </div>
+	
+	<div class="row">
+		
     <?php 
-    $i = 1;
+    $i = 0;
     foreach ($projects as $project){
+		$i++;
+		if ($i > 3) break;
+    ?>		
+		<div class="columns medium-4 text-center">
+			<div class="panel callout">
+
+				<h4 style="margin:0;"><?php echo $i; ?></h4>
+				<img class="tip-right radius tip" data-options="disable_for_touch:true" src="https://s3.amazonaws.com/ksr/projects/1158115/photo-little.jpg?1405411668" data-tip="&lt;img src='https://s3.amazonaws.com/ksr/projects/1158115/photo-little.jpg?1405411668'&gt;">
+
+				<h1 style="font-size: 16px; font-weight: bold;">From New Zealand to Austria: A Sculptors quest<i style="font-weight: normal">by nekdo nekje</i></h1>
+				<div style="padding-top:5px;">
+
+				  <strong>Kickstarter</strong> - Publishing             
+				</div>
+			</div>
+		</div>
+		
+	<?php } ?>
+	</div>
+	
+	
+    <?php 
+    $i = 0;
+    foreach ($projects as $project){
+		$i++;
+		if ($i < 3) continue;
     ?>
   
   <div class="row">
@@ -39,7 +68,7 @@ $this->pageTitle = $title;
             </h4>
           </div>
           <div class="columns small-1 show-for-medium-up text-center">
-            <img src="<?php echo $project->image; ?>" <?php echo $project->title; ?> style="max-height:32px;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
+            <img src="<?php echo $project->image; ?>" style="max-height:32px;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
           </div>
           <div class="columns small-11 medium-7">
             
@@ -78,8 +107,6 @@ $this->pageTitle = $title;
       </a>
     </div>
   </div>
-   <?php 
-     $i++;
-     } ?>
+   <?php } ?>
   
 </div>
