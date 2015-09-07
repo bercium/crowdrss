@@ -28,9 +28,9 @@ class FeaturedProject {
     public function featured() {
         $featured = $this->featuredDB();
         
-        /*if ($featured == null){
+        if ($featured == null){
             $featured = $this->featuredCFrss();
-        }*/
+        }
         
         return $featured;
     }
@@ -76,6 +76,8 @@ class FeaturedProject {
      */
     private function featuredCFrss(){
         $project = new stdClass();
+        
+        if ($this->sub->id != 1 && $this->sub->id != 2) return null;
         
         $project->id = -1;
         $project->title = 'Crowdfunding RSS';
