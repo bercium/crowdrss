@@ -87,8 +87,8 @@ class MailerCommand extends CConsoleCommand{
   /**
    * 
    */
-  private function sortProjects($sub, $projects, $paidProjects, $checkProject = false){
-    $paidProject = null;
+  private function sortProjects($sub, $projects, $featuredProject, $checkProject = false){
+    /*$paidProject = null;
     
     if (count($paidProjects) > 0){
         foreach ($paidProjects as $pp){
@@ -108,7 +108,9 @@ class MailerCommand extends CConsoleCommand{
             else $paidProject->rating = 11;
             break;
         }
-    }
+    }*/
+    
+    $paidProject = $featuredProject->featured();
         
     
     $featured = $regular = $regularNull = array();
@@ -210,7 +212,9 @@ class MailerCommand extends CConsoleCommand{
     if ($subscriptions){
       
       
-      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      $featured = new FeaturedProject();
+      
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
       
       $sentMails = $this->getSubsSent('daily-digest');
@@ -225,7 +229,9 @@ class MailerCommand extends CConsoleCommand{
         // get projects
         $projects = Project::model()->findAll($sql);
         
-        $sorted = $this->sortProjects($sub,$projects,$paidProjects, true);
+        $featured->setSub($sub);
+        
+        $sorted = $this->sortProjects($sub,$projects,$featured, true);
 
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
@@ -256,8 +262,8 @@ class MailerCommand extends CConsoleCommand{
 
     if ($subscriptions){
 
-        $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-
+        //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+        $featured = new FeaturedProject($sub);
 
         if (date("M", strtotime("-1 days")) == date("M", strtotime("-8 days"))){
             $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
@@ -276,8 +282,10 @@ class MailerCommand extends CConsoleCommand{
 
             // get projects
             $projects = Project::model()->findAll($sql);
+            
+            $featured->setSub($sub);
 
-            $sorted = $this->sortProjects($sub,$projects,$paidProjects);
+            $sorted = $this->sortProjects($sub,$projects,$featured);
 
             if (!$test || $sub->id == 1 || $sub->id == 2)
             $this->sendNewsletter($sub,
@@ -311,7 +319,9 @@ class MailerCommand extends CConsoleCommand{
     if ($subscriptions){
       
       
-      $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+      $featured = new FeaturedProject();
+      
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
       
       $sentMails = $this->getSubsSent('weekly-digest-twice');
@@ -336,7 +346,8 @@ class MailerCommand extends CConsoleCommand{
         // get projects
         $projects = Project::model()->findAll($sql);
         
-        $sorted = $this->sortProjects($sub,$projects,$paidProjects);
+        $featured->setSub($sub);
+        $sorted = $this->sortProjects($sub,$projects,$featured);
 
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,

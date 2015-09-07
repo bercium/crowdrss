@@ -14,28 +14,8 @@ class FeedController extends Controller
     return true;
   }
   
-  function createRssFeed($sql, $id = null){
-    $rssResponse = '';
-    $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
-    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
-    
-//    $rssResponse .= '<rss version="2.0">';
-    $rssResponse .= '<channel>';
-    //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
-    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />';
-    
-    $rssResponse .= '<title>Crowdfounding RSS</title>';
-    $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
-    $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
-    $rssResponse .= '<language>en-us</language>';
-    $rssResponse .= '<ttl>5</ttl>';
-    
-// get projects
-    $projects = Project::model()->findAll($sql);
-    // CREATE RSS
-    $i = 0;
-    foreach ($projects as $project){
-      $rssResponse .= '<item>';
+  private function createRssItem($project, $id){
+      $rssResponse = '<item>';
       $rssResponse .= '<title>' . htmlspecialchars($project->title) . '</title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
@@ -53,7 +33,7 @@ class FeedController extends Controller
 
       $desc.= "<p>".$project->description." <br />";
       
-      $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+      if (!empty($project->platform->name)) $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
       if (!empty($project->goal)) $desc.= "<br />Project goal: <strong>".$project->goal."</strong>";
@@ -65,9 +45,11 @@ class FeedController extends Controller
       // voting and tracking
       if ($id){
         //if ($id == 1 || $id == 2){
-          $desc .= '</p><p style="text-align:right;">
-                    <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a> | ';
-          $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a>';
+          if (!isset($project->nolike)){
+            $desc .= '</p><p style="text-align:right;">
+                      <a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>1,'i'=>$id)) .'">like</a> | ';
+            $desc .= '<a href="'. Yii::app()->createAbsoluteUrl("feed/vote",array("l"=>$project->link,'ra'=>0,'i'=>$id)) .'">dislike</a>';
+          }
         //}
       // track opening of feed
         $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
@@ -79,6 +61,34 @@ class FeedController extends Controller
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
       $rssResponse .= "</item>\n";
+      
+      return $rssResponse;
+  }
+  
+  function createRssFeed($projects, $id = null, $featured = null){
+    $rssResponse = '';
+    $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
+    $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">';
+    
+//    $rssResponse .= '<rss version="2.0">';
+    $rssResponse .= '<channel>';
+    //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
+    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />';
+    
+    $rssResponse .= '<title>Crowdfounding RSS</title>';
+    $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
+    $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
+    $rssResponse .= '<language>en-us</language>';
+    $rssResponse .= '<ttl>5</ttl>';
+    
+    if ($featured != null) {
+        $rssResponse .= $this->createRssItem($featured, $id);
+    }
+    
+    // CREATE RSS
+    $i = 0;
+    foreach ($projects as $project){
+      $rssResponse .= $this->createRssItem($project, $id);
       //if ($i++ > 20) break;
     }
 
@@ -101,6 +111,36 @@ class FeedController extends Controller
       }
     }
     return $string;
+  }
+  
+  /**
+   * return payed project
+   */
+  private function getPayedProject($sub){
+    $paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+    $paidProject = null;
+    if (count($paidProjects) > 0){
+      foreach ($paidProjects as $pp){
+          $platA = explode(",",$sub->platform);
+          $catA = explode(",",$sub->category);
+          $subCatA = explode(",",$sub->exclude_orig_category);
+
+          if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
+          if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
+          if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
+
+          $pp->show_count++;
+          //    $pp->save();
+          $paidProject = $pp->project; //get one project
+          // set the rating higher so we know it's special
+          if ($paidProject->rating) $paidProject->rating += 11;
+          else $paidProject->rating = 11;
+          $paidProject->time_added = time();
+
+          break;
+      }
+    }
+    return $paidProject;
   }
   
   /**
@@ -162,12 +202,14 @@ class FeedController extends Controller
     
     $sql .= " ORDER BY time_added DESC";
     //$sql .= " LIMIT 10";
+    // echo $sql;
     
-   // echo $sql;
+    // get projects
+    $projects = Project::model()->findAll($sql);
     
-    
+    $featured = new FeaturedProject($sub);
     // echo rss
-    echo $this->createRssFeed($sql,$sub->id);
+    echo $this->createRssFeed($projects,$sub->id,$featured->featured());
     Yii::app()->end();
   }
   
@@ -218,8 +260,9 @@ class FeedController extends Controller
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
+    $projects = Project::model()->findAll($sql);
     //echo $sql;
-    echo $this->createRssFeed($sql);
+    echo $this->createRssFeed($projects);
     Yii::app()->end();
   }
   
