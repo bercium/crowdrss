@@ -404,10 +404,13 @@ background: #970b0e !important;
                                 <?php //echo date("D, d M Y H:i:s e",strtotime($project->time_added)); 
                                 echo "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
                                 ?>
-                            </small><?php */ ?>
+                            </small><?php */
+                            if (!empty($project->platform->name)){
+                            ?>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal;font-size: 14px; line-height: 19px;">
                                 <?php echo "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." "; ?>
                             </p>
+                            <?php } ?>
                             <p style="font-style: italic; margin-top:5px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <?php echo $project->description."<br />";
 
