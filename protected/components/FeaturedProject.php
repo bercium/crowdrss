@@ -79,12 +79,14 @@ class FeaturedProject {
         
         if ($this->sub->id != 1 && $this->sub->id != 2) return null;
         
+        $hashids = new Hashids('crowdrss');
+        
         $project->id = -1;
         $project->title = 'Crowdfunding RSS';
         $project->time_added = time();
         $project->origCategory = new stdClass();
         $project->origCategory->name = 'Crowdfunding rss';
-        $project->link = 'http://crowdfundingrss.com';
+        $project->link = 'http://crowdfundingrss.com?lnk='. substr($hashids->encrypt(round(microtime(true))),0,6);
         $project->image = 'http://crowdfundingrss.com/images/cf-rss-show.png';
         $project->description = 'Share on: [fb]  [g+]  [tw]';
         $project->nolike = true;
