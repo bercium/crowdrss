@@ -83,7 +83,7 @@ class FeaturedProject {
         
         $project->id = -1;
         $project->title = 'Crowdfunding RSS';
-        $project->time_added = strtotime((date("Y-m-d H:00:00"));
+        $project->time_added = strtotime(date("Y-m-d H:00:00"));
         $project->origCategory = new stdClass();
         $project->origCategory->name = 'Crowdfunding rss';
         $project->link = 'http://crowdfundingrss.com/share?lnk='. substr($hashids->encrypt(date("YmdH")),0,6);
