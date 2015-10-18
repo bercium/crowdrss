@@ -50,7 +50,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
     </div>
 
 
-		<div class="mt30">
+		<div class="mt60 mb60">
       <a id="subscribe" class="anchor"></a>
       <div class="row">
         <div class="columns large-12 large-centered">
@@ -106,7 +106,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           </ul>
           
           
-          <hr class="mt0">
+          <hr class="mt60 mb60">
           
           <a id="categories" class="anchor"></a>
           <h2>2. Choose categories</h2>
@@ -137,22 +137,25 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                         <?php if(count($cat['subcat']) > 1){ ?>
                         <a class="<?php if (!$cat['selected']) echo 'hide'; ?> right" id="subCatLink_<?php echo $cat['id']; ?>" <?php 
                         
-                           if ($subscription) echo 'onclick="showSubCat('.$cat['id'].');"';
-                           else echo 'data-reveal-id="tweettounlock" dref="'.$cat['id'].'"';
+                           //if ($subscription) 
+                           echo 'onclick="showSubCat('.$cat['id'].');"';
+                           //else echo 'data-reveal-id="tweettounlock" dref="'.$cat['id'].'"';
                         
-                           ?> data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Select subcategories">
+                           ?>  class="tip-right radius" title="Select subcategories">
                           <i class="fa fa-sort-down" style="font-size: 20px; padding-left:6px; padding-right:6px;"></i>
                         </a>
                         <?php } ?>
                       
-                        <label for="cat_<?php echo $cat['id']; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
+                        <label for="cat_<?php echo $cat['id']; ?>" class="tip-right radius" title="<?php echo $cat['hint']; ?>">
                           <?php echo $cat['name']; ?>
                         </label>
+                        
                       
+                        
                     </div>
                   </div>
                   <?php if(count($cat['subcat']) > 1){ ?>
-                  <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>">
+                  <div class="row hide" id="subCatHolder_<?php echo $cat['id']; ?>"  style="position: relative;">
                     <div class="columns small-12 mb20 mt10 ml15">
                       <?php /* ?>
                       <a class="close right" onclick="$('#subCatHolder_<?php echo $cat['id']; ?>').slideUp();">
@@ -179,6 +182,14 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                       <?php } ?>
                                            
                     </div>
+                      
+                        
+                    <?php if (!$subscription){ ?>
+                    <div class="subcat-locker tip-top has-tip ml10 mt5" data-reveal-id="tweettounlock" data-tooltip data-options="disable_for_touch:true" title="Click to unlock">
+                        <div><i class="fa fa-lock"></i></div>
+                    </div>
+
+                    <?php } ?>
                   </div>
                   <?php }else{ 
                     foreach ($cat['subcat'] as $subcat) { ?>
@@ -191,7 +202,8 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
               } ?>
             </ul>
             
-          <hr>
+          
+          <hr class="mt60 mb60">
           
           
           <?php // if (!Yii::app()->user->isGuest) { //* ?>
@@ -220,7 +232,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           </div>
           
 
-          <hr>
+          <hr class="mt60 mb60">
             
           <a id="preview" class="anchor"></a>
           <h2>4. <a onclick="previewForm()" trk="link_content_preview" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
@@ -290,7 +302,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
              <div class="columns small-12 medium-8">
                <div class="email-field">
                 <label>Email <font style="color:#f04124">*</font>
-                  <input type="email" name="email" value="<?php if (isset($subscription->email)) echo $subscription->email; ?>" required>
+                  <input type="email" name="email" placeholder="email@domain.com" value="<?php if (isset($subscription->email)) echo $subscription->email; ?>" required>
                 </label>
                 <small style="font-style: italic;">We will use your email only to send you RSS link or digest and occasional site updates. We will never sell or give your email address to anyone!</small>
               </div>
@@ -321,17 +333,20 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           <div style="margin-top: 30px;" class="text-center">
             <?php if (isset($_GET['id'])){ ?>
             <button trk="button_form_updateRSS" type="submit" name="subscribe" class="success radius large">Update subscribtion</button>
-            
-            <a href="<?php echo Yii::app()->params['absoluteHost']; ?>">
-              <button trk="button_form_reset" class=" radius right tiny">Cancel</button>
-            </a>
+            <div>
+                <a href="<?php echo Yii::app()->params['absoluteHost']; ?>">Cancel</a>
+            </div>
             <?php }else{ ?>
             <button trk="button_form_subscribe" type="submit" name="subscribe" class="success radius large">Create my feed</button>
+            
+            <div>
+                <a onclick="$('.reset_form').click();">Reset form</a>
+            </div>
             
             <?php /* ?>
             <button trk="button_form_preview" type="button" id="preview" class="info radius hide" style="margin-left:20px;" onclick="previewForm()">Preview</button>
             <?php */ ?>
-            <button trk="button_form_reset" type="reset" class=" radius right tiny">Reset form</button>
+            <button trk="button_form_reset" type="reset" class="hide reset_form radius right tiny">Reset form</button>
             <?php } ?>
           </div>
             
@@ -350,25 +365,50 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
 
 
 
+<div id="tweettounlock" class="reveal-modal small" data-reveal>
+  <h2>Unlock sub-categories</h2>
+  <p class="mb30">
+    To unlock sub-categories please share us on these social networks. <i>Thanks!</i>
+  </p>  
+  <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
+      <li>
+          <div class="share-buttons-fb text-center">Facebook</div>
+      </li>
+      <li>
+          <div class="share-buttons-tw text-center">Twitter</div>
+      </li>
+      <li>
+          <div class="share-buttons-gp text-center">Google Plus</div>
+      </li>
+      <li>
+          <div class="share-buttons-li text-center">Linked in</div>
+      </li>
+  </ul>
 
-<div id="tweettounlock" class="reveal-modal medium" data-reveal>
-  <h2>Tweet to unlock</h2>
-  <p>
-    This functionality is locked. To unlock it please tweet about us :)
-    <br />
-    If you don't have twitter <a onclick="contact(this);" trk="link_bottom_noTwitter">contact us</a>.
-    <br />
-    <div class="text-center">
-      <a href="http://twitter.com/share" class="twitter-share-button" data-text="<?php echo $this->pageTitle; ?>" data-hashtags="crowdfunding,kickstarter" data-via="eberce_ltd" data-dnt="true" data-count="none" data-size="large">Tweet to unlock</a>
-    </div>
-    <br />
-    <br />
-    <i>
-      If you already subscribed please use "edit your feed" button from your verification email to hide this message.
-    </i>
+  <hr>
+  <p class="mt30">
+    <i>If you are already subscribed enter your email here:</i><br />
   </p>
+  
+  
+   <div class="row">
+    <div class="large-12 columns">
+      <div class="row collapse">
+        <div class="small-10 columns">
+          <input type="email" name="email-old" class="email-old" placeholder="email@domain.com" value="">
+        </div>
+        <div class="small-2 columns">
+          <button class="button postfix unlockByEmail">Unlock</button>
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+  
   <a class="close-reveal-modal">&#215;</a>
 </div>
+
+<div class="social-share"></div>
 
 <script type="text/javascript">
   sessionID = '<?php echo base64_encode(session_id());?>';

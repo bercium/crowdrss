@@ -106,35 +106,84 @@ $(window).scroll(function () {
   }
 });
 
-var sessionID = '';
-twttr.ready(function (twttr) {
 
-    //######## trigger when the user publishes his tweet
-    twttr.events.bind('tweet', function(event) {
 
-        /*
-        To make locked items little more private, let's send our base64 encoded session key
-        which will work as key in send_resources.php to acquire locked items.
-        */
-        var data = {unlock_key : sessionID};
-        $('[id^="subCatLink_"]').each(function(index){
-          $(this).removeAttr('data-reveal-id');
-          $(this).click(function(){
-                          showSubCat($(this).attr('dref'));
-                        });
-        });
-        $('#tweettounlock').foundation('reveal', 'close');
+$(document).ready(function () {
     
-        //Load data from the server using a HTTP POST request.
-        /*$.post("send_resources.php", data, function(data)
-        {
-            //Append unlocked content into div element
-            $('#tweet_content').html(data);
+    $('.unlockByEmail').click(function(){
+        $.get( "site/checkMail?email="+$('.email-old').val(), function( data ) {
+            console.log(data);
+            if (data){
+                $('#tweettounlock').foundation('reveal', 'close');
+                $('.subcat-locker').fadeOut();
+            }
 
-        }).error(function(xhr, ajaxOptions, thrownError) {
-            //Output any errors from server.
-            alert( thrownError);
-        });*/
+        });
     });
+    
+    $(document).on('open.fndtn.reveal', '[data-reveal]', function () {
+        
+        $(".social-share").sociallocker({
+            demo:true,
+            events:{
+                unlock:function(typeSender, sender){
+                  $('#tweettounlock').foundation('reveal', 'close');
+                  $('.subcat-locker').fadeOut();
+                },
+                lock:function(){
+                    $('.jo-sociallocker-starter').hide();
+                }
+            },
+
+            locker: {
+                close: false,
+                timer: 0
+            },
+
+            buttons: {
+                counter:false,
+                order: ["facebook-like", "twitter-tweet", "google-plus", "linkedin-share"]
+            },
+
+            facebook: {  
+                /*appId: "206841902768508",*/
+                class:'.share-buttons-fb',
+                count:'none',
+                like: {
+                        title: "Like us",
+                        url: "http://crowdfundingrss.com/"
+                    }
+            },
+
+            twitter: {
+                class:'.share-buttons-tw',
+                tweet: {
+                    title: "Tweet",
+                    text: "Best crowdfunding projects delivered to you",
+                    url: "http://crowdfundingrss.com/"
+                }
+            },
+
+            google: {
+                class:'.share-buttons-gp',
+                plus: {
+                    title: "Plus +1",
+                    url: "http://crowdfundingrss.com/"
+                }
+            },
+
+            linkedin: {
+                class:'.share-buttons-li',
+                url: "http://crowdfundingrss.com/",                                
+                share: {
+                    title: "Share"
+                }
+            }
+        });
+        
+        
+    });
+    
+    
 
 });
