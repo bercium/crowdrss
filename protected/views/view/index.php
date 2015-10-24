@@ -6,7 +6,7 @@ if ($project->removed == 0){
     <div class="hide-for-small pt50"></div>
     
     <div class="row ">
-       <div class="columns pt15 pb15" style="background-color: rgba(255,255,255,0.6)"> 
+       <div class="columns pt15 pb15" style="background-color: rgba(255,255,255,0.7)"> 
 
     <div class="row show-for-small">
         <div class="columns">
