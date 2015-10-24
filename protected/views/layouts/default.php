@@ -1,6 +1,6 @@
 <?php $this->beginContent('//layouts/main'); ?>
 
-    <div class="intro-defult mb20" >
+    <div class="intro-defult " >
        <div class="row">
          <div class="columns large-12 ">
            
@@ -11,7 +11,8 @@
            
            <h2 class="white special_title" style="margin-bottom: 0px;">
              <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" style="color: inherit" trk="link_top_index">
-               <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"> Crowdfunding
+               <span class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"> Crowdfunding</span>
+               <span class="show-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"></span>
              </a>
            </h2>
            

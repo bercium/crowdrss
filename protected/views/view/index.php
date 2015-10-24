@@ -1,10 +1,16 @@
 <?php 
 if ($project->removed == 0){
     $this->pageTitle = $project->title;
-?><div class="pt30 pb30">
+?><div class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;">
     
+    <div class="hide-for-small pt50"></div>
+    
+    <div class="row ">
+       <div class="columns pt15 pb15" style="background-color: rgba(255,255,255,0.6)"> 
+
     <div class="row show-for-small">
         <div class="columns">
+            <div class="pt20"></div>
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- cfrss-responsive -->
             <ins class="adsbygoogle"
@@ -59,9 +65,9 @@ if ($project->removed == 0){
                 <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">Go to project site <i class="fa fa-external-link"></i></a>
           </div>
 
-      </div>
+    </div>
     
-    <div class="row mt40 mb20 hide-for-small">
+    <div class="row pt40 pb10 hide-for-small">
         <div class="columns">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- cfrss-responsive -->
@@ -77,15 +83,19 @@ if ($project->removed == 0){
     </div>    
     
     <div class="row">
-      <div class="columns mt30 text-center">
+      <div class="columns pt30 text-center">
 
         <a href="/" trk="button_view_index">
             <input type="button" class="button success medium radius" value="Find similar projects" style=" font-weight: bold;">
         </a>
+           <div class="show-for-small pt30"></div>
       </div>
     </div>
-           
        
+        </div>
+    </div>
+       
+   <div class="hide-for-small pt60"></div>
 </div>
 <?php }else{ ?>
 <div class="pt30 pb30">

@@ -62,7 +62,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
   <div class="footer-">
 	  
 	<?php if (isset($this->social)  && $this->social){ ?>
-	<div class="mt30 pt30 pb30 outro">
+	<div class=" pt30 pb30 outro">
       <a id="share" class="anchor"></a>
       <div class="row">
         <div class="columns medium-6">
@@ -83,7 +83,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 	<?php } ?>
 	  
 	
-	<div class=" pt30 pb30 <?php if (!isset($this->social) || !$this->social) echo "mt30 outro" ?>">
+	<div class=" pt30 pb30 <?php if (!isset($this->social) || !$this->social) echo " outro" ?>">
 		<div class="row ">
 		  <div class="columns large-12 large-centered mt30">
 			  <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
