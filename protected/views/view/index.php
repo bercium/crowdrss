@@ -3,8 +3,22 @@ if ($project->removed == 0){
     $this->pageTitle = $project->title;
 ?><div class="pt30 pb30">
     
+    <div class="row show-for-small">
+        <div class="columns">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- cfrss-responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-0534207295672567"
+                 data-ad-slot="6740352234"
+                 data-ad-format="auto"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div> 
+    
     <div class="row">
-
           <div class="columns medium-4">
               <?php if ($project->rating){ ?>
               <span class="fa-stack fa-5x fa-lg" style="color:#0088bb; right:-20px; top:-50px; margin:0; padding:0; position: absolute;" >
@@ -47,8 +61,8 @@ if ($project->removed == 0){
 
       </div>
     
-    <div class="row">
-        <div class="columns large-4">
+    <div class="row mt40 mb20 hide-for-small">
+        <div class="columns">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- cfrss-responsive -->
             <ins class="adsbygoogle"
