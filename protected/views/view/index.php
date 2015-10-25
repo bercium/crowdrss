@@ -66,22 +66,6 @@ if ($project->removed == 0){
 
     </div>
     
-    <?php if (count($similar) != 2){ ?>
-    <div class="row pt40 pb10 hide-for-small">
-        <div class="columns">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- cfrss-responsive -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-0534207295672567"
-                 data-ad-slot="6740352234"
-                 data-ad-format="auto"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </div>
-    <?php } ?>
            
     <?php if (count($similar) == 2){ ?>
     <div class="row">
@@ -143,7 +127,22 @@ if ($project->removed == 0){
             </div>
         </div>
     </div>
-    <?php } ?>
+    <?php }else{ ?>
+    <div class="row pt40 pb10 hide-for-small">
+        <div class="columns">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- cfrss-responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-0534207295672567"
+                 data-ad-slot="6740352234"
+                 data-ad-format="auto"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+    <?php } ?>           
     
     <div class="row">
       <div class="columns pt30 text-center">
