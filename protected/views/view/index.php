@@ -1,6 +1,6 @@
 <?php 
 if ($project->removed == 0){
-?><div class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;">
+?><div <?php /*/ ?> class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;" <?php /*/?> class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="<?php echo $project->image; ?>" <?php //*/ ?>>
     
     <div class="hide-for-small pt50"></div>
     

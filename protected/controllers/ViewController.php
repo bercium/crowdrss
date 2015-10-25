@@ -9,6 +9,8 @@ class ViewController extends Controller
 	 */
 	public function actionIndex($name){
         //$this->layout = 'default';
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScriptFile(Yii::app()->baseUrl.'/js/parallax.min.js');
 
         $project = Project::model()->findByAttributes(array("internal_link"=>$name));
         

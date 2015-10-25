@@ -59,7 +59,7 @@ public function init(){
     
     $cs->registerScriptFile($baseUrl.'/js/tipr.min.js');
     
-    $cs->registerScriptFile('https://platform.twitter.com/widgets.js');  // 
+    $cs->registerScriptFile('https://platform.twitter.com/widgets.js');
     
 
     //$cs->registerCoreScript($baseUrl.'jquery.ui');
