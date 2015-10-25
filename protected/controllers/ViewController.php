@@ -10,7 +10,11 @@ class ViewController extends Controller
 	public function actionIndex($name){
         //$this->layout = 'default';
 
-        $project = Project::model()->findByAttributes(array("title"=>$name));
+        $project = Project::model()->findByAttributes(array("internal_link"=>$name));
+        
+        if ($project == null){
+            $project = Project::model()->findByAttributes(array("title"=>$name));
+        }
 
         if ($project == null){
           throw new CHttpException(400, Yii::t('msg', 'No such project.'));

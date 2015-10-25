@@ -102,7 +102,7 @@ if ($project->removed == 0){
             }
             ?>
             
-            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[0]->id; ?>" target="_blank">
+            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[0]->id; ?>">
                 <img src="<?php echo $similar[0]->image; ?>" style="height: 250px; width: auto;">
             </a>
             <div class="pt20">
@@ -135,7 +135,7 @@ if ($project->removed == 0){
             }
             ?>
             
-            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[1]->id; ?>" target="_blank">
+            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[1]->id; ?>">
                 <img src="<?php echo $similar[1]->image; ?>" style="height: 250px; width: auto;">
             </a>
             <div class="pt20">

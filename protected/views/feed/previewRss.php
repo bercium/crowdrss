@@ -49,12 +49,12 @@ $this->pageTitle = "RSS preview";
 
               <div class="row">
                 <div class="columns small-4">
-                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>" target="_blank">
+                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>">
                     <img src="<?php echo $project->image; ?>">
                   </a>
                 </div>
                 <div class="columns small-8">
-                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
+                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>"><h4><?php echo $project->title; ?></h4></a>
                   <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
                   <p style="margin-top: 10px;" class="mb10">
                   <?php echo $project->description; ?>
