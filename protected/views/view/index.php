@@ -69,8 +69,9 @@ if ($project->removed == 0){
            
     <?php if (count($similar) == 2){ ?>
     <div class="row">
-      <div class="columns pt50 text-center">
-            <h3>Similar campaigns</h3>  
+      <div class="columns pt30 text-center">
+          <hr>
+            <h3 class="pt20">Similar campaigns</h3>  
       </div>
     </div>
            
