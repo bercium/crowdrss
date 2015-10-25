@@ -2,7 +2,7 @@
 $this->pageTitle = $title;
 ?>
 
-  <div class="pb30">
+  <div class="pb50 pt50">
     <div class="row">
       <div class="columns">
 		<?php if ($title == 'Top projects for today'){ ?>
