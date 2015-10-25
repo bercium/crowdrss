@@ -18,19 +18,38 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
 </div>
 <?php //*/ ?>
 
-    <div class="intro">
-       <div class="pt60 hide-for-small"></div>
-       <a id="whatIsCRSS" class="anchor"></a>
-       <div class="row">
-         <div class="columns large-12 text-center">
-           <div class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt20 mb30 "></div>
-           <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
-           <h1 class="white title">Crowdfunding projects delivered to you</h1>
-           <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
-         </div>
-       </div>
-    </div>
+    <div class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="images/bg.png" style="background-image: url('images/bg.png');background-position: bottom center; background-size: cover;">
+        <div class="intro">
+           <div class="pt60 hide-for-small"></div>
+           <a id="whatIsCRSS" class="anchor"></a>
+           <div class="row">
+             <div class="columns large-12 text-center">
+               <div class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt20 mb30 "></div>
+               <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
+               <h1 class="white title">Crowdfunding projects delivered to you</h1>
+               <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
+
+             </div>
+           </div>
+        </div>
+        
+        <div class="intro-desc pb30">
+            <a id="whatIsCRSS" class="anchor"></a>
+            <div class="row">
+              <div class="columns ">
+                <h3 class="white">
+                  Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver 
+                  <strong>the best projects</strong> right in your <span style="color:#222">inbox <i class="fa fa-envelope-o"></i></span> or trough <span style="color:#222">RSS feed <i class="fa fa-rss"></i></span>
+                </h3>
+                <a class="project-owner button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
+                  I am a project owner
+                </a>
+              </div>
+            </div>
+          </div>
+     </div>
   
+<?php /*/ ?>
     <div class="intro-desc pb30">
       <a id="whatIsCRSS" class="anchor"></a>
       <div class="row">
@@ -47,7 +66,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
         </div>
         
       </div>
-    </div>
+    </div><?php */ ?>
 
 
 		<div class="mt60 mb60">

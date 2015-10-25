@@ -67,23 +67,6 @@ function showSubCat(id){
   
 }
 
-$(function() {
-  if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
-  $('#slider').foundation('slider', 'set_value', slider_value);
-  
-  setTimeout(function(){
-    if ($('html, body').scrollTop() == 0){
-      $('html, body').animate({scrollTop: 70},400,"swing",
-        function(){
-          $('html, body').animate({scrollTop: 0});
-        }
-      );
-    }
-  },300);
-   //$('#preview').show();
-   
-   $('.more-platforms').hide();
-});
 
 $(window).scroll(function () {
   if (!$('.top-menu').is(":animated") && $('html, body').scrollTop() > 80) {
@@ -109,6 +92,12 @@ $(window).scroll(function () {
 
 
 $(document).ready(function () {
+    if ($('.intro').height() + $('.intro-desc').height() < $("html").height()) $('.intro').height($("html").height()-$('.intro-desc').height()-50);
+    $('#slider').foundation('slider', 'set_value', slider_value);
+
+     //$('#preview').show();
+
+     $('.more-platforms').hide();
     
     $('.unlockByEmail').click(function(){
         $.get( "site/checkMail?email="+$('.email-old').val(), function( data ) {
@@ -186,4 +175,19 @@ $(document).ready(function () {
     
     
 
+});
+
+
+$(window).load(function(){
+    setTimeout(function(){
+      if ($('html, body').scrollTop() == 0){
+        $('html, body').animate({scrollTop: 70},400,"swing",
+          function(){
+            $('html, body').animate({scrollTop: 0}, function(){
+                $('.parallax-window').css({'background':'rgba(0,0,0,0)'});
+            });
+          }
+        );
+      }
+    },300); 
 });

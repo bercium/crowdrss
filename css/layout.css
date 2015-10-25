@@ -22,13 +22,21 @@
 
 .intro{
   color:#FFF;
-  background: #0088bb;
+  /*background: #0088bb;
   background-image: url('../images/bg.png');
-  background-position: bottom center;
+  background-position: bottom center;*/
   background-repeat: repeat-x;
   height:650px;
   font-weight: bold;
   background-size: cover;
+}
+
+.parallax-mirror{
+    background: #0088bb;
+     -webkit-transition: background 3000ms ease-in 2000ms; /* property duration timing-function delay */
+    -moz-transition: background 3000ms ease-in 2000ms;
+    -o-transition: background 3000ms ease-in 2000ms;
+    transition: background 3000ms ease-in 2000ms;
 }
 
 .intro-defult{
@@ -70,7 +78,7 @@
 
 .intro-desc{
   /*color:#EEE;*/
-  background: #0088bb;
+ /* background: #0088bb;*/
 }
 
 .special_title{

@@ -106,46 +106,48 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 	</div>
 	<?php if (isset($this->social) && $this->social){ ?>
 	<hr style="margin:0;"><?php } ?>
-    <div class="row">
-      <div class="column small-12 pt30 text-center">
-        <div class="left">
-          in beta ... with <i class="fa fa-heart" style="color:#f04124" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Love"></i>
+    <div style="background-color:#222; color:#FFF;">
+        <div class="row">
+          <div class="column small-12 pt30 text-center">
+            <div class="left">
+              in beta ... with <i class="fa fa-heart" style="color:#f04124" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Love"></i>
+            </div>
+            <dl class="sub-nav right" >
+              <?php /* ?>
+              <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star-o"></i> Daily top</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy"></i> Top 50</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd>
+              <?php */ ?>
+              <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#bbb;"><i class="fa fa-envelope"></i> Write us</a></dd> 
+            </dl>
+          </div>
         </div>
-        <dl class="sub-nav right" >
-          <?php /* ?>
-          <dd><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star-o"></i> Daily top</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy"></i> Top 50</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd>
-          <?php */ ?>
-          <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#666;"><i class="fa fa-envelope"></i> Write us</a></dd> 
-        </dl>
-      </div>
-    </div>
-    <?php if (!Yii::app()->user->isGuest){ ?>
-    <div class="row">
-      <div class="column small-12">
-        <dl class="sub-nav " >
-          
-          <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('projectFeatured/index'); ?>">Feature a project</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('statistic/database'); ?>">Stat DB</a></dd> 
-          <dd><a href="<?php echo Yii::app()->createUrl('statistic/socialAnalize'); ?>">Social analize</a></dd> 
-          
-          
-        </dl>
-      </div>
-    </div>
-    <?php } ?>
-    <div class="row">
-      <div class="column small-12 text-center mb30 light">
-        <small>
-           All published platforms and their related content and Trademarks are owned by individual platform and their respective project owners ⋅ Crowdfunding RSS is not affiliated with any of them.
-        </small>
-      </div>
+        <?php if (!Yii::app()->user->isGuest){ ?>
+        <div class="row">
+          <div class="column small-12">
+            <dl class="sub-nav " >
+
+              <dd><a href="<?php echo Yii::app()->createUrl('project/index'); ?>">Project</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('projectFeatured/index'); ?>">Feature a project</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('category/index'); ?>">Category</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('origCategory/index'); ?>">Orig Category</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('statistic/database'); ?>">Stat DB</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('statistic/socialAnalize'); ?>">Social analize</a></dd> 
+
+
+            </dl>
+          </div>
+        </div>
+        <?php } ?>
+        <div class="row">
+          <div class="column small-12 text-center mb30 light">
+            <small>
+               All published platforms and their related content and Trademarks are owned by individual platform and their respective project owners ⋅ Crowdfunding RSS is not affiliated with any of them.
+            </small>
+          </div>
+        </div>
     </div>
   </div>
 
