@@ -383,6 +383,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->description = $data_single['description'];
             $insert->image = $data['images'][$j];
             $insert->link = $link;
+            $insert->internal_link = toAscii($data_single['title']);
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
@@ -467,6 +468,7 @@ class UpdateCommand extends CConsoleCommand {
           $insert->description = $data_single['description'];
           $insert->image = $image;
           $insert->link = $link;
+          $insert->internal_link = toAscii($title);
           //echo $link."\n"; die;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
@@ -532,6 +534,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->description = $data->description;
             $insert->image = $data->image;
             $insert->link = $data->link;
+            $insert->internal_link = toAscii($data->title);
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
@@ -632,6 +635,7 @@ class UpdateCommand extends CConsoleCommand {
             $insert->description = $data_single['description'];
             $insert->image = $data->image;
             $insert->link = $data->link;
+            $insert->internal_link = toAscii($data->title);
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
@@ -686,6 +690,7 @@ class UpdateCommand extends CConsoleCommand {
             //$insert->image = $data_single['image'];
             $insert->image = $data->image;
             $insert->link = $data->link;
+            $insert->internal_link = toAscii($data->title);
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data_single['category'], $data->link, ""); // ZAČASNO*****************************************************************
@@ -745,6 +750,7 @@ class UpdateCommand extends CConsoleCommand {
             else{ $insert->description=$data_single['description']; }
             $insert->image=$data->image;
             $insert->link=$data->link;
+            $insert->internal_link = toAscii($data->title);
             $insert->time_added=date("Y-m-d H:i:s");
             $insert->platform_id=$id;
             $insert->orig_category_id = 14; // ZAČASNO*****************************************************************
