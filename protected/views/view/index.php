@@ -66,7 +66,7 @@ if ($project->removed == 0){
 
     </div>
     
-    <?php /* ?>
+    <?php if (count($similar) != 2){ ?>
     <div class="row pt40 pb10 hide-for-small">
         <div class="columns">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -81,7 +81,7 @@ if ($project->removed == 0){
             </script>
         </div>
     </div>
-    <?php */ ?>
+    <?php } ?>
            
     <?php if (count($similar) == 2){ ?>
     <div class="row">
