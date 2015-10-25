@@ -59,12 +59,12 @@ abstract class BaseProject extends GxActiveRecord {
       array('removed', 'default', 'setOnEmpty' => true, 'value' => 0, 'on' => 'insert'),
 			array('platform_id, orig_category_id, creator_created, creator_backed, type_of_funding, removed', 'numerical', 'integerOnly'=>true),
 			array('rating', 'numerical'),
-			array('title, image, link, location, creator', 'length', 'max'=>255),
+			array('title, image, link, internal_link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
 			array('goal', 'length', 'max'=>20),
 			array('start, end', 'safe'),
 			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, platform_id, orig_category_id, title, description, image, link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added, removed', 'safe', 'on'=>'search'),
+			array('id, platform_id, orig_category_id, title, description, image, link, internal_link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added, removed', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,6 +93,7 @@ abstract class BaseProject extends GxActiveRecord {
 			'description' => Yii::t('app', 'Description'),
 			'image' => Yii::t('app', 'Image'),
 			'link' => Yii::t('app', 'Link'),
+            'internal_link' => Yii::t('app', 'Link'),
 			'start' => Yii::t('app', 'Start'),
 			'end' => Yii::t('app', 'End'),
 			'location' => Yii::t('app', 'Location'),
@@ -121,7 +122,8 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('title', $this->title, true);
 		$criteria->compare('description', $this->description, true);
 		$criteria->compare('image', $this->image, true);
-		$criteria->compare('link', $this->link, true);
+		$criteria->compare('internal_link', $this->internal_link, true);
+        $criteria->compare('link', $this->link, true);
 		$criteria->compare('start', $this->start, true);
 		$criteria->compare('end', $this->end, true);
 		$criteria->compare('location', $this->location, true);
