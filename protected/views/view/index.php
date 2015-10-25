@@ -1,6 +1,5 @@
 <?php 
 if ($project->removed == 0){
-    $this->pageTitle = $project->title;
 ?><div class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;">
     
     <div class="hide-for-small pt50"></div>
@@ -62,11 +61,12 @@ if ($project->removed == 0){
                    //"<br />Rating: ".round($project->rating);
                 ?>
                 </p>
-                <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">Go to project site <i class="fa fa-external-link"></i></a>
+                <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
           </div>
 
     </div>
     
+    <?php /* ?>
     <div class="row pt40 pb10 hide-for-small">
         <div class="columns">
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -80,13 +80,76 @@ if ($project->removed == 0){
             (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
         </div>
-    </div>    
+    </div>
+    <?php */ ?>
+           
+    <?php if (count($similar) == 2){ ?>
+    <div class="row">
+      <div class="columns pt50 text-center">
+            <h3>Similar campaigns</h3>  
+      </div>
+    </div>
+           
+    <div class="row pt20 pb10 hide-for-small text-center">
+        <div class="columns medium-4">
+            <?php   if (!empty($similar[0]->internal_link)){
+                $internal_link = Yii::app()->createUrl("view/index", array("name" => $similar[0]->internal_link));
+            }else{
+                if (strpos($project->title, "/") === false)
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $similar[0]->title)))));
+                else
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $similar[0]->title)));
+            }
+            ?>
+            
+            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[0]->id; ?>" target="_blank">
+                <img src="<?php echo $similar[0]->image; ?>" style="height: 250px; width: auto;">
+            </a>
+            <div class="pt20">
+            <strong><em><?php echo $similar[0]->title ?></em></strong>
+            </div>
+        </div>
+        <div class="columns medium-4">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- cfrss-responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-0534207295672567"
+                 data-ad-slot="6740352234"
+                 data-ad-format="auto"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <div class="pt20">
+            <strong><em>Google</em></strong>
+            </div>
+        </div>
+        <div class="columns medium-4">
+            <?php   if (!empty($similar[0]->internal_link)){
+                $internal_link = Yii::app()->createUrl("view/index", array("name" => $similar[1]->internal_link));
+            }else{
+                if (strpos($project->title, "/") === false)
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $similar[1]->title)))));
+                else
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $similar[1]->title)));
+            }
+            ?>
+            
+            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[1]->id; ?>" target="_blank">
+                <img src="<?php echo $similar[1]->image; ?>" style="height: 250px; width: auto;">
+            </a>
+            <div class="pt20">
+            <strong><em><?php echo $similar[1]->title ?></em></strong>
+            </div>
+        </div>
+    </div>
+    <?php } ?>
     
     <div class="row">
       <div class="columns pt30 text-center">
 
         <a href="/" trk="button_view_index">
-            <input type="button" class="button success medium radius" value="Find similar projects" style=" font-weight: bold;">
+            <input type="button" class="button success medium radius" value="Customize your projects" style=" font-weight: bold;">
         </a>
            <div class="show-for-small pt30"></div>
       </div>

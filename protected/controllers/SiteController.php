@@ -441,11 +441,14 @@ EOD;
         <url>
           <loc>";
 
-                if (strpos($project->title, "/") === false)
-                    $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
-                else
-                    $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
-
+                if (!empty($project->internal_link)){
+                    $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
+                }else{
+                    if (strpos($project->title, "/") === false)
+                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
+                    else
+                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
+                }
                 $sitemapResponse .= "</loc>
           <changefreq>weekly</changefreq>
           <priority>" . $priority . "</priority>

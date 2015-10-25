@@ -86,3 +86,6 @@ ALTER TABLE `project_featured` ADD `active` INT NOT NULL DEFAULT '0';
 --
 ALTER TABLE `project_featured`
   ADD CONSTRAINT `project_featured_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+ALTER TABLE `project` ADD `internal_link` VARCHAR(255) NULL DEFAULT NULL AFTER `link`;

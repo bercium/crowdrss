@@ -12,13 +12,14 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="language" content="en" />
-  <?php if ($this->pageDesc != ''){ ?><meta name="description" content="<?php echo $this->pageDesc; ?>" /> <?php } ?>
+    <?php if ($this->pageDesc != ''){ ?><meta name="description" content="<?php echo $this->pageDesc; ?>" /> <?php } ?>
+    <?php if ($this->keywords != ''){ ?><meta name="keywords" content="<?php echo $this->keywords; ?>" /> <?php } ?>
 
   <!-- FB -->
   <meta property="og:title" content="<?php echo $fullTitle; ?>" />
   <meta property="og:site_name" content="<?php echo Yii::app()->name; ?>" />
   <meta property="og:description" content="<?php echo $this->pageDesc; ?>" />
-  <meta property="og:image" content="<?php echo Yii::app()->createAbsoluteUrl('/images/fb-logo.png'); ?>" />
+  <meta property="og:image" content="<?php if ($this->fbImage != ''){ echo $this->fbImage; } else echo Yii::app()->createAbsoluteUrl('/images/fb-logo.png'); ?>" />
   <meta property="og:url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>"/>
   <link rel="canonical" href="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>" />
   <meta property="og:locale" content="en_US" />

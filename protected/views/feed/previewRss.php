@@ -22,7 +22,7 @@ $this->pageTitle = "RSS preview";
     </div>
 
 
-		<div class="pt30 pb30">
+		<div class="pt80 pb80">
       <div class="row">
         <div class="columns medium-12">
         <?php
@@ -31,21 +31,32 @@ $this->pageTitle = "RSS preview";
           $first = true;
           foreach ($projects as $project){
             if (!$first){
-              echo "<hr>";
+              echo "<hr class='mt40 mb40'>";
             }
             $first = false;
+            
+            
+             if (!empty($project->internal_link)){
+                $internal_link = Yii::app()->createUrl("view/index", array("name" => $project->internal_link));
+            }else{
+                if (strpos($project->title, "/") === false)
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $project->title)))));
+                else
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $project->title)));
+            }
+            
             ?>
 
               <div class="row">
                 <div class="columns small-4">
-                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
+                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>" target="_blank">
                     <img src="<?php echo $project->image; ?>">
                   </a>
                 </div>
                 <div class="columns small-8">
-                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
+                  <a href="<?php echo $internal_link ?>" trk="link_previewinternal_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
                   <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
-                  <p style="margin-top: 10px;" class="mb0">
+                  <p style="margin-top: 10px;" class="mb10">
                   <?php echo $project->description; ?>
                   <br />
                   <?php 
@@ -60,7 +71,9 @@ $this->pageTitle = "RSS preview";
                     
                     if (!Yii::app()->user->isGuest) echo "<br />Rating: ".$project->rating;
                   ?>
-                  </p>  
+                  </p>
+                  
+                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
                 </div>
 
               </div>

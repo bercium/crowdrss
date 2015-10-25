@@ -21,6 +21,8 @@ class Controller extends CController
 	 */
 	public $breadcrumbs=array();
   public $pageDesc = '';
+  public $keywords = '';
+  public $fbImage = '';
   
   
 public function init(){
