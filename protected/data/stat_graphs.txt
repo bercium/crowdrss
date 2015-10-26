@@ -11,3 +11,53 @@ SELECT COUNT(*) AS c, DATE(time_created) AS x FROM subscription
 GROUP BY DATE(time_created)
 
 
+
+
+
+-- feed click engagement
+SELECT s.id, COUNT(distinct fcl.id) all_time, 
+sum(case when fcl.time_clicked > '2015-10-12' then 1 else 0 end) 14_days,
+sum(case when fcl.time_clicked > '2015-10-19' then 1 else 0 end) 7_days,
+sum(case when fcl.time_clicked > '2015-10-23' then 1 else 0 end) 3_days
+FROM subscription s
+LEFT JOIN feed_click_log fcl ON fcl.subscription_id = s.id
+WHERE s.rss = 1
+GROUP BY s.id
+ORDER BY 2 ASC
+
+
+-- feed open engagement
+SELECT s.id, COUNT(distinct fol.id) all_time, 
+sum(case when fol.time_open > '2015-10-12' then 1 else 0 end) 14_days,
+sum(case when fol.time_open > '2015-10-19' then 1 else 0 end) 7_days,
+sum(case when fol.time_open > '2015-10-23' then 1 else 0 end) 3_days
+FROM subscription s
+LEFT JOIN feed_open_log fol ON fol.subscription_id = s.id
+WHERE s.rss = 1
+GROUP BY s.id
+ORDER BY 2 ASC
+
+
+-- email open engagement
+SELECT s.id, COUNT(distinct ml.id) all_time, 
+sum(case when ml.time_send > '2015-10-12' then 1 else 0 end) 14_days,
+sum(case when ml.time_send > '2015-10-19' then 1 else 0 end) 7_days,
+sum(case when ml.time_send > '2015-10-23' then 1 else 0 end) 3_days
+FROM subscription s
+LEFT JOIN  mail_log ml ON ml.subscription_id = s.id
+WHERE (s.daily_digest = 1 OR s.weekly_digest = 1 OR s.two_times_weekly_digest = 1) AND time_open IS NOT NULL
+GROUP BY s.id
+ORDER BY 2 ASC
+
+
+-- email click engagement
+SELECT s.id, COUNT(distinct ml.id) all_time, 
+sum(case when ml.time_send > '2015-10-12' then 1 else 0 end) 14_days,
+sum(case when ml.time_send > '2015-10-19' then 1 else 0 end) 7_days,
+sum(case when ml.time_send > '2015-10-23' then 1 else 0 end) 3_days
+FROM subscription s
+LEFT JOIN  mail_log ml ON ml.subscription_id = s.id
+LEFT JOIN mail_click_log mcl ON mcl.mail_tracking_code = ml.tracking_code
+WHERE (s.daily_digest = 1 OR s.weekly_digest = 1 OR s.two_times_weekly_digest = 1) AND mcl.time_clicked IS NOT NULL
+GROUP BY s.id
+ORDER BY 2 ASC
