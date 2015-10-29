@@ -18,7 +18,7 @@ if ($project->removed == 0){
 				 if (!window.matchMedia("screen and (min-width: 40.063em)").matches){
 					 console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
-							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
 
 						 
@@ -77,7 +77,7 @@ if ($project->removed == 0){
 				 if (window.matchMedia("screen and (min-width: 40.063em)").matches){
 					  console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
-							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
 
 						 
@@ -120,10 +120,8 @@ if ($project->removed == 0){
 				 if (window.matchMedia("screen and (min-width: 40.063em)").matches){
 					  console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
-							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							 '<ins class="adsbygoogle" style="display:blockstyle="display:inline-block;width:300px;height:250px"  data-ad-client="ca-pub-0534207295672567" data-ad-slot="3635121837"></ins>'
 							);
-
-						 
 				 }
 			</script>
 			
