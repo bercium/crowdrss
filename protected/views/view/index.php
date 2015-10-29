@@ -16,7 +16,6 @@ if ($project->removed == 0){
            
 			<script>
 				 if (!window.matchMedia("screen and (min-width: 40.063em)").matches){
-					 console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
 							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -70,15 +69,17 @@ if ($project->removed == 0){
 
     </div>
 		   
-	<?php if ((($ad_type = rand(0, 1)) == 0) || (count($similar) != 3)){ echo $ad_type; ?>
+	<?php if ((($ad_type = rand(0, 0)) == 0) || (count($similar) != 3)){ ?>
     <div class="row hide-for-small">
       <div class="columns pt30 text-center">
+		  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>
           <script>
+			  
 				 if (window.matchMedia("screen and (min-width: 40.063em)").matches){
-					  console.log(window.matchMedia("screen and (min-width: 40.063em)"));
-						 document.write (
-							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
-							);
+					  
+						 //document.write (
+						//	 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+						//	);
 					(adsbygoogle = window.adsbygoogle || []).push({});
 						 
 				 }
@@ -118,7 +119,6 @@ if ($project->removed == 0){
 			<?php if ($ad_type == 1){ ?>
 			<script>
 				 if (window.matchMedia("screen and (min-width: 40.063em)").matches){
-					  console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
 							 '<ins class="adsbygoogle" style="display:blockstyle="display:inline-block;width:300px;height:250px"  data-ad-client="ca-pub-0534207295672567" data-ad-slot="3635121837"></ins>'
 							);
