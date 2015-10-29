@@ -21,7 +21,7 @@ if ($project->removed == 0){
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
 
-						 (adsbygoogle = window.adsbygoogle || []).push({});
+						 
 				 }
 			 </script>
         </div>
@@ -80,7 +80,7 @@ if ($project->removed == 0){
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
 
-						 (adsbygoogle = window.adsbygoogle || []).push({});
+						 
 				 }
 			</script>
       </div>
@@ -123,7 +123,7 @@ if ($project->removed == 0){
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
 
-						 (adsbygoogle = window.adsbygoogle || []).push({});
+						 
 				 }
 			</script>
 			
