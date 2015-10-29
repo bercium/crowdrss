@@ -18,7 +18,7 @@ if ($project->removed == 0){
                  data-ad-slot="6740352234"
                  data-ad-format="auto"></ins>
             <script>
-                if (Foundation.utils.is_small_only()){
+                if (window.matchMedia("only screen and (min-width: 40.063em)")){
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 }
             </script>
@@ -105,7 +105,7 @@ if ($project->removed == 0){
                  data-ad-slot="6740352234"
                  data-ad-format="auto"></ins>
             <script>
-                if (!Foundation.utils.is_small_only()){
+                if (!window.matchMedia("only screen and (min-width: 40.063em)")){
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 }
             </script>
