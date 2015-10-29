@@ -72,18 +72,17 @@ if ($project->removed == 0){
 	<?php if ((($ad_type = rand(0, 0)) == 0) || (count($similar) != 3)){ ?>
     <div class="row hide-for-small">
       <div class="columns pt30 text-center">
-		  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>
-          <script>
-			  
-				 if (window.matchMedia("screen and (min-width: 40.063em)").matches){
-					  
-						 //document.write (
-						//	 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
-						//	);
-					(adsbygoogle = window.adsbygoogle || []).push({});
-						 
-				 }
-			</script>
+		  
+		  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- cfrss-square-similar -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-0534207295672567"
+     data-ad-slot="3635121837"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
       </div>
     </div>		   
 	<?php } ?>
