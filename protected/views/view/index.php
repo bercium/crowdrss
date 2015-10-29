@@ -15,8 +15,8 @@ if ($project->removed == 0){
             <div class="pt20"></div>
            
 			<script>
-				 if (window.matchMedia("screen and (max-width: 40em)")){
-					 console.log('d');
+				 if (!window.matchMedia("screen and (min-width: 40.063em)")){
+					 console.log(window.matchMedia("screen and (min-width: 40.063em)"));
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -74,7 +74,7 @@ if ($project->removed == 0){
     <div class="row hide-for-small">
       <div class="columns pt30 text-center">
           <script>
-				 if (!window.matchMedia("screen and (max-width: 40em)")){
+				 if (window.matchMedia("screen and (min-width: 40.063em)")){
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -116,7 +116,7 @@ if ($project->removed == 0){
         <div class="columns medium-4">
 			<?php if ($ad_type == 1){ ?>
 			<script>
-				 if (!window.matchMedia("screen and (max-width: 40em)")){
+				 if (window.matchMedia("screen and (min-width: 40.063em)")){
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
