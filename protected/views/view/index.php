@@ -19,7 +19,7 @@ if ($project->removed == 0){
                  data-ad-format="auto"></ins>
             <script>
                 if (window.matchMedia("only screen and (min-width: 40.063em)")){
-                    (adsbygoogle = window.adsbygoogle || []).push({});
+                //    (adsbygoogle = window.adsbygoogle || []).push({});
                 }
             </script>
         </div>
@@ -105,9 +105,9 @@ if ($project->removed == 0){
 				 data-ad-client="ca-pub-0534207295672567"
 				 data-ad-slot="3635121837"></ins>
 			<script>
-                if (!window.matchMedia("only screen and (min-width: 40.063em)")){
+                //if (!window.matchMedia("only screen and (min-width: 40.063em)")){
                     (adsbygoogle = window.adsbygoogle || []).push({});
-                }
+                //}
             </script>
             <div class="pt20">
             <strong><em>Google</em></strong>
