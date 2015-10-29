@@ -20,7 +20,7 @@ if ($project->removed == 0){
 						 document.write (
 							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
-
+					(adsbygoogle = window.adsbygoogle || []).push({});
 						 
 				 }
 			 </script>
@@ -79,7 +79,7 @@ if ($project->removed == 0){
 						 document.write (
 							 '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
-
+					(adsbygoogle = window.adsbygoogle || []).push({});
 						 
 				 }
 			</script>
@@ -122,6 +122,7 @@ if ($project->removed == 0){
 						 document.write (
 							 '<ins class="adsbygoogle" style="display:blockstyle="display:inline-block;width:300px;height:250px"  data-ad-client="ca-pub-0534207295672567" data-ad-slot="3635121837"></ins>'
 							);
+					(adsbygoogle = window.adsbygoogle || []).push({});
 				 }
 			</script>
 			
