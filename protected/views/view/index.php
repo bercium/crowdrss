@@ -97,14 +97,14 @@ if ($project->removed == 0){
             </div>
         </div>
         <div class="columns medium-4">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- cfrss-responsive -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-0534207295672567"
-                 data-ad-slot="6740352234"
-                 data-ad-format="auto"></ins>
-            <script>
+			
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- cfrss-square-similar -->
+			<ins class="adsbygoogle"
+				 style="display:inline-block;width:300px;height:250px"
+				 data-ad-client="ca-pub-0534207295672567"
+				 data-ad-slot="3635121837"></ins>
+			<script>
                 if (!window.matchMedia("only screen and (min-width: 40.063em)")){
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 }
