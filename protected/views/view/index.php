@@ -105,9 +105,11 @@ if ($project->removed == 0){
 				 data-ad-client="ca-pub-0534207295672567"
 				 data-ad-slot="3635121837"></ins>
 			<script>
+				console.log('a');
                 //if (!window.matchMedia("only screen and (min-width: 40.063em)")){
                     (adsbygoogle = window.adsbygoogle || []).push({});
                 //}
+				console.log('b');
             </script>
             <div class="pt20">
             <strong><em>Google</em></strong>
