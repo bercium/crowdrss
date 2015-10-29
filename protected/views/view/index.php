@@ -12,7 +12,7 @@ if ($project->removed == 0){
             <div class="pt20"></div>
             <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
             <!-- cfrss-responsive -->
-            <ins class="adsbygoogle"
+            <ins class="ads-bygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-0534207295672567"
                  data-ad-slot="6740352234"
