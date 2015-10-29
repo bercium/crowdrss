@@ -16,6 +16,7 @@ if ($project->removed == 0){
            
 			<script>
 				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+					 console.log('d');
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -73,7 +74,7 @@ if ($project->removed == 0){
     <div class="row hide-for-small">
       <div class="columns pt30 text-center">
           <script>
-				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+				 if (!window.matchMedia("only screen and (min-width: 40.063em)")){
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -115,7 +116,7 @@ if ($project->removed == 0){
         <div class="columns medium-4">
 			<?php if ($ad_type == 1){ ?>
 			<script>
-				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+				 if (!window.matchMedia("only screen and (min-width: 40.063em)")){
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
 							);
@@ -165,22 +166,7 @@ if ($project->removed == 0){
             </div>
         </div>
     </div>
-    <?php }else{ ?>
-    <div class="row pt40 pb10 hide-for-small">
-        <div class="columns">
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- cfrss-responsive -->
-            <ins class="adsbygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-0534207295672567"
-                 data-ad-slot="6740352234"
-                 data-ad-format="auto"></ins>
-            <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-            </script>
-        </div>
-    </div>
-    <?php } ?>           
+    <?php } ?>          
     
     <div class="row">
       <div class="columns pt30 text-center">
