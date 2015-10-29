@@ -15,7 +15,7 @@ if ($project->removed == 0){
             <div class="pt20"></div>
            
 			<script>
-				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+				 if (window.matchMedia("screen and (min-width: 40.063em)")){
 					 console.log('d');
 						 document.write (
 							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
