@@ -35,7 +35,7 @@ class ViewController extends Controller
         //find similar
         $similar_project = Project::model()->findAllBySql('SELECT * FROM project 
                                                     WHERE orig_category_id = ? AND rating > ? AND rating < ? AND goal LIKE ? AND id != ? AND removed = false
-                                                    ORDER BY end DESC LIMIT 2', 
+                                                    ORDER BY end DESC LIMIT 3', 
                                                     array($project->orig_category_id, ($rating-1), ($rating+1), $goal, $project->id )
                                                   );
         

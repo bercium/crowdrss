@@ -1,6 +1,9 @@
 <?php 
 if ($project->removed == 0){
-?><div <?php /*/ ?> class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;" <?php /*/?> class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="<?php echo $project->image; ?>" <?php //*/ ?>>
+?>
+ <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div <?php /*/ ?> class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;" <?php /*/?> class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="<?php echo $project->image; ?>" <?php //*/ ?>>
     
     <div class="hide-for-small pt50"></div>
     
@@ -10,18 +13,16 @@ if ($project->removed == 0){
     <div class="row show-for-small">
         <div class="columns">
             <div class="pt20"></div>
-            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- cfrss-responsive -->
-            <ins class="ads-bygoogle"
-                 style="display:block"
-                 data-ad-client="ca-pub-0534207295672567"
-                 data-ad-slot="6740352234"
-                 data-ad-format="auto"></ins>
-            <script>
-                if (window.matchMedia("only screen and (min-width: 40.063em)")){
-                //    (adsbygoogle = window.adsbygoogle || []).push({});
-                }
-            </script>
+           
+			<script>
+				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+						 document.write (
+							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							);
+
+						 (adsbygoogle = window.adsbygoogle || []).push({});
+				 }
+			 </script>
         </div>
     </div> 
     
@@ -67,9 +68,24 @@ if ($project->removed == 0){
           </div>
 
     </div>
-    
+		   
+	<?php if (($ad_type = rand(0, 1) == 0) || (count($similar) != 3)){ ?>
+    <div class="row hide-for-small">
+      <div class="columns pt30 text-center">
+          <script>
+				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+						 document.write (
+							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							);
+
+						 (adsbygoogle = window.adsbygoogle || []).push({});
+				 }
+			</script>
+      </div>
+    </div>		   
+	<?php } ?>
            
-    <?php if (count($similar) == 2){ ?>
+    <?php if (count($similar) == 3){ ?>
     <div class="row">
       <div class="columns pt30 text-center">
           <hr>
@@ -97,26 +113,22 @@ if ($project->removed == 0){
             </div>
         </div>
         <div class="columns medium-4">
-			
-			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-			<!-- cfrss-square-similar -->
-			<ins class="adsbygoogle"
-				 style="display:inline-block;width:300px;height:250px"
-				 data-ad-client="ca-pub-0534207295672567"
-				 data-ad-slot="3635121837"></ins>
+			<?php if ($ad_type == 1){ ?>
 			<script>
-				console.log('a');
-                //if (!window.matchMedia("only screen and (min-width: 40.063em)")){
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                //}
-				console.log('b');
-            </script>
+				 if (window.matchMedia("only screen and (min-width: 40.063em)")){
+						 document.write (
+							 '<ins class="adsbygoogle" style="ddisplay:block" data-ad-client="ca-pub-0534207295672567" data-ad-slot="6740352234" data-ad-format="auto"></ins>'
+							);
+
+						 (adsbygoogle = window.adsbygoogle || []).push({});
+				 }
+			</script>
+			
             <div class="pt20">
             <strong><em>Google</em></strong>
             </div>
-        </div>
-        <div class="columns medium-4">
-            <?php   if (!empty($similar[0]->internal_link)){
+			<?php }else{ ?>
+			<?php   if (!empty($similar[1]->internal_link)){
                 $internal_link = Yii::app()->createUrl("view/index", array("name" => $similar[1]->internal_link));
             }else{
                 if (strpos($project->title, "/") === false)
@@ -131,6 +143,25 @@ if ($project->removed == 0){
             </a>
             <div class="pt20">
             <strong><em><?php echo $similar[1]->title ?></em></strong>
+            </div>
+			<?php } ?>
+        </div>
+        <div class="columns medium-4">
+            <?php if (!empty($similar[2]->internal_link)){
+                $internal_link = Yii::app()->createUrl("view/index", array("name" => $similar[2]->internal_link));
+            }else{
+                if (strpos($project->title, "/") === false)
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $similar[2]->title)))));
+                else
+                    $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $similar[2]->title)));
+            }
+            ?>
+            
+            <a href="<?php echo $internal_link; ?>" trk="link_previewinternal_<?php echo $similar[2]->id; ?>">
+                <img src="<?php echo $similar[2]->image; ?>" style="height: 250px; width: auto;">
+            </a>
+            <div class="pt20">
+            <strong><em><?php echo $similar[2]->title ?></em></strong>
             </div>
         </div>
     </div>
