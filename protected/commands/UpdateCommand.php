@@ -2,7 +2,6 @@
 
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
-
     
 // Import.io function to get jason result for a webpage
   function query($connectorGuid, $input) {
@@ -337,6 +336,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Kickstarter store in to DB
   public function actionKickstarter() {
+    //$parsing = new KickstarterParser();
     $i = 1;
     $check = false;
     $count = 0;
@@ -377,6 +377,8 @@ class UpdateCommand extends CConsoleCommand {
             $count = 0;
             $htmlData = $this->getHtml($link, array());
             $data_single = $this->parseKickstarter($htmlData);
+            //$data_single = $parsing->firstParisng($htmlData);
+            //var_dump($data_single);die;
 	    if ($data_single == false) { continue; }
             $insert = new Project;
             $insert->title = $data_single['title'];
