@@ -119,7 +119,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
               <dd><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt"></i> Bottom 50</a></dd> 
               <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle"></i> Project owners</a></dd>
               <?php */ ?>
-              <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#bbb;"><i class="fa fa-envelope"></i> Write us</a></dd> 
+              <dd ><a href="#" onclick="contact(this);" trk="link_bottom_contactUs" style="color:#bbb;"><i class="fa fa-envelope"></i> Write to us</a></dd> 
             </dl>
           </div>
         </div>

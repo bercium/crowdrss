@@ -40,6 +40,7 @@ function contact(e){
 	var pri = "@";
 	e.href = "mailto:info";
 	e.href += pri+"crowdfundingrss.com";
+    $(e).html('info'+pri+'crowdfundingrss.com');
 }
 
 function splitComa( val ) {

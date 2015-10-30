@@ -18,7 +18,9 @@ if ($project->removed == 0){
                  data-ad-slot="6740352234"
                  data-ad-format="auto"></ins>
             <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
+                if (Foundation.utils.is_small_only()){
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }
             </script>
         </div>
     </div> 
@@ -103,7 +105,9 @@ if ($project->removed == 0){
                  data-ad-slot="6740352234"
                  data-ad-format="auto"></ins>
             <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
+                if (!Foundation.utils.is_small_only()){
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }
             </script>
             <div class="pt20">
             <strong><em>Google</em></strong>
