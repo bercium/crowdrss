@@ -38,8 +38,19 @@ class ViewController extends Controller
                                                     ORDER BY end DESC LIMIT 3', 
                                                     array($project->orig_category_id, ($rating-1), ($rating+1), $goal, $project->id )
                                                   );
+		
+		if (!Yii::app()->user->isGuest) {
+			//recalculate rating with details
+			switch ($project->platform->name) {
+				case "Kickstarter": $rating_class = new KickstarterRating($project->link, $project->id); /* echo "ks ".$project->link; */ break;
+				case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); /* echo "igg ".$project->link; */ break;
+			}
+
+			$rating_class->save = false;
+			$rating_detail = $rating_class->analize();
+		}
         
-		$this->render('index',array("project"=>$project, "similar"=>$similar_project));
+		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail));
 	}
   
  

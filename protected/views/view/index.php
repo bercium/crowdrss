@@ -169,6 +169,13 @@ if ($project->removed == 0){
     
     <div class="row">
       <div class="columns pt30 text-center">
+		  
+		 <?php if ($rating_detail){
+				echo "<pre>";
+				echo htmlentities(print_r($rating_detail,true));
+				echo"</pre>";
+			   } ?>
+		  
 
         <a href="/" trk="button_view_index">
             <input type="button" class="button success medium radius" value="Customize your projects" style=" font-weight: bold;">
