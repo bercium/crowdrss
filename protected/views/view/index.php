@@ -171,9 +171,9 @@ if ($project->removed == 0){
       <div class="columns pt30 text-center">
 		  
 		 <?php if ($rating_detail){
-				echo "<pre>";
+				echo "<div class='text-left'><pre>";
 				echo htmlentities(print_r($rating_detail,true));
-				echo"</pre>";
+				echo"</pre></div>";
 			   } ?>
 		  
 
