@@ -21,6 +21,7 @@ $a = array(
 
 		'application.components.*',
     'application.components.rating.*',
+    'application.components.parsers.*',
     //'application.components.extenders.*',
     //'application.components.behaviours.*',
     //'application.components.lib.*',
