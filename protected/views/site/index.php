@@ -204,7 +204,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                       
                         
                     <?php if (!$subscription){ ?>
-                    <div class="subcat-locker tip-top has-tip ml10 mt5" data-reveal-id="tweettounlock" data-tooltip data-options="disable_for_touch:true" title="Click to unlock">
+                    <div class="subcat-locker tip-top has-tip ml10 mt5" trk="link_content_locked" data-reveal-id="tweettounlock" data-tooltip data-options="disable_for_touch:true" title="Click to unlock">
                         <div><i class="fa fa-lock"></i></div>
                     </div>
 
@@ -401,16 +401,16 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
   </p>  
   <ul class="small-block-grid-2 medium-block-grid-4 large-block-grid-4">
       <li>
-          <div class="share-buttons-fb text-center">Facebook</div>
+          <div class="share-buttons-fb text-center"  trk="button_social_facebook-unlock">Facebook</div>
       </li>
       <li>
-          <div class="share-buttons-tw text-center">Twitter</div>
+          <div class="share-buttons-tw text-center"  trk="button_social_twitter-unlock">Twitter</div>
       </li>
       <li>
-          <div class="share-buttons-gp text-center">Google Plus</div>
+          <div class="share-buttons-gp text-center"  trk="button_social_google-unlock">Google Plus</div>
       </li>
       <li>
-          <div class="share-buttons-li text-center">Linked in</div>
+          <div class="share-buttons-li text-center"  trk="button_social_linkedin-unlock">Linked in</div>
       </li>
   </ul>
 
