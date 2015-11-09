@@ -222,8 +222,18 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
             </ul>
             
           
-          <hr class="mt60 mb60">
-          
+          <div class="mt60 mb60">
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- cfrss-responsive -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-0534207295672567"
+                 data-ad-slot="6740352234"
+                 data-ad-format="auto"></ins>
+            <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+          </div>
           
           <?php // if (!Yii::app()->user->isGuest) { //* ?>
           <a id="limitProjects" class="anchor"></a>          

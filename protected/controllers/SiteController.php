@@ -231,7 +231,9 @@ class SiteController extends Controller {
      * This is the action to handle external exceptions.
      */
     public function actionOwners($s = '') {
-
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScriptFile(Yii::app()->baseUrl.'/js/parallax.min.js');
+        
         $inPlatform = $onPage = $project = null;
         $error = '';
         $link = '';
@@ -239,6 +241,7 @@ class SiteController extends Controller {
         $rating = null;
 
         if (isset($_POST['checkLink']) || $s != '') {
+            
             if ($s != '')
                 $link = $s;
             else
@@ -292,14 +295,18 @@ class SiteController extends Controller {
                 if (strpos($link, "indiegogo.com") !== false) {
                     $rating_class = new IndiegogoRating($link);
                     $plat_id = 2;
-                }
+                }else $plat_id = 0;
+                
 
-                $rating_class->save = false;
+                if (!empty($rating_class)){
+                    $rating_class->save = false;
 
-                $rating_detail = $rating_class->analize();
+                    $rating_detail = $rating_class->analize();
 
-                //print_r($rating_detail);
-                $rating = $rating_detail['rating'];
+                    //print_r($rating_detail);
+                    $rating = $rating_detail['rating'];
+                }else $rating =  0;
+                
                 if (Yii::app()->user->isGuest)
                     $rating_detail = '';
 
@@ -309,8 +316,22 @@ class SiteController extends Controller {
                 //}
             }
         }
+        
+        $this->pageTitle = 'How does your project stack to others';
+        
+        if (!empty($project)){
+            $this->pageDesc = $project->description;
 
-        $this->render('owners', array("project" => $project, "link" => $link, "onPage" => $onPage, "inPlatform" => $inPlatform, 'rating_detail' => $rating_detail, "rating" => $rating));
+            $keywords[] = $project->platform->name;
+            $keywords[] = $project->origCategory->name;
+            $keywords[] = $project->creator;
+            $keywords = array_merge($keywords, explode(" ",$project->title));
+            $this->keywords = implode(", ", $keywords);
+            $this->fbImage = $project->image;
+            $summary = 'I got '.$rating.'/10 for my project '.$project->title;
+        }else $summary = '';
+;
+        $this->render('owners', array("project" => $project, "link" => $link, "onPage" => $onPage, "inPlatform" => $inPlatform, 'rating_detail' => $rating_detail, "rating" => $rating, "summary"=>$summary));
     }
 
     /**
