@@ -233,7 +233,10 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
             <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
             </script>
+            <hr>
           </div>
+          
+          
           
           <?php // if (!Yii::app()->user->isGuest) { //* ?>
           <a id="limitProjects" class="anchor"></a>          
