@@ -72,72 +72,13 @@ class UpdateCommand extends CConsoleCommand {
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
     if ($proxy == true) {
-        $proxy_ip = array("103.27.66.61", "104.238.103.223", "111.161.126.100", "111.161.126.101", "111.161.126.98", "111.161.126.99", "112.5.254.166", "115.124.75.150", "119.188.94.145", "120.202.249.230", "122.55.96.83", "148.251.234.73", "173.192.79.55", "180.166.56.47", "181.177.234.206", "182.163.56.88", "183.238.133.43", "184.72.93.7", "190.102.17.180", "190.181.18.232", "190.221.23.158", "192.68.228.104", "198.99.224.134", "200.150.97.27", "202.57.50.51", "203.217.170.144", "208.109.249.220", "210.140.171.157", "213.182.102.191", "218.201.89.117", "37.187.61.127", "46.37.30.28", "50.62.134.171", "50.63.137.198", "58.214.5.229", "58.96.150.82", "63.221.140.143", "64.62.250.38", "80.91.88.36", "89.218.38.202", "91.121.204.88", "94.247.25.162", "94.247.25.163", "94.247.25.164");
+        $proxy_ip = array("101.226.249.237", "101.255.64.22", "103.11.116.46", "115.124.75.148", "117.102.122.218", "119.188.94.145", "120.202.249.230", "122.55.96.83", "162.223.88.243", "177.184.8.123", "180.166.56.47", "181.177.234.206", "182.163.56.88", "183.238.133.43", "183.87.117.51", "183.87.117.55", "188.121.62.155", "190.181.18.232", "198.2.202.55", "198.2.202.58", "198.99.224.134", "200.150.97.27", "208.109.249.220", "50.62.134.171", "50.63.137.198", "63.221.140.143", "71.42.250.218", "75.126.26.180", "80.91.88.36", "83.222.126.179", "89.218.38.202", "91.121.204.88", "94.247.25.162", "94.247.25.164");
         $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
     }
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link, $header);
     return $htmlDataObject->httpBody;
-  }
-
-// Parser for KS
-  function parseKickstarter($htmlData) {
-
-    $pattern = '/window.current_project = "(.+)";/'; 
-    preg_match($pattern, $htmlData, $match);
-    $json = html_entity_decode($match[1]);
-    $json = str_replace('\\"', "\'", $json);
-    $jsonData = json_decode($json);
-    if ($jsonData == null){ return false; }
-    
-    // Description
-    $data['description'] = $jsonData->blurb;
-    
-    // Title
-    $data['title'] = $jsonData->name;
-    
-    // Goal
-    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->goal, $jsonData->currency);
-    $money_split = explode(".", $money);
-    if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
-    } else {$data['goal'] = $money;}
-
-    // Location
-    $data['location'] = $jsonData->{'location'}->{'displayable_name'};
-
-    // Category
-    $data['category'] = $jsonData->{'category'}->{'name'};
-
-    // Creator
-    $data['creator'] = $jsonData->{'creator'}->{'name'};
-
-    // Date
-    $data['start_date'] = date("Y-m-d H:i:s", $jsonData->{'launched_at'});
-    $data['end_date'] = date("Y-m-d H:i:s", $jsonData->{'deadline'});
-
-    // Created
-    $pattern = '/<span .+>(.+) created<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])){
-      if ($matches[1] == "First"){ $matches[1] = 1; }
-    } else {
-      $pattern = '/">(.+) created<\/a>/';
-      preg_match($pattern, $htmlData, $matches);
-    }
-    $data['created'] = $matches[1];
-
-    // Backed
-    $pattern = '/<span .+>(.+) backed<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1]) != true ){
-      $pattern = '/">(.+) backed<\/a>/';
-      preg_match($pattern, $htmlData, $matches);
-    }
-    if (isset($matches[1])) $data['backed'] = $matches[1];
-    else $data['backed'] = 0;
-    
-    return($data);
   }
 
 // Parser for IGG
@@ -336,7 +277,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // Kickstarter store in to DB
   public function actionKickstarter() {
-    //$parsing = new KickstarterParser();
+    $parsing = new KickstarterParser();
     $i = 1;
     $check = false;
     $count = 0;
@@ -376,8 +317,7 @@ class UpdateCommand extends CConsoleCommand {
           else {
             $count = 0;
             $htmlData = $this->getHtml($link, array());
-            $data_single = $this->parseKickstarter($htmlData);
-            //$data_single = $parsing->firstParisng($htmlData);
+            $data_single = $parsing->firstParsing($htmlData);
             //var_dump($data_single);die;
 	    if ($data_single == false) { continue; }
             $insert = new Project;
@@ -439,17 +379,15 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $numberOfPages = 100;
-    //$numberOfPages = 50;
     //$proxy_set = false;
     $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);
-    //$htmlData = $this->getHtml($link, array());
     $htmlDataSplit = explode('{"campaigns":', $htmlData);
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
     $jsonData = json_decode($json);
-    //var_dump(count($jsonData->campaigns)); die;
+    var_dump(count($jsonData)); die;
     if ($jsonData == null){ return false; }
     if (count($jsonData->campaigns)>$numberOfPages/2) {
         for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
