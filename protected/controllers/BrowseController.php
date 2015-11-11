@@ -2,27 +2,38 @@
 
 class BrowseController extends Controller
 {
-	
+    private function getCategories($category){
+        if ($category){
+			$category_data = Category::model()->find("name = :name", array(":name"=>$category));
+			if ($category_data){
+                $category_array = OrigCategory::model()->findAll("category_id = :cid", array(":cid"=>$category_data->id));
+                $categories = array();
+                if ($category_array){
+                    foreach ($category_array as $row){
+                        $categories[] = $row->id;
+                    }
+                    $category = " AND orig_category_id IN (".implode(', ',$categories).") ";
+                }else $category = '';
+            }else $category = '';
+		}
+        return $category;
+    }
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
-	public function actionTop($count = 10, $platform = '', $category = null){
+	public function actionTop($count = 10, $platform = '', $category = ''){
 		//$this->layout = 'default';
 
 		$count += 0;
 		//if ($count < 10) $count = 10;
 		if ($count > 100) $count = 100;
 		
-		if ($category){
-			$category_data = Category::model()->find("name = :name", array(":name"=>$category));
-			if ($category_data) $category = $category_data->id;
-			else $category = null;
-		}
+		$category = $this->getCategories($category);
 		
-		$projects = Project::model()->findAll("time_added >= :date AND (orig_category_id = :category OR :category IS NULL) ORDER BY rating DESC, time_added DESC LIMIT :limit",
+		$projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating DESC, time_added DESC LIMIT :limit",
 											  array(":date"=>date('Y-m-d',strtotime('-1 week')),
-													":limit"=>$coun,':category'=>$category));
+													":limit"=>$count));
 
 
 		$title = "Top ".$count." projects";
@@ -40,7 +51,10 @@ class BrowseController extends Controller
 		$count += 0;
 		//if ($count < 10) $count = 10;
 		if ($count > 100) $count = 100;
-		$projects = Project::model()->findAll("time_added >= :date AND NOT ISNULL(rating) ORDER BY rating ASC, time_added DESC LIMIT :limit",
+        
+		$category = $this->getCategories($category);
+		
+		$projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating ASC, time_added DESC LIMIT :limit",
 											  array(":date"=>date('Y-m-d',strtotime('-1 week')),
 													":limit"=>$count));
 
@@ -59,8 +73,11 @@ class BrowseController extends Controller
 		$count += 0;
 		//if ($count < 10) $count = 10;
 		if ($count > 50) $count = 50;
-		$projects = Project::model()->findAll("time_added >= :date ORDER BY rating DESC, time_added DESC LIMIT :limit",
-											  array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
+        
+        $category = $this->getCategories($category);
+		
+		$projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating DESC, time_added DESC LIMIT :limit",
+											   array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
 													":limit"=>$count));
 
 		$title = "Top projects for today";
