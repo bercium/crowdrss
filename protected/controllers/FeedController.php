@@ -3,6 +3,12 @@
 class FeedController extends Controller
 {
   
+    private $viewRedirectLink = false;
+    /**
+     * 
+     * @param type $action
+     * @return boolean
+     */
   protected function beforeAction($action){
     if (($action->id == 'rss') || ($action->id == 'downloadRss') || ($action->id == 'rl') || ($action->id == 'rmailTest')){
       foreach (Yii::app()->log->routes as $route){
@@ -14,17 +20,36 @@ class FeedController extends Controller
     return true;
   }
   
+  /**
+   * 
+   * @param type $project
+   * @param type $id
+   * @return string
+   */
   private function createRssItem($project, $id){
       $rssResponse = '<item>';
       $rssResponse .= '<title>' . htmlspecialchars($project->title) . '</title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
-      if ($id){
-        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></link>';
-        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></guid>';
+      if ($this->viewRedirectLink){
+          if (!empty($project->internal_link)){
+                $link = Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link))."?redirect";
+            }else{
+                if (strpos($project->title, "/") === false)
+                    $link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))."?redirect"));
+                else
+                    $link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title."&redirect")));
+            }
+            $rssResponse .= '<link><![CDATA[' . $link . ']]></link>';
+            $rssResponse .= '<guid><![CDATA[' . $link . ']]></guid>';
       }else{
-        $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
-        $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
+            if ($id){
+                $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></link>';
+                 $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></guid>';
+            }else{
+                 $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+                $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
+            }
       }
       
       $desc = '';
@@ -65,6 +90,13 @@ class FeedController extends Controller
       return $rssResponse;
   }
   
+  /**
+   * 
+   * @param type $projects
+   * @param type $id
+   * @param type $featured
+   * @return string
+   */
   function createRssFeed($projects, $id = null, $featured = null){
     $rssResponse = '';
     $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>';
@@ -266,7 +298,9 @@ class FeedController extends Controller
     Yii::app()->end();
   }
   
-  
+  /**
+   * 
+   */
   public function actionPreviewRss(){
     //$this->layout = 'blank';
     
@@ -324,7 +358,40 @@ class FeedController extends Controller
     $this->render('previewRss',array('projects'=>$projects,'cat'=>$cat,'plat'=>$plat, 'subcat'=>$subcat, 'rating'=>$rating, 'numOfDailyResults'=>$numOfresults));
   }  
   
-  
+  /**
+    * 
+    */
+  public function actionRssIFTTT($category = ''){
+    Yii::app()->clientScript->reset();
+    $this->layout = 'none';
+    
+    //header('Content-Type', 'application/rss+xml;charset=utf-8'); 
+    header('Content-Type: application/rss+xml; charset=UTF-8');
+    mb_internal_encoding("UTF-8"); 
+    
+    $count = 1;
+    if ($category){
+        $category_data = Category::model()->find("name = :name", array(":name"=>$category));
+        if ($category_data){
+            $category_array = OrigCategory::model()->findAll("category_id = :cid", array(":cid"=>$category_data->id));
+            $categories = array();
+            if ($category_array){
+                foreach ($category_array as $row){
+                    $categories[] = $row->id;
+                }
+                $category = " AND orig_category_id IN (".implode(', ',$categories).") ";
+            }else $category = '';
+        }else $category = '';
+    }
+    
+    $this->viewRedirectLink = true;
+    $projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating DESC, time_added DESC LIMIT :limit",
+                                           array(":date"=>date('Y-m-d H:00:00',strtotime('-24 years')),
+                                                ":limit"=>$count));
+    
+    echo $this->createRssFeed($projects);
+    Yii::app()->end();
+  }
   
   /**
    * tracking RSS link clicks and redirecting them
