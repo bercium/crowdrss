@@ -328,7 +328,7 @@ class SiteController extends Controller {
             $keywords = array_merge($keywords, explode(" ",$project->title));
             $this->keywords = implode(", ", $keywords);
             $this->fbImage = $project->image;
-            $summary = 'I got '.round($rating,1).'/10 for my project '.$project->title;
+            $summary = 'I got '.round($rating,1).'/10 for my project: '.$project->title;
         }else $summary = '';
 ;
         $this->render('owners', array("project" => $project, "link" => $link, "onPage" => $onPage, "inPlatform" => $inPlatform, 'rating_detail' => $rating_detail, "rating" => $rating, "summary"=>$summary));
