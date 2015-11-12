@@ -334,7 +334,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     $numberOfPages = 100;
     // false true
-    $proxy_set = false;
+    $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);
     $htmlDataSplit = explode('{"campaigns":', $htmlData);

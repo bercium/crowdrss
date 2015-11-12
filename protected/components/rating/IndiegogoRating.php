@@ -51,7 +51,7 @@ class IndiegogoRating extends PlatformRating{
   protected function currentWebStatus(){
     $parsing = new IndiegogoParser();
     if (!$this->html){
-      $this->html = $this->getData("","",false); //load data if not loaded
+      $this->html = $this->getData("","",true); //load data if not loaded
     }
     $htmlData = $this->html;
     // check validity of data
