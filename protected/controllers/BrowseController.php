@@ -2,6 +2,12 @@
 
 class BrowseController extends Controller
 {
+    
+    /**
+     * 
+     * @param type $category
+     * @return string
+     */
     private function getCategories($category){
         if ($category){
 			$category_data = Category::model()->find("name = :name", array(":name"=>$category));
@@ -18,6 +24,7 @@ class BrowseController extends Controller
 		}
         return $category;
     }
+    
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.

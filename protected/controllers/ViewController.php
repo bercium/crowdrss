@@ -38,7 +38,7 @@ class ViewController extends Controller
                                                     ORDER BY end DESC LIMIT 3', 
                                                     array($project->orig_category_id, ($rating-1), ($rating+1), $goal, $project->id )
                                                   );
-		
+		$rating_detail = null;
 		if (!Yii::app()->user->isGuest) {
 			//recalculate rating with details
 			switch ($project->platform->name) {
@@ -50,7 +50,13 @@ class ViewController extends Controller
 			$rating_detail = $rating_class->analize();
 		}
         
-		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail));
+        // redirect to project url in a few seconds
+        if (isset($_GET['redirect'])){
+            $cs->registerScript("redirect","redirect_link = '".$project->link."';");
+        }
+
+        
+		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail, 'redirect' => (isset($_GET['redirect']) ? true:false) ));
 	}
   
  
