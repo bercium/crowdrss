@@ -41,14 +41,10 @@ class IndiegogoParser {
         return($data);
     }
     
-    public function ratingParser($htmlData){
-        $pattern = '/gon.campaign=(.+);gon./';
-        preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])){$json = html_entity_decode($match[1]."}]}");}
-        else{return false;}
-        $split_json = explode(";gon.", $json);
-        $json = $split_json[0];
-        $jsonData = json_decode($json);
+    public function ratingParser($htmlData, $projectDescription){
+        
+        if (!($projectDescription)){return false;}
+        $jsonData = json_decode($projectDescription);
         if ($jsonData == null){ return false;}
     
         // Words Full Description 
@@ -71,6 +67,15 @@ class IndiegogoParser {
         $videoNumber += substr_count($description, '</iframe>');
         $data['#videos'] = $videoNumber;
 
+        $pattern = '/gon.campaign=(.+);gon./';
+        preg_match($pattern, $htmlData, $match);
+        if (isset($match[1])){$json = html_entity_decode($match[1]."}]}");}
+        else{return false;}
+        $split_json = explode(";gon.", $json);
+        $json = $split_json[0];
+        $jsonData = json_decode($json);
+        if ($jsonData == null){ return false;}
+        
         // Money
         $money = $jsonData->collected_funds;
         switch ($jsonData->currency->iso_code) {
@@ -110,11 +115,15 @@ class IndiegogoParser {
         }else{ $data['#daysLong'] = 0; }
 
         // Number of comments, updates, backers
-        $pattern = '/<span id="js-tab-.+-count" class="i-count">(.+)<\/span>/';
-        preg_match_all($pattern, $htmlData, $matches);
-        $data['#comments'] = $matches[1][1];
-        $data['#updates'] = $matches[1][0];
-        $data['#backers'] = $matches[1][2];
+        $pattern_comments = '/Comments","count":(\d+),"disabled"/';
+        $pattern_updates = '/Updates","count":(\d+),"disabled"/';
+        $pattern_backers = '/Backers","count":(\d+),"disabled"/';
+        preg_match($pattern_comments, $htmlData, $match);
+        $data['#comments'] = $match[1];
+        preg_match($pattern_updates, $htmlData, $match);
+        $data['#updates'] = $match[1];
+        preg_match($pattern_backers, $htmlData, $match);
+        $data['#backers'] = $match[1];
 
         // Rased money
         $data['$raised'] = $jsonData->collected_funds * $convert;
@@ -147,7 +156,7 @@ class IndiegogoParser {
             $this->projectRemoved();
             return false;
         }else $data['Bsuccessful'] = 0;
-
+        
         return $data;     
     }
 }

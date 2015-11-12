@@ -391,10 +391,10 @@ class UpdateCommand extends CConsoleCommand {
 	  $insert_category->save();
           
           // get rating 
-          //$IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
-          //$rating = $IggRating->firstAnalize();
-          //$insert->rating = $rating;
-          //$insert->save();
+          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+          $rating = $IggRating->firstAnalize();
+          $insert->rating = $rating;
+          $insert->save();
 //          print_r($insert->getErrors());
         }
       }
