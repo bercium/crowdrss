@@ -75,7 +75,7 @@ class KickstarterParser {
         $beginingPosition = strpos($htmlData, 'About this project</h3>');
         $risksPosition = strpos($htmlData, 'Risks and challenges</h3>');
         $endPosition = $risksPosition - $beginingPosition;
-        $description = substr($$htmlData, $beginingPosition, $endPosition);
+        $description = substr($htmlData, $beginingPosition, $endPosition);
         $beginingPosition = strpos($description, '>');
         $description = substr($description, $beginingPosition);
         $descriptionNumber = str_word_count(strip_tags($description));
@@ -108,16 +108,16 @@ class KickstarterParser {
 
         // Video/Image
         $pattern = '/data-has-video="(\w+)" id/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if ($matches[1] == "true"){$vid_img = 1;}
         elseif($matches[1] == "false"){$vid_img = 0;}
         $data['Bvideo'] = $vid_img;
       
         // Words RaC
-        $beginingPosition = strpos($$htmlData, 'Risks and challenges</h3>');
-        $faqPosition = strpos($$htmlData, 'Learn about accountability on Kickstarter</a>');
+        $beginingPosition = strpos($htmlData, 'Risks and challenges</h3>');
+        $faqPosition = strpos($htmlData, 'Learn about accountability on Kickstarter</a>');
         $endPosition = $faqPosition - $beginingPosition;
-        $risks = substr($$htmlData, $beginingPosition, $endPosition);
+        $risks = substr($htmlData, $beginingPosition, $endPosition);
         $beginingPosition = strpos($risks, '</h2>');
         $risks = substr($risks, $beginingPosition);
         $riskNumber = str_word_count(strip_tags($risks));
@@ -125,7 +125,7 @@ class KickstarterParser {
         
         // If project ended
         $pattern = '/Project-ended-(.+) Project-is_/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if ($matches[1] == "true") $data['Bfinished'] = 1;
         elseif ($matches[1] == "false") $data['Bfinished'] = 0;
         
@@ -147,28 +147,28 @@ class KickstarterParser {
       
         // Created
         $pattern = '/<span .+>(.+) created<\/span>/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
           if ($matches[1] == "First"){ $matches[1] = 1; }
         } else {
           $pattern = '/">(.+) created<\/a>/';
-  	  preg_match($pattern, $$htmlData, $matches);
+  	  preg_match($pattern, $htmlData, $matches);
         }
         $data['#personCreated'] = $matches[1];
 
         // Backed
         $pattern = '/<span .+>(.+) backed<\/span>/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1]) != true ){
           $pattern = '/">(.+) backed<\/a>/';
-          preg_match($pattern, $$htmlData, $matches);
+          preg_match($pattern, $htmlData, $matches);
         }
         if (isset($matches[1])) $data['#personBacked'] = $matches[1];
         else $data['#personBacked'] = 0;
 
         // Days running
         $pattern = '/data-duration="(.+)" data-end_time=/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
           $days = floor($matches[1]);
           $data['#daysActive'] = $days;
@@ -176,7 +176,7 @@ class KickstarterParser {
 
         // How long allready
         $pattern = '/data-hours-remaining="(.+)" id=/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
           $running = floor($matches[1]/24);
           $data['#daysLong'] = $days-$running;
@@ -184,7 +184,7 @@ class KickstarterParser {
 
         // State of project
         $pattern = '/Project-state-(.+) Project/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if ($matches[1] == "successful") $data['Bsuccessful'] = 1;
         else $data['Bsuccessful'] = 0;
         if ($matches[1] == "suspended") $data['Bsuspended'] = 1;
@@ -199,35 +199,35 @@ class KickstarterParser {
 
         // Number of comments
         $pattern = '/data-comments-count="(\d+)"/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])) $data['#comments'] = $matches[1];
         else $data['#comments'] = 0;
 
         // Number of updates
         $pattern = '/data-updates-count="(\d+)"/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])) $data['#updates'] = $matches[1];
         else $data['#updates'] = 0;
 
         // Number of backers
         $pattern = '/data-backers-count="(.+)" id=/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])) $data['#backers'] = $matches[1];
         else $data['#backers'] = 0;
 
         // % Rased calc to money
         $pattern = '/data-percent-raised="(.+)" data-pledged=/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         $data['$raised'] = $money * $matches[1];
 
 	// Launch day
         $pattern = '/datetime="(.+)">/';
-        preg_match($pattern, $$htmlData, $matches);
+        preg_match($pattern, $htmlData, $matches);
         $data['Dlaunched'] = strtotime($matches[1]);
 
         // Pledges
         $pattern = '/Pledge[ ]*\s<span class=".+">(.+)<\/span>/';
-        preg_match_all($pattern, $$htmlData, $matches);
+        preg_match_all($pattern, $htmlData, $matches);
         $pledgesNumber = count($matches[1]);
         $data['#pledges'] = $pledgesNumber;
 //      for ($i=0; $i<$pledgesNumber; $i++){
