@@ -49,129 +49,17 @@ class IndiegogoRating extends PlatformRating{
 
   //get all 
   protected function currentWebStatus(){
+    $parsing = new IndiegogoParser();
     if (!$this->html){
-      //$this->html = $this->getData();  
-      $this->html = $this->getData("","",true); //load data if not loaded
-      //<a href="#home" class="js-tab-link" data-url="/projects/fear-and-fail-at-crowdfunding-conference/show_tab/home">Story</a>
-      //$this->html .= $this->getData("/show_tab/home",array("X-Requested-With" => "XMLHttpRequest",true));  //load secondary data if not loaded
+      $this->html = $this->getData("","",false); //load data if not loaded
     }
-    $text = $this->html;
-    //echo "a".substr_count($text,'<html>');
+    $htmlData = $this->html;
     // check validity of data
-    if (strpos($text, "i-illustration-not_found")){
+    if (strpos($htmlData, "i-illustration-not_found")){
       $this->projectRemoved();
       return false;
     }
-
-    $pattern = '/gon.campaign=(.+);gon./';
-    preg_match($pattern, $text, $match);
-    if (isset($match[1])){$json = html_entity_decode($match[1]."}]}");}
-    else{return false;}
-    $split_json = explode(";gon.", $json);
-    $json = $split_json[0];
-    $jsonData = json_decode($json);
-    if ($jsonData == null){ return false;}
-    
-    // Words Full Description 
-    $description = $jsonData->description_html;
-    $tmp['#wordsContent'] = str_word_count(strip_tags($description));
-
-    // Image number
-    $tmp['#images'] = substr_count($description, '<img');
-
-    // Subtitles Number
-    $subtitlesNumber = substr_count($description, '<h1>');
-    $subtitlesNumber += substr_count($description, '<h2>');
-    $subtitlesNumber += substr_count($description, '<h3>');
-    $subtitlesNumber += substr_count($description, '<h4>');
-    $tmp['#subtitle'] = $subtitlesNumber;
-
-    // Video number
-    $videoNumber = substr_count($description, '</embed>');
-    $videoNumber += substr_count($description, '</video>');
-    $videoNumber += substr_count($description, '</iframe>');
-    $tmp['#videos'] = $videoNumber;
-
-    // Money
-    $money = $jsonData->collected_funds;
-    switch ($jsonData->currency->iso_code) {
-      case "GBP": $convert = 1.69; break; 
-      case "EUR": $convert = 1.14; break; 
-      case "AUD": $convert = 0.93; break;
-      case "CAD": $convert = 0.92; break;
-      default: $convert = 1; break;
-    }
-    $tmp['$goal'] = $money * $convert;
-
-    // Video/Image
-    $pattern = '/id="pitchvideo"/';
-    preg_match($pattern, $text, $matches);
-    if (isset($matches[0])){$vid_img = 1;}
-    else{$vid_img = 0;}
-    $tmp['Bvideo'] = $vid_img;
-      
-    // Days running
-    $pattern = '/<span.*>in (\d)+ day.*<\/span>/';
-    preg_match($pattern, $text, $match);
-    if (isset($match[1])){$tmp['#daysActive'] = $match[1];}
-    else {$tmp['#daysActive'] = 0;}
-
-    // Start date
-    $tmp['Dlaunched'] = date("Y-m-d H:i:s", strtotime($jsonData->funding_started_at));
-
-    // If project ended
-    $pattern = '/i-contribute-button i-campaign-closed/';
-    preg_match($pattern, $text, $matches);
-    if (isset($matches[0])){ $tmp['Bfinished'] = 1; }
-    else{ $tmp['Bfinished'] = 0; }
-
-    // How long allready
-    if ($tmp['Bfinished'] == 0){
-      $tmp['#daysLong'] = $jsonData->funding_days;
-    }else{ $tmp['#daysLong'] = 0; }
-
-    // Number of comments, updates, backers
-    $pattern = '/<span id="js-tab-.+-count" class="i-count">(.+)<\/span>/';
-    preg_match_all($pattern, $text, $matches);
-    $tmp['#comments'] = $matches[1][1];
-    $tmp['#updates'] = $matches[1][0];
-    $tmp['#backers'] = $matches[1][2];
-
-    // Rased money
-    $tmp['$raised'] = $jsonData->collected_funds * $convert;
-
-    // Pledges
-    $pledgesNumber = count($jsonData->perks);
-    $tmp['#pledges'] = $pledgesNumber;
-
-    // Type of funding
-    if ($jsonData->funding_type == "flexible"){ $tmp['Bfunding'] = 0;  }
-    else{ $tmp['Bfunding'] = 1;}
-      
-    // External pages
-    $beginingPosition = strpos($text, 'Find This Campaign On');
-    if ($beginingPosition  !== false){ 
-      $endPosition = strpos($text, 'Team</div>');
-      $endPosition = $endPosition - $beginingPosition;
-      $externalPages = substr($text, $beginingPosition, $endPosition);
-      $tmp['#externalPages'] = substr_count($externalPages, '<a href');
-    }else{ $tmp['#externalPages'] = 0; }
-
-    // Team members
-    $teamMembers = count($jsonData->team_members);
-    $tmp['#teamMembers'] = $teamMembers;
-
-    // Succesful
-    if ( $tmp['Bfinished'] == 1 ) {
-      //if ($tmp['$goal'] > $tmp['$raised']) $tmp['Bsuccessful'] = 0;
-      //else $tmp['Bsuccessful'] = 1;
-      
-      $this->projectRemoved();
-      return false;
-      
-    }else $tmp['Bsuccessful'] = 0;
-
-    //var_dump($tmp); die;
+    $tmp = $parsing->ratingParser($htmlData);
     return $tmp;
   }
 }

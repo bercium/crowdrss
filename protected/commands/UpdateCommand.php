@@ -81,51 +81,6 @@ class UpdateCommand extends CConsoleCommand {
     return $htmlDataObject->httpBody;
   }
 
-// Parser for IGG
-  function parseIndiegogo($htmlData) {
-    
-    $pattern = '/gon.tealium_data_layer=(.+);gon.subdomain/'; 
-    preg_match($pattern, $htmlData, $match);
-    if (isset($match[1])){$json = html_entity_decode($match[1]);}
-    else{return false;}
-    $json = str_replace('\\"', "", $json);
-    $json = str_replace('\"', "", $json);
-    $jsonData = json_decode($json);
-    //var_dump($jsonData); die;
-    if ($jsonData == null){ return false; }
-    if (!$jsonData->campaign_name) {return false;}
-    
-    // Title
-    //$data['title'] = $jsonData->campaign_name;
-            
-    // Description
-    $data['description'] = $jsonData->campaign_description;
-            
-    // Category
-    $data['category'] = $jsonData->campaign_category;
-
-    // Goal
-    $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'campaign_goal_amount'}, $jsonData->{'site_currency'});
-    $money_split = explode(".", $money);
-    if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
-    } else {$data['goal'] = $money;}
-
-    // Type of funding
-    if ($jsonData->{'campaign_type'} == "flexible_funding") {$data['type_of_funding'] = 1;}
-    else{$data['type_of_funding'] = 0;}
-
-    // Start date
-    $data['start_date'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_start_date'}));
-
-    // End date
-    $data['end_date'] = date("Y-m-d H:i:s", strtotime($jsonData->{'campaign_end_date'}));
-
-    // Location
-    $data['location'] = $jsonData->campaign_city . ", " . $jsonData->campaign_country;
-
-    return($data);
-  }
-
 // Parser for GGF
   function parseGoGetFunding($link) {
     $htmlData = $this->getHtml($link, array());
@@ -296,12 +251,10 @@ class UpdateCommand extends CConsoleCommand {
       $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
       $data['images'] = str_replace("&amp;", "&", $matches[1]);      
-//      var_dump($data['images']); die;
       
       if (isset($data['links'])&&isset($data['images'])) {
         for ($j=0; $j< 20; $j++) {
           $link = "https://www.kickstarter.com".$data['links'][$j];
-//          echo $link."\n";
           if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
           $link_parts = explode("/", $link);
           $count_link_parts = count($link_parts);
@@ -376,32 +329,29 @@ class UpdateCommand extends CConsoleCommand {
 
 // Indiegogo store to DB
   public function actionIndiegogo() {
+    $parsing = new IndiegogoParser();
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $numberOfPages = 100;
-    //$proxy_set = false;
-    $proxy_set = true;
+    // false true
+    $proxy_set = false;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $this->getHtml($link, array(), $proxy_set);
     $htmlDataSplit = explode('{"campaigns":', $htmlData);
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
     $jsonData = json_decode($json);
-    //var_dump(count($jsonData)); die;
     if ($jsonData == null){ return false; }
     if (count($jsonData->campaigns)>$numberOfPages/2) {
         for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
         $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
         $image = $jsonData->campaigns[$j]->compressed_image_url;
         $title = $jsonData->campaigns[$j]->title;
-        //$category = $jsonData->campaigns[$j]->category_name;
         $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
                                                 array(':link' => $link, ':image' => $image));
         if (!$project_check) {
           $htmlData = $this->getHtml($link, array(), $proxy_set);
-          //$htmlData = $this->getHtml($link, array());
-          //$htmlData .= $this->getHtml($link . "/show_tab/home", array("X-Requested-With" => "XMLHttpRequest"), $proxy_set);
-          $data_single = $this->parseIndiegogo($htmlData);
+          $data_single = $parsing->firstParsing($htmlData);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
           $insert->title = $title;
@@ -409,7 +359,6 @@ class UpdateCommand extends CConsoleCommand {
           $insert->image = $image;
           $insert->link = $link;
           $insert->internal_link = toAscii($title);
-          //echo $link."\n"; die;
           $insert->time_added = date("Y-m-d H:i:s");
           $insert->platform_id = $id;
           $category = $this->checkCategory($data_single['category'], $link, "");
@@ -442,10 +391,10 @@ class UpdateCommand extends CConsoleCommand {
 	  $insert_category->save();
           
           // get rating 
-          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
-          $rating = $IggRating->firstAnalize();
-          $insert->rating = $rating;
-          $insert->save();
+          //$IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+          //$rating = $IggRating->firstAnalize();
+          //$insert->rating = $rating;
+          //$insert->save();
 //          print_r($insert->getErrors());
         }
       }
