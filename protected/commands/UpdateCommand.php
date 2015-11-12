@@ -387,7 +387,7 @@ class UpdateCommand extends CConsoleCommand {
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
     $jsonData = json_decode($json);
-    var_dump(count($jsonData)); die;
+    //var_dump(count($jsonData)); die;
     if ($jsonData == null){ return false; }
     if (count($jsonData->campaigns)>$numberOfPages/2) {
         for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
