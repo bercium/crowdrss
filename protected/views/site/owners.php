@@ -108,7 +108,7 @@
                 <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/social-fb.png" width="60">
             </a>
             &nbsp;
-            <a href="http://twitter.com/share?text=<?php echo $summary; ?>" trk="social_twitter_share_project"
+            <a href="http://twitter.com/share?text=<?php echo $summary; ?>&hashtags=cfrss&via=fundingtown" trk="social_twitter_share_project"
                onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
                 <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/social-tw.png" width="60">
             </a>
