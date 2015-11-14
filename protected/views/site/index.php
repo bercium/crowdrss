@@ -224,11 +224,11 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           
           <div class="mt60 mb60">
           <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-            <!-- cfrss-responsive -->
+            <!-- cfrss-responsive-main -->
             <ins class="adsbygoogle"
                  style="display:block"
                  data-ad-client="ca-pub-0534207295672567"
-                 data-ad-slot="6740352234"
+                 data-ad-slot="3264751435"
                  data-ad-format="auto"></ins>
             <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
