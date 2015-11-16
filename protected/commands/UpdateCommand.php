@@ -72,35 +72,13 @@ class UpdateCommand extends CConsoleCommand {
     $httpClient = new elHttpClient();
     $httpClient->enableRedirects();
     if ($proxy == true) {
-        $proxy_ip = array("101.226.249.237", "101.255.64.22", "103.11.116.46", "115.124.75.148", "117.102.122.218", "119.188.94.145", "120.202.249.230", "122.55.96.83", "162.223.88.243", "177.184.8.123", "180.166.56.47", "181.177.234.206", "182.163.56.88", "183.238.133.43", "183.87.117.51", "183.87.117.55", "188.121.62.155", "190.181.18.232", "198.2.202.55", "198.2.202.58", "198.99.224.134", "200.150.97.27", "208.109.249.220", "50.62.134.171", "50.63.137.198", "63.221.140.143", "71.42.250.218", "75.126.26.180", "80.91.88.36", "83.222.126.179", "89.218.38.202", "91.121.204.88", "94.247.25.162", "94.247.25.164");
+        $proxy_ip = array("101.226.249.237", "117.102.122.218", "119.188.94.145", "120.202.249.230", "122.55.96.83", "148.251.234.73", "162.223.88.243", "175.103.47.130", "177.184.8.123", "180.166.56.47", "182.163.56.88", "183.238.133.43", "190.102.17.240", "190.181.18.232", "190.221.23.158", "197.218.204.202", "198.2.202.55", "198.2.202.58", "198.99.224.134", "200.150.97.27", "219.141.225.149", "31.220.43.28", "50.63.137.198", "58.214.5.229", "63.221.140.143", "80.91.88.36", "83.172.144.19", "83.222.126.179", "89.218.38.202", "91.121.204.88", "94.247.25.163", "94.247.25.164");
         $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
     }
     $httpClient->setUserAgent("ff3");
     $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
     $htmlDataObject = $httpClient->get($link, $header);
     return $htmlDataObject->httpBody;
-  }
-
-// Parser for GGF
-  function parseGoGetFunding($link) {
-    $htmlData = $this->getHtml($link, array());
-
-    // Goal
-    $pattern = '/donated of (.+)<.+>(.+)<\/s/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['goal'] = $matches[1] . $matches[2];
-
-    // End date
-    $pattern = '/donate to this project before (.+)<\/p/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['end_date'] = $matches[1];
-
-    // Location
-    $pattern = '/<a href="\/projects\/city.+">(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['location'] = $matches[1];
-
-    return($data);
   }
 
 // Parser for PS
@@ -121,100 +99,6 @@ class UpdateCommand extends CConsoleCommand {
 
     return($data);
   }*/
-
-// Parser for FA
-  function parseFundAnything($link) {
-    $htmlData = $this->getHtml($link, array());
-
-    // Goal
-    $pattern = '/Contributions of (.+) goal/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['goal'] = $matches[1];
-
-    // Creator
-    $pattern = '/campaign-author">by (.+)<\/h3>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['creator'] = $matches[1];
-
-    // Description
-    $pattern = '/story">\s+<p>(.+)/';
-    preg_match($pattern, $htmlData, $matches);
-    $description = strip_tags($matches[1]);
-    $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
-    $data['description'] = $description . " ...";
-
-    return($data);
-  }
-
-// Parser for FR
-  function parseFundRazr($link) {
-    $htmlData = $this->getHtml($link, array());
-
-    // Goal
-    $pattern = '/raised of (.+) goal/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['goal'] = $matches[1];
-    } else {
-      $data['goal'] = NULL;
-    }
-
-    // Image
-    /*$pattern = '/<meta property="og:image" content="(.+)" \/>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['image'] = $matches[1];*/
-
-    // Category
-    $pattern = '/"category":"(.+)","contributionAmount/';
-    preg_match($pattern, $htmlData, $matches);
-    //var_dump($matches[1]); Die;
-    $data['category'] = $matches[1];
-
-    // Start date
-    $pattern = '/Launched (.+)</';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['start_date'] = $matches[1];
-    } else {
-      $data['start_date'] = NULL;
-    }
-
-    // End date
-    $pattern = '/Ends (.+) at(.+)<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) {
-      $data['end_date'] = $matches[1] . $matches[2];
-    } else {
-      $data['end_date'] = NULL;
-    }
-
-    return($data);
-  }
-
-// Parser for PM
-  function parsePledgeMusic($link) {
-    $htmlData = $this->getHtml($link, array());
-
-    // Description
-    $pattern = '/<div class=.copy.>(.+)<section/s';
-    preg_match($pattern, $htmlData, $matches);
-    $description = strip_tags($matches[1]);
-    $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
-    $data['description'] = html_entity_decode($description) . " ...";
-
-    // Location 
-    $pattern = '/<a href="\/artists\?country=.+">(.+)<\/a>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) $data['location'] = $matches[1];
-
-    // Category
-    $pattern = '/<div class=.genres.>(.+)<\/div>/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) { $data['category'] = strip_tags(html_entity_decode($matches[1])); }
-    else { $data['category'] = "Music";}
-
-    return($data);
-  }
 
   private function importioError($error, $platform){
     $message = new YiiMailMessage;
@@ -403,6 +287,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // GoGetFunding store to DB
   public function actionGoGetFunding() {
+    $parsing = new GoGetFundingParser();
     $i = 1;
     $check = false;
     $count = 0;
@@ -417,7 +302,8 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $data_single = $this->parseGoGetFunding($data->link);
+            $htmlData = $this->getHtml($data->link, array());
+            $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
             $insert->description = $data->description;
@@ -506,6 +392,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // FundAnything store in to DB
   public function actionFundAnything() {
+    $parsing = new FundAnythingParser();
     $i = 1;
     $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
     $id = $platform->id;
@@ -518,7 +405,8 @@ class UpdateCommand extends CConsoleCommand {
             
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $data_single = $this->parseFundAnything($data->link);
+            $htmlData = $this->getHtml($data->link, array());
+            $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
             $insert->description = $data_single['description'];
@@ -555,6 +443,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // FundRazr store in to DB
   public function actionFundRazr() {
+    $parsing = new FundRazrParser();  
     $check = false;
     $count = 0;
     $i = 1;
@@ -571,8 +460,8 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            //echo $data->title; die;
-            $data_single = $this->parseFundRazr($data->link);
+            $htmlData = $this->getHtml($data->link, array());
+            $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
             $insert->description = $data->description;
@@ -620,6 +509,7 @@ class UpdateCommand extends CConsoleCommand {
 
 // PledgeMusic store to DB
   public function actionPledgeMusic(){
+    $parsing = new PledgeMusicParser();
     $i = 1;
     $check = false;
     $count = 0;
@@ -632,7 +522,8 @@ class UpdateCommand extends CConsoleCommand {
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){$count = $count+1;} // Counter for checking if it missed some project in the next few projects
           else{
-            $data_single = $this->parsePledgeMusic($data->link);
+            $htmlData = $this->getHtml($data->link, array());
+            $data_single = $parsing->firstParsing($htmlData);
             $insert=new Project;
             $insert->title=$data->title;
             if (isset($data->description)) { $insert->description=$data->description; }
@@ -670,24 +561,5 @@ class UpdateCommand extends CConsoleCommand {
       }
       $i=$i+1;
     }
-  }
-   
-   
-  public function actionTest() {
-    Yii::import('ext.ECurrencyHelper.*');
-    $link = "https://www.kickstarter.com/projects/40210402/gaylocale-we-have-arrived";
-    $htmlData = $this->getHtml($link, array());
-    $pattern = '/window.current_project = "(.+)";/';
-    preg_match($pattern, $htmlData, $match);
-    $json = html_entity_decode($match[1]);
-    $json = str_replace('\\"', "\'", $json);
-    $jsonData = json_decode($json);
-    if ($jsonData == null){ return false; }
-    
-    echo $jsonData->goal."\n";
-    
-    $cc = new ECurrencyHelper();
-    echo $cc->convert($jsonData->currency, 'EUR', $jsonData->goal, ECurrencyHelper::USE_GOOGLE).',';
-  }
-  
+  }    
 }
