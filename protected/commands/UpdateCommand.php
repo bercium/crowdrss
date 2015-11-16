@@ -1,5 +1,4 @@
 <?php
-
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
     
@@ -67,20 +66,6 @@ class UpdateCommand extends CConsoleCommand {
     }
   }
 
-// Function for geting HTML data
-  function getHtml($link, $header, $proxy = false) {
-    $httpClient = new elHttpClient();
-    $httpClient->enableRedirects();
-    if ($proxy == true) {
-        $proxy_ip = array("101.226.249.237", "117.102.122.218", "119.188.94.145", "120.202.249.230", "122.55.96.83", "148.251.234.73", "162.223.88.243", "175.103.47.130", "177.184.8.123", "180.166.56.47", "182.163.56.88", "183.238.133.43", "190.102.17.240", "190.181.18.232", "190.221.23.158", "197.218.204.202", "198.2.202.55", "198.2.202.58", "198.99.224.134", "200.150.97.27", "219.141.225.149", "31.220.43.28", "50.63.137.198", "58.214.5.229", "63.221.140.143", "80.91.88.36", "83.172.144.19", "83.222.126.179", "89.218.38.202", "91.121.204.88", "94.247.25.163", "94.247.25.164");
-        $httpClient->setProxy($proxy_ip[mt_rand(0,count($proxy_ip)-1)], 80);
-    }
-    $httpClient->setUserAgent("ff3");
-    $httpClient->setHeaders(array("Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"));
-    $htmlDataObject = $httpClient->get($link, $header);
-    return $htmlDataObject->httpBody;
-  }
-
 // Parser for PS
 /*  function parsePubSlush($link) {
     $htmlData = $this->getHtml($link, array());
@@ -117,6 +102,7 @@ class UpdateCommand extends CConsoleCommand {
 // Kickstarter store in to DB
   public function actionKickstarter() {
     $parsing = new KickstarterParser();
+    $web = new webText();
     $i = 1;
     $check = false;
     $count = 0;
@@ -124,7 +110,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     while (($i <= 50) and ($check == false)) { 
       $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
-      $htmlData = $this->getHtml($link, array());
+      $htmlData = $web->getHtml($link, array());
       $pattern = '/(\/projects\/.+)\?ref=discovery/';
       preg_match_all($pattern, $htmlData, $matches);
       if (is_array($matches)){
@@ -153,7 +139,7 @@ class UpdateCommand extends CConsoleCommand {
           } // Counter for checking if it missed some project in the next few projects
           else {
             $count = 0;
-            $htmlData = $this->getHtml($link, array());
+            $htmlData = $web->getHtml($link, array());
             $data_single = $parsing->firstParsing($htmlData);
             //var_dump($data_single);die;
 	    if ($data_single == false) { continue; }
@@ -214,13 +200,14 @@ class UpdateCommand extends CConsoleCommand {
 // Indiegogo store to DB
   public function actionIndiegogo() {
     $parsing = new IndiegogoParser();
+    $web = new webText();
     $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
     $id = $platform->id;
     $numberOfPages = 100;
     // false true
     $proxy_set = true;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
-    $htmlData = $this->getHtml($link, array(), $proxy_set);
+    $htmlData = $web->getHtml($link, array(), $proxy_set);
     $htmlDataSplit = explode('{"campaigns":', $htmlData);
     $htmlData = '{"campaigns":'.$htmlDataSplit[1];
     $json = html_entity_decode($htmlData);
@@ -234,7 +221,7 @@ class UpdateCommand extends CConsoleCommand {
         $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
                                                 array(':link' => $link, ':image' => $image));
         if (!$project_check) {
-          $htmlData = $this->getHtml($link, array(), $proxy_set);
+          $htmlData = $web->getHtml($link, array(), $proxy_set);
           $data_single = $parsing->firstParsing($htmlData);
 	  if ($data_single == false) { continue; }
           $insert = new Project;
@@ -288,6 +275,7 @@ class UpdateCommand extends CConsoleCommand {
 // GoGetFunding store to DB
   public function actionGoGetFunding() {
     $parsing = new GoGetFundingParser();
+    $web = new webText();
     $i = 1;
     $check = false;
     $count = 0;
@@ -302,7 +290,7 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $htmlData = $this->getHtml($data->link, array());
+            $htmlData = $web->getHtml($data->link, array());
             $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
@@ -393,6 +381,7 @@ class UpdateCommand extends CConsoleCommand {
 // FundAnything store in to DB
   public function actionFundAnything() {
     $parsing = new FundAnythingParser();
+    $web = new webText();
     $i = 1;
     $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
     $id = $platform->id;
@@ -405,7 +394,7 @@ class UpdateCommand extends CConsoleCommand {
             
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $htmlData = $this->getHtml($data->link, array());
+            $htmlData = $web->getHtml($data->link, array());
             $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
@@ -443,7 +432,8 @@ class UpdateCommand extends CConsoleCommand {
 
 // FundRazr store in to DB
   public function actionFundRazr() {
-    $parsing = new FundRazrParser();  
+    $parsing = new FundRazrParser();
+    $web = new webText();
     $check = false;
     $count = 0;
     $i = 1;
@@ -460,7 +450,7 @@ class UpdateCommand extends CConsoleCommand {
             $count = $count + 1;
           } // Counter for checking if it missed some project in the next few projects
           else {
-            $htmlData = $this->getHtml($data->link, array());
+            $htmlData = $web->getHtml($data->link, array());
             $data_single = $parsing->firstParsing($htmlData);
             $insert = new Project;
             $insert->title = $data->title;
@@ -510,6 +500,7 @@ class UpdateCommand extends CConsoleCommand {
 // PledgeMusic store to DB
   public function actionPledgeMusic(){
     $parsing = new PledgeMusicParser();
+    $web = new webText();
     $i = 1;
     $check = false;
     $count = 0;
@@ -522,7 +513,7 @@ class UpdateCommand extends CConsoleCommand {
           $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
           if ($link_check){$count = $count+1;} // Counter for checking if it missed some project in the next few projects
           else{
-            $htmlData = $this->getHtml($data->link, array());
+            $htmlData = $web->getHtml($data->link, array());
             $data_single = $parsing->firstParsing($htmlData);
             $insert=new Project;
             $insert->title=$data->title;

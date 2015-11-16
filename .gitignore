@@ -2,6 +2,7 @@
 nbproject/
 
 .directory
+.git-ftp-tmp
 
 #VIM swap files
 *.swp
