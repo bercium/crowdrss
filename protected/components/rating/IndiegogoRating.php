@@ -51,12 +51,14 @@ class IndiegogoRating extends PlatformRating{
   protected function currentWebStatus(){
     $parsing = new IndiegogoParser();
     $web = new webText();
+    // false true
+    $proxy_set = false;
     $link = $this->link;
     $split_link = explode("/",$link);
     if (!$this->html){
-      $this->html = $web->getHtml($link,"",true); //load data if not loaded
+      $this->html = $web->getHtml($link,"",$proxy_set); //load data if not loaded
     }
-    $projectDescription = $web->getHtml("https://www.indiegogo.com/private_api/campaigns/$split_link[4]/description","",true);
+    $projectDescription = $web->getHtml("https://www.indiegogo.com/private_api/campaigns/$split_link[4]/description","",$proxy_set);
     $htmlData = $this->html;
     // check validity of data
     if (strpos($htmlData, "i-illustration-not_found")){

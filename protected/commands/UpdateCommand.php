@@ -121,7 +121,6 @@ class UpdateCommand extends CConsoleCommand {
       $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
       preg_match_all($pattern, $htmlData, $matches);
       $data['images'] = str_replace("&amp;", "&", $matches[1]);      
-      
       if (isset($data['links'])&&isset($data['images'])) {
         for ($j=0; $j< 20; $j++) {
           $link = "https://www.kickstarter.com".$data['links'][$j];
@@ -161,7 +160,7 @@ class UpdateCommand extends CConsoleCommand {
               $insert->location = $data_single['location'];
             if (isset($data_single['creator']))
               $insert->creator = $data_single['creator'];
-                  if (isset($data_single['created'])) {
+            if (isset($data_single['created'])) {
               $insert->creator_created = $data_single['created'];
             }
             if (isset($data_single['backed']))
@@ -205,7 +204,7 @@ class UpdateCommand extends CConsoleCommand {
     $id = $platform->id;
     $numberOfPages = 100;
     // false true
-    $proxy_set = true;
+    $proxy_set = false;
     $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
     $htmlData = $web->getHtml($link, array(), $proxy_set);
     $htmlDataSplit = explode('{"campaigns":', $htmlData);
@@ -498,59 +497,74 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // PledgeMusic store to DB
-  public function actionPledgeMusic(){
-    $parsing = new PledgeMusicParser();
-    $web = new webText();
-    $i = 1;
-    $check = false;
-    $count = 0;
-    $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
-    $id = $platform->id;
-    while (($i <= 10) and ($check == false)) {
-      $result = $this->query("708739b9-8d2e-4517-bf56-c02736e1c78b", array("webpage/url" => "http://www.pledgemusic.com/projects/index/launched?page=" . $i), false);
-      if ($result->results) {
-        foreach ($result->results as $data){
-          $link_check = Project::model()->findByAttributes(array('link'=>$data->link));
-          if ($link_check){$count = $count+1;} // Counter for checking if it missed some project in the next few projects
-          else{
-            $htmlData = $web->getHtml($data->link, array());
-            $data_single = $parsing->firstParsing($htmlData);
-            $insert=new Project;
-            $insert->title=$data->title;
-            if (isset($data->description)) { $insert->description=$data->description; }
-            else{ $insert->description=$data_single['description']; }
-            $insert->image=$data->image;
-            $insert->link=$data->link;
-            $insert->internal_link = toAscii($data->title);
-            $insert->time_added=date("Y-m-d H:i:s");
-            $insert->platform_id=$id;
-            $insert->orig_category_id = 14; // ZAČASNO*****************************************************************
-            if (isset($data->time)) {
-              if ($data->time <> "In Progress"){
-                $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data->time . "days"));
-              }
-            }
-            if (isset($data_single['location'])) $insert->location=$data_single['location'];
-            if (isset($data->creator)) $insert->creator=$data->creator;
-            $insert->save();
+    public function actionPledgeMusic(){
+        $parsing = new PledgeMusicParser();
+        $web = new webText();
+        $i = 1;
+        $check = false;
+        $count = 0;
+        $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
+        $id = $platform->id;
+        while (($i <= 10) and ($check == false)) {
+            $htmlData = $web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i", array());
+            $pattern_link = '/(\/projects.+)\?referrer=launched/';
+            $pattern_image = '/alt="Mobile" src="(.+)" \/>/';
+            preg_match_all($pattern_link, $htmlData, $matches);
+            $links = $matches[1];
+            preg_match_all($pattern_image, $htmlData, $matches);
+            $images = $matches[1];
+            for ($j=0; $j< (count($links)-1); $j++) {
+                $link = "http://www.pledgemusic.com".$links[$j];
+                if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
+                $link_parts = explode("/", $link);
+                $count_link_parts = count($link_parts);
+                $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3",
+                                                          array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
+                                                                ':link2' => $links[$j], 
+                                                                ':link3' => $link));
+                if ($project_check) {$count = $count+1;} // Counter for checking if it missed some project in the next few projects
+                else{
+                    $htmlData = $web->getHtml($link, array());
+                    $data_single = $parsing->firstParsing($htmlData);
+                    $category_all = explode(', ', $data_single['category']);
+                    $insert=new Project;
+                    $insert->title=$data_single['title'];
+                    $insert->description=$data_single['description'];
+                    $insert->image=$images[$j];
+                    $insert->link=$link;
+                    $insert->time_added=date("Y-m-d H:i:s");
+                    $insert->platform_id=$id;
+                    $category = $this->checkCategory($data_single['category'][0], $link, ""); // ZAČASNO*****************************************************************
+                    $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                    if (isset($data_single['creator'])) {
+                        $insert->creator = $data_single['creator'];
+                        $internal_link = $data_single['creator'];
+                    }
+                    if (isset($data_single['time'])) {
+                      if ($data_single['time'] <> "In Progress"){
+                        $insert->end=date("Y-m-d H:i:s", strtotime("+" . $data_single['time'] . "days"));
+                      }
+                    }
+                    if (isset($data_single['location'])) $insert->location=$data_single['location'];
+                    $internal_link .= " " . $data_single['title'];
+                    $insert->internal_link = toAscii($internal_link);
+                    $insert->save();
 
-            $id_project = $insert->id;
-            // Category add
-            $category_all = explode(', ', $data_single['category']);
-            for ($i=0; $i< count($category_all); $i++){
-              $insert_category = new ProjectOrigcategory;
-              $insert_category->project_id = $id_project;
-              $category = $this->checkCategory($category_all[$i], $data->link, "PledgeMusic");
-              $insert_category->orig_category_id = $category->id;
-              $insert_category->save();
+                    $id_project = $insert->id;
+                    // Category add
+                    for ($i=0; $i< count($category_all); $i++){
+                      $insert_category = new ProjectOrigcategory;
+                      $insert_category->project_id = $id_project;
+                      $category = $this->checkCategory($category_all[$i], $link, "PledgeMusic");
+                      $insert_category->orig_category_id = $category->id;
+                      $insert_category->save();
+                    }
+                    $count = 0;
+                    // print_r($insert->getErrors());
+                }
+                if ($count >= 40){ $check=true; break; }
+                $i=$i+1;
             }
-            $count = 0;
-            // print_r($insert->getErrors());
-          }
-          if ($count >= 40){ $check=true; break; }
         }
-      }
-      $i=$i+1;
     }
-  }    
 }
