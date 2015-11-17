@@ -100,176 +100,158 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // Kickstarter store in to DB
-  public function actionKickstarter() {
-    $parsing = new KickstarterParser();
-    $web = new webText();
-    $i = 1;
-    $check = false;
-    $count = 0;
-    $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
-    $id = $platform->id;
-    while (($i <= 50) and ($check == false)) { 
-      $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
-      $htmlData = $web->getHtml($link, array());
-      $pattern = '/(\/projects\/.+)\?ref=discovery/';
-      preg_match_all($pattern, $htmlData, $matches);
-      if (is_array($matches)){
-          foreach ($matches[1] as $key => $val){ $links[$val] = true; }
-          if (is_array($links)) $data['links'] = array_keys($links);
-          else $data['links'] = array();
-      }
-      $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
-      preg_match_all($pattern, $htmlData, $matches);
-      $data['images'] = str_replace("&amp;", "&", $matches[1]);      
-      if (isset($data['links'])&&isset($data['images'])) {
-        for ($j=0; $j< 20; $j++) {
-          $link = "https://www.kickstarter.com".$data['links'][$j];
-          if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
-          $link_parts = explode("/", $link);
-          $count_link_parts = count($link_parts);
-          $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
-                                                  array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                        ':link2' => $data['links'][$j], 
-                                                        ':link3' => $link,
-                                                        ':image' => $data['images'][$j]));
-          
-          if ($project_check) {
-            $count = $count + 1;
-          } // Counter for checking if it missed some project in the next few projects
-          else {
-            $count = 0;
+    public function actionKickstarter() {
+        $parsing = new KickstarterParser();
+        $web = new webText();
+        $i = 1;
+        $check = false;
+        $count = 0;
+        $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
+        $id = $platform->id;
+        while (($i <= 50) and ($check == false)) { 
+            $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
             $htmlData = $web->getHtml($link, array());
-            $data_single = $parsing->firstParsing($htmlData);
-            //var_dump($data_single);die;
-	    if ($data_single == false) { continue; }
-            $insert = new Project;
-            $insert->title = $data_single['title'];
-            $insert->description = $data_single['description'];
-            $insert->image = $data['images'][$j];
-            $insert->link = $link;
-            $insert->internal_link = toAscii($data_single['title']);
-            $insert->time_added = date("Y-m-d H:i:s");
-            $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
-            $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-            if (isset($data_single['start_date']))
-              $insert->start = $data_single['start_date'];
-            if (isset($data_single['end_date']))
-              $insert->end = $data_single['end_date'];
-            if (isset($data_single['location']))
-              $insert->location = $data_single['location'];
-            if (isset($data_single['creator']))
-              $insert->creator = $data_single['creator'];
-            if (isset($data_single['created'])) {
-              $insert->creator_created = $data_single['created'];
+            $pattern = '/(\/projects\/.+)\?ref=discovery/';
+            preg_match_all($pattern, $htmlData, $matches);
+            if (is_array($matches)){
+                foreach ($matches[1] as $key => $val){ $links[$val] = true; }
+                if (is_array($links)) $data['links'] = array_keys($links);
+                else $data['links'] = array();
             }
-            if (isset($data_single['backed']))
-              $insert->creator_backed = $data_single['backed'];
-            if (isset($data_single['goal']))
-              $insert->goal = $data_single['goal'];
+            $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
+            preg_match_all($pattern, $htmlData, $matches);
+            $data['images'] = str_replace("&amp;", "&", $matches[1]);      
+            if (isset($data['links'])&&isset($data['images'])) {
+                for ($j=0; $j< 20; $j++) {
+                    $link = "https://www.kickstarter.com".$data['links'][$j];
+                    if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
+                    $link_parts = explode("/", $link);
+                    $count_link_parts = count($link_parts);
+                    $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
+                                                            array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
+                                                                  ':link2' => $data['links'][$j], 
+                                                                  ':link3' => $link,
+                                                                  ':image' => $data['images'][$j]));
 
-            $insert->save();
+                    if ($project_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $count = 0;
+                        $htmlData = $web->getHtml($link, array());
+                        $data_single = $parsing->firstParsing($htmlData);
+                        //var_dump($data_single);die;
+                        if ($data_single == false) { continue; }
+                        $insert = new Project;
+                        $insert->title = $data_single['title'];
+                        $insert->description = $data_single['description'];
+                        $insert->image = $data['images'][$j];
+                        $insert->link = $link;
+                        $insert->internal_link = toAscii($data_single['title']);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($data_single['start_date'])) $insert->start = $data_single['start_date'];
+                        if (isset($data_single['end_date'])) $insert->end = $data_single['end_date'];
+                        if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['created'])) $insert->creator_created = $data_single['created'];
+                        if (isset($data_single['backed'])) $insert->creator_backed = $data_single['backed'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        $insert->save();
 
-            $id_project = $insert->id;
-	    // Category add
-            $insert_category = new ProjectOrigcategory;
-	    $insert_category->project_id = $id_project;
-            $category = $this->checkCategory($data_single['category'], $link, "");
-	    $insert_category->orig_category_id = $category->id;
-	    $insert_category->save();
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory($data_single['category'], $link, "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
 
-            // get rating 
-            $KsRating = new KickstarterRating($link, $insert->id, $htmlData);
-            $rating = $KsRating->firstAnalize();
-            $insert->rating = $rating;
-            $insert->save();
-            
-//	    print_r($insert->getErrors());
-          }
-          if ($count >= 30) {
-            $check = true;
-            break;
-          }
+                        // get rating 
+                        $KsRating = new KickstarterRating($link, $insert->id, $htmlData);
+                        $rating = $KsRating->firstAnalize();
+                        $insert->rating = $rating;
+                        $insert->save();
+
+//                      print_r($insert->getErrors());
+                    }
+                    if ($count >= 30) {
+                        $check = true;
+                        break;
+                    }
+                }
+            }//else echo "NO";
+            $i = $i + 1;
         }
-      }//else echo "NO";
-      $i = $i + 1;
     }
-  }
 
 // Indiegogo store to DB
-  public function actionIndiegogo() {
-    $parsing = new IndiegogoParser();
-    $web = new webText();
-    $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
-    $id = $platform->id;
-    $numberOfPages = 100;
-    // false true
-    $proxy_set = false;
-    $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
-    $htmlData = $web->getHtml($link, array(), $proxy_set);
-    $htmlDataSplit = explode('{"campaigns":', $htmlData);
-    $htmlData = '{"campaigns":'.$htmlDataSplit[1];
-    $json = html_entity_decode($htmlData);
-    $jsonData = json_decode($json);
-    if ($jsonData == null){ return false; }
-    if (count($jsonData->campaigns)>$numberOfPages/2) {
-        for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
-        $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
-        $image = $jsonData->campaigns[$j]->compressed_image_url;
-        $title = $jsonData->campaigns[$j]->title;
-        $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
-                                                array(':link' => $link, ':image' => $image));
-        if (!$project_check) {
-          $htmlData = $web->getHtml($link, array(), $proxy_set);
-          $data_single = $parsing->firstParsing($htmlData);
-	  if ($data_single == false) { continue; }
-          $insert = new Project;
-          $insert->title = $title;
-          $insert->description = $data_single['description'];
-          $insert->image = $image;
-          $insert->link = $link;
-          $insert->internal_link = toAscii($title);
-          $insert->time_added = date("Y-m-d H:i:s");
-          $insert->platform_id = $id;
-          $category = $this->checkCategory($data_single['category'], $link, "");
-          $insert->orig_category_id = $category->id;
-          if (isset($data_single['start_date']))
-            $insert->start = $data_single['start_date'];
-          if (isset($data_single['end_date']))
-            $insert->end = $data_single['end_date'];
-          if (isset($data_single['goal']))
-            $insert->goal = $data_single['goal'];
-          if (isset($data_single['location']))
-            $insert->location = $data_single['location'];
-          if (isset($data_single['type_of_funding'])) {
-            if ($data_single['type_of_funding'] == "Fixed Funding") {
-              $typeOfFunding = 0;
-            } else {
-              $typeOfFunding = 1;
+    public function actionIndiegogo() {
+        $parsing = new IndiegogoParser();
+        $web = new webText();
+        $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
+        $id = $platform->id;
+        $numberOfPages = 100;
+        // false true
+        $proxy_set = false;
+        $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
+        $htmlData = $web->getHtml($link, array(), $proxy_set);
+        $htmlDataSplit = explode('{"campaigns":', $htmlData);
+        $htmlData = '{"campaigns":'.$htmlDataSplit[1];
+        $json = html_entity_decode($htmlData);
+        $jsonData = json_decode($json);
+        if ($jsonData == null){ return false; }
+        if (count($jsonData->campaigns)>$numberOfPages/2) {
+            for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
+                $link = "https://www.indiegogo.com".$jsonData->campaigns[$j]->url;
+                $image = $jsonData->campaigns[$j]->compressed_image_url;
+                $title = $jsonData->campaigns[$j]->title;
+                $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
+                                                        array(':link' => $link, ':image' => $image));
+                if (!$project_check) {
+                    $htmlData = $web->getHtml($link, array(), $proxy_set);
+                    $data_single = $parsing->firstParsing($htmlData);
+                    if ($data_single == false) { continue; }
+                    $insert = new Project;
+                    $insert->title = $title;
+                    $insert->description = $data_single['description'];
+                    $insert->image = $image;
+                    $insert->link = $link;
+                    $insert->internal_link = toAscii($title);
+                    $insert->time_added = date("Y-m-d H:i:s");
+                    $insert->platform_id = $id;
+                    $category = $this->checkCategory($data_single['category'], $link, "");
+                    $insert->orig_category_id = $category->id;
+                    if (isset($data_single['start_date'])) $insert->start = $data_single['start_date'];
+                    if (isset($data_single['end_date'])) $insert->end = $data_single['end_date'];
+                    if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                    if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                    if (isset($data_single['type_of_funding'])) {
+                        if ($data_single['type_of_funding'] == "Fixed Funding") { $typeOfFunding = 0; }
+                        else {$typeOfFunding = 1; }
+                        $insert->type_of_funding = $typeOfFunding;
+                    }
+                    $insert->save();
+
+
+                    $id_project = $insert->id;
+                    // Category add
+                    $insert_category = new ProjectOrigcategory;
+                    $insert_category->project_id = $id_project;
+                    $category = $this->checkCategory($data_single['category'], $link, "");
+                    $insert_category->orig_category_id = $category->id;
+                    $insert_category->save();
+
+                    // get rating 
+                    $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+                    $rating = $IggRating->firstAnalize();
+                    $insert->rating = $rating;
+                    $insert->save();
+//                  print_r($insert->getErrors());
+                }
             }
-            $insert->type_of_funding = $typeOfFunding;
-          }
-          $insert->save();
-
-
-          $id_project = $insert->id;
-          // Category add
-          $insert_category = new ProjectOrigcategory;
-          $insert_category->project_id = $id_project;
-          $category = $this->checkCategory($data_single['category'], $link, "");
-	  $insert_category->orig_category_id = $category->id;
-	  $insert_category->save();
-          
-          // get rating 
-          $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
-          $rating = $IggRating->firstAnalize();
-          $insert->rating = $rating;
-          $insert->save();
-//          print_r($insert->getErrors());
         }
-      }
     }
-  }
 
 // GoGetFunding store to DB
   public function actionGoGetFunding() {
@@ -534,7 +516,7 @@ class UpdateCommand extends CConsoleCommand {
                     $insert->link=$link;
                     $insert->time_added=date("Y-m-d H:i:s");
                     $insert->platform_id=$id;
-                    $category = $this->checkCategory($data_single['category'][0], $link, ""); // ZAČASNO*****************************************************************
+                    $category = $this->checkCategory($category_all[0], $link, "PledgeMusic"); // ZAČASNO*****************************************************************
                     $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
                     if (isset($data_single['creator'])) {
                         $insert->creator = $data_single['creator'];
