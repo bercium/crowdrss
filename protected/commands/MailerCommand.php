@@ -87,30 +87,18 @@ class MailerCommand extends CConsoleCommand{
   /**
    * 
    */
-  private function sortProjects($sub, $projects, $featuredProject, $checkProject = false){
-    /*$paidProject = null;
-    
-    if (count($paidProjects) > 0){
-        foreach ($paidProjects as $pp){
-            $platA = explode(",",$sub->platform);
-            $catA = explode(",",$sub->category);
-            $subCatA = explode(",",$sub->exclude_orig_category);
+  private function sortProjects($sub, $projects, $checkProject = false){
 
-            if ($sub->platform && !in_array($pp->project->platform_id, $platA)) continue; // has platforms but not in
-            if (in_array($pp->project->orig_category_id, $subCatA)) continue; // exclude list
-            if ($sub->category && !in_array($pp->project->origCategory->category_id, $catA)) continue; // not in category
-
-            $pp->show_count++;
-            $pp->save();
-            $paidProject = $pp->project; //get one project
-            // set the rating higher so we know it's special
-            if ($paidProject->rating) $paidProject->rating += 11;
-            else $paidProject->rating = 11;
-            break;
-        }
-    }*/
     
-    $paidProject = $featuredProject->featured();
+    $featuredProject = new FeaturedProject($sub);
+    $featuredProject->setSub($sub);
+    $paidProject = $featuredProject->featuredDB();
+    $cfrss_promotion = false;
+    if ($paidProject == null){
+        // check if someone has shared already
+       $paidProject = $featuredProject->featuredCFrss();
+       $cfrss_promotion = true;
+    }    
         
     
     $featured = $regular = $regularNull = array();
@@ -129,7 +117,13 @@ class MailerCommand extends CConsoleCommand{
       }
     }
 
-    if ($paidProject) array_unshift($featured,$paidProject);  //add to the beginning of the queue
+    if ($paidProject){
+        if (!$cfrss_promotion) array_unshift($featured,$paidProject);  //add to the beginning of the queue
+        else{
+            $paidProject->rating = 0; // don't make it special or should we?
+            $featured[rand(0,3)] = $paidProject; //overwrite one project
+        }
+    }
 
 
     shuffle($regularNull);
@@ -213,7 +207,6 @@ class MailerCommand extends CConsoleCommand{
       
       
       //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-      $featured = new FeaturedProject();
       
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
       
@@ -229,9 +222,7 @@ class MailerCommand extends CConsoleCommand{
         // get projects
         $projects = Project::model()->findAll($sql);
         
-        $featured->setSub($sub);
-        
-        $sorted = $this->sortProjects($sub,$projects,$featured, true);
+        $sorted = $this->sortProjects($sub,$projects, true);
 
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,
@@ -263,7 +254,6 @@ class MailerCommand extends CConsoleCommand{
     if ($subscriptions){
 
         //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 2 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-        $featured = new FeaturedProject($sub);
 
         if (date("M", strtotime("-1 days")) == date("M", strtotime("-8 days"))){
             $date = addOrdinalNumberSuffix(date("j", strtotime("-8 days")))." - ".addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
@@ -283,9 +273,8 @@ class MailerCommand extends CConsoleCommand{
             // get projects
             $projects = Project::model()->findAll($sql);
             
-            $featured->setSub($sub);
 
-            $sorted = $this->sortProjects($sub,$projects,$featured);
+            $sorted = $this->sortProjects($sub,$projects);
 
             if (!$test || $sub->id == 1 || $sub->id == 2)
             $this->sendNewsletter($sub,
@@ -320,7 +309,6 @@ class MailerCommand extends CConsoleCommand{
       
       
       //$paidProjects = ProjectFeatured::model()->findAll("active = 1 AND feature_where = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
-      $featured = new FeaturedProject();
       
       $date = addOrdinalNumberSuffix(date("j", strtotime("-1 days")))." ".date("M", strtotime("-1 days"));
       
@@ -346,8 +334,7 @@ class MailerCommand extends CConsoleCommand{
         // get projects
         $projects = Project::model()->findAll($sql);
         
-        $featured->setSub($sub);
-        $sorted = $this->sortProjects($sub,$projects,$featured);
+        $sorted = $this->sortProjects($sub,$projects);
 
         if (!$test || $sub->id == 1 || $sub->id == 2)
         $this->sendNewsletter($sub,

@@ -45,7 +45,7 @@ class FeaturedProject {
     /**
      * 
      */
-    private function featuredDB(){
+    public function featuredDB(){
         $featuredProject = null;
         if (count($this->featuredProject) > 0){
           foreach ($this->featuredProject as $fp){
@@ -74,7 +74,7 @@ class FeaturedProject {
     /**
      * feature our site as featured project
      */
-    private function featuredCFrss(){
+    public function featuredCFrss(){
         $project = new stdClass();
         
         if ($this->sub->id != 1 && $this->sub->id != 2) return null;

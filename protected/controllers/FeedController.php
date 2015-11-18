@@ -230,7 +230,7 @@ class FeedController extends Controller
     }
     //$sql .= ' 1 ';
     $sql .= " time_added > DATE_ADD(NOW(),INTERVAL -3 HOUR) ";
-    if ($sub->rating > 0)  $sql .= " AND (rating = NULL OR rating >= ".$sub->rating.") ";
+    if ($sub->rating > 0)  $sql .= " AND (rating IS NULL OR rating >= ".$sub->rating.") ";
     
     $sql .= " ORDER BY time_added DESC";
     //$sql .= " LIMIT 10";
@@ -240,8 +240,15 @@ class FeedController extends Controller
     $projects = Project::model()->findAll($sql);
     
     $featured = new FeaturedProject($sub);
+    
+    $featured_proj = $featured->featuredDB();
+    if ($featured_proj == null){
+        // check if someone has shared already
+        $featured_proj = $featured->featuredCFrss();
+    }
+    
     // echo rss
-    echo $this->createRssFeed($projects,$sub->id,$featured->featured());
+    echo $this->createRssFeed($projects,$sub->id,$featured_proj);
     Yii::app()->end();
   }
   
@@ -288,7 +295,7 @@ class FeedController extends Controller
     if (!is_numeric($rating)) $rating = 0;
     
     //$sql .= " time_added > DATE_ADD(NOW(),INTERVAL -1 HOUR)";
-    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") ";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating IS NULL OR rating >= ".$rating.") ";
     $sql .= " ORDER BY time_added DESC"
            ." LIMIT 10";
     
@@ -338,7 +345,7 @@ class FeedController extends Controller
       if ($selplat) $sql .= " (platform_id NOT IN (".$selplat.")) AND ";
     }
     
-    if (isset($_POST['preview_rating'])) $sql .= " (rating = NULL OR rating >= ".$rating.") AND ";
+    if (isset($_POST['preview_rating'])) $sql .= " (rating IS NULL OR rating >= ".$rating.") AND ";
 
     $numOfresults = Yii::app()->db->createCommand("SELECT COUNT(*) FROM project WHERE ".$sql." time_added > DATE_ADD(NOW(), INTERVAL -168 HOUR)")->queryScalar();
     $numOfresults = round($numOfresults / 7);
