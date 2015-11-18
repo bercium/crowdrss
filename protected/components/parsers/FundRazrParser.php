@@ -46,7 +46,6 @@ class FundRazrParser {
         } else {
           $data['end_date'] = NULL;
         }
-                var_dump($data);die;
         return($data);
     }
     
