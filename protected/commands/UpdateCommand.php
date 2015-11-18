@@ -254,65 +254,66 @@ class UpdateCommand extends CConsoleCommand {
     }
 
 // GoGetFunding store to DB
-/*  public function actionGoGetFunding() {
-    $parsing = new GoGetFundingParser();
-    $web = new webText();
-    $i = 1;
-    $check = false;
-    $count = 0;
-    $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
-    $id = $platform->id;
-    while (($i <= 10) and ($check == false)) {
-      $result = $this->query("20e3c3aa-4727-477a-9b9e-4aa40e1c0ecd", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects,"), false);
-    if (isset($result->results)) {
-        foreach ($result->results as $data) {
-          $link_check = Project::model()->findByAttributes(array('link' => $data->link));
-          if ($link_check) {
-            $count = $count + 1;
-          } // Counter for checking if it missed some project in the next few projects
-          else {
-            $htmlData = $web->getHtml($data->link, array());
-            $data_single = $parsing->firstParsing($htmlData);
-            $insert = new Project;
-            $insert->title = $data->title;
-            $insert->description = $data->description;
-            $insert->image = $data->image;
-            $insert->link = $data->link;
-            $insert->internal_link = toAscii($data->title);
-            $insert->time_added = date("Y-m-d H:i:s");
-            $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
-	    $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-            if (isset($data_single['end_date']))
-              $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-            if (isset($data_single['location']))
-              $insert->location = $data_single['location'];
-            if (isset($data->creator))
-              $insert->creator = $data->creator;
-            if (isset($data_single['goal']))
-              $insert->goal = $data_single['goal'];
-            $insert->save();
+    public function actionGoGetFunding() {
+        $parsing = new GoGetFundingParser();
+        $web = new webText();
+        $i = 1;
+        $check = false;
+        $count = 0;
+        $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
+        $id = $platform->id;
+        while (($i <= 10) and ($check == false)) {
+            $htmlData = $web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type"));
+            $pattern_link = '/<h2 class="cat_h2 visible-xs-block hidden-sm hidden-md hidden-lg"><a href="(.+)">(.+)<\/a><\/h2>/';
+            $pattern_image = '/<img class="img-responsive" src="(.+)" alt="main-img">/';
+            preg_match_all($pattern_link, $htmlData, $matches);
+            $links = $matches[1];
+            $titles = $matches[2];
+            preg_match_all($pattern_image, $htmlData, $matches);
+            $images = $matches[1];
+            if (isset($links)) {
+                for ($j=0; $j< (count($links)-1); $j++) {
+                    $link_check = Project::model()->findByAttributes(array('link' => $links[$j]));
+                    if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $htmlData = $web->getHtml($links[$j], array());
+                        $data_single = $parsing->firstParsing($htmlData);
+                        $insert = new Project;
+                        $insert->title = $titles[$j];
+                        $insert->description = $data_single['description'];
+                        $insert->image = $images[$j];
+                        $insert->link = $links[$j];
+                        $insert->internal_link = toAscii($titles[$j]);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory($data_single['category'], $links[$j], ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+                        if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        $insert->save();
 
-            $id_project = $insert->id;
-	    // Category add
-            $insert_category = new ProjectOrigcategory;
-	    $insert_category->project_id = $id_project;
-            $category = $this->checkCategory($data->category, $data->link, "");
-	    $insert_category->orig_category_id = $category->id;
-	    $insert_category->save();
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory($data_single['category'], $links[$j], "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
 
-            $count = 0;
-//	    print_r($insert->getErrors());
-          }
-          if ($count >= 10) {
-            $check = true;
-            break;
-          }
+                        $count = 0;
+            //	    print_r($insert->getErrors());
+                    }
+                    if ($count >= 10) {
+                        $check = true;
+                        break;
+                    }
+                }
+            }
+            $i = $i + 1;
         }
-      }
-      $i = $i + 1;
     }
-  } */
 
 // PubSlush store to DB
 /*  public function actionPubSlush() {
@@ -448,8 +449,8 @@ class UpdateCommand extends CConsoleCommand {
                         $insert->platform_id = $id;
                         $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
                         $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-                        if (isset($data->location)) $insert->location = $data_single['location'];
-                        if (isset($data->creator)) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
                         if (isset($data_single['start_date'])) $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
                         if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
