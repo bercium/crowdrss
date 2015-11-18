@@ -98,7 +98,7 @@ class CronController extends Controller
       case "pm":echo $this->consoleCommand('update','pledgeMusic');
         break;
 
-      default: echo "Chose from: ks, igg, ggf, fa, fr"; //ps,
+      default: echo "Chose from: ks, igg, ggf, fa, fr, pm"; //ps,
         break;
     }
   }

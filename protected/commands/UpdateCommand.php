@@ -453,7 +453,6 @@ class UpdateCommand extends CConsoleCommand {
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
                         if (isset($data_single['start_date'])) $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
                         if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-var_dump($insert);die;
                         $insert->save();
 
                         $id_project = $insert->id;
