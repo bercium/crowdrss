@@ -20,9 +20,9 @@ class FundRazrParser {
         $data['creator'] = $split[1];
         
         // Description
-        $pattern = '/<meta name="description" content="(.+)" \/>/';
+        $pattern = '/<span class="content">(.+)<\/span>/';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = $match[1];
+        $data['description'] = strip_tags($match[1]);
 
         // Category
         $pattern = '/"category":"(.+)","contributionAmount/';
@@ -46,6 +46,7 @@ class FundRazrParser {
         } else {
           $data['end_date'] = NULL;
         }
+                var_dump($data);die;
         return($data);
     }
     

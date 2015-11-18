@@ -1,7 +1,7 @@
 <?php
 
 class webText {
-    function getHtml($link, $header = array(), $proxy = false) {
+    function getHtml($link, $header = array(), $proxy = false, $post = "") {
         $httpClient = new elHttpClient();
         $httpClient->setUserAgent("ff3");
         if ($proxy == true) {
@@ -10,7 +10,8 @@ class webText {
         }
         $httpClient->enableRedirects();
         $httpClient->setHeaders(array_merge(array("Accept"=>"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8")));
-        $htmlDataObject = $httpClient->get($link, $header);
+        if ($post == "") { $htmlDataObject = $httpClient->get($link, $header);}
+        else { $htmlDataObject = $httpClient->post($link, $post, $header); }
         return $htmlDataObject->httpBody;
     }
 }
