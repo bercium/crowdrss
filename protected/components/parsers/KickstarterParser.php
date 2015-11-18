@@ -56,9 +56,6 @@ class KickstarterParser {
         if (isset($matches[1])) $data['backed'] = $matches[1];
         else $data['backed'] = 0;
         
-        //$rating_data = $this->ratingParser($htmlData);
-        //$data = array_merge($data, $rating_data);
-    
         return($data);  
     }
     
