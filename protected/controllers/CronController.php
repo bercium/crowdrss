@@ -70,7 +70,7 @@ class CronController extends Controller
     //set_time_limit(60*12); //5 min
     echo $this->consoleCommand('update','kickstarter');
     echo $this->consoleCommand('update','indiegogo');
-    echo $this->consoleCommand('update','goGetFunding');
+    //echo $this->consoleCommand('update','goGetFunding');
     //echo $this->consoleCommand('update','pubSlush');
     echo $this->consoleCommand('update','fundAnything');
     echo $this->consoleCommand('update','fundRazr');
@@ -87,15 +87,15 @@ class CronController extends Controller
         break;
       case "igg":echo $this->consoleCommand('update','indiegogo');
         break;
-      case "ggf":echo $this->consoleCommand('update','goGetFunding');
-        break;
+      //case "ggf":echo $this->consoleCommand('update','goGetFunding');
+      //  break;
       //case "ps":echo $this->consoleCommand('update','pubSlush');
       //  break;
       case "fa":echo $this->consoleCommand('update','fundAnything');
         break;
       case "fr":echo $this->consoleCommand('update','fundRazr');
         break;
-    case "pm":echo $this->consoleCommand('update','pledgeMusic');
+      case "pm":echo $this->consoleCommand('update','pledgeMusic');
         break;
 
       default: echo "Chose from: ks, igg, ggf, fa, fr"; //ps,

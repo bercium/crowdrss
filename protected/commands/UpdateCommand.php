@@ -254,7 +254,7 @@ class UpdateCommand extends CConsoleCommand {
     }
 
 // GoGetFunding store to DB
-  public function actionGoGetFunding() {
+/*  public function actionGoGetFunding() {
     $parsing = new GoGetFundingParser();
     $web = new webText();
     $i = 1;
@@ -263,7 +263,7 @@ class UpdateCommand extends CConsoleCommand {
     $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
     $id = $platform->id;
     while (($i <= 10) and ($check == false)) {
-      $result = $this->query("20e3c3aa-4727-477a-9b9e-4aa40e1c0ecd", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects",), false);
+      $result = $this->query("20e3c3aa-4727-477a-9b9e-4aa40e1c0ecd", array("webpage/url" => "http://gogetfunding.com/projects/index/page:" . $i . "/filter:recent_projects,"), false);
     if (isset($result->results)) {
         foreach ($result->results as $data) {
           $link_check = Project::model()->findByAttributes(array('link' => $data->link));
@@ -312,7 +312,7 @@ class UpdateCommand extends CConsoleCommand {
       }
       $i = $i + 1;
     }
-  }
+  } */
 
 // PubSlush store to DB
 /*  public function actionPubSlush() {
@@ -412,71 +412,68 @@ class UpdateCommand extends CConsoleCommand {
   }
 
 // FundRazr store in to DB
-  public function actionFundRazr() {
-    $parsing = new FundRazrParser();
-    $web = new webText();
-    $check = false;
-    $count = 0;
-    $i = 1;
-    $preveri = false;
-    $kategorije = array();
-    $platform = Platform::model()->findByAttributes(array('name' => 'Fundrazr'));
-    $id = $platform->id;
-    while ($i <= 5) {
-      $result = $this->query("ef6bf213-17bb-4b2e-8459-7cec991cb375", array("webpage/url" => "https://fundrazr.com/find?type=newest&page=" . $i,), false);
-      if (isset($result->results)) {
-        foreach ($result->results as $data) {
-          $link_check = Project::model()->findByAttributes(array('link' => $data->link));
-          if ($link_check) {
-            $count = $count + 1;
-          } // Counter for checking if it missed some project in the next few projects
-          else {
-            $htmlData = $web->getHtml($data->link, array());
-            $data_single = $parsing->firstParsing($htmlData);
-            $insert = new Project;
-            $insert->title = $data->title;
-            $insert->description = $data->description;
-            //$insert->image = $data_single['image'];
-            $insert->image = $data->image;
-            $insert->link = $data->link;
-            $insert->internal_link = toAscii($data->title);
-            $insert->time_added = date("Y-m-d H:i:s");
-            $insert->platform_id = $id;
-            $category = $this->checkCategory($data_single['category'], $data->link, ""); // ZAČASNO*****************************************************************
-	    $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-            if (isset($data_single['end_date']))
-              $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-            if (isset($data->location))
-              $insert->location = $data->location;
-            if (isset($data->creator))
-              $insert->creator = $data->creator;
-            if (isset($data_single['goal']))
-              $insert->goal = $data_single['goal'];
-            if (isset($data_single['start_date']))
-              $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
-            if (isset($data_single['end_date']))
-              $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
-            $insert->save();
+    public function actionFundRazr() {
+        $parsing = new FundRazrParser();
+        $web = new webText();
+        $check = false;
+        $count = 0;
+        $i = 1;
+        $preveri = false;
+        $kategorije = array();
+        $platform = Platform::model()->findByAttributes(array('name' => 'Fundrazr'));
+        $id = $platform->id;
+        while ($i <= 5) {
+            $htmlData = $web->getHtml("https://fundrazr.com/find?type=newest&page=$i", array());
+            $pattern_link = '/campaign" href="(.+)" target="_top">.+<\/a>/';
+            $pattern_image = '/url\(\'(.+)\'\);/';
+            preg_match_all($pattern_link, $htmlData, $matches);
+            $links = $matches[1];
+            preg_match_all($pattern_image, $htmlData, $matches);
+            $images = $matches[1];
+            if (isset($links)) {
+                for ($j=0; $j< (count($links)-1); $j++) {
+                    $link = "https:" . $links[$j]; 
+                    $link_check = Project::model()->findByAttributes(array('link' => $link));
+                    if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $htmlData = $web->getHtml($link, array());
+                        $data_single = $parsing->firstParsing($htmlData);
+                        $insert = new Project;
+                        $insert->title = $data_single['title'];
+                        $insert->description = $data_single['description'];
+                        $insert->image = "https:" . $images[$j];
+                        $insert->link = $link;
+                        $insert->internal_link = toAscii($data_single['title']);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($data->location)) $insert->location = $data_single['location'];
+                        if (isset($data->creator)) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        if (isset($data_single['start_date'])) $insert->start = date("Y-m-d H:i:s", strtotime($data_single['start_date']));
+                        if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
+var_dump($insert);die;
+                        $insert->save();
 
-            $id_project = $insert->id;
-	    // Category add
-            $insert_category = new ProjectOrigcategory;
-	    $insert_category->project_id = $id_project;
-            $category = $this->checkCategory($data_single['category'], $data->link, "");
-	    $insert_category->orig_category_id = $category->id;
-	    $insert_category->save();
-
-//	    print_r($insert->getErrors());
-          }
-          if ($count >= 10) {
-            $check = true;
-            break;
-          }
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory($data_single['category'], $link, "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
+//                      print_r($insert->getErrors());
+                    }
+                    if ($count >= 10) {
+                        $check = true;
+                        break;
+                    }
+                }
+            }
+            $i = $i + 1;
         }
-      }
-      $i = $i + 1;
     }
-  }
 
 // PledgeMusic store to DB
     public function actionPledgeMusic(){
