@@ -2,7 +2,7 @@
 
 class GoGetFundingParser {
    
-    public function firstParsing($htmlData){
+    public function projectParser($htmlData){
         // Goal
         $pattern = '/<p class="brokersText-1">Donated of (.+) goal<\/p>/';
         preg_match($pattern, $htmlData, $match);

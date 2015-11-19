@@ -2,7 +2,8 @@
 
 class KickstarterParser {
     
-    public function firstParsing($htmlData){
+    public function projectParser($htmlData){
+        
         $pattern = '/window.current_project = "(.+)";/'; 
         preg_match($pattern, $htmlData, $match);
         $json = html_entity_decode($match[1]);

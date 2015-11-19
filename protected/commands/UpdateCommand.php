@@ -2,104 +2,40 @@
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
     
-// Import.io function to get jason result for a webpage
-  function query($connectorGuid, $input) {
-    $url = "https://api.import.io/store/connector/" . $connectorGuid . "/_query?_user=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9") . "&_apikey=" . urlencode("3e956d8d-5d7f-4595-927e-99ad6b078fe9:cEPYMPY1DTVWS7BFw1oS4N44c/khsNvs9W8vEz8AQ7ytgQr3B6uvEXqOEzGTmyDqmNqlCoKcqmyz2TbQJThtVA==");
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		"Content-Type: application/json",
-		"import-io-client: import.io PHP client",
-		"import-io-client-version: 2.0.0"
-    ));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array("input" => $input)));
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HEADER, 0);
-    $result = curl_exec($ch);
-    curl_close($ch);
-    return json_decode($result);
-  }
-
-// Function for emailing of problematic project
-  function errorMail($link, $category, $id) {
-    $message = new YiiMailMessage;
-    $message->view = 'system';
-    $message->subject = 'Missing original category';
-    $content = 'Category: ' . $category . '<br>Id: ' . $id . '<br>Link to project: ' . $link;
-    $message->setBody(array("content" => $content, "title" => "Added new original category"), 'text/html');
-    $message->to = Yii::app()->params['scriptEmail'];
-    $message->from = Yii::app()->params['noreplyEmail'];
-    Yii::app()->mail->send($message);
-  }
-
-// Check if category exists
-  function checkCategory($category_check, $link, $platform){
-    $category_check = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $category_check);
-    if ($platform == "PledgeMusic") {
-      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15'));
-    }elseif ($platform == "PubSlush"){
-      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24'));
-    }else{
-      $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
+//  Function for emailing of problematic project
+    function errorMail($link, $category, $id) {
+        $message = new YiiMailMessage;
+        $message->view = 'system';
+        $message->subject = 'Missing original category';
+        $content = 'Category: ' . $category . '<br>Id: ' . $id . '<br>Link to project: ' . $link;
+        $message->setBody(array("content" => $content, "title" => "Added new original category"), 'text/html');
+        $message->to = Yii::app()->params['scriptEmail'];
+        $message->from = Yii::app()->params['noreplyEmail'];
+        Yii::app()->mail->send($message);
     }
-    if ($category) {
-      return $category;
-    } else {
-      $updateOrigCategory = new OrigCategory();
-      if ($platform == "PledgeMusic") {
-        $updateOrigCategory->category_id = 15;
-      }elseif ($platform == "PubSlush"){
-        $updateOrigCategory->category_id = 24;
-      }
-      $updateOrigCategory->name = $category_check;
-      $updateOrigCategory->save();
-      if ($platform == "PledgeMusic") {
-        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15'));
-      }elseif ($platform == "PubSlush"){
-        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24'));
-      }else{
-        $category = OrigCategory::model()->findByAttributes(array('name' => $category_check));
-      }
-      //$this->errorMail($link, $category_check, $category->id);
-      return $category;
+
+//  Check if category exists
+    function checkCategory($category_check, $link, $platform){
+        $category_check = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $category_check);
+        if ($platform == "PledgeMusic") { $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15')); }
+        elseif ($platform == "PubSlush"){ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24')); }
+        else{$category = OrigCategory::model()->findByAttributes(array('name' => $category_check));}
+        if ($category) { return $category; }
+        else {
+            $updateOrigCategory = new OrigCategory();
+            if ($platform == "PledgeMusic") { $updateOrigCategory->category_id = 15; }
+            elseif ($platform == "PubSlush"){ $updateOrigCategory->category_id = 24; }
+            $updateOrigCategory->name = $category_check;
+            $updateOrigCategory->save();
+            if ($platform == "PledgeMusic") { $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15')); }
+            elseif ($platform == "PubSlush"){ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24')); }
+            else{ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check)); }
+            //$this->errorMail($link, $category_check, $category->id);
+            return $category;
+        }
     }
-  }
 
-// Parser for PS
-/*  function parsePubSlush($link) {
-    $htmlData = $this->getHtml($link, array());
-
-    // Goal
-    $pattern = '/raised of (.+) goal/';
-    preg_match($pattern, $htmlData, $matches);
-    if (isset($matches[1])) $data['goal'] = $matches[1];
-    else $data['goal'] = null;
-
-    // Location and Category
-    $pattern = '/meta-info.>\s.+i> (.+)<\/span>\s.+i> (.+)<\/span>/';
-    preg_match($pattern, $htmlData, $matches);
-    $data['location'] = $matches[1];
-    $data['category'] = $matches[2];
-
-    return($data);
-  }*/
-
-  private function importioError($error, $platform){
-    $message = new YiiMailMessage;
-    $message->view = 'system';
-    $message->subject = "Importio problem";
-    $message->from = Yii::app()->params['noreplyEmail'];
-
-    $content = 'Error text: '.$error;
-    $title = $platform;
-
-    $message->setBody(array("content"=>$content, "title"=>$title,), 'text/html');
-    $message->to = Yii::app()->params['scriptEmail'];
-    Yii::app()->mail->send($message);
-  }
-
-// Kickstarter store in to DB
+//  Kickstarter store in to DB
     public function actionKickstarter() {
         $parsing = new KickstarterParser();
         $web = new webText();
@@ -137,7 +73,7 @@ class UpdateCommand extends CConsoleCommand {
                     else {
                         $count = 0;
                         $htmlData = $web->getHtml($link, array());
-                        $data_single = $parsing->firstParsing($htmlData);
+                        $data_single = $parsing->projectParser($htmlData);
                         //var_dump($data_single);die;
                         if ($data_single == false) { continue; }
                         $insert = new Project;
@@ -185,7 +121,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-// Indiegogo store to DB
+//  Indiegogo store to DB
     public function actionIndiegogo() {
         $parsing = new IndiegogoParser();
         $web = new webText();
@@ -210,7 +146,7 @@ class UpdateCommand extends CConsoleCommand {
                                                         array(':link' => $link, ':image' => $image));
                 if (!$project_check) {
                     $htmlData = $web->getHtml($link, array(), $proxy_set);
-                    $data_single = $parsing->firstParsing($htmlData);
+                    $data_single = $parsing->projectParser($htmlData);
                     if ($data_single == false) { continue; }
                     $insert = new Project;
                     $insert->title = $title;
@@ -253,7 +189,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-// GoGetFunding store to DB
+//  GoGetFunding store to DB
     public function actionGoGetFunding() {
         $parsing = new GoGetFundingParser();
         $web = new webText();
@@ -277,7 +213,7 @@ class UpdateCommand extends CConsoleCommand {
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
                         $htmlData = $web->getHtml($links[$j], array());
-                        $data_single = $parsing->firstParsing($htmlData);
+                        $data_single = $parsing->projectParser($htmlData);
                         $insert = new Project;
                         $insert->title = $titles[$j];
                         $insert->description = $data_single['description'];
@@ -360,59 +296,66 @@ class UpdateCommand extends CConsoleCommand {
     }
   }*/
 
-// FundAnything store in to DB
-  public function actionFundAnything() {
-    $parsing = new FundAnythingParser();
-    $web = new webText();
-    $i = 1;
-    $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
-    $id = $platform->id;
-    while ($i <= 3) {
-      $result = $this->query("61381ca5-efb9-4525-b384-63238681f1a7", array("webpage/url" => "http://fundanything.com/en/search/category?cat_id=29&page=" . $i,), false);
-      if (isset($result->results)) {
-        foreach ($result->results as $data) {
-          $link_check = Project::model()->findByAttributes(array('link' => $data->link));
-          if ($link_check) {
-            
-          } // Counter for checking if it missed some project in the next few projects
-          else {
-            $htmlData = $web->getHtml($data->link, array());
-            $data_single = $parsing->firstParsing($htmlData);
-            $insert = new Project;
-            $insert->title = $data->title;
-            $insert->description = $data_single['description'];
-            $insert->image = $data->image;
-            $insert->link = $data->link;
-            $insert->internal_link = toAscii($data->title);
-            $insert->time_added = date("Y-m-d H:i:s");
-            $insert->platform_id = $id;
-            $category = $this->checkCategory($data->category, $data->link, ""); // ZAČASNO*****************************************************************
-            $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-            if (isset($data->location))
-              $insert->location = $data->location;
-            if (isset($data_single['creator']))
-              $insert->creator = $data_single['creator'];
-            if (isset($data_single['goal']))
-              $insert->goal = $data_single['goal'];
-            $insert->save();
+//  FundAnything store in to DB
+    public function actionFundAnything() {
+        $parsing = new FundAnythingParser();
+        $web = new webText();
+        $i = 1;
+        $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
+        $id = $platform->id;
+        while ($i <= 3) {
+            $htmlData = $web->getHtml("http://fundanything.com/en/search/category?cat_id=29&page=$i");
+            $pattern_link = '/<a href="(.+)" title=".+" target="_top">/';
+            $pattern_image = '/<img alt=".+" class="" data-ctitle="" src="(.+)" style/';
+            $pattern_category = '/<a href="http:..fundanything.com.en.search.category.cat_id=\d+" target="_top">(.+)<\/a>/';
+            $pattern_location = '/locpin.png" \/>\s\s{8}(.+)\s.+<\/div>/';
+            preg_match_all($pattern_link, $htmlData, $matches);
+            $links = $matches[1];
+            preg_match_all($pattern_image, $htmlData, $matches);
+            $images = $matches[1];
+            preg_match_all($pattern_category, $htmlData, $matches);
+            $categories = $matches[1];
+            preg_match_all($pattern_location, $htmlData, $matches);
+            $locations = $matches[1];
+            if (isset($links)) {
+                for($j=0; $j< (count($links)-1); $j++) {
+                    $link_check = Project::model()->findByAttributes(array('link' => $links[$j]));
+                    if ($link_check) {  } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $htmlData = $web->getHtml($links[$j]);
+                        $data_single = $parsing->projectParser($htmlData);
+                        $insert = new Project;
+                        $insert->title = $data_single['title'];
+                        $insert->description = $data_single['description'];
+                        $insert->image = $images[$j];
+                        $insert->link = $links[$j];
+                        $insert->internal_link = toAscii($data_single['title']);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory(html_entity_decode($categories[$j]), $links[$j], ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($locations[$j])) $insert->location = $locations[$j];
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        $insert->save();
 
-            $id_project = $insert->id;
-	    // Category add
-            $insert_category = new ProjectOrigcategory;
-	    $insert_category->project_id = $id_project;
-            $category = $this->checkCategory($data->category, $data->link, "");
-	    $insert_category->orig_category_id = $category->id;
-	    $insert_category->save();
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory(html_entity_decode($categories[$j]), $links[$j], "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
 
-//	    print_r($insert->getErrors());
-          }
+//                      print_r($insert->getErrors());
+                    }
+                }
+            }
+            $i = $i + 1;
         }
-      }
-      $i = $i + 1;
     }
-  }
 
-// FundRazr store in to DB
+//  FundRazr store in to DB
     public function actionFundRazr() {
         $parsing = new FundRazrParser();
         $web = new webText();
@@ -438,7 +381,7 @@ class UpdateCommand extends CConsoleCommand {
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
                         $htmlData = $web->getHtml($link, array());
-                        $data_single = $parsing->firstParsing($htmlData);
+                        $data_single = $parsing->projectParser($htmlData);
                         $insert = new Project;
                         $insert->title = $data_single['title'];
                         $insert->description = $data_single['description'];
@@ -475,7 +418,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-// PledgeMusic store to DB
+//  PledgeMusic store to DB
     public function actionPledgeMusic(){
         $parsing = new PledgeMusicParser();
         $web = new webText();
@@ -504,7 +447,7 @@ class UpdateCommand extends CConsoleCommand {
                 if ($project_check) {$count = $count+1;} // Counter for checking if it missed some project in the next few projects
                 else{
                     $htmlData = $web->getHtml($link, array());
-                    $data_single = $parsing->firstParsing($htmlData);
+                    $data_single = $parsing->projectParser($htmlData);
                     $category_all = explode(', ', $data_single['category']);
                     $insert=new Project;
                     $insert->title=$data_single['title'];

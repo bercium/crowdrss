@@ -2,16 +2,17 @@
 
 class PledgeMusicParser {
    
-    public function firstParsing($htmlData){
+    public function projectParser($htmlData){
+        
         // Title
         $pattern = '/<h1>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);
         $data['title'] = $match[1];
-        
+
         // Description
-        $pattern = '/<h2>(.+)<\/h2>/';
+        $pattern = '/<meta content=.(.+). itemprop=.description.>/';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = $match[1];
+        $data['description'] = html_entity_decode($match[1]);
         
         // Creator
         $pattern = '/<h1 itemprop=.name.>(.+)<\/h1>/';

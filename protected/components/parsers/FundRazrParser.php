@@ -2,7 +2,7 @@
 
 class FundRazrParser {
    
-    public function firstParsing($htmlData){
+    public function projectParser($htmlData){
         // Goal
         $pattern = '/raised of (.+) goal/';
         preg_match($pattern, $htmlData, $match);

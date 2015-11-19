@@ -2,7 +2,8 @@
 
 class IndiegogoParser {
    
-    public function firstParsing($htmlData){
+    public function projectParser($htmlData){
+        
         $pattern = '/gon.tealium_data_layer=(.+);gon.domain/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])){$json = html_entity_decode($match[1]);}
