@@ -2,8 +2,20 @@
 
 class PledgeMusicParser {
    
-    public function projectParser($htmlData){
+    public function linkParser($htmlData) {
+        //Link
+        $pattern_link = '/(\/projects.+)\?referrer=launched/';
+        preg_match_all($pattern_link, $htmlData, $matches);
+        $data['link'] = $matches[1];
         
+        // Image link
+        $pattern_image = '/alt="Mobile" src="(.+)" \/>/';
+        preg_match_all($pattern_image, $htmlData, $matches);
+        $data['image'] = $matches[1];
+        return $data;
+    }
+    
+    public function projectParser($htmlData){
         // Title
         $pattern = '/<h1>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);

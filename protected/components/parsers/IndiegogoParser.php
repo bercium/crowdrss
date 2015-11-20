@@ -1,9 +1,15 @@
 <?php
 
 class IndiegogoParser {
+    
+    public function linkParser($htmlData) {
+        $htmlDataSplit = explode('{"campaigns":', $htmlData);
+        $htmlData = '{"campaigns":'.$htmlDataSplit[1];
+        $json = html_entity_decode($htmlData);
+        return json_decode($json);
+    }
    
     public function projectParser($htmlData){
-        
         $pattern = '/gon.tealium_data_layer=(.+);gon.domain/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])){$json = html_entity_decode($match[1]);}
@@ -43,13 +49,12 @@ class IndiegogoParser {
     }
     
     public function ratingParser($htmlData, $projectDescription){
-        
         if (!($projectDescription)){return false;}
         $jsonData = json_decode($projectDescription);
         if ($jsonData == null){ return false;}
-    
+        
         // Words Full Description 
-        $description = $jsonData->description_html;
+        $description = $jsonData->response->description_html;
         $data['#wordsContent'] = str_word_count(strip_tags($description));
 
         // Image number

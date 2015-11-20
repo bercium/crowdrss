@@ -37,26 +37,15 @@ class UpdateCommand extends CConsoleCommand {
 
 //  Kickstarter store in to DB
     public function actionKickstarter() {
-        $parsing = new KickstarterParser();
+        $parser = new KickstarterParser();
         $web = new webText();
         $i = 1;
         $check = false;
         $count = 0;
         $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
         $id = $platform->id;
-        while (($i <= 50) and ($check == false)) { 
-            $link = "https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest";
-            $htmlData = $web->getHtml($link, array());
-            $pattern = '/(\/projects\/.+)\?ref=discovery/';
-            preg_match_all($pattern, $htmlData, $matches);
-            if (is_array($matches)){
-                foreach ($matches[1] as $key => $val){ $links[$val] = true; }
-                if (is_array($links)) $data['links'] = array_keys($links);
-                else $data['links'] = array();
-            }
-            $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
-            preg_match_all($pattern, $htmlData, $matches);
-            $data['images'] = str_replace("&amp;", "&", $matches[1]);      
+        while (($i <= 50) and ($check == false)) {
+            $data = $parser->linkParser($web->getHtml("https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest"));
             if (isset($data['links'])&&isset($data['images'])) {
                 for ($j=0; $j< 20; $j++) {
                     $link = "https://www.kickstarter.com".$data['links'][$j];
@@ -72,9 +61,8 @@ class UpdateCommand extends CConsoleCommand {
                     if ($project_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
                         $count = 0;
-                        $htmlData = $web->getHtml($link, array());
-                        $data_single = $parsing->projectParser($htmlData);
-                        //var_dump($data_single);die;
+                        $htmlData = $web->getHtml($link);
+                        $data_single = $parser->projectParser($htmlData);
                         if ($data_single == false) { continue; }
                         $insert = new Project;
                         $insert->title = $data_single['title'];
@@ -123,19 +111,12 @@ class UpdateCommand extends CConsoleCommand {
 
 //  Indiegogo store to DB
     public function actionIndiegogo() {
-        $parsing = new IndiegogoParser();
+        $parser = new IndiegogoParser();
         $web = new webText();
         $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
         $id = $platform->id;
         $numberOfPages = 100;
-        // false true
-        $proxy_set = false;
-        $link = "https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages";
-        $htmlData = $web->getHtml($link, array(), $proxy_set);
-        $htmlDataSplit = explode('{"campaigns":', $htmlData);
-        $htmlData = '{"campaigns":'.$htmlDataSplit[1];
-        $json = html_entity_decode($htmlData);
-        $jsonData = json_decode($json);
+        $jsonData = $parser->linkParser($web->getHtml("https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages"));
         if ($jsonData == null){ return false; }
         if (count($jsonData->campaigns)>$numberOfPages/2) {
             for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {
@@ -145,8 +126,8 @@ class UpdateCommand extends CConsoleCommand {
                 $project_check = Project::model()->find("link LIKE :link OR  image LIKE :image",
                                                         array(':link' => $link, ':image' => $image));
                 if (!$project_check) {
-                    $htmlData = $web->getHtml($link, array(), $proxy_set);
-                    $data_single = $parsing->projectParser($htmlData);
+                    $htmlData = $web->getHtml($link);
+                    $data_single = $parser->projectParser($htmlData);
                     if ($data_single == false) { continue; }
                     $insert = new Project;
                     $insert->title = $title;
@@ -191,7 +172,7 @@ class UpdateCommand extends CConsoleCommand {
 
 //  GoGetFunding store to DB
     public function actionGoGetFunding() {
-        $parsing = new GoGetFundingParser();
+        $parser = new GoGetFundingParser();
         $web = new webText();
         $i = 1;
         $check = false;
@@ -199,30 +180,23 @@ class UpdateCommand extends CConsoleCommand {
         $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
-            $htmlData = $web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type"));
-            $pattern_link = '/<h2 class="cat_h2 visible-xs-block hidden-sm hidden-md hidden-lg"><a href="(.+)">(.+)<\/a><\/h2>/';
-            $pattern_image = '/<img class="img-responsive" src="(.+)" alt="main-img">/';
-            preg_match_all($pattern_link, $htmlData, $matches);
-            $links = $matches[1];
-            $titles = $matches[2];
-            preg_match_all($pattern_image, $htmlData, $matches);
-            $images = $matches[1];
-            if (isset($links)) {
-                for ($j=0; $j< (count($links)-1); $j++) {
-                    $link_check = Project::model()->findByAttributes(array('link' => $links[$j]));
+            $data = $parser->linkParser($web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type")));
+            if (isset($data['link'])) {
+                for ($j=0; $j< (count($data['link'] )-1); $j++) {
+                    $link_check = Project::model()->findByAttributes(array('link' => $data['link'][$j]));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
-                        $htmlData = $web->getHtml($links[$j], array());
-                        $data_single = $parsing->projectParser($htmlData);
+                        $htmlData = $web->getHtml($data['link'][$j]);
+                        $data_single = $parser->projectParser($htmlData);
                         $insert = new Project;
-                        $insert->title = $titles[$j];
+                        $insert->title = $data['title'][$j];
                         $insert->description = $data_single['description'];
-                        $insert->image = $images[$j];
-                        $insert->link = $links[$j];
-                        $insert->internal_link = toAscii($titles[$j]);
+                        $insert->image = $data['image'][$j];
+                        $insert->link = $data['link'][$j];
+                        $insert->internal_link = toAscii($data['title'][$j]);
                         $insert->time_added = date("Y-m-d H:i:s");
                         $insert->platform_id = $id;
-                        $category = $this->checkCategory($data_single['category'], $links[$j], ""); // ZAČASNO*****************************************************************
+                        $category = $this->checkCategory($data_single['category'], $data['link'][$j], ""); // ZAČASNO*****************************************************************
                         $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
                         if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime($data_single['end_date']));
                         if (isset($data_single['location'])) $insert->location = $data_single['location'];
@@ -234,7 +208,7 @@ class UpdateCommand extends CConsoleCommand {
                         // Category add
                         $insert_category = new ProjectOrigcategory;
                         $insert_category->project_id = $id_project;
-                        $category = $this->checkCategory($data_single['category'], $links[$j], "");
+                        $category = $this->checkCategory($data_single['category'], $data['link'][$j], "");
                         $insert_category->orig_category_id = $category->id;
                         $insert_category->save();
 
@@ -298,43 +272,31 @@ class UpdateCommand extends CConsoleCommand {
 
 //  FundAnything store in to DB
     public function actionFundAnything() {
-        $parsing = new FundAnythingParser();
+        $parser = new FundAnythingParser();
         $web = new webText();
         $i = 1;
         $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
         $id = $platform->id;
         while ($i <= 3) {
-            $htmlData = $web->getHtml("http://fundanything.com/en/search/category?cat_id=29&page=$i");
-            $pattern_link = '/<a href="(.+)" title=".+" target="_top">/';
-            $pattern_image = '/<img alt=".+" class="" data-ctitle="" src="(.+)" style/';
-            $pattern_category = '/<a href="http:..fundanything.com.en.search.category.cat_id=\d+" target="_top">(.+)<\/a>/';
-            $pattern_location = '/locpin.png" \/>\s\s{8}(.+)\s.+<\/div>/';
-            preg_match_all($pattern_link, $htmlData, $matches);
-            $links = $matches[1];
-            preg_match_all($pattern_image, $htmlData, $matches);
-            $images = $matches[1];
-            preg_match_all($pattern_category, $htmlData, $matches);
-            $categories = $matches[1];
-            preg_match_all($pattern_location, $htmlData, $matches);
-            $locations = $matches[1];
-            if (isset($links)) {
-                for($j=0; $j< (count($links)-1); $j++) {
-                    $link_check = Project::model()->findByAttributes(array('link' => $links[$j]));
+            $data = $parser->linkParser($web->getHtml("http://fundanything.com/en/search/category?cat_id=29&page=$i"));
+            if (isset($data['link'])) {
+                for($j=0; $j< (count($data['link'])-1); $j++) {
+                    $link_check = Project::model()->findByAttributes(array('link' => $data['link'][$j]));
                     if ($link_check) {  } // Counter for checking if it missed some project in the next few projects
                     else {
-                        $htmlData = $web->getHtml($links[$j]);
-                        $data_single = $parsing->projectParser($htmlData);
+                        $htmlData = $web->getHtml($data['link'][$j]);
+                        $data_single = $parser->projectParser($htmlData);
                         $insert = new Project;
                         $insert->title = $data_single['title'];
                         $insert->description = $data_single['description'];
-                        $insert->image = $images[$j];
-                        $insert->link = $links[$j];
+                        $insert->image = $data['image'][$j];
+                        $insert->link = $data['link'][$j];
                         $insert->internal_link = toAscii($data_single['title']);
                         $insert->time_added = date("Y-m-d H:i:s");
                         $insert->platform_id = $id;
-                        $category = $this->checkCategory(html_entity_decode($categories[$j]), $links[$j], ""); // ZAČASNO*****************************************************************
+                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], ""); // ZAČASNO*****************************************************************
                         $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
-                        if (isset($locations[$j])) $insert->location = $locations[$j];
+                        if (isset($$data['location'][$j])) $insert->location = $$data['location'][$j];
                         if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
                         $insert->save();
@@ -343,7 +305,7 @@ class UpdateCommand extends CConsoleCommand {
                         // Category add
                         $insert_category = new ProjectOrigcategory;
                         $insert_category->project_id = $id_project;
-                        $category = $this->checkCategory(html_entity_decode($categories[$j]), $links[$j], "");
+                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], "");
                         $insert_category->orig_category_id = $category->id;
                         $insert_category->save();
 
@@ -357,35 +319,27 @@ class UpdateCommand extends CConsoleCommand {
 
 //  FundRazr store in to DB
     public function actionFundRazr() {
-        $parsing = new FundRazrParser();
+        $parser = new FundRazrParser();
         $web = new webText();
         $check = false;
         $count = 0;
         $i = 1;
-        $preveri = false;
-        $kategorije = array();
         $platform = Platform::model()->findByAttributes(array('name' => 'Fundrazr'));
         $id = $platform->id;
         while ($i <= 5) {
-            $htmlData = $web->getHtml("https://fundrazr.com/find?type=newest&page=$i", array());
-            $pattern_link = '/campaign" href="(.+)" target="_top">.+<\/a>/';
-            $pattern_image = '/url\(\'(.+)\'\);/';
-            preg_match_all($pattern_link, $htmlData, $matches);
-            $links = $matches[1];
-            preg_match_all($pattern_image, $htmlData, $matches);
-            $images = $matches[1];
-            if (isset($links)) {
-                for ($j=0; $j< (count($links)-1); $j++) {
-                    $link = "https:" . $links[$j]; 
+            $data = $parser->linkParser($web->getHtml("https://fundrazr.com/find?type=newest&page=$i"));
+            if (isset($data['link'])) {
+                for ($j=0; $j< (count($data['link'])-1); $j++) {
+                    $link = "https:" . $data['link'][$j]; 
                     $link_check = Project::model()->findByAttributes(array('link' => $link));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
-                        $htmlData = $web->getHtml($link, array());
-                        $data_single = $parsing->projectParser($htmlData);
+                        $htmlData = $web->getHtml($link);
+                        $data_single = $parser->projectParser($htmlData);
                         $insert = new Project;
                         $insert->title = $data_single['title'];
                         $insert->description = $data_single['description'];
-                        $insert->image = "https:" . $images[$j];
+                        $insert->image = "https:" . $data['image'][$j];
                         $insert->link = $link;
                         $insert->internal_link = toAscii($data_single['title']);
                         $insert->time_added = date("Y-m-d H:i:s");
@@ -420,7 +374,7 @@ class UpdateCommand extends CConsoleCommand {
 
 //  PledgeMusic store to DB
     public function actionPledgeMusic(){
-        $parsing = new PledgeMusicParser();
+        $parser = new PledgeMusicParser();
         $web = new webText();
         $i = 1;
         $check = false;
@@ -428,31 +382,25 @@ class UpdateCommand extends CConsoleCommand {
         $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
-            $htmlData = $web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i", array());
-            $pattern_link = '/(\/projects.+)\?referrer=launched/';
-            $pattern_image = '/alt="Mobile" src="(.+)" \/>/';
-            preg_match_all($pattern_link, $htmlData, $matches);
-            $links = $matches[1];
-            preg_match_all($pattern_image, $htmlData, $matches);
-            $images = $matches[1];
-            for ($j=0; $j< (count($links)-1); $j++) {
-                $link = "http://www.pledgemusic.com".$links[$j];
+            $data = $parser->linkParser($web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i"));
+            for ($j=0; $j< (count($data['link'])-1); $j++) {
+                $link = "http://www.pledgemusic.com".$data['link'][$j];
                 if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
                 $link_parts = explode("/", $link);
                 $count_link_parts = count($link_parts);
                 $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3",
                                                           array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                                ':link2' => $links[$j], 
+                                                                ':link2' => $data['link'][$j], 
                                                                 ':link3' => $link));
                 if ($project_check) {$count = $count+1;} // Counter for checking if it missed some project in the next few projects
                 else{
-                    $htmlData = $web->getHtml($link, array());
-                    $data_single = $parsing->projectParser($htmlData);
+                    $htmlData = $web->getHtml($link);
+                    $data_single = $parser->projectParser($htmlData);
                     $category_all = explode(', ', $data_single['category']);
                     $insert=new Project;
                     $insert->title=$data_single['title'];
                     $insert->description=$data_single['description'];
-                    $insert->image=$images[$j];
+                    $insert->image=$data['image'][$j];
                     $insert->link=$link;
                     $insert->time_added=date("Y-m-d H:i:s");
                     $insert->platform_id=$id;

@@ -1,6 +1,19 @@
 <?php
 
 class FundRazrParser {
+    
+    public function linkParser($htmlData) {
+        // Link
+        $pattern_link = '/campaign" href="(.+)" target="_top">.+<\/a>/';
+        preg_match_all($pattern_link, $htmlData, $matches);
+        $data['link'] = $matches[1];
+        
+        // Image link
+        $pattern_image = '/url\(\'(.+)\'\);/';
+        preg_match_all($pattern_image, $htmlData, $matches);
+        $data['image'] = $matches[1];
+        return $data;
+    }
    
     public function projectParser($htmlData){
         // Goal

@@ -1,6 +1,20 @@
 <?php
 
 class GoGetFundingParser {
+    
+    public function linkParser($htmlData) {
+        // Link and Title
+        $pattern_link = '/<h2 class="cat_h2 visible-xs-block hidden-sm hidden-md hidden-lg"><a href="(.+)">(.+)<\/a><\/h2>/';
+        preg_match_all($pattern_link, $htmlData, $matches);
+        $data['link'] = $matches[1];
+        $data['title'] = $matches[2];
+
+        // Image link
+        $pattern_image = '/<img class="img-responsive" src="(.+)" alt="main-img">/';
+        preg_match_all($pattern_image, $htmlData, $matches);
+        $data['image'] = $matches[1];
+        return $data;
+    }
    
     public function projectParser($htmlData){
         // Goal

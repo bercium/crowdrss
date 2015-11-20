@@ -2,8 +2,24 @@
 
 class KickstarterParser {
     
-    public function projectParser($htmlData){
+    public function linkParser($htmlData) {
+        // Link
+        $pattern = '/(\/projects\/.+)\?ref=discovery/';
+        preg_match_all($pattern, $htmlData, $matches);
+        if (is_array($matches)){
+            foreach ($matches[1] as $key => $val){ $links[$val] = true; }
+            if (is_array($links)) $data['links'] = array_keys($links);
+            else $data['links'] = array();
+        }
         
+        // Image Link
+        $pattern = '/class="project-thumbnail-img" src="(.+)" \w/';
+        preg_match_all($pattern, $htmlData, $matches);
+        $data['images'] = str_replace("&amp;", "&", $matches[1]);
+        return $data;
+    }
+    
+    public function projectParser($htmlData){
         $pattern = '/window.current_project = "(.+)";/'; 
         preg_match($pattern, $htmlData, $match);
         $json = html_entity_decode($match[1]);
@@ -61,7 +77,6 @@ class KickstarterParser {
     }
     
     public function ratingParser($htmlData){
-        
         $pattern = '/window.current_project = "(.+)";/'; 
         preg_match($pattern, $htmlData, $match);
         $json = html_entity_decode($match[1]);
