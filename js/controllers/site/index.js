@@ -96,8 +96,11 @@ $(document).ready(function () {
     $('#slider').foundation('slider', 'set_value', slider_value);
 
      //$('#preview').show();
-
-     $('.more-platforms').hide();
+    if (Foundation.utils.is_medium_up()){
+        $('.more-platforms-btn').hide();
+    }else{
+        $('.more-platforms').hide();
+    }
     
     $('.unlockByEmail').click(function(){
         $.get( "site/checkMail?email="+$('.email-old').val(), function( data ) {

@@ -29,28 +29,33 @@ public function init(){
     $baseUrl = Yii::app()->baseUrl; 
     $cs = Yii::app()->getClientScript();
       
-    $cs->registerCssFile($baseUrl.'/css/foundation.css');
+    //$cs->registerCssFile($baseUrl.'/css/foundation.css');
+    $cs->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.min.css');
+    $cs->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css');
+    
     $cs->registerCssFile($baseUrl.'/css/layout.css');   
     $cs->registerCssFile($baseUrl.'/css/chosen/chosen.min.css');
     $cs->registerCssFile($baseUrl.'/css/tipr.css');
     
     //$cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
-    $cs->registerCssFile('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+    $cs->registerCssFile('http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
     
 
 		// JAVASCRIPTS
     $cs->registerCoreScript('jquery');  //core jquery lib
     //$cs->registerCoreScript('jquery-ui');  //core jquery lib
 
-		$cs->registerScriptFile($baseUrl.'/js/vendor/modernizr.js',CClientScript::POS_HEAD);  //modernizer
+    $cs->registerScriptFile('https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js',CClientScript::POS_HEAD);  //modernizer
     
   
     //$cs->registerScriptFile($baseUrl.'/js/respond.min.js');
     $cs->registerScriptFile($baseUrl.'/js/vendor/fastclick.js');
-    $cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
+    //$cs->registerScriptFile($baseUrl.'/js/foundation.min.js');
     //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.js');
-    $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
-    $cs->registerScriptFile($baseUrl.'/js/foundation/foundation.reveal.js'); //scroll tracker
+    //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.equalizer.js');
+    //$cs->registerScriptFile($baseUrl.'/js/foundation/foundation.reveal.js'); //scroll tracker
+    
+    $cs->registerScriptFile('https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/js/foundation.min.js');
     
     $cs->registerScriptFile($baseUrl.'/js/chosen.jquery.min.js');  // new dropdown
     
