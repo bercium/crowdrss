@@ -377,10 +377,11 @@ function absoluteURL($url = ''){
   /**
    * generate tracking code for mail
    */
-  function mailTrackingCode($extra = ''){
+  function mailTrackingCode($extra = '', $long = false){
     //Yii::import('application.helpers.Hashids');
     $hashids = new Hashids('crowdrss');
-    return $hashids->encrypt(round(microtime(true)));
+    if ($long) return $hashids->encrypt_hex(md5(microtime(true)));
+    else return $hashids->encrypt(round(microtime(true)));
   }
   
   /**

@@ -380,7 +380,10 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
             <button trk="button_form_reset" type="reset" class="hide reset_form radius right tiny">Reset form</button>
             <?php } ?>
           </div>
-            
+          
+            <?php if ($ref){ ?>
+            <input type="hidden" id="ref" name="ref" val="<?php echo $ref; ?>">
+            <?php } ?>
           </form>
           
           <form method="post" id="preview_form" action="<?php echo Yii::app()->createUrl('feed/previewRss'); ?>" target="_blank">

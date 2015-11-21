@@ -48,12 +48,12 @@ abstract class BaseSubscription extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('hash, email', 'required'),
-      array('time_created, time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),			
-			array('rss, daily_digest, weekly_digest, two_times_weekly_digest, rating', 'numerical', 'integerOnly'=>true),
+            array('time_created, time_updated', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),			
+			array('rss, daily_digest, weekly_digest, two_times_weekly_digest, rating, shared', 'numerical', 'integerOnly'=>true),
 			array('hash', 'length', 'max'=>100),
 			array('email, platform, category, exclude_orig_category', 'length', 'max'=>255),
 			array('platform, category, exclude_orig_category, rss, daily_digest, weekly_digest, two_times_weekly_digest, rating', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, hash, email, platform, category, exclude_orig_category, rss, daily_digest, weekly_digest, two_times_weekly_digest, rating, time_created, time_updated', 'safe', 'on'=>'search'),
+			array('id, hash, email, platform, category, exclude_orig_category, rss, daily_digest, weekly_digest, two_times_weekly_digest, rating, time_created, time_updated, shared', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +88,7 @@ abstract class BaseSubscription extends GxActiveRecord {
 			'feedClickLogs' => null,
 			'feedOpenLogs' => null,
 			'feedRates' => null,
+            'shared' => null,
 		);
 	}
 
@@ -107,6 +108,7 @@ abstract class BaseSubscription extends GxActiveRecord {
 		$criteria->compare('rating', $this->rating);
 		$criteria->compare('time_created', $this->time_created, true);
 		$criteria->compare('time_updated', $this->time_updated, true);
+        $criteria->compare('shared', $this->shared);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,

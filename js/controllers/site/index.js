@@ -103,7 +103,7 @@ $(document).ready(function () {
     }
     
     $('.unlockByEmail').click(function(){
-        $.get( "site/checkMail?email="+$('.email-old').val(), function( data ) {
+        $.get( fullURL+"/site/checkMail?email="+$('.email-old').val(), function( data ) {
             console.log(data);
             if (data){
                 $('#tweettounlock').foundation('reveal', 'close');

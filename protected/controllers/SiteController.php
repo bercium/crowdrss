@@ -59,7 +59,7 @@ class SiteController extends Controller {
         foreach ($SelOrigCategories as $origcat) {
             $OrigCategories[$origcat->category_id][] = $origcat;
         }
-
+        
         //load previous feed
         if (isset($_GET['id'])) {
             $subscription = Subscription::model()->findByAttributes(array('hash' => $_GET['id']));
@@ -72,6 +72,11 @@ class SiteController extends Controller {
             } else {
                 setFlash("save", "Subscription not found! Please check that you have the right ID.", "alert", false);
             }
+        }
+        
+        $ref = '';
+        if (isset($_GET['ref'])) {
+            $ref = $_GET['ref'];
         }
 
 
@@ -149,6 +154,11 @@ class SiteController extends Controller {
 
             if ($subscription->save()) {
                 setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
+                
+                // referral
+                if (isset($_POST['ref'])){
+                    //$_POST['ref'] , $subscription->id;
+                }
 
                 $message = new YiiMailMessage;
                 $message->view = 'subscribe';
@@ -224,7 +234,10 @@ class SiteController extends Controller {
 
         $subscribers = Subscription::model()->countBySql("SELECT COUNT(*) FROM subscription");
         $this->social = true;
-        $this->render('index', array('platforms' => $selplat, 'categories' => $selcat, 'subscription' => $subscription, "subscribers" => $subscribers));
+        
+        $this->render('index', array('platforms' => $selplat, 'categories' => $selcat, 
+                                     'subscription' => $subscription, "subscribers" => $subscribers,
+                                     'ref' => $ref));
     }
 
     /**
@@ -349,9 +362,27 @@ class SiteController extends Controller {
     /**
      * This is the action to handle external exceptions.
      */
-    public function actionShare() {
-        $this->render('share');
+    public function actionShare($ref = '') {
+        $cs = Yii::app()->getClientScript();
+        $cs->registerScriptFile(Yii::app()->baseUrl . '/js/social-locker.min.js');
+        
+        $this->render('share',array('hash'=>$ref));
     }
+    
+    /**
+     * This is the action to handle external exceptions.
+     */
+    public function actionShared($hash = '') {
+        // LOG SHARES
+        
+        $subs = Subscription::model()->find("hash = :hash", array(':hash' => $hash));
+        if ($subs){
+            $subs->shared++;
+            $subs->save();
+        }
+        
+        exit;
+    }    
 
     /**
      * This is the action to handle external exceptions.
