@@ -24,7 +24,17 @@ class PledgeMusicParser {
         // Description
         $pattern = '/<meta content=.(.+). itemprop=.description.>/';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = html_entity_decode($match[1]);
+        if (isset($match[1])) $data['description'] = html_entity_decode($match[1]);
+        else {
+            $pattern = '/div class=.copy.>(.+)/';
+            preg_match($pattern, $htmlData, $match);
+            if (isset($match[1])){
+                $description = strip_tags($match[1]);
+                $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
+                $data['description'] = $description . " ...";
+            }
+            else $data['description'] = " ";
+        }
         
         // Creator
         $pattern = '/<h1 itemprop=.name.>(.+)<\/h1>/';
