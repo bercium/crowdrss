@@ -84,13 +84,14 @@ class FeaturedProject {
         $h = floor(date("G") / 6)*6; // 4 comercials per day
         
         $project->id = -1;
-        $project->title = 'Crowdfunding RSS';
+        $project->title = 'Crowdfunding RSS [★★★★☆]';
         $project->time_added = strtotime(date("Y-m-d ".$h.":00:00"));
         $project->origCategory = new stdClass();
         $project->origCategory->name = 'Crowdfunding-rss';
-        $project->link = 'http://crowdfundingrss.com/share?ref='.$this->sub->hash.'&lnk='. substr($hashids->encrypt(date("Ymd").$h),0,6);
-        $project->image = 'http://crowdfundingrss.com/images/cf-rss-show.png';
-        $project->description = 'We here at CrowdfundingRSS ❤LOVE❤ you guys and we hope you love us back. So feel free to show it by <a href="'.$project->link.'">CLICKING HERE<a>.';
+        $project->link = 'http://crowdfundingrss.com/site/share?ref='.$this->sub->hash.'&lnk='. substr($hashids->encrypt(date("Ymd").$h),0,6);
+        $project->image = 'http://crowdfundingrss.com/images/cf-rss-show-small.png';
+        $tracking_link = "http://crowdfundingrss.com/feed/rl?l=".urlencode("/site/share?ref=".$this->sub->hash).'&i='.$this->sub->id;
+        $project->description = 'We here at CrowdfundingRSS ❤LOVE❤ you guys.<br />If you find our service usefull <a href="'.$tracking_link.'">tell your friends</a> about us so they might enjoy it too. By doing that you are helping us build the best crowdfunding digest site. You can tell them <a href="'.$tracking_link.'">HERE</a>.';
         $project->nolike = true;
         $project->rating = 100;
         //$project->platform->name = '';

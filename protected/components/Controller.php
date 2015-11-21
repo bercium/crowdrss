@@ -20,9 +20,9 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
-  public $pageDesc = '';
-  public $keywords = '';
-  public $fbImage = '';
+    public $pageDesc = '';
+    public $keywords = '';
+    public $fbImage = '';
   
   
 public function init(){
@@ -38,7 +38,7 @@ public function init(){
     $cs->registerCssFile($baseUrl.'/css/tipr.css');
     
     //$cs->registerCssFile($baseUrl.'/css/font-awesome.min.css');
-    $cs->registerCssFile('http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css');
+    $cs->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css');
     
 
 		// JAVASCRIPTS

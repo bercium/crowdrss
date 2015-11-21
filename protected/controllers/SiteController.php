@@ -239,8 +239,10 @@ class SiteController extends Controller {
         $link = '';
         $rating_detail = null;
         $rating = null;
+        $evalProject = false;
 
         if (isset($_POST['checkLink']) || $s != '') {
+            $evalProject = true;
             
             if ($s != '')
                 $link = $s;
@@ -331,14 +333,24 @@ class SiteController extends Controller {
             $summary = 'I got '.round($rating,1).'/10 for my project: '.$project->title;
         }else $summary = '';
 ;
-        $this->render('owners', array("project" => $project, "link" => $link, "onPage" => $onPage, "inPlatform" => $inPlatform, 'rating_detail' => $rating_detail, "rating" => $rating, "summary"=>$summary));
+        $this->render('owners', array("project" => $project, "link" => $link, 
+                                      "onPage" => $onPage, "inPlatform" => $inPlatform, 
+                                      'rating_detail' => $rating_detail, "rating" => $rating, 
+                                      "summary"=>$summary, 'evalProject'=>$evalProject));
     }
 
     /**
-     * This is the action to handle external exceptions.
+     * Rating description
      */
     public function actionRating() {
         $this->render('rating');
+    }
+    
+    /**
+     * This is the action to handle external exceptions.
+     */
+    public function actionShare() {
+        $this->render('share');
     }
 
     /**

@@ -24,8 +24,8 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
            <a id="whatIsCRSS" class="anchor"></a>
            <div class="row">
              <div class="columns large-12 text-center">
-               <div class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt20 mb30 "></div>
-               <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
+               <div class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" alt="Crowdfunging rss" class="mt20 mb30 "></div>
+               <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" alt="Crowdfunging rss"  class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
                <h1 class="white title">Crowdfunding projects delivered to you</h1>
                <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
 
@@ -104,7 +104,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                     <div class="mb20">
                       <label for="plat_<?php echo $plat['id']; ?>" >
                         <?php if (file_exists("images/platforms/".strtolower(str_replace(" ", "", $plat['name'])).".png")){ ?>
-                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
+                        <img src="<?php echo Yii::app()->request->baseUrl; ?>/images/platforms/<?php echo strtolower(str_replace(" ", "", $plat['name'])); ?>.png" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" alt="<?php echo $plat['name']; ?>" title="<?php echo $plat['name']."<br />Projects per day: ".$plat['projPerDay']; ?>">
                         <?php }else{?>
                         <div class="panel radius text-center small-8 small-offset-2 mb0" style="height:150px;">
                           <h2><?php echo $plat['name']; ?></h2>
@@ -267,8 +267,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
           <hr class="mt60 mb60">
             
           <a id="preview" class="anchor"></a>
-          <h2>4. <a onclick="previewForm()" trk="link_content_preview" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Live preview of your selection">Preview</a> 
-            and Finish</h2>
+          <h2>4. Preview and Finish <a onclick="previewForm()" trk="link_content_preview" ><button data-tooltip data-options="disable_for_touch:true"  type="button" class=" right small tip-right radius" title="Live preview of your selection">Preview</button></a></h2>
           <p>Instantly receive projects with RSS feed or subscribe to a mail digest.</p>
 
           <div class="row">
@@ -310,7 +309,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                     </div>
                   </div>
                   <div class="columns small-9 medium-6 large-8">
-                    <label for="two_times_weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Once a week get an overview of most popular projects in the last week.">
+                    <label for="two_times_weekly_digest" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Twice a week get an overview of most popular projects in the last week.">
                       Two emails per week <i class="fa fa-envelope-o"></i>
                     </label>
                   </div>

@@ -52,10 +52,10 @@ $a = array(
 		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-      'showScriptName'=>false,
+            'showScriptName'=>false,
 			'rules'=>array(
-        ''=>'site/index',
-        'gii/<controller:\w+>/<action:[\w-]+>' => 'gii/<controller>/<action>',
+                ''=>'site/index',
+                'gii/<controller:\w+>/<action:[\w-]+>' => 'gii/<controller>/<action>',
 				'view/<name>'=>'view/index',
 				'top<count:\d+>'=>'browse/top',
 				'top<count:\d+>/<platform>'=>'browse/top',
