@@ -21,6 +21,19 @@ $this->menu=array(
 	'attributes' => array(
 'id',
 'name',
+'download:boolean',
+'sort',
+'active:boolean',
 	),
 )); ?>
 
+<h2><?php echo GxHtml::encode($model->getRelationLabel('projects')); ?></h2>
+<?php
+	echo GxHtml::openTag('ul');
+	foreach($model->projects as $relatedModel) {
+		echo GxHtml::openTag('li');
+		echo GxHtml::link(GxHtml::encode(GxHtml::valueEx($relatedModel)), array('project/view', 'id' => GxActiveRecord::extractPkValue($relatedModel, true)));
+		echo GxHtml::closeTag('li');
+	}
+	echo GxHtml::closeTag('ul');
+?>

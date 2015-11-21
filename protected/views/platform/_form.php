@@ -18,6 +18,21 @@
 		<?php echo $form->textField($model, 'name', array('maxlength' => 255)); ?>
 		<?php echo $form->error($model,'name'); ?>
 		</div><!-- row -->
+		<div class="row">
+		<?php echo $form->labelEx($model,'download'); ?>
+		<?php echo $form->checkBox($model, 'download'); ?>
+		<?php echo $form->error($model,'download'); ?>
+		</div><!-- row -->
+		<div class="row">
+		<?php echo $form->labelEx($model,'sort'); ?>
+		<?php echo $form->textField($model, 'sort'); ?>
+		<?php echo $form->error($model,'sort'); ?>
+		</div><!-- row -->
+		<div class="row">
+		<?php echo $form->labelEx($model,'active'); ?>
+		<?php echo $form->checkBox($model, 'active'); ?>
+		<?php echo $form->error($model,'active'); ?>
+		</div><!-- row -->
 
 
 <?php

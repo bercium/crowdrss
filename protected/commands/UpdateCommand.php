@@ -43,6 +43,8 @@ class UpdateCommand extends CConsoleCommand {
         $check = false;
         $count = 0;
         $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
+        if (!$platform->download) return;
+        
         $id = $platform->id;
         while (($i <= 50) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest"));
@@ -114,6 +116,7 @@ class UpdateCommand extends CConsoleCommand {
         $parser = new IndiegogoParser();
         $web = new webText();
         $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
+        if (!$platform->download) return;
         $id = $platform->id;
         $numberOfPages = 100;
         $jsonData = $parser->linkParser($web->getHtml("https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages"));
@@ -178,6 +181,7 @@ class UpdateCommand extends CConsoleCommand {
         $check = false;
         $count = 0;
         $platform = Platform::model()->findByAttributes(array('name' => 'Go get funding'));
+        if (!$platform->download) return;
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type")));
@@ -276,6 +280,7 @@ class UpdateCommand extends CConsoleCommand {
         $web = new webText();
         $i = 1;
         $platform = Platform::model()->findByAttributes(array('name' => 'Fund anything'));
+        if (!$platform->download) return;
         $id = $platform->id;
         while ($i <= 3) {
             $data = $parser->linkParser($web->getHtml("http://fundanything.com/en/search/category?cat_id=29&page=$i"));
@@ -325,6 +330,7 @@ class UpdateCommand extends CConsoleCommand {
         $count = 0;
         $i = 1;
         $platform = Platform::model()->findByAttributes(array('name' => 'Fundrazr'));
+        if (!$platform->download) return;
         $id = $platform->id;
         while ($i <= 5) {
             $data = $parser->linkParser($web->getHtml("https://fundrazr.com/find?type=newest&page=$i"));
@@ -380,6 +386,7 @@ class UpdateCommand extends CConsoleCommand {
         $check = false;
         $count = 0;
         $platform = Platform::model()->findByAttributes(array('name'=>'Pledge music'));
+        if (!$platform->download) return;
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i"));

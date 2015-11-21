@@ -15,6 +15,21 @@
 		<?php echo $form->textField($model, 'name', array('maxlength' => 255)); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->label($model, 'download'); ?>
+		<?php echo $form->dropDownList($model, 'download', array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')), array('prompt' => Yii::t('app', 'All'))); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model, 'sort'); ?>
+		<?php echo $form->textField($model, 'sort'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->label($model, 'active'); ?>
+		<?php echo $form->dropDownList($model, 'active', array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')), array('prompt' => Yii::t('app', 'All'))); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo GxHtml::submitButton(Yii::t('app', 'Search')); ?>
 	</div>

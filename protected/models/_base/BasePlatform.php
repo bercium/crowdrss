@@ -36,10 +36,10 @@ abstract class BasePlatform extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('name', 'required'),
-			array('active', 'numerical', 'integerOnly'=>true),
+			array('active, download, sort', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			array('active', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, name, active', 'safe', 'on'=>'search'),
+			array('id, name, active, download, sort', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,6 +59,8 @@ abstract class BasePlatform extends GxActiveRecord {
 			'id' => Yii::t('app', 'ID'),
 			'name' => Yii::t('app', 'Name'),
 			'active' => Yii::t('app', 'Active'),
+			'download' => Yii::t('app', 'Download'),
+			'sort' => Yii::t('app', 'Sort'),
 			'projects' => null,
 		);
 	}
@@ -69,6 +71,8 @@ abstract class BasePlatform extends GxActiveRecord {
 		$criteria->compare('id', $this->id);
 		$criteria->compare('name', $this->name, true);
 		$criteria->compare('active', $this->active);
+		$criteria->compare('download', $this->active);
+		$criteria->compare('sort', $this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria' => $criteria,
