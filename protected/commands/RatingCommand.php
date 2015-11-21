@@ -19,6 +19,7 @@ class RatingCommand extends CConsoleCommand{
     foreach ($projects as $project){
       if (strtotime($project->end) < time()) continue; // project ended
       if (in_array($project->id, $exclude)) continue; //exclude projects
+      if (!$project->platform->download) continue; // exclude platforms that shouldn't be downloaded
       
       $rating_class = null;
       
