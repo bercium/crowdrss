@@ -126,7 +126,9 @@ div.switch label:hover{
     }
 }
 
-
+.relative{
+    position: relative;
+}
 .subcat-locker{
     position: absolute; top:0; right:0; left:0; bottom:0;
     background-color: rgba(0,0,0,0.5);
@@ -141,4 +143,22 @@ div.switch label:hover{
     text-align: center;
     position: absolute;
     font-size:80px;
+}
+
+.social-ok{
+    position: absolute; top:0; right:0; left:0; bottom:0;
+    background-color: rgba(255,255,255,0.5);
+    
+    text-align: center;
+    /*cursor: pointer;*/
+    z-index: 100;
+}
+.social-ok > div{
+    color:#43ac6a;
+    top:50%;
+    margin-top:-40px;
+    width:100%;
+    text-align: center;
+    position: absolute;
+    font-size:40px;
 }

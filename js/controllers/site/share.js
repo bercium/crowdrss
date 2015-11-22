@@ -9,7 +9,12 @@ $(document).ready(function () {
         events:{
             unlock:function(typeSender, sender){
                 shares++;
-                $('.progress-meter').css('width',(16+shares*26-shares*5)+'%');
+                progress = (16+shares*26-shares*5);
+                if (progress > 100) progress = 100;
+                
+                $('.'+sender.networkName+'.social-ok').removeClass('hide');
+                        
+                $('.progress-meter').css('width',progress+'%');
                 if (hash > '') $.get( fullURL+"/site/shared?hash="+hash, function( data ) { });
                 //$('.progress-meter-invert').css('width',100-$('.progress-meter').css('width'));
                 },
@@ -34,12 +39,14 @@ $(document).ready(function () {
             count:'none',
             like: {
                     title: "Like us",
-                    url: "http://crowdfundingrss.com/"
+                    url: "http://crowdfundingrss.com/",
+                    layout:'button'
                 }
         },
 
         twitter: {
             class:'.share-buttons-tw',
+            count:'none',
             tweet: {
                 title: "Tweet",
                 text: "Best crowdfunding projects delivered to you",
@@ -49,6 +56,7 @@ $(document).ready(function () {
 
         google: {
             class:'.share-buttons-gp',
+            count:'none',
             plus: {
                 title: "Plus +1",
                 url: "http://crowdfundingrss.com/"
@@ -57,7 +65,8 @@ $(document).ready(function () {
 
         linkedin: {
             class:'.share-buttons-li',
-            url: "http://crowdfundingrss.com/",                                
+            url: "http://crowdfundingrss.com/",     
+            count:'none',
             share: {
                 title: "Share"
             }
