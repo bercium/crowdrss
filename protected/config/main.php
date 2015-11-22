@@ -144,6 +144,7 @@ $a = array(
         // using Yii::app()->params['paramName']
         'params' => array(
                 // this is used in contact page
+                'version'=>'1.11',
                 'noreplyEmail' => array('no-reply@crowdfundingrss.com' => 'Crowdfunding RSS'),
                 'adminEmail' => array('info@crowdfundingrss.com' => 'Crowdfunding RSS'),
                 'scriptEmail' => array('script@crowdfundingrss.com' => 'Script CF RSS'),

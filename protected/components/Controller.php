@@ -91,7 +91,7 @@ public function init(){
      
     
     // startup scripts
-    $cs->registerScriptFile($baseUrl.'/js/app.js');
+    $cs->registerScriptFile($baseUrl.'/js/app.js'.getVersionID());
     
     parent::init();
   }
@@ -101,13 +101,13 @@ public function init(){
     $cs = Yii::app()->getClientScript();
     // general controller JS
     if (file_exists("js/controllers/".Yii::app()->controller->id."/controller.js"))
-      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/controller.js");
+      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/controller.js".getVersionID());
     // specific action JS
     if (!$in_actionID) $actionID = $this->defaultAction;
     else $actionID =  $in_actionID;
 
     if (file_exists("js/controllers/".Yii::app()->controller->id."/".$actionID.".js"))
-      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/".$actionID.".js");
+      $cs->registerScriptFile($baseUrl."/js/controllers/".Yii::app()->controller->id."/".$actionID.".js".getVersionID());
     
     parent::run($in_actionID);
   }  
