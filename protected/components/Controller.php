@@ -33,7 +33,7 @@ public function init(){
     $cs->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/normalize.min.css');
     $cs->registerCssFile('https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css');
     
-    $cs->registerCssFile($baseUrl.'/css/layout.css');   
+    $cs->registerCssFile($baseUrl.'/css/layout.css'.getVersionID());   
     $cs->registerCssFile($baseUrl.'/css/chosen/chosen.min.css');
     $cs->registerCssFile($baseUrl.'/css/tipr.css');
     
