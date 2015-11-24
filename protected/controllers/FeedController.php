@@ -66,9 +66,10 @@ class FeedController extends Controller
 			case 0: $stars = '☆☆☆☆☆'; break;
 		}
 	  
-      $desc.= "<p>"."[".$stars."] <br />".$project->description." <br />";
-      
-      if (!empty($project->platform->name)) $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+      if (!empty($project->platform->name)){
+          $desc.= "<p>"."[".$stars."] <br />".$project->description." <br />";
+          $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
+      }else $desc.= "<p>".$project->description." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";
       //if (!empty($project->location)) $desc.= " \nCreator of project: ".$project->location;
       if (!empty($project->goal)) $desc.= "<br />Project goal: <strong>".$project->goal."</strong>";
