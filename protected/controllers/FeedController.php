@@ -54,9 +54,19 @@ class FeedController extends Controller
       
       $desc = '';
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
-      $desc.= '<img src="' . $project->image . '" alt="" border="0" style="margin-bottom:8px;"/>';
-
-      $desc.= "<p>".$project->description." <br />";
+      $desc.= '<img src="' . $project->image . '" alt="'.$project->title.' ['.$project->rating.']" border="0" style="margin-bottom:8px;"/>';
+	  
+	  $stars = '★★★★★';
+		switch(round($project->rating/2)){
+			case 5: $stars = '★★★★★'; break;
+			case 4: $stars = '★★★★☆'; break;
+			case 3: $stars = '★★★☆☆'; break;
+			case 2: $stars = '★★☆☆☆'; break;
+			case 1: $stars = '★☆☆☆☆'; break;
+			case 0: $stars = '☆☆☆☆☆'; break;
+		}
+	  
+      $desc.= "<p>"."[".$stars."] <br />".$project->description." <br />";
       
       if (!empty($project->platform->name)) $desc.= "<br /><strong>".$project->platform->name."</strong> - ".$project->origCategory->name." ";//." <br />";
       if (!empty($project->creator)) $desc.= "<br />Creator of project: <i>".$project->creator."</i> ";

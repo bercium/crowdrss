@@ -371,6 +371,17 @@ background: #970b0e !important;
                   foreach ($featuredProjects as $project){
                     $i++;
                     $feature_type = 'featured';
+					
+					$stars = '★★★★★';
+					switch(round($project->rating/2)){
+						case 5: $stars = '★★★★★'; break;
+						case 4: $stars = '★★★★☆'; break;
+						case 3: $stars = '★★★☆☆'; break;
+						case 2: $stars = '★★☆☆☆'; break;
+						case 1: $stars = '★☆☆☆☆'; break;
+						case 0: $stars = '☆☆☆☆☆'; break;
+					}
+					
                   if ($project->rating >= 11){
                       $feature_type = 'payed';
                       ?>
@@ -386,7 +397,7 @@ background: #970b0e !important;
 
                       <table class="four columns" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 180px; margin: 0 auto; padding: 0;"><tr style="vertical-align: top; text-align: left; padding: 0;" align="left"><td class="left-text-pad" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 0px 10px 10px;" align="left" valign="top">
                             <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-'.$feature_type.'-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img alt="<?php echo $project->rating; ?>" src="<?php echo $project->image; ?>" width="200" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 200px; min-width:200px; float: left; clear: both; display: block;" align="left" />
+                              <img alt="<?php echo $project->title." [".$project->rating."]"; ?>" src="<?php echo $project->image; ?>" width="200" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 200px; min-width:200px; float: left; clear: both; display: block;" align="left" />
                             </a>
                           </td>
                           <td class="expander" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; visibility: hidden; width: 0px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0;" align="left" valign="top"></td>
@@ -408,9 +419,10 @@ background: #970b0e !important;
                             if (!empty($project->platform->name)){
                             ?>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal;font-size: 14px; line-height: 19px;">
-                                <?php echo "<strong>".$project->platform->name."</strong>: ".$project->origCategory->name." "; ?>
+                                <?php echo $stars."<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." "; ?>
                             </p>
-                            <?php } ?>
+							<?php } ?>
+							
                             <p style="font-style: italic; margin-top:5px; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <?php echo $project->description."<br />";
 
@@ -509,7 +521,7 @@ background: #970b0e !important;
                           <td class="six sub-columns" style="word-break: break-word; -webkit-hyphens: auto; -moz-hyphens: auto; hyphens: auto; border-collapse: collapse !important; vertical-align: top; text-align: left; min-width: 0px; width: 50%; color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; line-height: 19px; font-size: 14px; margin: 0; padding: 0px 10px 10px 0px;" align="left" valign="top">
                             
                             <a href="<?php echo mailLinkTracking($tc,absoluteURL()."feed/rl?l=".$project->link.'&i='.$user_id,'digest-project-view'); ?>" target="_blank" style="color: #2ba6cb; text-decoration: none;">
-                              <img alt="<?php echo $project->rating; ?>" src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none; padding-bottom: 8px;" align="left" />
+                              <img alt="<?php echo $project->title." [".$project->rating."]"; ?>" src="<?php echo $project->image; ?>" width="130" style="outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; width: auto; max-width: 130px; float: left; clear: both; display: block; border: none; padding-bottom: 8px;" align="left" />
                             </a>
                             <p style="color: #222222; font-family: 'Helvetica', 'Arial', sans-serif; font-weight: normal; text-align: left; line-height: 19px; font-size: 14px; margin: 10px 0 0px; padding: 0;" align="left">
                               <strong>
@@ -519,7 +531,7 @@ background: #970b0e !important;
                               </strong>
                               <small style="font-size: 10px;">
                                 <?php 
-                                  echo "<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
+                                  echo "<br />".$stars."<br /><strong>".$project->platform->name."</strong>: ".$project->origCategory->name." ";//." <br />";
                                 ?>
                                </small>
                              </p>
