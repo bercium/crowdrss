@@ -372,15 +372,17 @@ background: #970b0e !important;
                     $i++;
                     $feature_type = 'featured';
 					
-					$stars = '★★★★★';
-					switch(round($project->rating/2)){
-						case 5: $stars = '★★★★★'; break;
-						case 4: $stars = '★★★★☆'; break;
-						case 3: $stars = '★★★☆☆'; break;
-						case 2: $stars = '★★☆☆☆'; break;
-						case 1: $stars = '★☆☆☆☆'; break;
-						case 0: $stars = '☆☆☆☆☆'; break;
-					}
+                    if (!empty($project->rating)){
+                        $stars = '★★★★★';
+                        switch(round($project->rating/2)){
+                            case 5: $stars = '★★★★★'; break;
+                            case 4: $stars = '★★★★☆'; break;
+                            case 3: $stars = '★★★☆☆'; break;
+                            case 2: $stars = '★★☆☆☆'; break;
+                            case 1: $stars = '★☆☆☆☆'; break;
+                            case 0: $stars = '☆☆☆☆☆'; break;
+                        }
+                    }else $stars = '';
 					
                   if ($project->rating >= 11){
                       $feature_type = 'payed';
