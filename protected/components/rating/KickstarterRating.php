@@ -57,7 +57,7 @@ class KickstarterRating extends PlatformRating{
     $parsing = new KickstarterParser();
     $web = new webText();
     $link = $this->link;
-    if (!$this->html) $htmlData = $web->getHtml($link);  //load data if not loaded
+    if (!$this->html) $this->html = $web->getHtml($link);  //load data if not loaded
     $htmlData = $this->html;
     $tmp = false;
     if ($htmlData) {

@@ -53,8 +53,10 @@ class RatingCommand extends CConsoleCommand{
       }
 
       //echo $project->rating."-".$rating." \n<br>";
-      $project->rating = $rating;
-      $project->save();
+      if ($rating != null){
+		  $project->rating = $rating;
+		  $project->save();
+	  }
       $i++;
     }
     
