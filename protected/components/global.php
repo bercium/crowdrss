@@ -475,7 +475,7 @@ function getStars($rating, $long = false){
 	return $stars = '';
 	if (!empty($rating)){
 		$stars = '★★★★★';
-		if (!$long) $rating /= 2;
+		if (!$long) $rating = $rating/2;
 		switch(round($rating)){
 			case 10: if ($long) $stars = '★★★★★★★★★★'; break;
 			case 9:  if ($long) $stars = '★★★★★★★★★☆'; break;
