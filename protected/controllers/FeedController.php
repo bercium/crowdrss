@@ -56,19 +56,8 @@ class FeedController extends Controller
       //$desc.= "<strong>".$project->platform->name."</strong> - ".$project->origCategory->name." <br />";
       $desc.= '<img src="' . $project->image . '" alt="'.$project->title.' ['.$project->rating.']" border="0" style="margin-bottom:8px;"/>';
 	  
-	  $stars = '';
-	  if (!empty($project->rating)){
-		$stars = '★★★★★';
-		switch(round($project->rating/2)){
-			case 5: $stars = '★★★★★'; break;
-			case 4: $stars = '★★★★☆'; break;
-			case 3: $stars = '★★★☆☆'; break;
-			case 2: $stars = '★★☆☆☆'; break;
-			case 1: $stars = '★☆☆☆☆'; break;
-			case 0: $stars = '☆☆☆☆☆'; break;
-		}
-		$stars = '['.$stars.']<br />';
-	  }
+	  $stars = getStars($project->rating);
+	  if ($stars != '') $stars = '['.$stars.'] <br />';
 	  
       if (!empty($project->platform->name)){
           $desc.= "<p>".$stars.$project->description." <br />";

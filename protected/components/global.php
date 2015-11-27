@@ -464,3 +464,31 @@ function toAscii($str, $replace=array(), $delimiter='-') {
 
     return $clean;
 }
+
+/**
+ * get stars instead of rating
+ * 
+ * @param type $rating
+ * @return string
+ */
+function getStars($rating, $long = false){
+	return $stars = '';
+	if (!empty($rating)){
+		$stars = '★★★★★';
+		if (!$long) $rating /= 2;
+		switch(round($rating)){
+			case 10: if ($long) $stars = '★★★★★★★★★★'; break;
+			case 9:  if ($long) $stars = '★★★★★★★★★☆'; break;
+			case 8:  if ($long) $stars = '★★★★★★★★☆☆'; break;
+			case 7:  if ($long) $stars = '★★★★★★★☆☆☆'; break;
+			case 6:  if ($long) $stars = '★★★★★★☆☆☆☆'; break;
+			case 5: $stars = '★★★★★'; if ($long) $stars .= '☆☆☆☆☆';  break;
+			case 4: $stars = '★★★★☆'; if ($long) $stars .= '☆☆☆☆☆'; break;
+			case 3: $stars = '★★★☆☆'; if ($long) $stars .= '☆☆☆☆☆'; break;
+			case 2: $stars = '★★☆☆☆'; if ($long) $stars .= '☆☆☆☆☆'; break;
+			case 1: $stars = '★☆☆☆☆'; if ($long) $stars .= '☆☆☆☆☆'; break;
+			case 0: $stars = '☆☆☆☆☆'; if ($long) $stars .= '☆☆☆☆☆'; break;
+		}
+	}
+	return $stars;
+}

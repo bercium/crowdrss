@@ -372,19 +372,9 @@ background: #970b0e !important;
                     $i++;
                     $feature_type = 'featured';
 					
-                    if (!empty($project->rating)){
-                        $stars = '★★★★★';
-                        switch(round($project->rating/2)){
-                            case 5: $stars = '★★★★★'; break;
-                            case 4: $stars = '★★★★☆'; break;
-                            case 3: $stars = '★★★☆☆'; break;
-                            case 2: $stars = '★★☆☆☆'; break;
-                            case 1: $stars = '★☆☆☆☆'; break;
-                            case 0: $stars = '☆☆☆☆☆'; break;
-                        }
-                    }else $stars = '';
+					$stars = getStars($project->rating);
 					
-                  if ($project->rating >= 11){
+					if ($project->rating >= 11){
                       $feature_type = 'payed';
                       ?>
                     <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; background: #ecfaff; padding: 0px; border: 1px solid #b6edff;" bgcolor="#ecfaff">
