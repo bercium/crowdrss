@@ -28,7 +28,7 @@ class FeedController extends Controller
    */
   private function createRssItem($project, $id){
       $rssResponse = '<item>';
-      $rssResponse .= '<title>' . htmlspecialchars($project->title) . '</title>';
+      $rssResponse .= '<title><![CDATA[' . htmlspecialchars($project->title) . ']]></title>';
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>';
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>';
       if ($this->viewRedirectLink){
@@ -36,19 +36,19 @@ class FeedController extends Controller
                 $link = Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link))."?redirect";
             }else{
                 if (strpos($project->title, "/") === false)
-                    $link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))."?redirect"));
+                    $link = '<![CDATA['.str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))."?redirect").']]>';
                 else
-                    $link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title."&redirect")));
+                    $link = '<![CDATA['.str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title."&redirect")).']]>';
             }
-            $rssResponse .= '<link><![CDATA[' . $link . ']]></link>';
-            $rssResponse .= '<guid><![CDATA[' . $link . ']]></guid>';
+            $rssResponse .= '<link>' . $link . '</link>';
+            $rssResponse .= '<guid isPermaLink="true">' . $link . '</guid>';
       }else{
             if ($id){
                 $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></link>';
-                 $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></guid>';
+                $rssResponse .= '<guid isPermaLink="true"><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link,'i'=>$id)) . ']]></guid>';
             }else{
-                 $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
-                $rssResponse .= '<guid><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
+                $rssResponse .= '<link><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></link>';
+                $rssResponse .= '<guid isPermaLink="true"><![CDATA[' . Yii::app()->createAbsoluteUrl("feed/rl",array("l"=>$project->link)) . ']]></guid>';
             }
       }
       
@@ -88,7 +88,7 @@ class FeedController extends Controller
       else $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link)) .'" />';
       
       $desc .= "</p>";
-      $rssResponse .= '<description>' . htmlspecialchars($desc,ENT_COMPAT | ENT_HTML401,'UTF-8') . '</description>';
+      $rssResponse .= '<description><![CDATA[' . $desc. ']]></description>';
 //      $rssResponse .= '<description>' . $project->description . '</description>';
 //      $rssResponse .= '<author>' . $project->creator . '</author>';
       $rssResponse .= "</item>\n";
@@ -111,13 +111,14 @@ class FeedController extends Controller
 //    $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
     //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
-    $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />';
+	if (isset($_SERVER["REQUEST_URI"])) $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/'.$_SERVER["REQUEST_URI"].'" />';
+	else $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />';
     
     $rssResponse .= '<title>Crowdfounding RSS</title>';
     $rssResponse .= '<link>'.Yii::app()->params['absoluteHost'].'</link>';
     $rssResponse .= '<description>All your crowdfunding projects in one place.</description>';
     $rssResponse .= '<language>en-us</language>';
-    $rssResponse .= '<ttl>5</ttl>';
+    $rssResponse .= '<ttl>10</ttl>';
     
     if ($featured != null) {
         $rssResponse .= $this->createRssItem($featured, $id);
