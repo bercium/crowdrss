@@ -19,25 +19,25 @@
                     <div><i class="fa fa-check" ></i></div>
                 </div>
 
-                <div class=" panel p40 pt30 share-buttons-fb text-center"  trk="button_social_facebook-unlock">Facebook<div class="mb20"></div></div>
+                <div class=" panel p40 pt30 share-buttons-fb text-center" style="height:146px;"  trk="button_social_facebook-unlock">Facebook<div class="mb20"></div></div>
             </li>
             <li class="relative">
                 <div class="twitter social-ok hide">
                     <div><i class="fa fa-check" ></i></div>
                 </div>
-                <div class="panel p40 pt30 share-buttons-tw text-center"  trk="button_social_twitter-unlock">Twitter<div class="mb20"></div></div>
+                <div class="panel p40 pt30 share-buttons-tw text-center" style="height:146px;"  trk="button_social_twitter-unlock">Twitter<div class="mb20"></div></div>
             </li>
             <li class="relative">
                 <div class="google social-ok hide">
                     <div><i class="fa fa-check" ></i></div>
                 </div>
-                <div class="panel p40 pt30 share-buttons-gp text-center"  trk="button_social_google-unlock">Google Plus<div class="mb20"></div></div>
+                <div class="panel p40 pt30 share-buttons-gp text-center" style="height:146px;"  trk="button_social_google-unlock">Google Plus<div class="mb20"></div></div>
             </li>
             <li class="relative">
                 <div class="linkedin social-ok hide">
                     <div><i class="fa fa-check" ></i></div>
                 </div>
-                <div class="panel p40 pt30 share-buttons-li text-center"  trk="button_social_linkedin-unlock">Linked in<div class="mb20"></div></div>
+                <div class="panel p40 pt30 share-buttons-li text-center" style="height:146px;"  trk="button_social_linkedin-unlock">Linked in<div class="mb20"></div></div>
             </li>
         </ul>
         
