@@ -77,7 +77,7 @@ class FeaturedProject {
     public function featuredCFrss(){
         $project = new stdClass();
         
-        if ($this->sub->id != 1 && $this->sub->id != 2) return null;
+        //if ($this->sub->id != 1 && $this->sub->id != 2) return null;
         if ($this->sub->shared > 0) return null; // don't spam those that have shared
         
         $hashids = new Hashids('crowdrss');
