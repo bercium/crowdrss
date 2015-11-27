@@ -25,7 +25,8 @@ $(document).ready(function () {
 
         locker: {
             close: false,
-            timer: 0
+            timer: 0,
+			mobile:true
         },
 
         buttons: {
