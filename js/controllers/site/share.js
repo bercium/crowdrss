@@ -66,10 +66,10 @@ $(document).ready(function () {
         linkedin: {
             class:'.share-buttons-li',
             url: "http://crowdfundingrss.com/",     
-            count:'none',
+            counter:'none',
             share: {
                 title: "Share",
-				count:'none'
+				counter:'none'
             }
         }
     });
