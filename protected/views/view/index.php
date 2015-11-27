@@ -46,6 +46,7 @@ if ($project->removed == 0){
                       <div class="show-for-small pb20"></div>
                   </div>
                   <div class="columns medium-8">
+                        <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("view/index",array("remove"=>$project->id,"name"=>$project->internal_link)); ?>">Remove</a> <?php }?>
                         <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
                             <h1 class="small"><?php echo $project->title; ?></h1>
                         </a>
@@ -99,7 +100,8 @@ if ($project->removed == 0){
 
             <div class="row pt20 pb10 hide-for-small text-center">
                 <div class="columns medium-4">
-                    <?php   if (!empty($similar[0]->internal_link)){
+                    <?php
+                    if (!empty($similar[0]->internal_link)){
                         $internal_link = Yii::app()->createUrl("view/index", array("name" => $similar[0]->internal_link));
                     }else{
                         if (strpos($project->title, "/") === false)
