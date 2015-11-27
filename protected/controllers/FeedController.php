@@ -28,7 +28,7 @@ class FeedController extends Controller
    */
   private function createRssItem($project, $id){
       $rssResponse = '<item>'.PHP_EOL;
-      $rssResponse .= '<title><![CDATA[' . htmlspecialchars($project->title) . ']]></title>'.PHP_EOL;
+      $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>'.PHP_EOL;
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>'.PHP_EOL;
       $rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>'.PHP_EOL;
       if ($this->viewRedirectLink){
