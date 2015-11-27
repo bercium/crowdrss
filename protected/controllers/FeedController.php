@@ -111,7 +111,7 @@ class FeedController extends Controller
 //    $rssResponse .= '<rss version="2.0">';
     $rssResponse .= '<channel>';
     //$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
-	if (isset($_SERVER["REQUEST_URI"])) $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/'.$_SERVER["REQUEST_URI"].'" />';
+	if (isset($_SERVER["REQUEST_URI"])) $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com'.$_SERVER["REQUEST_URI"].'" />';
 	else $rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />';
     
     $rssResponse .= '<title>Crowdfounding RSS</title>';
@@ -375,7 +375,7 @@ class FeedController extends Controller
   /**
     * 
     */
-  public function actionRssIFTTT($category = ''){
+  public function actionRssIFTTT($data = ''){
     Yii::app()->clientScript->reset();
     $this->layout = 'none';
     
@@ -384,8 +384,8 @@ class FeedController extends Controller
     mb_internal_encoding("UTF-8"); 
     
     $count = 1;
-    if ($category){
-        $category_data = Category::model()->find("name = :name", array(":name"=>$category));
+    if ($data){
+        $category_data = Category::model()->find("name = :name", array(":name"=>$data));
         if ($category_data){
             $category_array = OrigCategory::model()->findAll("category_id = :cid", array(":cid"=>$category_data->id));
             $categories = array();
@@ -393,13 +393,13 @@ class FeedController extends Controller
                 foreach ($category_array as $row){
                     $categories[] = $row->id;
                 }
-                $category = " AND orig_category_id IN (".implode(', ',$categories).") ";
-            }else $category = '';
-        }else $category = '';
+                $data = " AND orig_category_id IN (".implode(', ',$categories).") ";
+            }else $data = '';
+        }else $data = '';
     }
     
     $this->viewRedirectLink = true;
-    $projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating DESC, time_added DESC LIMIT :limit",
+    $projects = Project::model()->findAll("time_added >= :date ".$data." ORDER BY rating DESC, time_added DESC LIMIT :limit",
                                            array(":date"=>date('Y-m-d H:00:00',strtotime('-24 years')),
                                                 ":limit"=>$count));
     
