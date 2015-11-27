@@ -69,7 +69,7 @@ $(document).ready(function () {
             count:'none',
             share: {
                 title: "Share",
-				 count:'none'
+				count:'none'
             }
         }
     });
