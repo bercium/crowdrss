@@ -18,7 +18,7 @@ class FeaturedProject {
     private $featuredProject, $sub;
 
     function __construct($sub = null) {
-        $this->featuredProject = ProjectFeatured::model()->findAll("active = 1 AND feature_date = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
+        $this->featuredProject = ProjectFeatured::model()->findAll("active = 1 AND DATE(feature_date) = :date ORDER BY show_count ASC",array(":date"=>date('Y-m-d')));
         $this->sub = $sub;
     }
 
@@ -58,12 +58,15 @@ class FeaturedProject {
               if ($this->sub->category && !in_array($fp->project->origCategory->category_id, $catA)) continue; // not in category
 
               $fp->show_count++;
-              //    $pp->save();
+              $fp->save();//save view
+			  
               $featuredProject = $fp->project; //get one project
               // set the rating higher so we know it's special
               if ($featuredProject->rating) $featuredProject->rating += 11;
               else $featuredProject->rating = 11;
-              $featuredProject->time_added = time();
+			  
+			  $h = floor(date("G") / 6)*6; // 4 comercials per day
+              $featuredProject->time_added = strtotime(date("Y-m-d ".$h.":00:00"));
 
               break;
           }
