@@ -13,7 +13,7 @@ class ViewController extends Controller
         $cs->registerScriptFile(Yii::app()->baseUrl.'/js/parallax.min.js');
 
         $project = Project::model()->findByAttributes(array("internal_link"=>$name));
-        
+          
         if ($project == null){
             $project = Project::model()->findByAttributes(array("title"=>$name));
         }
@@ -21,6 +21,12 @@ class ViewController extends Controller
         if ($project == null){
           throw new CHttpException(400, Yii::t('msg', 'No such project.'));
         }
+
+        if (isset($_GET['remove']) && ($_GET['remove'] == $project->id) && (!Yii::app()->user->isGuest)){
+            $project->removed = 1;
+            $project->save();
+        }
+        
         $this->pageTitle = $project->title;
         $this->pageDesc = $project->description;
         
