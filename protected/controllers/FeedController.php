@@ -401,7 +401,7 @@ class FeedController extends Controller
     
     $this->viewRedirectLink = true;
     $projects = Project::model()->findAll("time_added >= :date ".$data." ORDER BY rating DESC, time_added DESC LIMIT :limit",
-                                           array(":date"=>date('Y-m-d H:00:00',strtotime('-24 years')),
+                                           array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
                                                 ":limit"=>$count));
     
     echo $this->createRssFeed($projects);
