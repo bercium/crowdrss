@@ -68,7 +68,8 @@ $(document).ready(function () {
             url: "http://crowdfundingrss.com/",     
             count:'none',
             share: {
-                title: "Share"
+                title: "Share",
+				 count:'none'
             }
         }
     });
