@@ -473,7 +473,7 @@ function toAscii($str, $replace=array(), $delimiter='-') {
  */
 function getStars($rating, $long = false){
 	$stars = '';
-	if (!empty($rating)){
+	if (!empty($rating) && is_numeric($rating)){
 		$stars = '★★★★★';
 		if (!$long) $rating = $rating/2;
 		switch(round($rating)){

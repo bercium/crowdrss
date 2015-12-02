@@ -26,7 +26,7 @@ class FeedController extends Controller
    * @param type $id
    * @return string
    */
-  private function createRssItem($project, $id){
+  private function createRssItem($project, $id, $track = true){
       $rssResponse = '<item>'.PHP_EOL;
       $rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>'.PHP_EOL;
       $rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e",strtotime($project->time_added)) . '</pubDate>'.PHP_EOL;
@@ -83,9 +83,8 @@ class FeedController extends Controller
           }
         //}
       // track opening of feed
-        $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
-      }
-      else $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link)) .'" />';
+        if ($track) $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link,'i'=>$id)) .'" />';
+      }else if ($track) $desc .= '<img src="'. Yii::app()->createAbsoluteUrl("track/of",array("l"=>$project->link)) .'" />';
       
       $desc .= "</p>";
       $rssResponse .= '<description><![CDATA[' . $desc. ']]></description>'.PHP_EOL;
@@ -103,7 +102,7 @@ class FeedController extends Controller
    * @param type $featured
    * @return string
    */
-  function createRssFeed($projects, $id = null, $featured = null){
+  function createRssFeed($projects, $id = null, $featured = null, $track = true){
     $rssResponse = '';
     $rssResponse .= '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL;
     $rssResponse .= '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">'.PHP_EOL;
@@ -122,13 +121,13 @@ class FeedController extends Controller
     $rssResponse .= '<ttl>10</ttl>'.PHP_EOL;
     
     if ($featured != null) {
-        $rssResponse .= $this->createRssItem($featured, $id);
+        $rssResponse .= $this->createRssItem($featured, $id, $track);
     }
     
     // CREATE RSS
     $i = 0;
     foreach ($projects as $project){
-      $rssResponse .= $this->createRssItem($project, $id);
+      $rssResponse .= $this->createRssItem($project, $id, $track);
       //if ($i++ > 20) break;
     }
 
@@ -309,7 +308,7 @@ class FeedController extends Controller
     
     $projects = Project::model()->findAll($sql);
     //echo $sql;
-    echo $this->createRssFeed($projects);
+    echo $this->createRssFeed($projects, null, null, false);
     Yii::app()->end();
   }
   
@@ -404,7 +403,7 @@ class FeedController extends Controller
                                            array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
                                                 ":limit"=>$count));
     
-    echo $this->createRssFeed($projects);
+    echo $this->createRssFeed($projects, null, null, false);
     Yii::app()->end();
   }
   
