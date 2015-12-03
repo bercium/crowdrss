@@ -443,7 +443,7 @@ class FeedController extends Controller {
 			":limit" => $count));
 
 		foreach ($projects as &$project) {
-			$project->image = Yii::app()->createAbsoluteUrl("feed/image", array("data" => $project->id . '.jpg'));
+			$project->image = Yii::app()->createAbsoluteUrl("feed/image", array("data" => $project->id . ''));
 			//$project->image = short_url_bitly($project->image);
 		}
 		echo $this->createRssFeed($projects, null, null, false);
@@ -523,11 +523,11 @@ class FeedController extends Controller {
 
 		//header('Content-Type: application/rss+xml; charset=UTF-8');
 		//mb_internal_encoding("UTF-8");
-		echo $data;
-		exit;
+		//echo $data;
+		//exit;
 
-		$id = str_replace(".jpg", "", $data);
-		$project = Project::model()->findByAttributes(array("id" => $id));
+		//$id = str_replace(".jpg", "", $data);
+		$project = Project::model()->findByAttributes(array("id" => $data));
 
 		$this->redirect($project->image);
 		Yii::app()->end();
