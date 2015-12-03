@@ -27,7 +27,7 @@ class IndiegogoParser {
         $data['category'] = $jsonData->campaign_category;
 
         // Goal
-        $money = Yii::app()->numberFormatter->formatCurrency($jsonData->{'campaign_goal_amount'}, $jsonData->{'site_currency'});
+        $money = Yii::app()->numberFormatter->formatCurrency($jsonData->campaign_goal_amount, $jsonData->site_currency);
         $money_split = explode(".", $money);
         if ($money_split[1] == "00") {$data['goal'] = $money_split[0];
         } else {$data['goal'] = $money;}
@@ -81,9 +81,8 @@ class IndiegogoParser {
         $json = $split_json[0];
         $jsonData = json_decode($json);
         if ($jsonData == null){ return false;}
-        
         // Money
-        $money = $jsonData->collected_funds;
+        $money = $jsonData->goal;
         switch ($jsonData->currency->iso_code) {
             case "GBP": $convert = 1.69; break; 
             case "EUR": $convert = 1.14; break; 
