@@ -34,6 +34,24 @@ $this->pageTitle = $title;
 	</div>
 	
 	
+	<div class="row">
+		<div class="columns">
+			<div class="mt40 mb40">
+			<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			  <!-- cfrss-responsive-main -->
+			  <ins class="adsbygoogle"
+				   style="display:block"
+				   data-ad-client="ca-pub-0534207295672567"
+				   data-ad-slot="3264751435"
+				   data-ad-format="auto"></ins>
+			  <script>
+			  (adsbygoogle = window.adsbygoogle || []).push({});
+			  </script>
+			</div>
+		</div>
+	</div>
+	
+	
     <?php 
     $i = 0;
     foreach ($projects as $project){
