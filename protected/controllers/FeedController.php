@@ -402,7 +402,10 @@ class FeedController extends Controller
     $projects = Project::model()->findAll("time_added >= :date ".$data." ORDER BY rating DESC, time_added DESC LIMIT :limit",
                                            array(":date"=>date('Y-m-d H:00:00',strtotime('-24 hours')),
                                                 ":limit"=>$count));
-	
+    
+    /*foreach ($projects as &$project){
+        $project->image = short_url_bitly($project->image);
+    }*/
     echo $this->createRssFeed($projects, null, null, false);
     Yii::app()->end();
   }
