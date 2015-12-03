@@ -516,7 +516,7 @@ class FeedController extends Controller {
 	 * 
 	 * @param type $data
 	 */
-	public function actionImage($data) {
+	public function actionImage($id) {
 		
 		Yii::app()->clientScript->reset();
 		$this->layout = 'none';
@@ -527,7 +527,7 @@ class FeedController extends Controller {
 		//exit;
 
 		//$id = str_replace(".jpg", "", $data);
-		$project = Project::model()->findByAttributes(array("id" => $data));
+		$project = Project::model()->findByAttributes(array("id" => $id));
 
 		$this->redirect($project->image);
 		Yii::app()->end();
