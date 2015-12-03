@@ -516,14 +516,14 @@ class FeedController extends Controller {
 	 * 
 	 * @param type $data
 	 */
-	public function actionImage() {
+	public function actionImage($data) {
 		
 		Yii::app()->clientScript->reset();
 		$this->layout = 'none';
 
 		//header('Content-Type: application/rss+xml; charset=UTF-8');
 		//mb_internal_encoding("UTF-8");
-		echo "yes";
+		echo $data;
 		exit;
 
 		$id = str_replace(".jpg", "", $data);
