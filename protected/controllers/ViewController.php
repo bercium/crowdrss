@@ -66,21 +66,4 @@ class ViewController extends Controller
 	}
   
  
-	/**
-	 * 
-	 * @param type $data
-	 */
-	public function actionImage($data){
-		
-		echo $data;
-		exit;
-		
-		$id = str_replace(".jpg", "", $data);
-		$project = Project::model()->findByAttributes(array("id"=>$id));
-	
-		
-		
-		$this->redirect($project->image);
-		Yii::app()->end();
-	}
 }

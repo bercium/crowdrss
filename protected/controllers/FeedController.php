@@ -404,7 +404,7 @@ class FeedController extends Controller
                                                 ":limit"=>$count));
     
     foreach ($projects as &$project){
-		$project->image = Yii::app()->createAbsoluteUrl("view/image", array("data" => $project->id.'.jpg'));
+		$project->image = Yii::app()->createAbsoluteUrl("feed/image", array("data" => $project->id.'.jpg'));
         //$project->image = short_url_bitly($project->image);
     }
     echo $this->createRssFeed($projects, null, null, false);
@@ -474,6 +474,19 @@ class FeedController extends Controller
 // $editLink
     
   }
+  
+  	/**
+	 * 
+	 * @param type $data
+	 */
+	public function actionImage($data){
+		
+		$id = str_replace(".jpg", "", $data);
+		$project = Project::model()->findByAttributes(array("id"=>$id));
+	
+		$this->redirect($project->image);
+		Yii::app()->end();
+	}
   
   
 }
