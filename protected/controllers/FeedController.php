@@ -439,8 +439,8 @@ class FeedController extends Controller {
 		}
 
 		$this->viewRedirectLink = true;
-		$projects = Project::model()->findAll("time_added >= :date " . $data . " AND platform_id = 1 ORDER BY rating DESC, time_added DESC LIMIT :limit", 
-												array(":date" => date('Y-m-d H:00:00', strtotime('-224 hours')),":limit" => $count));
+		$projects = Project::model()->findAll("time_added >= :date " . $data . " ORDER BY rating DESC, time_added DESC LIMIT :limit", 
+												array(":date" => date('Y-m-d H:00:00', strtotime('-24 hours')),":limit" => $count));
 
 		foreach ($projects as &$project) {
 			$project->image = Yii::app()->createAbsoluteUrl("feed/image", array("data" => $project->id . ''));
