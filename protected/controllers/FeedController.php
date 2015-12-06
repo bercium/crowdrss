@@ -31,6 +31,7 @@ class FeedController extends Controller {
 		$rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>' . PHP_EOL;
 		$rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e", strtotime($project->time_added)) . '</pubDate>' . PHP_EOL;
 		$rssResponse .= '<category>' . htmlspecialchars($project->origCategory->name) . '</category>' . PHP_EOL;
+                $rssResponse .= '<author>' . htmlspecialchars($project->creator) . '</author>' . PHP_EOL;
 		if ($this->viewRedirectLink) {
 			if (!empty($project->internal_link)) {
 				$link = Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link)) . "?redirect";
