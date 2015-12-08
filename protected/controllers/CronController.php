@@ -72,7 +72,8 @@ class CronController extends Controller {
         if ($platforms == '' || in_array("fundanything", $platforms_array)) echo $this->consoleCommand('update', 'fundAnything');
         if ($platforms == '' || in_array("fundrazr", $platforms_array)) echo $this->consoleCommand('update', 'fundRazr');
         if ($platforms == '' || in_array("pledgemusic", $platforms_array)) echo $this->consoleCommand('update', 'pledgeMusic');
-        
+        if ($platforms == '' || in_array("ulule", $platforms_array)) echo $this->consoleCommand('update', 'ulule');
+
         //if ($platforms == '' || in_array("pubslush", $platforms_array)) echo $this->consoleCommand('update', 'pubSlush');
     }
 
