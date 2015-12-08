@@ -186,7 +186,7 @@ class UpdateCommand extends CConsoleCommand {
         while (($i <= 10) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type")));
             if (isset($data['link'])) {
-                for ($j=0; $j< (count($data['link'] )-1); $j++) {
+                for ($j=0; $j < (count($data['link'] )); $j++) {
                     $link_check = Project::model()->findByAttributes(array('link' => $data['link'][$j]));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
@@ -240,7 +240,7 @@ class UpdateCommand extends CConsoleCommand {
         while ($i <= 3) {
             $data = $parser->linkParser($web->getHtml("http://fundanything.com/en/search/category?cat_id=29&page=$i"));
             if (isset($data['link'])) {
-                for($j=0; $j< (count($data['link'])-1); $j++) {
+                for($j=0; $j < (count($data['link'])); $j++) {
                     $link_check = Project::model()->findByAttributes(array('link' => $data['link'][$j]));
                     if ($link_check) {  } // Counter for checking if it missed some project in the next few projects
                     else {
@@ -290,7 +290,7 @@ class UpdateCommand extends CConsoleCommand {
         while ($i <= 5) {
             $data = $parser->linkParser($web->getHtml("https://fundrazr.com/find?type=newest&page=$i"));
             if (isset($data['link'])) {
-                for ($j=0; $j< (count($data['link'])-1); $j++) {
+                for ($j=0; $j < (count($data['link'])); $j++) {
                     $link = "https:" . $data['link'][$j]; 
                     $link_check = Project::model()->findByAttributes(array('link' => $link));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
@@ -345,7 +345,7 @@ class UpdateCommand extends CConsoleCommand {
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i"));
-            for ($j=0; $j< (count($data['link'])-1); $j++) {
+            for ($j=0; $j < (count($data['link'])); $j++) {
                 $link = "http://www.pledgemusic.com".$data['link'][$j];
                 if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
                 $link_parts = explode("/", $link);
@@ -410,14 +410,13 @@ class UpdateCommand extends CConsoleCommand {
         $i = 1;
         $check = false;
         $count = 0;
-        while (($i <= 10) and ($check == false)) {
-            $data = $parser->linkParser($web->getHtml("http://www.ulule.com/discover/filter/new/$i"));
+        while (($i <= 5) and ($check == false)) {
+            $data = $parser->linkParser($web->getHtml("http://www.ulule.com/discover/filter/new/$i/"));
             if (isset($data['links'])) {
-                for ($j=0; $j< (count($data['links'] )-1); $j++) {
+                for ($j=0; $j < (count($data['links'] )); $j++) {
                     $link_check = Project::model()->findByAttributes(array('link' => $data['links'][$j]));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
-                        //var_dump($data['links'][$j]);die;
                         $htmlData = $web->getHtml($data['links'][$j]);
                         $data_single = $parser->projectParser($htmlData);
                         $insert = new Project;

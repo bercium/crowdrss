@@ -27,7 +27,7 @@ class UluleParser {
         $data['title'] = $match[1];
         
         // Description
-        $pattern = '/<section class="from-editor">(.+)<\/section>/';
+        $pattern = '/<section class="from-editor">(.+)/s';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])){
             $description = strip_tags($match[1]);
