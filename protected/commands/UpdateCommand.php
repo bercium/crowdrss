@@ -254,7 +254,7 @@ class UpdateCommand extends CConsoleCommand {
                         $insert->internal_link = toAscii($data_single['title']);
                         $insert->time_added = date("Y-m-d H:i:s");
                         $insert->platform_id = $id;
-                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], ""); // ZAČASNO*****************************************************************
+                        $category = $this->checkCategory(html_entity_decode($data['categorie'][$j]), $data['link'][$j], ""); // ZAČASNO*****************************************************************
                         $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
                         if (isset($$data['location'][$j])) $insert->location = $$data['location'][$j];
                         if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
@@ -265,7 +265,7 @@ class UpdateCommand extends CConsoleCommand {
                         // Category add
                         $insert_category = new ProjectOrigcategory;
                         $insert_category->project_id = $id_project;
-                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], "");
+                        $category = $this->checkCategory(html_entity_decode($data['categorie'][$j]), $data['link'][$j], "");
                         $insert_category->orig_category_id = $category->id;
                         $insert_category->save();
 
