@@ -501,7 +501,7 @@ EOD;
                 $priority = 0.35;
                 if ($project->rating)
                     $priority = round(($project->rating / 20) + 0.35, 3);
-                 $priority = 7;
+                 $priority = 0.7;
                 $sitemapResponse .= "
         <url>
           <loc>";
@@ -552,7 +552,7 @@ EOD;
                 $priority = 0.35;
                 if ($project->rating)
                     $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 7;
+                $priority = 0.7;
                 $sitemapResponse .= "
         <url>
           <loc>";
@@ -603,7 +603,7 @@ EOD;
                 $priority = 0.35;
                 if ($project->rating)
                     $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 7;
+                $priority = 0.7;
                 $sitemapResponse .= "
         <url>
           <loc>";
@@ -654,7 +654,7 @@ EOD;
                 $priority = 0.35;
                 if ($project->rating)
                     $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 7;
+                $priority = 0.7;
                 $sitemapResponse .= "
         <url>
           <loc>";
