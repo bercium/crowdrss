@@ -552,7 +552,7 @@ EOD;
      * 
      */
     public function actionFixInternalLink(){
-        $projects = Project::model()->findAllBySql(' internal_link IS NULL AND title LIKE "%/%"');
+        $projects = Project::model()->findAll(' internal_link IS NULL AND title LIKE "%/%"');
         
         foreach ($projects as $project) {
             $project->internal_link = toAscii($project->title);
