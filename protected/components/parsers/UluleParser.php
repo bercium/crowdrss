@@ -47,9 +47,14 @@ class UluleParser {
         if (isset($match[1])) $data['location'] = $match[1];
         
         // Goal
-        $pattern = '/<span class="amount-text">(.+)<\/span><\/strong>/';
+        $pattern = '/committed on a goal of <b>(.+)<\/b><\/p>/';
         preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])) $data['goal'] = "€".$match[1];
+        if (isset($match[1])) $data['goal'] = $match[1];
+        else{
+            $pattern = '/on a goal of <b>(\d+)<\/b><\/p>/';
+            preg_match($pattern, $htmlData, $match);
+            if (isset($match[1])) $data['goal'] = $match[1]." presales";
+        }
         
         // Days to end
         $pattern = '/(\d+) days left/';
