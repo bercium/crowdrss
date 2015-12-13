@@ -195,7 +195,8 @@ abstract class PlatformRating {
     $g = filter_var($project->goal, FILTER_SANITIZE_NUMBER_INT);
     $r = filter_var($cws['$raised'], FILTER_SANITIZE_NUMBER_INT);
     
-    $p = ($r/$g);
+    if ($g = 0) $p = ($r/$g);
+	else $p = $r;
     
     //30% in first week  better chance
             
