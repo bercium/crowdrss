@@ -254,7 +254,7 @@ class UpdateCommand extends CConsoleCommand {
                         $insert->internal_link = toAscii($data_single['title']);
                         $insert->time_added = date("Y-m-d H:i:s");
                         $insert->platform_id = $id;
-                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], ""); // ZAČASNO*****************************************************************
+                        $category = $this->checkCategory(html_entity_decode($data['categorie'][$j]), $data['link'][$j], ""); // ZAČASNO*****************************************************************
                         $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
                         if (isset($$data['location'][$j])) $insert->location = $$data['location'][$j];
                         if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
@@ -265,7 +265,7 @@ class UpdateCommand extends CConsoleCommand {
                         // Category add
                         $insert_category = new ProjectOrigcategory;
                         $insert_category->project_id = $id_project;
-                        $category = $this->checkCategory(html_entity_decode($$data['categorie'][$j]), $data['link'][$j], "");
+                        $category = $this->checkCategory(html_entity_decode($data['categorie'][$j]), $data['link'][$j], "");
                         $insert_category->orig_category_id = $category->id;
                         $insert_category->save();
 
@@ -466,4 +466,65 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
+// Ulule store to DB
+    public function actionPozible() {
+        $platform = Platform::model()->findByAttributes(array('name' => 'Pozible'));
+        if (!$platform->download) return;
+        $id = $platform->id;
+        $parser = new PozibleParser();
+        $web = new webText();
+        $i = 1;
+        $check = false;
+        $count = 0;
+        while (($i <= 5) and ($check == false)) {
+            if ($i == 1) $data = $parser->linkParser($web->getHtml("http://www.pozible.com/list/new/0/all/0"));
+            else $data = $parser->linkParser($web->getHtml("http://www.pozible.com/list/new/0/all/0/0/". (15*($i-1))));
+            //$data = $parser->linkParser($web->getHtml("http://www.pozible.com/list/new/0/all/0/0/30"));
+            if (isset($data['links'])) {
+                for ($j=0; $j < (count($data['links'] )); $j++) {
+                    $link_check = Project::model()->findByAttributes(array('link' => $data['links'][$j]));
+                    if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $htmlData = $web->getHtml($data['links'][$j]);
+                        $split_link = explode("/",$data['links'][$j]);
+                        $description_link = $split_link[0]."//".$split_link[2]."/".$split_link[3]."/pnav/".$split_link[4]."/description/0";
+                        $htmlData .= $web->getHtml($description_link);
+                        $data_single = $parser->projectParser($htmlData);
+                        $insert = new Project;
+                        $insert->title = $data_single['title'];
+                        $insert->description = $data_single['description'];
+                        $insert->image = $data['images'][$j];
+                        $insert->link = $data['links'][$j];
+                        $insert->internal_link = toAscii($data_single['title']);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory($data_single['category'], $data['links'][$j], ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        if (isset($data_single['end_date'])) $insert->end = date("Y-m-d H:i:s", strtotime("+".$data_single['end_date']." days"));
+                        $insert->save();
+
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory($data_single['category'], $data['links'][$j], "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
+
+                        $count = 0;
+            //	    print_r($insert->getErrors());
+                    }
+                    if ($count >= 10) {
+                        $check = true;
+                        break;
+                    }
+                }
+            }
+            $i = $i + 1;
+        }
+    }
+    
 }
