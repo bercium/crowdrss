@@ -443,7 +443,7 @@ class SiteController extends Controller {
     /**
      * create sitemap for the whole site
      */
-    public function actionSitemap() {
+    public function actionSitemap($id = 0) {
         // don't allow any other strings before this
         Yii::app()->clientScript->reset();
         $this->layout = 'none'; // template blank
@@ -455,47 +455,49 @@ class SiteController extends Controller {
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-    <url>
-      <loc>http://crowdfundingrss.com/</loc>
-      <changefreq>monthly</changefreq>
-      <priority>1</priority>
-    </url>
 EOD;
+        if ($id == 0){
+            $sitemapResponse .= "
+        <url>
+          <loc>http://crowdfundingrss.com/</loc>
+          <changefreq>monthly</changefreq>
+          <priority>1</priority>
+        </url>";
 
-        // all platforms and number of projects
-        $platforms = Platform::model()->findAll();
-        foreach (array(10, 25, 50, 100) as $c) {
-            $sitemapResponse .= "
-        <url>
-          <loc>http://crowdfundingrss.com/top" . $c . "</loc>
-          <changefreq>weekly</changefreq>
-          <priority>0.9</priority>
-        </url>";
-            $sitemapResponse .= "
-        <url>
-          <loc>http://crowdfundingrss.com/bottom" . $c . "</loc>
-          <changefreq>weekly</changefreq>
-          <priority>0.8</priority>
-        </url>";
-            foreach ($platforms as $platform) {
+            // all platforms and number of projects
+            $platforms = Platform::model()->findAll();
+            foreach (array(10, 25, 50, 100) as $c) {
                 $sitemapResponse .= "
-          <url>
-            <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/top" . $c . "/" . $platform->name) . "</loc>
-            <changefreq>weekly</changefreq>
-            <priority>0.9</priority>
-          </url>";
+            <url>
+              <loc>http://crowdfundingrss.com/top" . $c . "</loc>
+              <changefreq>weekly</changefreq>
+              <priority>0.9</priority>
+            </url>";
                 $sitemapResponse .= "
-          <url>
-            <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/bottom" . $c . "/" . $platform->name) . "</loc>
-            <changefreq>weekly</changefreq>
-            <priority>0.8</priority>
-          </url>";
+            <url>
+              <loc>http://crowdfundingrss.com/bottom" . $c . "</loc>
+              <changefreq>weekly</changefreq>
+              <priority>0.8</priority>
+            </url>";
+                foreach ($platforms as $platform) {
+                    $sitemapResponse .= "
+              <url>
+                <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/top" . $c . "/" . $platform->name) . "</loc>
+                <changefreq>weekly</changefreq>
+                <priority>0.9</priority>
+              </url>";
+                    $sitemapResponse .= "
+              <url>
+                <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/bottom" . $c . "/" . $platform->name) . "</loc>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
+              </url>";
+                }
             }
         }
 
-
         // go trough projects newer than 1 month
-        $projects = Project::model()->findAll(" ORDER BY id DESC LIMIT 6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
+        $projects = Project::model()->findAll(" ORDER BY id DESC LIMIT ".($id*6000).", 6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
         foreach ($projects as $project) {
             if ($project) {
                 $priority = 0.35;
@@ -675,72 +677,6 @@ EOD;
         }
 
         $sitemapResponse .= "\n</urlset>"; // end sitemap
-
-        $this->render("//layouts/none", array("content" => $sitemapResponse));
-    }
-    
-    
-     /**
-     * 
-     */
-    public function actionSitemap4() {
-        // don't allow any other strings before this
-        Yii::app()->clientScript->reset();
-        $this->layout = 'none'; // template blank
-        
-        $file = str_replace("/protected", "/sitemap", Yii::app()->basePath);
-        $nf = fopen($file.DIRECTORY_SEPARATOR.'sitemap.xml', 'w');
-
-        
-        $sitemapResponse = <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-EOD;
-        fwrite($nf, $sitemapResponse);
-
-        
-        
-        for ($i = 0; $i < 3; $i++){
-            // go trough projects newer than 1 month
-            $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT ".(18000+4000*$i).",4000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
-            foreach ($projects as $project) {
-                if ($project) {
-                    $priority = 0.35;
-                    if ($project->rating)
-                        $priority = round(($project->rating / 20) + 0.35, 3);
-                    $priority = 0.7;
-                    $sitemapResponse = "
-            <url>
-              <loc>";
-
-                    if (!empty($project->internal_link)){
-                        $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
-                    }else{
-                        if (strpos($project->title, "/") === false)
-                            $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
-                        else
-                            $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
-                    }
-                    $sitemapResponse .= "</loc>
-              <changefreq>weekly</changefreq>
-              <priority>" . $priority . "</priority>
-            </url>";
-                    
-                    fwrite($nf, $sitemapResponse);
-                }
-            }
-        }
-
-        $sitemapResponse = "\n</urlset>"; // end sitemap
-        fwrite($nf, $sitemapResponse);
-                
-        fclose($nf);
-        exit;
 
         $this->render("//layouts/none", array("content" => $sitemapResponse));
     }
