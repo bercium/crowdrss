@@ -527,5 +527,60 @@ class UpdateCommand extends CConsoleCommand {
             $i = $i + 1;
         }
     }
-    
+
+// Pledge Me store to DB
+    public function actionPledgeMe() {
+        $platform = Platform::model()->findByAttributes(array('name' => 'PledgeMe'));
+        if (!$platform->download) return;
+        $id = $platform->id;
+        $parser = new PledgeMeParser();
+        $web = new webText();
+        $i = 1;
+        $check = false;
+        $count = 0;
+        //while (($i <= 5) and ($check == false)) {
+            $data = $parser->linkParser($web->getHtml("https://www.pledgeme.co.nz/campaigns?type=current&category=&campaign_type=Projects"));
+            if (isset($data['links'])) {
+                for ($j=0; $j < (count($data['links'] )); $j++) {
+                    $link = "https://www.pledgeme.co.nz".$data['links'][$j];
+                    $link_check = Project::model()->findByAttributes(array('link' => $link));
+                    if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
+                    else {
+                        $htmlData = $web->getHtml($link);
+                        $data_single = $parser->projectParser($htmlData);
+                        $insert = new Project;
+                        $insert->title = $data_single['title'];
+                        $insert->description = $data_single['description'];
+                        $insert->image = $data['images'][$j];
+                        $insert->link = $link;
+                        $insert->internal_link = toAscii($data_single['title']);
+                        $insert->time_added = date("Y-m-d H:i:s");
+                        $insert->platform_id = $id;
+                        $category = $this->checkCategory($data_single['category'], $link, ""); // ZAČASNO*****************************************************************
+                        $insert->orig_category_id = $category->id; // ZAČASNO*****************************************************************
+                        if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+                        if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        if (isset($data_single['end_date'])) $insert->end = date($data_single['end_date']);
+                        $insert->save();
+
+                        $id_project = $insert->id;
+                        // Category add
+                        $insert_category = new ProjectOrigcategory;
+                        $insert_category->project_id = $id_project;
+                        $category = $this->checkCategory($data_single['category'], $link, "");
+                        $insert_category->orig_category_id = $category->id;
+                        $insert_category->save();
+
+                        $count = 0;
+            //	    print_r($insert->getErrors());
+                    }
+                    if ($count >= 10) {
+                        $check = true;
+                        break;
+                    }
+                }
+            }
+            //$i = $i + 1;
+        //}
+    }
 }
