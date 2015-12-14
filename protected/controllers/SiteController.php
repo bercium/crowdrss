@@ -698,7 +698,7 @@ EOD;
 
 EOD;
 
-        for ($i = 0; $i++; $i < 3){
+        for ($i = 0; $i < 3; $i++){
             // go trough projects newer than 1 month
             $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT ".(18000+4000*$i).",4000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
             foreach ($projects as $project) {
