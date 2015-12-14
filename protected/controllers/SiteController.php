@@ -680,6 +680,59 @@ EOD;
     }
     
     
+     /**
+     * 
+     */
+    public function actionSitemap4() {
+        // don't allow any other strings before this
+        Yii::app()->clientScript->reset();
+        $this->layout = 'none'; // template blank
+
+        $sitemapResponse = <<<EOD
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+
+EOD;
+
+        for ($i = 0; $i++; $i < 3){
+            // go trough projects newer than 1 month
+            $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT ".(18000+6000*$i).",6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
+            foreach ($projects as $project) {
+                if ($project) {
+                    $priority = 0.35;
+                    if ($project->rating)
+                        $priority = round(($project->rating / 20) + 0.35, 3);
+                    $priority = 0.7;
+                    $sitemapResponse .= "
+            <url>
+              <loc>";
+
+                    if (!empty($project->internal_link)){
+                        $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
+                    }else{
+                        if (strpos($project->title, "/") === false)
+                            $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
+                        else
+                            $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
+                    }
+                    $sitemapResponse .= "</loc>
+              <changefreq>weekly</changefreq>
+              <priority>" . $priority . "</priority>
+            </url>";
+                }
+            }
+        }
+
+        $sitemapResponse .= "\n</urlset>"; // end sitemap
+
+        $this->render("//layouts/none", array("content" => $sitemapResponse));
+    }
+    
+    
 
     public function actionTest() {
         $rating_class = new IndiegogoRating('https://www.indiegogo.com/projects/new-pc--34', 117840);
