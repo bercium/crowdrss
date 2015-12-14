@@ -9,7 +9,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 <head itemscope itemtype="http://schema.org/WebSite">
   <?php /* ?><meta charset="utf-8" /><?php */ ?>
   <!-- Set the viewport width to device width for mobile -->
-
+  
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="language" content="en" />
@@ -18,7 +18,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 
   <!-- FB -->
   <meta property="og:title" content="<?php echo $fullTitle; ?>" />
-  <meta property="og:site_name" content="<?php echo Yii::app()->name; ?>" />
+  <meta itemprop='name' property="og:site_name" content="<?php echo Yii::app()->name; ?>" />
   <meta property="og:description" content="<?php echo $this->pageDesc; ?>" />
   <meta property="og:image" content="<?php if ($this->fbImage != ''){ echo $this->fbImage; } else echo Yii::app()->createAbsoluteUrl('/images/fb-logo.png'); ?>" />
   <meta property="og:url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>"/>
@@ -48,7 +48,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
   <link href='http://fonts.googleapis.com/css?family=Istok+Web:700,400' rel='stylesheet' type='text/css'>
   <?php //} ?>
     
-	<title itemprop='name'><?php echo $fullTitle; ?></title>
+	<title><?php echo $fullTitle; ?></title>
 </head>
   
 <body>
