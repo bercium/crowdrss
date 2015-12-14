@@ -6,9 +6,10 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+<head itemscope itemtype="http://schema.org/WebSite">
   <?php /* ?><meta charset="utf-8" /><?php */ ?>
   <!-- Set the viewport width to device width for mobile -->
+  
   <meta name="viewport" content="width=device-width" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="language" content="en" />
@@ -17,11 +18,11 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 
   <!-- FB -->
   <meta property="og:title" content="<?php echo $fullTitle; ?>" />
-  <meta property="og:site_name" content="<?php echo Yii::app()->name; ?>" />
+  <meta itemprop='name' property="og:site_name" content="<?php echo Yii::app()->name; ?>" />
   <meta property="og:description" content="<?php echo $this->pageDesc; ?>" />
   <meta property="og:image" content="<?php if ($this->fbImage != ''){ echo $this->fbImage; } else echo Yii::app()->createAbsoluteUrl('/images/fb-logo.png'); ?>" />
   <meta property="og:url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>"/>
-  <link rel="canonical" href="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>" />
+  <link rel="canonical" itemprop="url" href="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>" />
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   
