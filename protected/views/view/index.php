@@ -194,6 +194,37 @@ if ($project->removed == 0){
        
    <div class="hide-for-small pt60"></div>
 </div>
+ 
+ <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "item": {
+      "@id": "https://example.com/topDaily/<?php echo $project->platform->name; ?>",
+      "name": "<?php echo $project->platform->name; ?>"
+    }
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "item": {
+      "@id": "https://example.com/topDaily/<?php echo $project->platform->name; ?>/<?php echo $project->origCategory->name; ?>/<?php echo $project->origCategory->category->name; ?>",
+      "name": "<?php echo $project->origCategory->category->name; ?>"
+    }
+  },{
+    "@type": "ListItem",
+    "position": 3,
+    "item": {
+      "@id": "https://example.com/topDaily/<?php echo $project->platform->name; ?>/<?php echo $project->origCategory->name; ?>",
+      "name": "<?php echo $project->origCategory->name; ?>"
+    }
+  }]
+}
+</script>
+
+ 
 <?php }else{ ?>
 <div class="pt30 pb30">
       <div class="row">
