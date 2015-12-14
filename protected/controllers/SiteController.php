@@ -497,7 +497,7 @@ EOD;
         }
 
         // go trough projects newer than 1 month
-        $projects = Project::model()->findAll(" ORDER BY id DESC LIMIT ".($id*6000).", 6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
+        $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT ".($id*6000).", 6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
         foreach ($projects as $project) {
             if ($project) {
                 $priority = 0.35;
