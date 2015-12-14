@@ -146,6 +146,7 @@ class UpdateCommand extends CConsoleCommand {
                     if (isset($data_single['end_date'])) $insert->end = $data_single['end_date'];
                     if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
                     if (isset($data_single['location'])) $insert->location = $data_single['location'];
+                    if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
                     if (isset($data_single['type_of_funding'])) {
                         if ($data_single['type_of_funding'] == "Fixed Funding") { $typeOfFunding = 0; }
                         else {$typeOfFunding = 1; }

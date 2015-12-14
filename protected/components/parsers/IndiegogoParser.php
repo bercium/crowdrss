@@ -19,7 +19,7 @@ class IndiegogoParser {
         $jsonData = json_decode($json);
         if ($jsonData == null){ return false; }
         if (!$jsonData->campaign_name) {return false;}
-                
+
         // Description
         $data['description'] = $jsonData->campaign_description;
             
@@ -44,7 +44,13 @@ class IndiegogoParser {
 
         // Location
         $data['location'] = $jsonData->campaign_city . ", " . $jsonData->campaign_country;
-
+        
+        // Creator
+        $pattern = '/owner_name":"(.+)","currency"/';
+        preg_match($pattern, $htmlData, $match);
+        if (isset($match[1])) $data['creator'] = $match[1];
+        
+        var_dump($data);die;
         return($data);
     }
     
