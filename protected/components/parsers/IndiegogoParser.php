@@ -50,7 +50,6 @@ class IndiegogoParser {
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['creator'] = $match[1];
         
-        var_dump($data);die;
         return($data);
     }
     
