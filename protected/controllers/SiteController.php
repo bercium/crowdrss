@@ -687,7 +687,10 @@ EOD;
         // don't allow any other strings before this
         Yii::app()->clientScript->reset();
         $this->layout = 'none'; // template blank
+        
+        $nf = fopen(Yii::app()->basePath.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR.'sitemap'.DIRECTORY_SEPARATOR.'sitemap.xml', 'w');
 
+        
         $sitemapResponse = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -697,7 +700,10 @@ EOD;
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
 EOD;
+        fwrite($nf, $sitemapResponse);
 
+        
+        
         for ($i = 0; $i < 3; $i++){
             // go trough projects newer than 1 month
             $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT ".(18000+4000*$i).",4000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
@@ -707,7 +713,7 @@ EOD;
                     if ($project->rating)
                         $priority = round(($project->rating / 20) + 0.35, 3);
                     $priority = 0.7;
-                    $sitemapResponse .= "
+                    $sitemapResponse = "
             <url>
               <loc>";
 
@@ -723,11 +729,17 @@ EOD;
               <changefreq>weekly</changefreq>
               <priority>" . $priority . "</priority>
             </url>";
+                    
+                    fwrite($nf, $sitemapResponse);
                 }
             }
         }
 
-        $sitemapResponse .= "\n</urlset>"; // end sitemap
+        $sitemapResponse = "\n</urlset>"; // end sitemap
+        fwrite($nf, $sitemapResponse);
+                
+        fclose($nf);
+        exit;
 
         $this->render("//layouts/none", array("content" => $sitemapResponse));
     }
