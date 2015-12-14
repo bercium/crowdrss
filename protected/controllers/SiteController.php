@@ -688,7 +688,8 @@ EOD;
         Yii::app()->clientScript->reset();
         $this->layout = 'none'; // template blank
         
-        $nf = fopen(Yii::app()->basePath.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR.'sitemap'.DIRECTORY_SEPARATOR.'sitemap.xml', 'w');
+        $file = str_replace("/protected", "/sitemap", Yii::app()->basePath);
+        $nf = fopen($file.DIRECTORY_SEPARATOR.'sitemap.xml', 'w');
 
         
         $sitemapResponse = <<<EOD
