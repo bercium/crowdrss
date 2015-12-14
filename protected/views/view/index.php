@@ -221,7 +221,27 @@ if ($project->removed == 0){
       "name": "<?php echo $project->origCategory->name; ?>"
     }
   }]
+},
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "<?php echo $project->name; ?>",
+  "image": "<?php echo $project->image; ?>",
+  "description": "<?php echo $project->description; ?>",
+  "mpn": "<?php echo $project->platform->id; ?>",
+  "brand": {
+    "@type": "Thing",
+    "name": "<?php echo $project->creator; ?>"
+  }
+ <?php if ($project->rating){ ?>,
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "<?php echo $project->rating; ?>",
+    "reviewCount": "<?php if (isset($project->creator_backed)) echo $project->creator_backed+1; else echo "1"; ?>"
+  }
+ <?php } ?>
 }
+
 </script>
 
  
