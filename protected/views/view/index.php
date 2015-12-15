@@ -15,7 +15,6 @@ if ($project->removed == 0){
                 <h2 class="text-center mb40">Redirecting you in <span class="countdown">5</span>s</h2>
 			</div>
             <?php } ?>
-           14
             <div class="row show-for-small">
                 <div class="columns">
                     <div class="pt20"></div>
