@@ -163,7 +163,7 @@ div.switch label:hover{
     font-size:40px;
 }
 
-.parallax-window{
+.parallax-mirror{
 	filter: blur(5px); 
     -webkit-filter: blur(5px);
     -moz-filter: blur(5px);
