@@ -11,7 +11,7 @@ if ($project->removed == 0){
        <div class="columns pt15 pb15" style="background-color: rgba(255,255,255,0.7)" itemscope itemtype="http://schema.org/Product">
             <?php if ($redirect){ ?>
 			<div class='redirect-holder'>
-				<button class='alert radius right'>Stop redirect</button>
+				<button class='alert radius right' onclick='stop_countdown=true;'>Stop redirect</button>
                 <h2 class="text-center mb40">Redirecting you in <span class="countdown">5</span>s</h2>
 			</div>
             <?php } ?>
