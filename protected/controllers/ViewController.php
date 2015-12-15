@@ -59,7 +59,7 @@ class ViewController extends Controller
         // redirect to project url in a few seconds
         if (isset($_GET['redirect'])){
             $cs->registerScript("redirect","redirect_link = '".$project->link."';");
-        }
+        }else  $cs->registerScript("redirect","redirect_link = '';");
 
         
 		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail, 'redirect' => (isset($_GET['redirect']) ? true:false) ));
