@@ -1,7 +1,7 @@
 <?php 
 if ($project->removed == 0){
 ?>
- <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <div <?php /*/ ?> class=""style="background-image:url(<?php echo $project->image; ?>); background-size:cover;" <?php /*/?> class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="<?php echo $project->image; ?>" <?php //*/ ?>>
     
@@ -10,9 +10,12 @@ if ($project->removed == 0){
     <div class="row ">
        <div class="columns pt15 pb15" style="background-color: rgba(255,255,255,0.7)" itemscope itemtype="http://schema.org/Product">
             <?php if ($redirect){ ?>
+			<div class='redirect-holder'>
+				<button class='alert radius right'>Stop redirect</button>
                 <h2 class="text-center mb40">Redirecting you in <span class="countdown">5</span>s</h2>
+			</div>
             <?php } ?>
-           
+           14
             <div class="row show-for-small">
                 <div class="columns">
                     <div class="pt20"></div>
@@ -198,7 +201,7 @@ if ($project->removed == 0){
    <div class="hide-for-small pt60"></div>
 </div>
  
- <script type="application/ld+json">
+<script type="application/ld+json">
 {
   "@context": "http://schema.org",
   "@type": "BreadcrumbList",
@@ -225,27 +228,6 @@ if ($project->removed == 0){
     }
   }]
 }
-<?php /* ?>
-{
-  "@context": "http://schema.org/",
-  "@type": "Product",
-  "name": "<?php echo $project->title; ?>",
-  "image": "<?php echo Yii::app()->createAbsoluteUrl("feed/image", array("data" => $project->id)); ?>",
-  "description": "<?php echo $project->description; ?>",
-  "mpn": "<?php echo $project->id; ?>",
-  "brand": {
-    "@type": "Thing",
-    "name": "<?php echo $project->creator; ?>"
-  }
- <?php if ($project->rating){ ?>,
-  "aggregateRating": {
-    "@type": "AggregateRating",
-    "ratingValue": "<?php echo round($project->rating,1); ?>",
-    "reviewCount": "<?php if (isset($project->creator_backed)) echo $project->creator_backed+1; else echo "1"; ?>"
-  }
- <?php } ?>
-}
-<?php */ ?>
 </script>
 
  

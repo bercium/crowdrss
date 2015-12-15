@@ -1,5 +1,8 @@
 function countdown(){
-    if (stop_countdown) return;
+    if (stop_countdown){
+		$('.redirect-holder').fadeOut();
+		return;
+	}
     $('.countdown').html($('.countdown').html() - 1);
     setTimeout(function(){countdown();},1000);
 }
