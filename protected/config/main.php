@@ -48,6 +48,7 @@ $a = array(
                         'showScriptName' => false,
                         'rules' => array(
                                 '' => 'site/index',
+								'crowdfunding-sites' => 'site/crowdfundingsites',
                                 'gii/<controller:\w+>/<action:[\w-]+>' => 'gii/<controller>/<action>',
                                 'view/<name>' => 'view/index',
                                 'top<count:\d+>' => 'browse/top',
@@ -143,13 +144,15 @@ $a = array(
         // using Yii::app()->params['paramName']
         'params' => array(
                 // this is used in contact page
-                'version'=>'1.11',
+                'version'=>'1.12',
                 'noreplyEmail' => array('no-reply@crowdfundingrss.com' => 'Crowdfunding RSS'),
                 'adminEmail' => array('info@crowdfundingrss.com' => 'Crowdfunding RSS'),
                 'scriptEmail' => array('script@crowdfundingrss.com' => 'Script CF RSS'),
                 'username' => '',
                 'pass' => '',
                 'absoluteHost' => 'http://www.crowdfundingrss.com/',
+			    'mapsFolder'=>'uploads/maps/',
+				'iconsFolder'=>'uploads/icons/',
         ),
 );
 

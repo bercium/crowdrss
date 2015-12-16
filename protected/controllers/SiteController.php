@@ -382,7 +382,16 @@ class SiteController extends Controller {
         }
         
         exit;
-    }    
+    }  
+	
+	/**
+	 * 
+	 * @param type $data - category to group by
+	 */
+	public function actionCrowdfundingsites($data = ''){
+		$this->render('crowdfundingsites');
+	}
+    
 
     /**
      * This is the action to handle external exceptions.
@@ -431,7 +440,7 @@ class SiteController extends Controller {
      * hide toolbar
      */
     protected function beforeAction($action) {
-        if (($action->id == 'sitemap') || ($action->id == 'sitemap1') || ($action->id == 'sitemap2'))
+        if (($action->id == 'sitemap'))
             foreach (Yii::app()->log->routes as $route) {
                 //if ($route instanceof CWebLogRoute){
                 $route->enabled = false;
@@ -528,159 +537,7 @@ EOD;
         $this->render("//layouts/none", array("content" => $sitemapResponse));
     }
     
-    /**
-     * 
-     */
-    public function actionSitemap1() {
-        // don't allow any other strings before this
-        Yii::app()->clientScript->reset();
-        $this->layout = 'none'; // template blank
-
-        $sitemapResponse = <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-EOD;
-
-
-        // go trough projects newer than 1 month
-        $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT 6000,6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
-        foreach ($projects as $project) {
-            if ($project) {
-                $priority = 0.35;
-                if ($project->rating)
-                    $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 0.7;
-                $sitemapResponse .= "
-        <url>
-          <loc>";
-
-                if (!empty($project->internal_link)){
-                    $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
-                }else{
-                    if (strpos($project->title, "/") === false)
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
-                    else
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
-                }
-                $sitemapResponse .= "</loc>
-          <changefreq>weekly</changefreq>
-          <priority>" . $priority . "</priority>
-        </url>";
-            }
-        }
-
-        $sitemapResponse .= "\n</urlset>"; // end sitemap
-
-        $this->render("//layouts/none", array("content" => $sitemapResponse));
-    }
-    
-    /**
-     * 
-     */
-    public function actionSitemap2() {
-        // don't allow any other strings before this
-        Yii::app()->clientScript->reset();
-        $this->layout = 'none'; // template blank
-
-        $sitemapResponse = <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-EOD;
-
-
-        // go trough projects newer than 1 month
-        $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT 12000,6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
-        foreach ($projects as $project) {
-            if ($project) {
-                $priority = 0.35;
-                if ($project->rating)
-                    $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 0.7;
-                $sitemapResponse .= "
-        <url>
-          <loc>";
-
-                if (!empty($project->internal_link)){
-                    $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
-                }else{
-                    if (strpos($project->title, "/") === false)
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
-                    else
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
-                }
-                $sitemapResponse .= "</loc>
-          <changefreq>weekly</changefreq>
-          <priority>" . $priority . "</priority>
-        </url>";
-            }
-        }
-
-        $sitemapResponse .= "\n</urlset>"; // end sitemap
-
-        $this->render("//layouts/none", array("content" => $sitemapResponse));
-    }
-    
-    /**
-     * 
-     */
-    public function actionSitemap3() {
-        // don't allow any other strings before this
-        Yii::app()->clientScript->reset();
-        $this->layout = 'none'; // template blank
-
-        $sitemapResponse = <<<EOD
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset
-      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-
-EOD;
-
-
-        // go trough projects newer than 1 month
-        $projects = Project::model()->findAll("1=1 ORDER BY id DESC LIMIT 18000,6000"/*, array(":datum" => date("Y-m-d H:i:s", strtotime("-1 month")))*/ );
-        foreach ($projects as $project) {
-            if ($project) {
-                $priority = 0.35;
-                if ($project->rating)
-                    $priority = round(($project->rating / 20) + 0.35, 3);
-                $priority = 0.7;
-                $sitemapResponse .= "
-        <url>
-          <loc>";
-
-                if (!empty($project->internal_link)){
-                    $sitemapResponse .= Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->internal_link));
-                }else{
-                    if (strpos($project->title, "/") === false)
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index", array("name" => $project->title)))));
-                    else
-                        $sitemapResponse .= htmlspecialchars(str_replace(" ", "+", (Yii::app()->createAbsoluteUrl("view/index") . "?name=" . $project->title)));
-                }
-                $sitemapResponse .= "</loc>
-          <changefreq>weekly</changefreq>
-          <priority>" . $priority . "</priority>
-        </url>";
-            }
-        }
-
-        $sitemapResponse .= "\n</urlset>"; // end sitemap
-
-        $this->render("//layouts/none", array("content" => $sitemapResponse));
-    }
-    
+   
     
 
     public function actionTest() {
@@ -705,7 +562,8 @@ EOD;
         return json_encode(false);
         exit;
     }
-    
+	
+	
     /**
      * used to fix some issues
      */
