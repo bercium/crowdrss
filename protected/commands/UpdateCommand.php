@@ -641,7 +641,7 @@ class UpdateCommand extends CConsoleCommand {
 //        }
     }
     
-// Crowdfunder store to DB
+// CrowdfunderUK store to DB
     public function actionCrowdfunderUK() {
         $platform = Platform::model()->findByAttributes(array('name' => 'CrowdfunderUK'));
         if (!$platform->download) return;
