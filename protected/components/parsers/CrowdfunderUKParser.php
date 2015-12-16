@@ -1,6 +1,6 @@
 <?php
 
-class CrowdfunderParser {
+class CrowdfunderUKParser {
     
     public function linkParser($htmlData) {
         

@@ -642,11 +642,11 @@ class UpdateCommand extends CConsoleCommand {
     }
     
 // Crowdfunder store to DB
-    public function actionCrowdfunder() {
-        $platform = Platform::model()->findByAttributes(array('name' => 'Crowdfunder'));
+    public function actionCrowdfunderUK() {
+        $platform = Platform::model()->findByAttributes(array('name' => 'CrowdfunderUK'));
         if (!$platform->download) return;
         $id = $platform->id;
-        $parser = new CrowdfunderParser();
+        $parser = new CrowdfunderUKParser();
         $web = new webText();
         $i = 1;
         $check = false;
