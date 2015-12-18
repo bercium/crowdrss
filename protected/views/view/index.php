@@ -215,15 +215,8 @@ if ($project->removed == 0){
     "@type": "ListItem",
     "position": 2,
     "item": {
-      "@id": "https://example.com/topDaily/<?php echo $project->platform->name; ?>/<?php echo $project->origCategory->name; ?>/<?php echo $project->origCategory->category->name; ?>",
-      "name": "<?php echo $project->origCategory->category->name; ?>"
-    }
-  },{
-    "@type": "ListItem",
-    "position": 3,
-    "item": {
       "@id": "https://example.com/topDaily/<?php echo $project->platform->name; ?>/<?php echo $project->origCategory->name; ?>",
-      "name": "<?php echo $project->origCategory->name; ?>"
+      "name": "<?php echo $project->origCategory->category->name; ?>"
     }
   }]
 }
