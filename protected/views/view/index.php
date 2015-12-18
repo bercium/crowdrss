@@ -1,5 +1,9 @@
 <?php 
 if ($project->removed == 0){
+	$count = 1;
+	if (isset($project->creator_backed)) $count += $project->creator_backed;
+	if (isset($project->creator_created)) $count += $project->creator_created;
+	
 ?>
 <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -39,7 +43,7 @@ if ($project->removed == 0){
                           <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project based on content quality, social reach and campaign progress" itemprop="ratingValue">
                             <?php echo round($project->rating); ?>
                           </span>
-						  <span itemprop="reviewCount" style="display: none;"><?php if (isset($project->creator_backed)) echo $project->creator_backed+1; else echo "1"; ?></span>
+						  <span itemprop="reviewCount" style="display: none;"><?php echo $count; ?></span>
 						  <span itemprop="bestRating" style="display: none;">10</span>
 						  <span itemprop="worstRating" style="display: none;">0</span>
                         </i>
