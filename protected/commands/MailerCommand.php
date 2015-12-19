@@ -287,6 +287,7 @@ class MailerCommand extends CConsoleCommand {
 
 	public function actionTestDailyDigest() {
 		$this->actionDailyDigest(true);
+        return print_r(array('neki'=>'neki'));
 	}
 
 	/**
