@@ -134,7 +134,7 @@ class MailerCommand extends CConsoleCommand {
 			else {
 				$paidProject->rating = 0; // don't make it special cause we have stars in the title
 				//$featured[rand(0, 3)] = $paidProject; //overwrite one project
-				array_splice($featured, rand(0, 3), 0, $paidProject); // insert into featured
+				array_splice($featured, rand(0, 3), 0, array($paidProject)); // insert into featured
 			}
 		}
 
@@ -152,7 +152,7 @@ class MailerCommand extends CConsoleCommand {
 
                 if ($val[0]->rating == null && $index == 0) shuffle($val);
                 //$projectsInPlatformProjects[] = $val[0]->id;
-                $regular[] = $val[0];
+                $regular[] = clone($val[0]);
                 unset($val[0]);
             }
         }
