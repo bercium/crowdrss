@@ -145,19 +145,12 @@ class MailerCommand extends CConsoleCommand {
         else if ($diffPlatforms > 4) $repeat = ceil(12 / $diffPlatforms);
         else $repeat = ceil(8 / $diffPlatforms);
         
-        $data['repeat'] = $repeat;
-        $data['count'] = $diffPlatforms;
-        $data['countall'] = count($projects);
-        
         foreach ($regularPlatforms as $key => $val){
             //if (count($val) <= 0) continue;
             //if (in_array($key, $platformInFeatured)) continue; //skip platforms in featured section
 
-            $data['shuffle'][$key]['count'] = count($val);
-            if ($val[0]->rating == null){
-                $data['shuffle'][$key] = '1';
-                shuffle($val);
-            }else $data['shuffle'][$key] = '0';
+            if ($val[0]->rating == null) shuffle($val);
+            
             //$projectsInPlatformProjects[] = $val[0]->id;
             for ($index = 0; $index < $repeat; $index++){
                 if (isset($val[$index])) $regular[] = $val[$index];
@@ -166,9 +159,8 @@ class MailerCommand extends CConsoleCommand {
             //unset($val[0]);
         }
         
-        $data['regular'] = count($regular);
         
-        $featured[0]->description = print_r($data,true);
+        //$featured[0]->description = print_r($data,true);
 		// $platformProjects  0 - 12
 		/*
 		$theRest = array();
@@ -282,8 +274,10 @@ class MailerCommand extends CConsoleCommand {
 
 				$sorted = $this->sortProjects($sub, $projects, true);
 
-				if (!$test || $sub->id == 1 || $sub->id == 2)
+				if (!$test || $sub->id == 1 || $sub->id == 2){
+                    $sorted['featured'][0]->description = $sql;
 					$this->sendNewsletter($sub, 'Top crowdfunding projects for ' . $date, "Your Daily Dose Of Crowdfunding Projects for " . $date, 'daily-digest', $sorted);
+                }
 			}
 		}
 	}
