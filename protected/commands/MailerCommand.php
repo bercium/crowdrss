@@ -153,10 +153,11 @@ class MailerCommand extends CConsoleCommand {
             //if (count($val) <= 0) continue;
             //if (in_array($key, $platformInFeatured)) continue; //skip platforms in featured section
 
+            $data['shuffle'][$key]['count'] = count($val);
             if ($val[0]->rating == null){
-                $data['shuffle'][$key] = true;
+                $data['shuffle'][$key] = '1';
                 shuffle($val);
-            }else $data['shuffle'][$key] = false;
+            }else $data['shuffle'][$key] = '0';
             //$projectsInPlatformProjects[] = $val[0]->id;
             for ($index = 0; $index < count($repeat); $index++){
                 if (isset($val[$index])) $regular[] = $val[$index];
@@ -164,6 +165,8 @@ class MailerCommand extends CConsoleCommand {
             }
             //unset($val[0]);
         }
+        
+        $data['regular'] = count($regular);
         
         $featured[0]->description = print_r($data,true);
 		// $platformProjects  0 - 12
@@ -287,7 +290,6 @@ class MailerCommand extends CConsoleCommand {
 
 	public function actionTestDailyDigest() {
 		$this->actionDailyDigest(true);
-        return print_r(array('neki'=>'neki'));
 	}
 
 	/**
