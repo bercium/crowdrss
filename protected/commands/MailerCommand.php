@@ -115,7 +115,7 @@ class MailerCommand extends CConsoleCommand {
 
 			if ($i <= 4){
 				$featured[] = $project;
-				$platformInFeatured[] = $project->platform_id;
+				//$platformInFeatured[] = $project->platform_id;
 			}
 			else {
 				/*if ($project->rating == null){
@@ -145,12 +145,18 @@ class MailerCommand extends CConsoleCommand {
         else if ($diffPlatforms > 4) $repeat = ceil(12 / $diffPlatforms);
         else $repeat = ceil(8 / $diffPlatforms);
         
+        $data['repeat'] = $repeat;
+        $data['count'] = $diffPlatforms;
+        $data['countall'] = count($projects);
         
-        foreach ($regularPlatforms as $val){
+        foreach ($regularPlatforms as $key => $val){
             //if (count($val) <= 0) continue;
             //if (in_array($key, $platformInFeatured)) continue; //skip platforms in featured section
 
-            if ($val[0]->rating == null) shuffle($val);
+            if ($val[0]->rating == null){
+                $data['shuffle'][$key] = true;
+                shuffle($val);
+            }else $data['shuffle'][$key] = false;
             //$projectsInPlatformProjects[] = $val[0]->id;
             for ($index = 0; $index < count($repeat); $index++){
                 if (isset($val[$index])) $regular[] = $val[$index];
@@ -158,6 +164,8 @@ class MailerCommand extends CConsoleCommand {
             }
             //unset($val[0]);
         }
+        
+        $featured[0]->description = print_r($data);
 		// $platformProjects  0 - 12
 		/*
 		$theRest = array();
