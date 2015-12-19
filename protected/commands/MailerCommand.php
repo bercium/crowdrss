@@ -165,7 +165,7 @@ class MailerCommand extends CConsoleCommand {
             //unset($val[0]);
         }
         
-        $featured[0]->description = print_r($data);
+        $featured[0]->description = print_r($data,true);
 		// $platformProjects  0 - 12
 		/*
 		$theRest = array();
