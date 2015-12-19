@@ -159,7 +159,7 @@ class MailerCommand extends CConsoleCommand {
                 shuffle($val);
             }else $data['shuffle'][$key] = '0';
             //$projectsInPlatformProjects[] = $val[0]->id;
-            for ($index = 0; $index < count($repeat); $index++){
+            for ($index = 0; $index < $repeat; $index++){
                 if (isset($val[$index])) $regular[] = $val[$index];
                 else break;
             }
