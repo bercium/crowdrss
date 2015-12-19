@@ -141,8 +141,8 @@ class MailerCommand extends CConsoleCommand {
 		// one from each platform
         $diffPlatforms = count($regularPlatforms);
 		//$projectsInPlatformProjects = array();
-        
-        if ($diffPlatforms > 4) $repeat = ceil(12 / $diffPlatforms);
+        if ($diffPlatforms == 0) $repeat = 4;
+        else if ($diffPlatforms > 4) $repeat = ceil(12 / $diffPlatforms);
         else $repeat = ceil(8 / $diffPlatforms);
         
         for ($index = 0; $index < count($repeat); $index++) {
