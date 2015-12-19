@@ -136,7 +136,7 @@ class MailerCommand extends CConsoleCommand {
 			else {
 				$paidProject->rating = 0; // don't make it special cause we have stars in the title
 				//$featured[rand(0, 3)] = $paidProject; //overwrite one project
-				$featured = array_splice($featured, $paidProject, rand(0, 3), 0); // insert into featured
+				$featured = array_splice($featured, rand(0, 3), 0, $paidProject); // insert into featured
 			}
 		}
 
