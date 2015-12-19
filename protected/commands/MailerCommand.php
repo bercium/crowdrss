@@ -275,7 +275,7 @@ class MailerCommand extends CConsoleCommand {
 				$sorted = $this->sortProjects($sub, $projects, true);
 
 				if (!$test || $sub->id == 1 || $sub->id == 2){
-                    $sorted['featured'][0]->description = $sql;
+                    //$sorted['featured'][0]->description = $sql;
 					$this->sendNewsletter($sub, 'Top crowdfunding projects for ' . $date, "Your Daily Dose Of Crowdfunding Projects for " . $date, 'daily-digest', $sorted);
                 }
 			}
