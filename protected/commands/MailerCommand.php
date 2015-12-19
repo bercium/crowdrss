@@ -108,12 +108,10 @@ class MailerCommand extends CConsoleCommand {
 		$i = 0;
 		foreach ($projects as $project) {
 			$i++;
-			if (($paidProject) && ($paidProject->id == $project->id))
-				continue; // skip featured project from the list
+			if (($paidProject) && ($paidProject->id == $project->id)) continue; // skip featured project from the list
 
 			if ($checkProject) //recheck validity of links
-				if (!$this->checkProjectLink($project->link, $project->id))
-					continue;
+				if (!$this->checkProjectLink($project->link, $project->id)) continue;
 
 			if ($i <= 4){
 				$featured[] = $project;
@@ -123,7 +121,7 @@ class MailerCommand extends CConsoleCommand {
 				/*if ($project->rating == null){
 					$regularNull[] = $project;
 				}else{*/
-				$regular[] = $project;
+				//$regular[] = $project;
 				$regularPlatforms[$project->platform_id][] = $project;
 				//}
 			}
@@ -136,21 +134,30 @@ class MailerCommand extends CConsoleCommand {
 			else {
 				$paidProject->rating = 0; // don't make it special cause we have stars in the title
 				//$featured[rand(0, 3)] = $paidProject; //overwrite one project
-				$featured = array_splice($featured, rand(0, 3), 0, $paidProject); // insert into featured
+				array_splice($featured, rand(0, 3), 0, $paidProject); // insert into featured
 			}
 		}
 
 		// one from each platform
-		$platformProjects = $projectsInPlatformProjects = array();
-		foreach ($regularPlatforms as $key => $val){
-			if (in_array($key, $platformInFeatured)) continue; //skip platforms in featured section
+        $diffPlatforms = count($regularPlatforms);
+		//$projectsInPlatformProjects = array();
+        
+        if ($diffPlatforms > 4) $repeat = ceil(12 / $diffPlatforms);
+        else $repeat = ceil(8 / $diffPlatforms);
+        
+        for ($index = 0; $index < count($repeat); $index++) {
+            foreach ($regularPlatforms as $key => $val){
+                if (count($val) <= 0) continue;
+                //if (in_array($key, $platformInFeatured)) continue; //skip platforms in featured section
 
-			if ($val[0]->rating == null) shuffle($val);
-			$projectsInPlatformProjects[] = $val[0]->id;
-			$platformProjects[] = $val[0];
-		}
+                if ($val[0]->rating == null && $index == 0) shuffle($val);
+                //$projectsInPlatformProjects[] = $val[0]->id;
+                $regular[] = $val[0];
+                unset($val[0]);
+            }
+        }
 		// $platformProjects  0 - 12
-		
+		/*
 		$theRest = array();
 		foreach ($regular as $val){
 			if (in_array($val->id, $projectsInPlatformProjects)) continue; //project already in platform project
@@ -159,7 +166,7 @@ class MailerCommand extends CConsoleCommand {
 		}
 		
 		$regular = array_merge($theRest, $platformProjects); //add the rest and patform projects
-
+        */
 		//shuffle($regularNull);
 		//$regularNull = array_slice($regularNull, 0, 4);
 		//$regular = array_merge(array_slice($regular, 0, 8 - count($regularNull)), $regularNull);
