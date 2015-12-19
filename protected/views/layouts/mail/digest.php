@@ -495,6 +495,8 @@ background: #970b0e !important;
                   foreach ($projects as $project){
                     $c++;
                     
+                    $stars = getStars($project->rating);
+                    
                 if ($c == 1){ ?>
                 <table class="row project" style="border-spacing: 0; border-collapse: collapse; vertical-align: top; text-align: left; width: 100%; position: relative; display: block; margin-top: 10px; margin-bottom: 10px; padding: 0px;">
                   <tr style="vertical-align: top; text-align: left; padding: 0;" align="left">
