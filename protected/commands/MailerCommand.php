@@ -252,10 +252,8 @@ class MailerCommand extends CConsoleCommand {
 			$i = 0;
 			foreach ($subscriptions as $sub) {
 				// only send arround 100 emails per hour
-				if (isset($sentMails[$sub->id]))
-					continue;
-				if ($i++ > 95)
-					break;
+				if (isset($sentMails[$sub->id]) && !$test) continue;
+				if ($i++ > 95) break;
 
 				$sql = $this->createSQL($sub, 1);
 
@@ -300,10 +298,8 @@ class MailerCommand extends CConsoleCommand {
 			$i = 0;
 			foreach ($subscriptions as $sub) {
 				// only send arround 100 emails per hour
-				if (isset($sentMails[$sub->id]))
-					continue;
-				if ($i++ > 95)
-					break;
+				if (isset($sentMails[$sub->id]) && !$test) continue;
+				if ($i++ > 95) break;
 
 				$sql = $this->createSQL($sub, 7);
 
@@ -357,10 +353,8 @@ class MailerCommand extends CConsoleCommand {
 				}
 
 				// only send arround 100 emails per hour
-				if (isset($sentMails[$sub->id]))
-					continue;
-				if ($i++ > 95)
-					break;
+				if (isset($sentMails[$sub->id]) && !$test) continue;
+				if ($i++ > 95) break;
 
 				// get projects
 				$projects = Project::model()->findAll($sql);
