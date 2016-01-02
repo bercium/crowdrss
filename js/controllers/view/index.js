@@ -11,6 +11,7 @@ function countdown(){
 stop_countdown = false;
 $(document).ready(function () {
     if (redirect_link){
+         ga('send', 'event', 'automatic', 'redirect', 'view project');
         
         $(document).keyup(function(e) {
             if (e.keyCode == 27) {
