@@ -89,3 +89,16 @@ ALTER TABLE `project_featured`
 
 
 ALTER TABLE `project` ADD `internal_link` VARCHAR(255) NULL DEFAULT NULL AFTER `link`;
+
+
+CREATE TABLE IF NOT EXISTS `outside_links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category` varchar(128) NOT NULL,
+  `sub_category` varchar(128) NOT NULL,
+  `title` varchar(256) NOT NULL,
+  `link` varchar(256) NOT NULL,
+  `position` int(11) DEFAULT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
+  `time_created` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
