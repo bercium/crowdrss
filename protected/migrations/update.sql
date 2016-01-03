@@ -102,3 +102,5 @@ CREATE TABLE IF NOT EXISTS `outside_links` (
   `time_created` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `outside_links` ADD `keywords` VARCHAR( 500 ) NULL DEFAULT NULL AFTER `position` ;

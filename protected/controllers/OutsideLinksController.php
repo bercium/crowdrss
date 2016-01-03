@@ -1,6 +1,6 @@
 <?php
 
-class OrigCategoryController extends GxController {
+class OutsideLinksController extends GxController {
     /**
 	 * @return array action filters
 	 */
@@ -31,16 +31,16 @@ class OrigCategoryController extends GxController {
 
 	public function actionView($id) {
 		$this->render('view', array(
-			'model' => $this->loadModel($id, 'OrigCategory'),
+			'model' => $this->loadModel($id, 'OutsideLinks'),
 		));
 	}
 
 	public function actionCreate() {
-		$model = new OrigCategory;
+		$model = new OutsideLinks;
 
 
-		if (isset($_POST['OrigCategory'])) {
-			$model->setAttributes($_POST['OrigCategory']);
+		if (isset($_POST['OutsideLinks'])) {
+			$model->setAttributes($_POST['OutsideLinks']);
 
 			if ($model->save()) {
 				if (Yii::app()->getRequest()->getIsAjaxRequest())
@@ -54,11 +54,11 @@ class OrigCategoryController extends GxController {
 	}
 
 	public function actionUpdate($id) {
-		$model = $this->loadModel($id, 'OrigCategory');
+		$model = $this->loadModel($id, 'OutsideLinks');
 
 
-		if (isset($_POST['OrigCategory'])) {
-			$model->setAttributes($_POST['OrigCategory']);
+		if (isset($_POST['OutsideLinks'])) {
+			$model->setAttributes($_POST['OutsideLinks']);
 
 			if ($model->save()) {
 				$this->redirect(array('view', 'id' => $model->id));
@@ -72,7 +72,7 @@ class OrigCategoryController extends GxController {
 
 	public function actionDelete($id) {
 		if (Yii::app()->getRequest()->getIsPostRequest()) {
-			$this->loadModel($id, 'OrigCategory')->delete();
+			$this->loadModel($id, 'OutsideLinks')->delete();
 
 			if (!Yii::app()->getRequest()->getIsAjaxRequest())
 				$this->redirect(array('admin'));
@@ -81,18 +81,18 @@ class OrigCategoryController extends GxController {
 	}
 
 	public function actionIndex() {
-		$dataProvider = new CActiveDataProvider('OrigCategory');
+		$dataProvider = new CActiveDataProvider('OutsideLinks');
 		$this->render('index', array(
 			'dataProvider' => $dataProvider,
 		));
 	}
 
 	public function actionAdmin() {
-		$model = new OrigCategory('search');
+		$model = new OutsideLinks('search');
 		$model->unsetAttributes();
 
-		if (isset($_GET['OrigCategory']))
-			$model->setAttributes($_GET['OrigCategory']);
+		if (isset($_GET['OutsideLinks']))
+			$model->setAttributes($_GET['OutsideLinks']);
 
 		$this->render('admin', array(
 			'model' => $model,
