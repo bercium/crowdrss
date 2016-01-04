@@ -49,6 +49,7 @@ $a = array(
                         'rules' => array(
                                 '' => 'site/index',
 								'crowdfunding-sites' => 'site/crowdfundingsites',
+                                'crowdfunding-sites/<data:\w+>' => 'site/crowdfundingsites/<action>',
                                 'gii/<controller:\w+>/<action:[\w-]+>' => 'gii/<controller>/<action>',
                                 'view/<name>' => 'view/index',
                                 'top<count:\d+>' => 'browse/top',
