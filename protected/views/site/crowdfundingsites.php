@@ -4,7 +4,7 @@
         <ul class="side-nav" role="navigation" title="Link List">
             <li role="menuitem"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
             <?php foreach ($categories as $cat) {?>
-                <li role="menuitem"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".$cat['category']); ?>"><?php echo $cat['category']; ?></a><hr></li>
+                <li role="menuitem" style="border-top:1px solid #ddd;"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".$cat['category']); ?>"><?php echo $cat['category']; ?></a></li>
             <?php } ?>
         </ul>
     </div>
@@ -40,7 +40,10 @@
             }
             ?>
         
-            <li><img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="has-tip" title="<?php echo $site['title']."<br />".$site['keywords']; ?>"><?php echo trim_text($site['title'],20); ?></a></li>
+            <li>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']."<br /><strong>Keywords:</strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],20); ?></a>
+                <?php if(true){ ?><span class="warning rounded">new</span><?php } ?>
+            </li>
         
     
         <?php } ?>
