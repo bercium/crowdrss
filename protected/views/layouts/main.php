@@ -136,7 +136,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
               <dd><a href="<?php echo Yii::app()->createUrl('platform/index'); ?>">Platform</a></dd> 
               <dd><a href="<?php echo Yii::app()->createUrl('statistic/database'); ?>">Stat DB</a></dd> 
               <dd><a href="<?php echo Yii::app()->createUrl('statistic/socialAnalize'); ?>">Social analize</a></dd> 
-              <dd><a href="<?php echo Yii::app()->createUrl('statistic/outsideLinks'); ?>">Outside links</a></dd> 
+              <dd><a href="<?php echo Yii::app()->createUrl('outsideLinks/index'); ?>">Outside links</a></dd> 
 
 
             </dl>

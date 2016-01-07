@@ -1,6 +1,6 @@
 <div class="mt50"></div>
 <div class="row">
-    <div class="columns medium-4">
+    <div class="columns medium-3">
         <ul class="side-nav" role="navigation" title="Link List">
             <li role="menuitem"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
             <?php foreach ($categories as $cat) {?>
@@ -8,7 +8,7 @@
             <?php } ?>
         </ul>
     </div>
-    <div class="columns medium-8">
+    <div class="columns medium-9">
          <?php /* ?>
         <div data-magellan-expedition="fixed">
             <dl class="sub-nav">
