@@ -2,21 +2,42 @@
     [class*="block-grid-"] > li{
         padding:0 0.625rem 0.5rem;
     }
+    .side-nav li{
+        margin:0;
+        font-size: 1.3rem;
+    }
+    .active{
+        background-color: #eee;
+    }
 </style>
 <div class="mt50"></div>
+
+
 <div class="row">
     <div class="columns medium-3">
         <ul class="side-nav" role="navigation" title="Link List">
-            <li role="menuitem"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
+            <li role="menuitem" class="<?php if ($selected_cat == 'All') echo "active"; ?>"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
             <?php foreach ($categories as $cat) {?>
-                <li role="menuitem" style="border-top:1px solid #ddd;"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".$cat['category']); ?>"><?php echo $cat['category']; ?></a></li>
+                <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".$cat['category']); ?>"><?php echo $cat['category']; ?></a></li>
             <?php } ?>
         </ul>
         
     </div>
     <div class="columns medium-9">
+        
+         <form action="get" class="mt15">
+              <div class="row collapse">
+                <div class="small-10  medium-11 columns">
+                    <input type="text" name="q" placeholder="Fast search...">
+                </div>
+                <div class="small-2 medium-1 columns">
+                    <button type="submit" class="button postfix"><i class="fa-search fa"></i></button>
+                </div>
+              </div>
+        </form>
+        
         <?php if (!empty($search)) { ?>
-            <h3 data-magellan-destination="recent">Search results</h3>
+            <h3 data-magellan-destination="recent">Search results:</h3>
             <a name="search"></a>
             <ul class="small-block-grid-3">
         <?php foreach ($search as $site) {

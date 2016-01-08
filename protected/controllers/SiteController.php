@@ -401,14 +401,19 @@ class SiteController extends Controller {
         $where = '';
         $recent = $sub_cat = $search = $sites = null;
         $categories = Yii::app()->db->createCommand("SELECT category FROM outside_links WHERE active GROUP BY category")->queryAll();
+        $selected_cat = 'All';
         
         if (isset($_GET['q'])){
+            $selected_cat = '';
             $q = "%".mb_strtolower($_GET['q'])."%";
             $qorig = mb_strtolower($_GET['q']);
             $where = ' AND (LOWER(keywords) LIKE :q OR LOWER(title) LIKE :q OR LOWER(category) = :qo OR LOWER(sub_category) = :qo) ';
             $search = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title", array(':q'=>$q,':qo'=>$qorig));
         }else{
-            if ($data) $where = " AND category = '".$data."'";
+            if ($data){
+                $where = " AND category = '".$data."'";
+                $selected_cat = $data;
+            }
             else $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created DESC, title LIMIT 12");
             
             $sites = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title");
@@ -417,7 +422,7 @@ class SiteController extends Controller {
         
         
         
-        $this->render("crowdfundingsites", array("categories" => $categories, "sites" => $sites, "sub_cat" =>$sub_cat, "recent" => $recent, "search"=>$search ));
+        $this->render("crowdfundingsites", array("categories" => $categories, "sites" => $sites, "sub_cat" =>$sub_cat, "recent" => $recent, "search"=>$search, "selected_cat"=>$selected_cat ));
 	}
     
 
