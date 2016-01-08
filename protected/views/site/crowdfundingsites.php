@@ -15,6 +15,22 @@
         
     </div>
     <div class="columns medium-9">
+        <?php if (!empty($search)) { ?>
+            <h3 data-magellan-destination="recent">Search results</h3>
+            <a name="search"></a>
+            <ul class="small-block-grid-3">
+        <?php foreach ($search as $site) {
+            if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
+        ?>
+            <li>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],20); ?></a>
+                <?php if(strtotime($site['time_created']) > strtotime('-2 weeks') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
+            </li>
+            <?php } ?>
+            </ul>
+            <hr>
+        <?php } ?>
+                
         <?php if (!empty($recent)) { ?>
             <h3 data-magellan-destination="recent">Most recent</h3>
             <a name="recent"></a>
@@ -42,7 +58,7 @@
         
         <?php 
         */
-        
+        if (!empty($sites)){
         $cur_sub_cat = '';
         $firsttime = true;
         foreach ($sites as $site) {
@@ -69,7 +85,7 @@
     
         <?php } ?>
         </ul>
-                
+        <?php } ?>
     </div>
 </div>
 
