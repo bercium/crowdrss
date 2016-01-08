@@ -10,7 +10,12 @@
         
     </div>
     <div class="columns medium-9">
-         <?php /* ?>
+        <?php if (!empty($recent)) { ?>
+            <h3 data-magellan-destination="recent">Most recent</h3>
+            <a name="recent"></a>
+            <hr>
+        <?php }?>
+        <?php /* ?>
         <div data-magellan-expedition="fixed">
             <dl class="sub-nav">
                 <?php foreach ($sub_cat as $cat) {?>
