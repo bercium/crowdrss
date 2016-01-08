@@ -56,6 +56,7 @@ function trim_text($input, $length, $ellipses = true, $strip_html = true) {
     //find last space within length
     $last_space = strrpos(substr($input, 0, $length), ' ');
     $trimmed_text = substr($input, 0, $last_space);
+    if ($trimmed_text == '') $trimmed_text = substr($input, 0, $length);
   
     //add ellipses (...)
     if ($ellipses) {
