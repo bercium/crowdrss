@@ -1,3 +1,8 @@
+<style>
+    [class*="block-grid-"] > li{
+        padding:0 0.625rem 0.5rem;
+    }
+</style>
 <div class="mt50"></div>
 <div class="row">
     <div class="columns medium-3">
@@ -13,7 +18,6 @@
         <?php if (!empty($recent)) { ?>
             <h3 data-magellan-destination="recent">Most recent</h3>
             <a name="recent"></a>
-            <hr>
             <ul class="small-block-grid-3">
         <?php foreach ($recent as $site) {
             if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
@@ -24,6 +28,7 @@
             </li>
             <?php } ?>
             </ul>
+            <hr>
         <?php } ?>
         <?php /* ?>
         <div data-magellan-expedition="fixed">
