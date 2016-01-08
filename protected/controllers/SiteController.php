@@ -399,12 +399,18 @@ class SiteController extends Controller {
          */
         
         $where = '';
+        $recent = null;
         if ($data) $where = " AND category = '".$data."'";
+        else{
+            $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created, title LIMIT 12");
+        }
         $sites = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title");
         $categories = Yii::app()->db->createCommand("SELECT category FROM outside_links WHERE active GROUP BY category")->queryAll();
         $sub_cat = Yii::app()->db->createCommand("SELECT sub_category FROM outside_links WHERE active ".$where." GROUP BY sub_category")->queryAll();
         
-        $this->render("crowdfundingsites", array("categories" => $categories, "sites" => $sites, "sub_cat" =>$sub_cat ));
+        
+        
+        $this->render("crowdfundingsites", array("categories" => $categories, "sites" => $sites, "sub_cat" =>$sub_cat, "recent" => $recent ));
 	}
     
 
