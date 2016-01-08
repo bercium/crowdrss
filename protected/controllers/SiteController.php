@@ -400,7 +400,7 @@ class SiteController extends Controller {
         
         $where = '';
         $recent = $sub_cat = $search = $sites = null;
-        $categories = Yii::app()->db->createCommand("SELECT category FROM outside_links WHERE active GROUP BY category")->queryAll();
+        $categories = Yii::app()->db->createCommand("SELECT category, COUNT(*) AS c FROM outside_links WHERE active GROUP BY category")->queryAll();
         $selected_cat = 'All';
         
         if (isset($_GET['q'])){
@@ -411,7 +411,7 @@ class SiteController extends Controller {
             $search = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title", array(':q'=>$q,':qo'=>$qorig));
         }else{
             if ($data){
-                $where = " AND category = '".$data."'";
+                $where = " AND category = '".urldecode($data)."'";
                 $selected_cat = $data;
             }
             else $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created DESC, title LIMIT 12");
