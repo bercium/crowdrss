@@ -18,7 +18,7 @@
         <ul class="side-nav" role="navigation" title="Link List">
             <li role="menuitem" class="<?php if ($selected_cat == 'All') echo "active"; ?>"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
             <?php foreach ($categories as $cat) {?>
-            <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".urlencode($cat['category'])); ?>"><?php echo $cat['category']; ?><span class="right label secondary" style="margin-top:7px;"><?php echo $cat['c']; ?></span></a></li>
+            <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><span class="right label secondary" ><?php echo $cat['c']; ?></span><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".urlencode($cat['category'])); ?>"><?php echo $cat['category']; ?></a></li>
             <?php } ?>
         </ul>
         
