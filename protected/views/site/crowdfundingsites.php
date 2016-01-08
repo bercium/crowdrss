@@ -4,7 +4,7 @@
     }
     .side-nav li{
         margin:0;
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
     .active{
         background-color: #eee;
