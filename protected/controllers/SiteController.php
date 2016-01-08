@@ -402,7 +402,7 @@ class SiteController extends Controller {
         $recent = null;
         if ($data) $where = " AND category = '".$data."'";
         else{
-            $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created, title LIMIT 12");
+            $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created DESC, title LIMIT 12");
         }
         $sites = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title");
         $categories = Yii::app()->db->createCommand("SELECT category FROM outside_links WHERE active GROUP BY category")->queryAll();
