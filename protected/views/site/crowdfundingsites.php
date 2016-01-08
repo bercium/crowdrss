@@ -42,7 +42,7 @@
             ?>
         
             <li>
-                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']."<br /><strong>Keywords:</strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],20); ?></a>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if($site['keywords']) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],20); ?></a>
                 <?php if(strtotime($site['time_created']) > strtotime('-2 weeks') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
             </li>
         
