@@ -22,13 +22,17 @@
             <?php } ?>
         </ul>
         
+        <div class="mt30"></div>
+        
+        <a href="#" data-reveal-id="suggest-modal"><button class="success radius small" style="width: 100%;">SUGGEST A SITE</button></a>
+        
     </div>
     <div class="columns medium-9">
         
          <form action="get" class="mt15">
               <div class="row collapse">
                 <div class="small-10  medium-11 columns">
-                    <input type="text" name="q" placeholder="Fast search...">
+                    <input type="text" name="q" placeholder="Quick search...">
                 </div>
                 <div class="small-2 medium-1 columns">
                     <button type="submit" class="button postfix"><i class="fa-search fa"></i></button>
@@ -84,6 +88,8 @@
         $firsttime = true;
         foreach ($sites as $site) {
             if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
+            $link = $site['link']."?utm_source=crowdfundingrss.com&utm_medium=referral&utm_campaign=%E2%98%85%20Crowdfunding%20resource%20site";
+            
             
             if ($cur_sub_cat != $site['category'].'-'.$site['sub_category']){
                 $cur_sub_cat = $site['category'].'-'.$site['sub_category'];
@@ -99,7 +105,7 @@
             ?>
         
             <li>
-                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $link; ?>" target="_blank" trk="link_outsideLinks_<?php echo $site['title']; ?>" data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <?php if(strtotime($site['time_created']) > strtotime('-2 weeks') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
             </li>
         
@@ -111,3 +117,11 @@
 </div>
 
 <div class="mt50"></div>
+
+
+<div id="suggest-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+  <h2 id="modalTitle">Awesome. I have it.</h2>
+  <p class="lead">Your couch.  It is mine.</p>
+  <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+  <a class="close-reveal-modal" aria-label="Close">&#215;</a>
+</div>
