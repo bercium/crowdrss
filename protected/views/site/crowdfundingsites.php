@@ -128,13 +128,13 @@
   
     <form method="post" class="mt30">
         Site URL<font style="color:#f04124">*</font>
-        <input type="text" name="new_link" placeholder="www.crowdfunding.com">
+        <input type="text" name="new_link" placeholder="www.crowdfunding.com" value="<?php if (!empty($post['new_link'])) echo $post['new_link']; ?>">
         
         Your email
-        <input type="text" name="new_email" placeholder="my@email.com">
+        <input type="text" name="new_email" placeholder="my@email.com" value="<?php if (!empty($post['new_email'])) echo $post['new_email']; ?>">
         <div class="mt50"></div>
             
-        <button type="submit" class="button radius" style="width:100%">Submit a site</button>
+        <button type="submit" class="button radius" style="width:100%">Submit a suggestion</button>
     </form>
         
   
