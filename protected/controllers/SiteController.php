@@ -398,6 +398,22 @@ class SiteController extends Controller {
             crowd funding sites 
          */
         
+        if (isset($_POST['new_link'])){
+            $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
+            if (strpos($url, "http") !== 0) $url = "http://".$url;
+            if ((!filter_var($url, FILTER_VALIDATE_URL) === false) && (!filter_var($_POST['new_email'], FILTER_VALIDATE_EMAIL) === false)){
+                $ol = new OutsideLinks();
+                $ol->category = 'New';
+                $ol->sub_category = 'Submited';
+                $ol->link = $url;
+                $ol->title = $_POST['new_email'];
+                $ol->active = 0;
+                $ol->save();
+            }else{
+                
+            }
+        }
+        
         $where = '';
         $recent = $sub_cat = $search = $sites = null;
         $categories = Yii::app()->db->createCommand("SELECT category, COUNT(*) AS c FROM outside_links WHERE active GROUP BY category")->queryAll();

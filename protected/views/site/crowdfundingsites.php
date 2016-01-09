@@ -29,7 +29,7 @@
     </div>
     <div class="columns medium-9">
         
-         <form action="get" class="mt15">
+         <form method="get" class="mt15">
               <div class="row collapse">
                 <div class="small-10  medium-11 columns">
                     <input type="text" name="q" placeholder="Quick search...">
@@ -118,10 +118,25 @@
 
 <div class="mt50"></div>
 
-
-<div id="suggest-modal" class="reveal-modal" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
-  <h2 id="modalTitle">Awesome. I have it.</h2>
-  <p class="lead">Your couch.  It is mine.</p>
-  <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
+<?php /* We bring you curated list of crowdfunding sites worth being bookmarked. 
+       If you are site owner leave your site here and we will add it to the list. */ ?>
+<div id="suggest-modal" class="reveal-modal small" data-reveal aria-labelledby="modalTitle" aria-hidden="true" role="dialog">
+    <h2 id="modalTitle">Suggest a Site</h2>
+    <p class="lead">Suggest Crowdfunding site you like. We are happy to list all the good sites. 
+       Twitter/Facebook post about crowdfundingrss.com would be highly appreciated.
+    </p>
+  
+    <form method="post" class="mt30">
+        Site URL<font style="color:#f04124">*</font>
+        <input type="text" name="new_link" placeholder="www.crowdfunding.com">
+        
+        Your email
+        <input type="text" name="new_email" placeholder="my@email.com">
+        <div class="mt50"></div>
+            
+        <button type="submit" class="button radius" style="width:100%">Submit a site</button>
+    </form>
+        
+  
   <a class="close-reveal-modal" aria-label="Close">&#215;</a>
 </div>
