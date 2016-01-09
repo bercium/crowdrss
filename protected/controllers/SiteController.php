@@ -424,7 +424,7 @@ class SiteController extends Controller {
         
         $where = '';
         $recent = $sub_cat = $search = $sites = null;
-        $categories = Yii::app()->db->createCommand("SELECT category, COUNT(*) AS c FROM outside_links WHERE active GROUP BY category")->queryAll();
+        $categories = Yii::app()->db->createCommand("SELECT category, COUNT(*) AS c FROM outside_links WHERE active GROUP BY category ORDER BY 2 DESC")->queryAll();
         $selected_cat = 'All';
         
         if (isset($_GET['q'])){
