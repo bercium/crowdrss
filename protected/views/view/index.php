@@ -37,15 +37,17 @@ if ($project->removed == 0){
             <div class="row">
                   <div class="columns medium-4">
                       <?php if ($project->rating){ ?>
-                      <span class="fa-stack fa-5x fa-lg" style="color:#0088bb; right:-20px; top:-50px; margin:0; padding:0; position: absolute;" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                      <span class="fa-stack fa-5x fa-lg" style="color:#0088bb; right:-20px; top:-50px; margin:0; padding:0; position: absolute;" <?php if ($project->rating>5){ ?>itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating"<?php } ?>>
                         <i class="fa fa-certificate fa-stack-1x" ></i>
                         <i style="font-size: 60%; " class="fa-stack-1x fa-inverse">
-                          <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project based on content quality, social reach and campaign progress" itemprop="ratingValue">
+                          <span style="font-style: normal;" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="Our rating for this project based on content quality, social reach and campaign progress" <?php if ($project->rating>5){ ?>itemprop="ratingValue"<?php } ?>>
                             <?php echo round($project->rating); ?>
                           </span>
-						  <span itemprop="reviewCount" style="display: none;"><?php echo $count; ?></span>
-						  <span itemprop="bestRating" style="display: none;">10</span>
-						  <span itemprop="worstRating" style="display: none;">0</span>
+                          <?php if ($project->rating>5){ ?>
+                            <span itemprop="reviewCount" style="display: none;"><?php echo $count; ?></span>
+                            <span itemprop="bestRating" style="display: none;">10</span>
+                            <span itemprop="worstRating" style="display: none;">0</span>
+                          <?php } ?>
                         </i>
                       </span>
                       <?php } ?>
