@@ -41,12 +41,12 @@ abstract class BaseOutsideLinks extends GxActiveRecord {
 	public function rules() {
 		return array(
 			array('category, sub_category, title, link', 'required'),
-            array('time_created', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
 			array('position, active', 'numerical', 'integerOnly'=>true),
 			array('category, sub_category', 'length', 'max'=>128),
 			array('title, link', 'length', 'max'=>256),
 			array('keywords', 'length', 'max'=>500),
 			array('position, keywords, active', 'default', 'setOnEmpty' => true, 'value' => null),
+            array('time_created', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true),
 			array('id, category, sub_category, title, link, position, keywords, active, time_created', 'safe', 'on'=>'search'),
 		);
 	}
