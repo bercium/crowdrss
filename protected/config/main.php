@@ -152,8 +152,9 @@ $a = array(
                 'username' => '',
                 'pass' => '',
                 'absoluteHost' => 'http://www.crowdfundingrss.com/',
-			    'mapsFolder'=>'uploads/maps/',
+			    'mapsFolder'=>'data/',
 				'iconsFolder'=>'uploads/icons/',
+                'dataFolder'=>'uploads/maps/',
         ),
 );
 

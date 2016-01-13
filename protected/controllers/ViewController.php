@@ -40,10 +40,17 @@ class ViewController extends Controller
         $rating = $project->rating;
         //find similar
         $similar_project = Project::model()->findAllBySql('SELECT * FROM project 
-                                                    WHERE orig_category_id = ? AND rating > ? AND rating < ? AND goal LIKE ? AND id != ? AND removed = false
+                                                    WHERE orig_category_id = ? AND rating >= ? AND rating <= ? AND goal LIKE ? AND id != ? AND removed = false
                                                     ORDER BY end DESC LIMIT 3', 
                                                     array($project->orig_category_id, ($rating-1), ($rating+1), $goal, $project->id )
                                                   );
+        if (!$similar_project){
+            $similar_project = Project::model()->findAllBySql('SELECT * FROM project 
+                                                        WHERE orig_category_id = ? AND rating >= ? AND id != ? AND removed = false
+                                                        ORDER BY end DESC LIMIT 3', 
+                                                        array($project->orig_category_id, ($rating-1), $project->id )
+                                                      );
+        }
 		$rating_detail = null;
 		if (!Yii::app()->user->isGuest) {
 			//recalculate rating with details
@@ -60,9 +67,17 @@ class ViewController extends Controller
         if (isset($_GET['redirect'])){
             $cs->registerScript("redirect","redirect_link = '".$project->link."';");
         }else  $cs->registerScript("redirect","redirect_link = '';");
+        
+        
+        $badWords = file($folder = Yii::app()->basePath."/data/google_words.txt", FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        $count = 0;
+        foreach ($badWords as $word){
+            if (stripos(" ".$project->title." ", " ".$word." ") !== false) $count++;
+            if (stripos(" ".$project->description." ", " ".$word." ") !== false) $count++;
+        }
 
         
-		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail, 'redirect' => (isset($_GET['redirect']) ? true:false) ));
+		$this->render('index',array("project"=>$project, "similar"=>$similar_project, 'rating_detail' => $rating_detail, 'redirect' => (isset($_GET['redirect']) ? true:false), "bad_words" => $count ));
 	}
   
  

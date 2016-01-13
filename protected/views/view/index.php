@@ -3,7 +3,7 @@ if ($project->removed == 0){
 	$count = 1;
 	if (isset($project->creator_backed)) $count += $project->creator_backed;
 	if (isset($project->creator_created)) $count += $project->creator_created;
-	
+
 ?>
 <script async src="http://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -23,6 +23,7 @@ if ($project->removed == 0){
                 <div class="columns">
                     <div class="pt20"></div>
 
+                    <?php  if ($bad_words == 0){ ?>
                     <script>
                          if (!window.matchMedia("screen and (min-width: 40.063em)").matches){
                                  document.write (
@@ -31,6 +32,7 @@ if ($project->removed == 0){
                                 (adsbygoogle = window.adsbygoogle || []).push({}); 
                          }
                      </script>
+                    <?php } ?>
                 </div>
             </div> 
 
@@ -83,7 +85,10 @@ if ($project->removed == 0){
 
             </div>
 
-            <?php if ((($ad_type = rand(0, 0)) == 0) || (count($similar) != 3)){ ?>
+            <?php 
+            $ad_type = rand(0, 0);
+            if ($bad_words == 0){
+                if (($ad_type == 0) || (count($similar) != 3)){ ?>
             <div class="row hide-for-small">
               <div class="columns pt30 text-center">
                   <script>
@@ -99,7 +104,8 @@ if ($project->removed == 0){
                     </script>
               </div>
             </div>		   
-            <?php } ?>
+            <?php }
+                } ?>
 
             <?php if (count($similar) == 3){ ?>
             <div class="row">
@@ -130,7 +136,7 @@ if ($project->removed == 0){
                     </div>
                 </div>
                 <div class="columns medium-4">
-                    <?php if ($ad_type == 1){ ?>
+                    <?php if ($ad_type == 1 && $bad_words == 0){ ?>
                     <script>
                          if (window.matchMedia("screen and (min-width: 40.063em)").matches){
                                  document.write (
