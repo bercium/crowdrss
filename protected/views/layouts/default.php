@@ -9,12 +9,12 @@
             <dd><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="link_top_owners" >Project owner</a></dd> 
           </dl>
            
-           <h2 class="white special_title" style="margin-bottom: 0px;">
+           <h3 class="white special_title" style="margin-bottom: 0px;">
              <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" style="color: inherit" trk="link_top_index">
                <span class="hide-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"> Crowdfunding</span>
                <span class="show-for-small"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png" style="height:40px"></span>
              </a>
-           </h2>
+           </h3>
            
          </div>
        </div>
