@@ -18,10 +18,14 @@ class UserIdentity extends CUserIdentity
 	public function authenticate()
 	{
     if (Yii::app()->params["username"] == '') Yii::app()->params["username"] = random(1242353453465);
-		$users=array(
-			// username => password
-			Yii::app()->params["username"]=>Yii::app()->params["pass"],
-		);
+        if (isset(Yii::app()->params['users'])) $users = Yii::app()->params['users'];
+        else{
+            $users=array(
+                // username => password
+                Yii::app()->params["username"]=>Yii::app()->params["pass"],
+            );
+        }
+        
 		if(!isset($users[$this->username]))
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
 		elseif($users[$this->username]!==$this->password)
