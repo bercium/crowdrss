@@ -438,7 +438,7 @@ class SiteController extends Controller {
                 $where = " AND category = '".urldecode($data)."'";
                 $selected_cat = $data;
             }
-            else $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-2 weeks"))."' ORDER BY time_created DESC, title LIMIT 12");
+            else $recent = OutsideLinks::model()->findAll(" active AND time_created > '".date("c",strtotime("-1 week"))."' ORDER BY time_created DESC, title LIMIT 12");
             
             $sites = OutsideLinks::model()->findAll(" active ".$where." ORDER BY sub_category, position, title");
         }
