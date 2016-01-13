@@ -106,7 +106,7 @@
         
             <li>
                 <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $link; ?>" target="_blank" trk="link_outsideLinks_<?php echo $site['title']; ?>" data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
-                <?php  echo strtotime($site['time_created']).':'.strtotime('-1 week');  if(strtotime($site['time_created']) > strtotime('-1 week') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
+                <?php if(strtotime($site['time_created']) > strtotime('-1 week') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
             </li>
         
     
