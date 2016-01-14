@@ -427,7 +427,9 @@ class SiteController extends Controller {
         $categories = Yii::app()->db->createCommand("SELECT category, COUNT(*) AS c FROM outside_links WHERE active GROUP BY category ORDER BY 2 DESC")->queryAll();
         $selected_cat = 'All';
         
-        if (isset($_GET['q'])){
+        if (isset($_GET['edit']) && !Yii::app()->user->isGuest ){
+            $search = OutsideLinks::model()->findAll(" active = false ORDER BY category, sub_category, position, title");
+        }elseif (isset($_GET['q'])){
             $selected_cat = '';
             $q = "%".mb_strtolower($_GET['q'])."%";
             $qorig = mb_strtolower($_GET['q']);

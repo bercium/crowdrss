@@ -20,6 +20,9 @@
             <?php foreach ($categories as $cat) {?>
             <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><span class="right label secondary" ><?php echo $cat['c']; ?></span><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".urlencode($cat['category'])); ?>"><?php echo $cat['category']; ?></a></li>
             <?php } ?>
+            <?php if (!Yii::app()->user->isGuest){ ?>
+            <li role="menuitem" ><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites?edit"); ?>">Show hidden</a></li>
+            <?php } ?>
         </ul>
         
         <div class="mt30"></div>
@@ -44,12 +47,13 @@
             <h3 data-magellan-destination="recent">Search results:</h3>
             <a name="search"></a>
             <ul class="small-block-grid-3">
-        <?php foreach ($search as $site) {
-            if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
-        ?>
+            <?php foreach ($search as $site) {
+                if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
+            ?>
             <li>
                 <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <?php if(strtotime($site['time_created']) > strtotime('-1 week') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
+                <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("outsideLinks/update",array("id"=>$site->id)); ?>"><span class="label success round" style="margin-left:5px;padding:0.15rem 0.3rem;">edt</span></a> <?php }?>
             </li>
             <?php } ?>
             </ul>
