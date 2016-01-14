@@ -16,9 +16,9 @@
 <div class="row">
     <div class="columns medium-3">
         <ul class="side-nav" role="navigation" title="Link List">
-            <li role="menuitem" class="<?php if ($selected_cat == 'All') echo "active"; ?>"><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
+            <li role="menuitem" class="<?php if ($selected_cat == 'All') echo "active"; ?>"><a trk="link_sidemenu_all" href="<?php echo Yii::app()->createUrl("crowdfunding-sites"); ?>">All</a></li>
             <?php foreach ($categories as $cat) {?>
-            <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><span class="right label secondary" ><?php echo $cat['c']; ?></span><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".urlencode($cat['category'])); ?>"><?php echo $cat['category']; ?></a></li>
+            <li role="menuitem" class="<?php if ($selected_cat == $cat['category']) echo "active"; ?>" style="border-top:1px solid #ddd;"><span class="right label secondary" ><?php echo $cat['c']; ?></span><a trk="link_sidemenu_<?php echo $cat['category']; ?>" href="<?php echo Yii::app()->createUrl("crowdfunding-sites/".urlencode($cat['category'])); ?>"><?php echo $cat['category']; ?></a></li>
             <?php } ?>
             <?php if (!Yii::app()->user->isGuest){ ?>
             <li role="menuitem" ><a href="<?php echo Yii::app()->createUrl("crowdfunding-sites?edit"); ?>">Show hidden</a></li>
@@ -27,7 +27,7 @@
         
         <div class="mt30"></div>
         
-        <a href="#" data-reveal-id="suggest-modal"><button class="success radius small" style="width: 100%;">SUGGEST A SITE</button></a>
+        <a href="#" data-reveal-id="suggest-modal" trk="button_view_suggestSiteSubmit"><button class="success radius small" style="width: 100%;">SUGGEST A SITE</button></a>
         
     </div>
     <div class="columns medium-9">
@@ -38,7 +38,7 @@
                     <input type="text" name="q" placeholder="Quick search...">
                 </div>
                 <div class="small-2 medium-1 columns">
-                    <button type="submit" class="button postfix"><i class="fa-search fa"></i></button>
+                    <button type="submit" trk="button_form_searchResources" class="button postfix"><i class="fa-search fa"></i></button>
                 </div>
               </div>
         </form>
@@ -51,7 +51,7 @@
                 if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
             ?>
             <li>
-                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" trk="link_outsideLinks_<?php echo $site['title']; ?>"  target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <?php if(strtotime($site['time_created']) > strtotime('-1 week') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
                 <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("outsideLinks/update",array("id"=>$site->id)); ?>"><span class="label success round" style="margin-left:5px;padding:0.15rem 0.3rem;">edt</span></a> <?php }?>
             </li>
@@ -68,7 +68,7 @@
             if (strpos($site['link'], "http") !== 0) $site['link'] = "http://".$site['link'];
         ?>
             <li>
-                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
+                <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link']; ?>" trk="link_outsideLinks_<?php echo $site['title']; ?>"  target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span>
             </li>
             <?php } ?>
@@ -138,7 +138,7 @@
         <input type="text" name="new_email" placeholder="my@email.com" value="<?php if (!empty($post['new_email'])) echo $post['new_email']; ?>">
         <div class="mt50"></div>
             
-        <button type="submit" class="button radius" style="width:100%">Submit a suggestion</button>
+        <button type="submit" class="button radius" style="width:100%" trk="button_form_suggestSiteSubmit">Submit a suggestion</button>
     </form>
         
   

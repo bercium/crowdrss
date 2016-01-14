@@ -1,5 +1,43 @@
 <?php $this->beginContent('//layouts/main'); ?>
 
+<div class="intro-defult">
+    <div class="row">
+        <div class="columns large-12 ">
+                <nav class="top-bar" data-topbar role="navigation">
+
+
+                    <ul class="title-area">
+                      <li class="name" >
+                        <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" data-tooltip data-options="disable_for_touch:true" title="Crowdfunding RSS">
+                            <img style="" src="/crowdfunding-rss/images/logo-tiny.png">
+                        </a>
+                          &nbsp;&nbsp;CROWDFUNDING
+                      </li>
+                       <!-- Remove the class "menu-icon" to get rid of menu icon. Take out "Menu" to just have icon alone -->
+                      <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
+                    </ul>
+
+                    <section class="top-bar-section">
+                      <!-- Right Nav Section -->
+                      <ul class="right">
+                            <li><a href="<?php echo Yii::app()->createUrl('crowdfunding-sites'); ?>" trk="link_top_resources" >Resources</a></li>
+                            <li><a href="<?php echo Yii::app()->createUrl('crowdfunding-sites'); ?>" trk="link_top_top50" >Top 50</a></li>
+                            <li><a href="<?php echo Yii::app()->createUrl('site/index'); ?>"  trk="link_top_dailyDigest" >Project digest</a></li>
+                            <li><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="link_top_owners" >Search</a></li>
+
+                      </ul>
+
+                      <!-- Left Nav Section -- >
+                      <ul class="left">
+                        <li><a>Crowdfunding</a></li>
+                      </ul>-->
+                    </section>
+
+                </nav>
+        </div>    
+    </div>    
+</div>
+<?php /* ?>
     <div class="intro-defult " >
        <div class="row">
          <div class="columns large-12 ">
@@ -18,7 +56,7 @@
            
          </div>
        </div>
-    </div>
+    </div><?php */ ?>
 
   <?php echo $content; ?>
 

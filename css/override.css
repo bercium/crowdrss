@@ -73,3 +73,66 @@ h1.small{
 .ml0{margin-left:0px;}.ml5{margin-left:5px;}.ml10{margin-left:10px;}.ml15{margin-left:15px;}.ml20{margin-left:20px;}.ml30{margin-left:30px;}.ml40{margin-left:40px;}.ml50{margin-left:50px;}.ml60{margin-left:60px;}
 .mr0{margin-right:0px;}.mr5{margin-right:5px;}.mr10{margin-right:10px;}.mr15{margin-right:15px;}.mr20{margin-right:20px;}.mr30{margin-right:30px;}.mr40{margin-right:40px;}.mr50{margin-right:50px;}.mr60{margin-right:60px;}
 
+
+.row, contain-to-grid .top-bar {
+    max-width: 75.5rem;
+}
+
+.top-bar, .top-bar-section ul li,
+.top-bar-section li:not(.has-form) a:not(.button),
+.top-bar.expanded .title-area, 
+.contain-to-grid{
+    background: transparent;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.contain-to-grid.sticky.fixed{
+      color:#FFF;
+  background: #0088bb;
+  background-image: url('../images/bg.png'); /**/
+  background-position: center center;
+  background-repeat: no-repeat;
+  font-weight: bold;
+  /*padding-bottom: 5px;*/
+  /*height: 50px;*/
+  background-size: cover;
+}
+
+.top-bar-section li:not(.has-form) a:hover:not(.button),
+.top-bar-section ul li:hover:not(.has-form) > a,
+.top-bar-section li.active:not(.has-form) a:not(.button){
+    background: rgba(255,255,255,0.2);
+}
+
+
+.top-bar-section li.active:not(.has-form) a:hover:not(.button){
+    background: rgba(0,120,160,0.2);
+}
+
+.top-bar-section .dropdown li:not(.has-form):not(.active) > a:not(.button),
+.top-bar-section li.has-dropdown li.active:not(.has-form) a:not(.button){
+    background: #62B5D9;
+    color:#fff;
+}
+
+.top-bar-section li.has-dropdown li.active:not(.has-form) a:hover:not(.button),
+.top-bar-section .dropdown li:hover:not(.has-form):not(.active) > a:not(.button){
+    background: rgba(0,120,160,1);
+    color:#fff;
+}
+
+
+.top-bar-section li.has-dropdown li.active:not(.has-form) a:not(.button){
+    background: #75BDDE;
+    color:#fff;
+}
+
+
+.top-bar.expanded .toggle-topbar a{
+    color:#fff;
+}
+
+.top-bar.expanded .toggle-topbar a span::after{
+    box-shadow: 0 0 0 1px #fff, 0 7px 0 1px #fff, 0 14px 0 1px #fff;
+}

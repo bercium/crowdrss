@@ -35,6 +35,7 @@
 })(jQuery, this);
 
 
+if (Math.floor((Math.random() * 3)) == 1)
 (function() {
   var hidden = "hidden";
   var title = '';

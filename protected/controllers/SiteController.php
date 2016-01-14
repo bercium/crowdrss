@@ -531,36 +531,41 @@ EOD;
         <url>
           <loc>http://crowdfundingrss.com/</loc>
           <changefreq>monthly</changefreq>
+          <priority>0.8</priority>
+        </url>
+        <url>
+          <loc>http://crowdfundingrss.com/crowdfunding-sites</loc>
+          <changefreq>weekly</changefreq>
           <priority>1</priority>
         </url>";
 
             // all platforms and number of projects
             $platforms = Platform::model()->findAll();
-            foreach (array(10, 25, 50, 100) as $c) {
+            foreach (array(10, 15, 25, 50, 100) as $c) {
                 $sitemapResponse .= "
             <url>
               <loc>http://crowdfundingrss.com/top" . $c . "</loc>
-              <changefreq>weekly</changefreq>
+              <changefreq>daily</changefreq>
               <priority>0.9</priority>
             </url>";
                 $sitemapResponse .= "
             <url>
               <loc>http://crowdfundingrss.com/bottom" . $c . "</loc>
-              <changefreq>weekly</changefreq>
-              <priority>0.8</priority>
+              <changefreq>daily</changefreq>
+              <priority>0.9</priority>
             </url>";
                 foreach ($platforms as $platform) {
                     $sitemapResponse .= "
               <url>
                 <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/top" . $c . "/" . $platform->name) . "</loc>
-                <changefreq>weekly</changefreq>
+                <changefreq>daily</changefreq>
                 <priority>0.9</priority>
               </url>";
                     $sitemapResponse .= "
               <url>
                 <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/bottom" . $c . "/" . $platform->name) . "</loc>
-                <changefreq>weekly</changefreq>
-                <priority>0.8</priority>
+                <changefreq>daily</changefreq>
+                <priority>0.9</priority>
               </url>";
                 }
             }
@@ -573,7 +578,7 @@ EOD;
                 $priority = 0.35;
                 if ($project->rating)
                     $priority = round(($project->rating / 20) + 0.35, 3);
-                 $priority = 0.7;
+                 $priority = 0.8;
                 $sitemapResponse .= "
         <url>
           <loc>";
