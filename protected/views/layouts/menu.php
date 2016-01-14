@@ -7,7 +7,7 @@
                     <ul class="title-area">
                       <li class="name" >
                         <a href="<?php echo Yii::app()->request->baseUrl."/"; ?>" data-tooltip data-options="disable_for_touch:true" title="Crowdfunding RSS" style="color:#fff;">
-                            <img style="" src="/crowdfunding-rss/images/logo-tiny.png">
+                            <img style="" src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo-tiny.png">
                             &nbsp;&nbsp;CROWDFUNDING
                         </a>
                           
