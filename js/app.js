@@ -99,6 +99,8 @@ function extractLast( term ) {
 function gase(id){
   //if (jQuery.cookie('cc_cookie_accept') != 'cc_cookie_accept') return;  //cookie compliance
   var trk = id.split("_");
+  
+  console.log(id);
 
   if (trk[0] == 'social'){
     //social_facebook_like_nameOfButton
