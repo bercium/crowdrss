@@ -12,7 +12,7 @@
 </style>
 <div class="mt50"></div>
 
-<?php $link = "?utm_source=crowdfundingrss.com&utm_medium=referral&utm_campaign=%E2%98%85%20Crowdfunding%20resource%20site"; ?>
+<?php $link = "?utm_source=crowdfundingrss.com&utm_medium=referral&utm_campaign=Crowdfunding%20resource%20site"; ?>
 
 <div class="row">
     <div class="columns medium-3">

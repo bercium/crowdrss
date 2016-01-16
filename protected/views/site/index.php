@@ -33,7 +33,7 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
                <div class="show-for-small mb30 mt20"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/logo.png" alt="Crowdfunging rss"  class="mt30 mb30 pb20" style="width:100px; height:100px;"></div>
                <?php  */ ?>
                <h1 class="white title">Crowdfunding projects delivered to you</h1>
-               <?php // if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
+               <?php if (!Yii::app()->user->isGuest) echo "<h2 class=''>".$subscribers." subscribers</h2>"; ?>
 
              </div>
            </div>
