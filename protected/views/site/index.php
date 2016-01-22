@@ -1,7 +1,7 @@
 <?php
 /* @var $this SiteController */
 $this->pageTitle = 'Crowdfunding projects delivered to you';
-$this->pageDesc = "Select your favorite platform, chose your interests and we will deliver the best projects right in your inbox or trough RSS feed.";
+$this->pageDesc = "Select your favourite platform, choose your interests and we will deliver the best projects right in your inbox or through RSS feed.";
 
 ?>
 
@@ -44,8 +44,8 @@ $this->pageDesc = "Select your favorite platform, chose your interests and we wi
             <div class="row">
               <div class="columns ">
                 <h3 class="white"><em>
-                  Select your <strong>favorite platform</strong>, chose your <strong>interests</strong> and we will deliver 
-                  <strong>the best projects</strong> right in your <span style="color:#222">inbox <i class="fa fa-envelope-o"></i></span> or trough <span style="color:#222">RSS feed <i class="fa fa-rss"></i></span>
+                  Select your <strong>favourite platform</strong>, choose your <strong>interests</strong> and we will deliver 
+                  <strong>the best projects</strong> right in your <span style="color:#222">inbox <i class="fa fa-envelope-o"></i></span> or through <span style="color:#222">RSS feed <i class="fa fa-rss"></i></span>
                   </em>
                 </h3>
                 <a class="project-owner button tiny secondary radius right" href="<?php echo Yii::app()->createUrl('site/owners'); ?>" trk="button_intro_projectOwner">
