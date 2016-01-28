@@ -71,6 +71,8 @@
             <li>
                 <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link'].$link; ?>" trk="link_outsideLinks_<?php echo $site['title']; ?>"  target="_blank"  data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span>
+                <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("outsideLinks/update",array("id"=>$site->id)); ?>"><span class="label success round" style="margin-left:5px;padding:0.15rem 0.3rem;">edt</span></a> <?php }?>
+                <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("outsideLinks/update",array("id"=>$site->id)); ?>"><span class="label success round" style="margin-left:5px;padding:0.15rem 0.3rem;">edt</span></a> <?php }?>
             </li>
             <?php } ?>
             </ul>
@@ -111,6 +113,7 @@
             <li>
                 <img src="<?php echo getLinkIcon($site['link']); ?>"> <a href="<?php echo $site['link'].$link; ?>" target="_blank" trk="link_outsideLinks_<?php echo $site['title']; ?>" data-tooltip aria-haspopup="true" class="" title="<?php echo $site['title']; if(!empty($site['keywords'])) echo "<br /><strong>Keywords: </strong>".$site['keywords']; ?>"><?php echo trim_text($site['title'],18); ?></a>
                 <?php if(strtotime($site['time_created']) > strtotime('-1 week') ){ ?><span class="label alert round" style="margin-left:5px;padding:0.15rem 0.3rem;">new</span><?php } ?>
+                <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("outsideLinks/update",array("id"=>$site->id)); ?>"><span class="label success round" style="margin-left:5px;padding:0.15rem 0.3rem;">edt</span></a> <?php }?>
             </li>
         
     
