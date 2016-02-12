@@ -120,13 +120,13 @@ class FeedController extends Controller {
 		$rssResponse .= '<channel>' . PHP_EOL;
 		//$rssResponse .= '<atom:link href="http://dallas.example.com/rss.xml" rel="self" type="application/rss+xml" />';
 		if (isset($_SERVER["REQUEST_URI"]))
-			$rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com' . $_SERVER["REQUEST_URI"] . '" />' . PHP_EOL;
+			$rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://crowdfundingrss.com' . $_SERVER["REQUEST_URI"] . '" />' . PHP_EOL;
 		else
-			$rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://www.crowdfundingrss.com/feed/previewRss" />' . PHP_EOL;
+			$rssResponse .= '<atom:link rel="self" type="application/rss+xml" href="http://crowdfundingrss.com/feed/previewRss" />' . PHP_EOL;
 
 		$rssResponse .= '<title>Crowdfounding RSS</title>' . PHP_EOL;
 		if (isset($_SERVER["REQUEST_URI"]))
-			$rssResponse .= '<link>http://www.crowdfundingrss.com' . $_SERVER["REQUEST_URI"] . '</link>' . PHP_EOL;
+			$rssResponse .= '<link>http://crowdfundingrss.com' . $_SERVER["REQUEST_URI"] . '</link>' . PHP_EOL;
 		else
 			$rssResponse .= '<link>' . Yii::app()->params['absoluteHost'] . '</link>' . PHP_EOL;
 		$rssResponse .= '<description>All your crowdfunding projects in one place.</description>' . PHP_EOL;

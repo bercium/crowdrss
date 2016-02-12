@@ -134,7 +134,7 @@
   
     <form method="post" class="mt30">
         Site URL<font style="color:#f04124">*</font>
-        <input type="text" name="new_link" placeholder="www.crowdfunding.com" value="<?php if (!empty($post['new_link'])) echo $post['new_link']; ?>">
+        <input type="text" name="new_link" placeholder="crowdfunding.com" value="<?php if (!empty($post['new_link'])) echo $post['new_link']; ?>">
         
         Your email
         <input type="text" name="new_email" placeholder="my@email.com" value="<?php if (!empty($post['new_email'])) echo $post['new_email']; ?>">
