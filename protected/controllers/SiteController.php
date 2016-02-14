@@ -404,7 +404,7 @@ class SiteController extends Controller {
             $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
             $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array($secret, $GRecaptchaResponse));
             $validateRecaptcha = json_decode($validateRecaptcha);
-            var_dump($validateRecaptcha->success);die;
+            var_dump($GRecaptchaResponse);die;
            //if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
                 if (strpos($url, "http") !== 0) $url = "http://".$url;
