@@ -400,7 +400,6 @@ class SiteController extends Controller {
         $post = null;
         if (isset($_POST['new_link'])){
             $validateRecaptcha = json_decode($_POST['g-recaptcha-response']);
-            vardump($validateRecaptcha);die;
             if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
                 if (strpos($url, "http") !== 0) $url = "http://".$url;
