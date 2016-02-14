@@ -428,6 +428,7 @@ class SiteController extends Controller {
             //    $post = $_POST;
             //    setFlash('postProblem','You need to check reCAPTCHA.','alert');
             //}
+                setFlash('postSuccess',$validateRecaptcha);
         }
         
         $where = '';
