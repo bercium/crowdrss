@@ -422,14 +422,12 @@ class SiteController extends Controller {
                     setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
                 }else{
                     $post = $_POST;
-                    setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
+                    setFlash('postProblem',$validateRecaptcha.'There was a problem saving your suggestion! URL does not seem correct.','alert');
                 }
             //}else{
             //    $post = $_POST;
             //    setFlash('postProblem','You need to check reCAPTCHA.','alert');
             //}
-                $post = $_POST;
-                setFlash('postSuccess',$validateRecaptcha);
         }
         
         $where = '';
