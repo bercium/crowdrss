@@ -402,10 +402,9 @@ class SiteController extends Controller {
         if (isset($_POST['new_link'])){
             $GRecaptchaResponse = $_POST['g-recaptcha-response'];
             $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
-            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array($secret, $GRecaptchaResponse));
+            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("secret" => $secret, "response" => $GRecaptchaResponse));
             $validateRecaptcha = json_decode($validateRecaptcha);
-            var_dump($GRecaptchaResponse);die;
-           //if ($validateRecaptcha->success == true) {
+            if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
                 if (strpos($url, "http") !== 0) $url = "http://".$url;
             
@@ -426,10 +425,10 @@ class SiteController extends Controller {
                     $post = $_POST;
                     setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
                 }
-            //}else{
-            //    $post = $_POST;
-            //    setFlash('postProblem','You need to check reCAPTCHA.','alert');
-            //}
+            }else{
+                $post = $_POST;
+                setFlash('postProblem','You need to check reCAPTCHA.','alert');
+            }
         }
         
         $where = '';
