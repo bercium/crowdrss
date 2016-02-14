@@ -397,9 +397,12 @@ class SiteController extends Controller {
             best crowdfunding sites 
             crowd funding sites 
          */
+        $web = new webText();
         $post = null;
         if (isset($_POST['new_link'])){
-            $validateRecaptcha = json_decode($_POST['g-recaptcha-response']);
+            $GRecaptchaResponse = $_POST['g-recaptcha-response'];
+            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB", $GRecaptchaResponse));
+            $validateRecaptcha = json_decode($validateRecaptcha);
             if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
                 if (strpos($url, "http") !== 0) $url = "http://".$url;
