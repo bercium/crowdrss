@@ -399,27 +399,33 @@ class SiteController extends Controller {
          */
         $post = null;
         if (isset($_POST['new_link'])){
+            $validateRecaptcha = $_POST['new_link'];
             
-            $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
-            if (strpos($url, "http") !== 0) $url = "http://".$url;
+            if ($validateRecaptcha->success == true) {
+                $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
+                if (strpos($url, "http") !== 0) $url = "http://".$url;
             
-            if ((filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) !== false)){
-                $exists = OutsideLinks::model()->findByAttributes(array("link" => $url));
-                if (!$exists){
-                    $ol = new OutsideLinks();
-                    $ol->category = 'New';
-                    $ol->sub_category = 'Submited';
-                    $ol->link = $url;
-                    if (!empty($_POST['new_email'])) $ol->title = $_POST['new_email'];
-                    else $ol->title = 'No title';
-                    $ol->active = 0;
-                    $ol->save();
+                if ((filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) !== false)){
+                    $exists = OutsideLinks::model()->findByAttributes(array("link" => $url));
+                    if (!$exists){
+                        $ol = new OutsideLinks();
+                        $ol->category = 'New';
+                        $ol->sub_category = 'Submited';
+                        $ol->link = $url;
+                        if (!empty($_POST['new_email'])) $ol->title = $_POST['new_email'];
+                        else $ol->title = 'No title';
+                        $ol->active = 0;
+                        $ol->save();
+                    }
+                    setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
+                }else{
+                    $post = $_POST;
+                    setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
                 }
-                setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
             }else{
-                $post = $_POST;
-                setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
-            }
+                    $post = $_POST;
+                    setFlash('postProblem','You need to check ReCAPTCHA.','alert');
+                }
         }
         
         $where = '';

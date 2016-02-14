@@ -10,10 +10,11 @@
         background-color: #eee;
     }
 </style>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <div class="mt50"></div>
 
 <?php $link = "?utm_source=crowdfundingrss.com&utm_medium=referral&utm_campaign=Crowdfunding%20resource%20site"; ?>
-
+ 
 <div class="row">
     <div class="columns medium-3">
         <ul class="side-nav" role="navigation" title="Link List">
@@ -138,8 +139,9 @@
         
         Your email
         <input type="text" name="new_email" placeholder="my@email.com" value="<?php if (!empty($post['new_email'])) echo $post['new_email']; ?>">
+        <br><div class="g-recaptcha" data-sitekey="6LfsQBgTAAAAAG7hbRZx8b78U0qsUbKVp7fid53t"></div>
         <div class="mt50"></div>
-            
+        
         <button type="submit" class="button radius" style="width:100%" trk="button_form_suggestSiteSubmit">Submit a suggestion</button>
     </form>
         
