@@ -399,7 +399,7 @@ class SiteController extends Controller {
          */
         $post = null;
         if (isset($_POST['new_link'])){
-            $validateRecaptcha = $_POST['new_link'];
+            $validateRecaptcha = $_POST['g-recaptcha-response'];
             
             if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
@@ -424,7 +424,7 @@ class SiteController extends Controller {
                 }
             }else{
                     $post = $_POST;
-                    setFlash('postProblem','You need to check ReCAPTCHA.','alert');
+                    setFlash('postProblem','You need to check reCAPTCHA.','alert');
                 }
         }
         
