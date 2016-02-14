@@ -401,7 +401,8 @@ class SiteController extends Controller {
         $post = null;
         if (isset($_POST['new_link'])){
             $GRecaptchaResponse = $_POST['g-recaptcha-response'];
-            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB", $GRecaptchaResponse));
+            $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
+            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array($secret, $GRecaptchaResponse));
             $validateRecaptcha = json_decode($validateRecaptcha);
             var_dump($validateRecaptcha->success);die;
            //if ($validateRecaptcha->success == true) {
