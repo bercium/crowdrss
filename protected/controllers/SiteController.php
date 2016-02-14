@@ -403,6 +403,7 @@ class SiteController extends Controller {
             $GRecaptchaResponse = $_POST['g-recaptcha-response'];
             $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB", $GRecaptchaResponse));
             $validateRecaptcha = json_decode($validateRecaptcha);
+            var_dump($validateRecaptcha);
            //if ($validateRecaptcha->success == true) {
                 $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
                 if (strpos($url, "http") !== 0) $url = "http://".$url;
@@ -422,7 +423,7 @@ class SiteController extends Controller {
                     setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
                 }else{
                     $post = $_POST;
-                    setFlash('postProblem',$validateRecaptcha->success.'There was a problem saving your suggestion! URL does not seem correct.','alert');
+                    setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
                 }
             //}else{
             //    $post = $_POST;
