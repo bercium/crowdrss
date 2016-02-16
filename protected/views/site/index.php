@@ -18,7 +18,7 @@ $this->pageDesc = "Select your favourite platform, choose your interests and we 
   </div>
 </div>
 <?php //*/ ?>
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <div class="parallax-window" data-parallax="scroll" data-speed="0.4" data-image-src="images/bg.png" style="background-image: url('images/bg.png');background-position: bottom center; background-size: cover;">
         
         <?php $this->renderPartial('//layouts/menu', array('main_menu'=>true)); ?>        
@@ -346,6 +346,7 @@ $this->pageDesc = "Select your favourite platform, choose your interests and we 
                 </label>
                 <small style="font-style: italic;">We will use your email only to send you RSS link or digest and occasional site updates. We will never sell or give your email address to anyone!</small>
               </div>
+                 <br><div class="g-recaptcha" data-sitekey="6LfsQBgTAAAAAG7hbRZx8b78U0qsUbKVp7fid53t"></div>
              </div>
            </div>
  

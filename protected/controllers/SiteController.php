@@ -53,6 +53,7 @@ class SiteController extends Controller {
         $subcat_sel = array();
         $email = '';
         $subscription = null;
+        $web = new webText();
 
         $OrigCategories = array();
         $SelOrigCategories = OrigCategory::model()->findAll();
@@ -82,124 +83,133 @@ class SiteController extends Controller {
 
         //subscribe to feed
         if (isset($_POST['subscribe'])) {
-            $plat = '';
-            if (isset($_POST['plat']))
-                $plat = implode(",", array_keys($_POST['plat']));
-            if ($plat == '0')
+            $GRecaptchaResponse = $_POST['g-recaptcha-response'];
+            $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
+            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("secret" => $secret, "response" => $GRecaptchaResponse));
+            $validateRecaptcha = json_decode($validateRecaptcha);
+            if ($validateRecaptcha->success == true) {
                 $plat = '';
-            $platform_sel = explode(',', $plat);
+                if (isset($_POST['plat']))
+                    $plat = implode(",", array_keys($_POST['plat']));
+                if ($plat == '0')
+                    $plat = '';
+                $platform_sel = explode(',', $plat);
 
-            $cat = '';
-            if (isset($_POST['cat']))
-                $cat = implode(",", array_keys($_POST['cat']));
-            $cat_sel = explode(',', $cat);
+                $cat = '';
+                if (isset($_POST['cat']))
+                    $cat = implode(",", array_keys($_POST['cat']));
+                $cat_sel = explode(',', $cat);
 
-            $subcat = '';
-            $subcat_sel_inv = array();
-            if (isset($_POST['subcat']))
-                $subcat_sel_inv = array_keys($_POST['subcat']);
-            //$subcat_sel_inv = explode(',',$subcat);
+                $subcat = '';
+                $subcat_sel_inv = array();
+                if (isset($_POST['subcat']))
+                    $subcat_sel_inv = array_keys($_POST['subcat']);
+                //$subcat_sel_inv = explode(',',$subcat);
 
-            $subcat_sel = array();
-            foreach ($cat_sel as $id) {
-                //if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
-                foreach ($OrigCategories[$id] as $origCat) {
-                    //echo ",".$origCat->id." ";
-                    if (!in_array($origCat->id, $subcat_sel_inv)) {
-                        $subcat_sel[] = $origCat->id;
+                $subcat_sel = array();
+                foreach ($cat_sel as $id) {
+                    //if (!isset($OrigCategories[$id])) echo "---".$id."---"; else
+                    foreach ($OrigCategories[$id] as $origCat) {
+                        //echo ",".$origCat->id." ";
+                        if (!in_array($origCat->id, $subcat_sel_inv)) {
+                            $subcat_sel[] = $origCat->id;
+                        }
                     }
                 }
-            }
 
-            $subcat = implode(",", $subcat_sel);
+                $subcat = implode(",", $subcat_sel);
 
-            $email = $_POST['email'];
+                $email = $_POST['email'];
 
-            $subscription = Subscription::model()->findByAttributes(array('email' => $email));
-            $subupdate = 'update';
-            if (!$subscription) {
-                $subupdate = 'new';
-                $subscription = new Subscription();
-                //$subscription->time_created = date("Y-m-d H:i:s");
-                $subscription->hash = mailTrackingCode();
-            }
-
-
-            $subscription->email = $email;
-            $subscription->platform = $this->validateId($plat);
-            $subscription->category = $this->validateId($cat);
-            $subscription->exclude_orig_category = $this->validateId($subcat);
-
-            if (isset($_POST['rss_feed']))
-                $subscription->rss = 1;
-            else
-                $subscription->rss = 0;
-            if (isset($_POST['daily_digest']))
-                $subscription->daily_digest = 1;
-            else
-                $subscription->daily_digest = 0;
-            if (isset($_POST['weekly_digest']))
-                $subscription->weekly_digest = 1;
-            else
-                $subscription->weekly_digest = 0;
-
-            if (isset($_POST['two_times_weekly_digest']))
-                $subscription->two_times_weekly_digest = 1;
-            else
-                $subscription->two_times_weekly_digest = 0;
-
-            if (isset($_POST['rating']))
-                $subscription->rating = $_POST['rating'];
-            $subscription->time_updated = date("Y-m-d H:i:s");
-
-            if ($subscription->save()) {
-                setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
-                
-                // referral
-                if (isset($_POST['ref'])){
-                    //$_POST['ref'] , $subscription->id;
+                $subscription = Subscription::model()->findByAttributes(array('email' => $email));
+                $subupdate = 'update';
+                if (!$subscription) {
+                    $subupdate = 'new';
+                    $subscription = new Subscription();
+                    //$subscription->time_created = date("Y-m-d H:i:s");
+                    $subscription->hash = mailTrackingCode();
                 }
 
-                $message = new YiiMailMessage;
-                $message->view = 'subscribe';
-                $message->subject = 'Crowdfunding RSS subscription link';
-                $tc = mailTrackingCode();
-                $ml = new MailLog();
-                $ml->tracking_code = mailTrackingCodeDecode($tc);
-                $ml->type = 'subscription-' . $subupdate;
-                $ml->subscription_id = $subscription->id;
-                $ml->save();
 
-                $rss_link = Yii::app()->createAbsoluteUrl("feed/rss", array("data" => $subscription->hash));
-                $editLink = Yii::app()->createAbsoluteUrl("site/index", array("id" => $subscription->hash));
+                $subscription->email = $email;
+                $subscription->platform = $this->validateId($plat);
+                $subscription->category = $this->validateId($cat);
+                $subscription->exclude_orig_category = $this->validateId($subcat);
 
-                if ($subscription->rss) {
-                    $content = 'Thank you for subscribing to Crowdfunding RSS.<br /><br />
-						  We have send you the link to personalized RSS feed for crowdfunding campaigns.<br />
-						  Just copy and paste the following link in your favourite RSS reader and enjoy.';
-
-                    $message->setBody(array("content" => $content, "linkToFeed" => $rss_link, "editLink" => $editLink, "tc" => $tc), 'text/html');
-                } else {
-                    $content = "Thank you for subscribing to Crowdfunding RSS.<br />
-						  We hope you will enjoy our service.";
-
-                    $message->setBody(array("content" => $content, "editLink" => $editLink, "tc" => $tc), 'text/html');
-                }
-
-                $message->addTo($subscription->email);
-                $message->from = Yii::app()->params['noreplyEmail'];
-                Yii::app()->mail->send($message);
-
-                //$this->refresh();
-                $this->redirect($editLink);
-                Yii::app()->end();
-            } else {
-                if (YII_DEBUG)
-                    setFlash("save", "Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), "alert", false);
+                if (isset($_POST['rss_feed']))
+                    $subscription->rss = 1;
                 else
-                    setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
+                    $subscription->rss = 0;
+                if (isset($_POST['daily_digest']))
+                    $subscription->daily_digest = 1;
+                else
+                    $subscription->daily_digest = 0;
+                if (isset($_POST['weekly_digest']))
+                    $subscription->weekly_digest = 1;
+                else
+                    $subscription->weekly_digest = 0;
+
+                if (isset($_POST['two_times_weekly_digest']))
+                    $subscription->two_times_weekly_digest = 1;
+                else
+                    $subscription->two_times_weekly_digest = 0;
+
+                if (isset($_POST['rating']))
+                    $subscription->rating = $_POST['rating'];
+                $subscription->time_updated = date("Y-m-d H:i:s");
+
+                if ($subscription->save()) {
+                    setFlash("save", "Subscription saved. Please check your email for the link to your personalized RSS feed.", "success", false);
+
+                    // referral
+                    if (isset($_POST['ref'])){
+                        //$_POST['ref'] , $subscription->id;
+                    }
+
+                    $message = new YiiMailMessage;
+                    $message->view = 'subscribe';
+                    $message->subject = 'Crowdfunding RSS subscription link';
+                    $tc = mailTrackingCode();
+                    $ml = new MailLog();
+                    $ml->tracking_code = mailTrackingCodeDecode($tc);
+                    $ml->type = 'subscription-' . $subupdate;
+                    $ml->subscription_id = $subscription->id;
+                    $ml->save();
+
+                    $rss_link = Yii::app()->createAbsoluteUrl("feed/rss", array("data" => $subscription->hash));
+                    $editLink = Yii::app()->createAbsoluteUrl("site/index", array("id" => $subscription->hash));
+
+                    if ($subscription->rss) {
+                        $content = 'Thank you for subscribing to Crowdfunding RSS.<br /><br />
+                                                      We have send you the link to personalized RSS feed for crowdfunding campaigns.<br />
+                                                      Just copy and paste the following link in your favourite RSS reader and enjoy.';
+
+                        $message->setBody(array("content" => $content, "linkToFeed" => $rss_link, "editLink" => $editLink, "tc" => $tc), 'text/html');
+                    } else {
+                        $content = "Thank you for subscribing to Crowdfunding RSS.<br />
+                                                      We hope you will enjoy our service.";
+
+                        $message->setBody(array("content" => $content, "editLink" => $editLink, "tc" => $tc), 'text/html');
+                    }
+
+                    $message->addTo($subscription->email);
+                    $message->from = Yii::app()->params['noreplyEmail'];
+                    Yii::app()->mail->send($message);
+
+                    //$this->refresh();
+                    $this->redirect($editLink);
+                    Yii::app()->end();
+                } else {
+                    if (YII_DEBUG)
+                        setFlash("save", "Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), "alert", false);
+                    else
+                        setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
+                }
+            } else {
+                setFlash("save", "You need to check reCAPTCHA.", "alert", false);
             }
         } // end subscription
+
         //platforms
         $platforms = Platform::model()->findAll("active = :active", array(":active" => 1));
         $selplat = array(array("name" => 'All platforms', "id" => 0, "selected" => true, "projPerDay" => 0));
@@ -397,28 +407,37 @@ class SiteController extends Controller {
             best crowdfunding sites 
             crowd funding sites 
          */
+        $web = new webText();
         $post = null;
         if (isset($_POST['new_link'])){
+            $GRecaptchaResponse = $_POST['g-recaptcha-response'];
+            $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
+            $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("secret" => $secret, "response" => $GRecaptchaResponse));
+            $validateRecaptcha = json_decode($validateRecaptcha);
+            if ($validateRecaptcha->success == true) {
+                $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
+                if (strpos($url, "http") !== 0) $url = "http://".$url;
             
-            $url =  filter_var($_POST['new_link'], FILTER_SANITIZE_URL);
-            if (strpos($url, "http") !== 0) $url = "http://".$url;
-            
-            if ((filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) !== false)){
-                $exists = OutsideLinks::model()->findByAttributes(array("link" => $url));
-                if (!$exists){
-                    $ol = new OutsideLinks();
-                    $ol->category = 'New';
-                    $ol->sub_category = 'Submited';
-                    $ol->link = $url;
-                    if (!empty($_POST['new_email'])) $ol->title = $_POST['new_email'];
-                    else $ol->title = 'No title';
-                    $ol->active = 0;
-                    $ol->save();
+                if ((filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED) !== false)){
+                    $exists = OutsideLinks::model()->findByAttributes(array("link" => $url));
+                    if (!$exists){
+                        $ol = new OutsideLinks();
+                        $ol->category = 'New';
+                        $ol->sub_category = 'Submited';
+                        $ol->link = $url;
+                        if (!empty($_POST['new_email'])) $ol->title = $_POST['new_email'];
+                        else $ol->title = 'No title';
+                        $ol->active = 0;
+                        $ol->save();
+                    }
+                    setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
+                }else{
+                    $post = $_POST;
+                    setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
                 }
-                setFlash('postSuccess','Thank you for your submition ('.$url.'). We will check it shortly.');
             }else{
                 $post = $_POST;
-                setFlash('postProblem','There was a problem saving your suggestion! URL does not seem correct.','alert');
+                setFlash('postProblem','You need to check reCAPTCHA.','alert');
             }
         }
         

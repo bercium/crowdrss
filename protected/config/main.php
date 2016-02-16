@@ -151,7 +151,7 @@ $a = array(
                 'scriptEmail' => array('script@crowdfundingrss.com' => 'Script CF RSS'),
                 'username' => '',
                 'pass' => '',
-                'absoluteHost' => 'http://www.crowdfundingrss.com/',
+                'absoluteHost' => 'http://crowdfundingrss.com/',
 			    'mapsFolder'=>'data/',
 				'iconsFolder'=>'uploads/icons/',
                 'dataFolder'=>'uploads/maps/',
