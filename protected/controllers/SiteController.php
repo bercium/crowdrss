@@ -621,7 +621,7 @@ EOD;
                 $sitemapResponse .= "</loc>
           <changefreq>weekly</changefreq>
           <priority>" . $priority . "</priority>
-          <lastmod>$curdate</lastmod>
+          <lastmod>$curdate</lastmod> 
         </url>";
             }
         }
