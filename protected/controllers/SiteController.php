@@ -537,6 +537,8 @@ class SiteController extends Controller {
         Yii::app()->clientScript->reset();
         $this->layout = 'none'; // template blank
 
+        $curdate = date('Y-m-d');
+        
         $sitemapResponse = <<<EOD
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -551,11 +553,13 @@ EOD;
           <loc>http://crowdfundingrss.com/</loc>
           <changefreq>monthly</changefreq>
           <priority>0.8</priority>
+          <lastmod>$curdate</lastmod>
         </url>
         <url>
           <loc>http://crowdfundingrss.com/crowdfunding-sites</loc>
           <changefreq>weekly</changefreq>
           <priority>1</priority>
+          <lastmod>$curdate</lastmod>
         </url>";
 
             // all platforms and number of projects
@@ -566,12 +570,14 @@ EOD;
               <loc>http://crowdfundingrss.com/top" . $c . "</loc>
               <changefreq>daily</changefreq>
               <priority>0.9</priority>
+              <lastmod>$curdate</lastmod>
             </url>";
                 $sitemapResponse .= "
             <url>
               <loc>http://crowdfundingrss.com/bottom" . $c . "</loc>
               <changefreq>daily</changefreq>
               <priority>0.9</priority>
+              <lastmod>$curdate</lastmod>
             </url>";
                 foreach ($platforms as $platform) {
                     $sitemapResponse .= "
@@ -579,12 +585,14 @@ EOD;
                 <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/top" . $c . "/" . $platform->name) . "</loc>
                 <changefreq>daily</changefreq>
                 <priority>0.9</priority>
+                <lastmod>$curdate</lastmod>
               </url>";
                     $sitemapResponse .= "
               <url>
                 <loc>" . str_replace(" ", "+", "http://crowdfundingrss.com/bottom" . $c . "/" . $platform->name) . "</loc>
                 <changefreq>daily</changefreq>
                 <priority>0.9</priority>
+                <lastmod>$curdate</lastmod>
               </url>";
                 }
             }
@@ -613,6 +621,7 @@ EOD;
                 $sitemapResponse .= "</loc>
           <changefreq>weekly</changefreq>
           <priority>" . $priority . "</priority>
+          <lastmod>$curdate</lastmod>
         </url>";
             }
         }
