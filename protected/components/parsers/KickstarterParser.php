@@ -4,7 +4,7 @@ class KickstarterParser {
     
     public function linkParser($htmlData) {
         // Link
-        $pattern = '/(\/projects\/.+)\?ref=discovery/';
+        $pattern = '/(\/projects\/.+)\?ref=newest/';
         preg_match_all($pattern, $htmlData, $matches);
         if (is_array($matches)){
             foreach ($matches[1] as $key => $val){ $links[$val] = true; }
