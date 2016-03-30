@@ -13,7 +13,7 @@ class KickstarterParser {
         }
         
         // Image Link
-        $pattern = '/class="project-thumbnail-img".*src="(.+)" style="/';
+        $pattern = '/class="project-thumbnail-img".*src="(.+)".{6}="/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['images'] = str_replace("&amp;", "&", $matches[1]);
         return $data;
