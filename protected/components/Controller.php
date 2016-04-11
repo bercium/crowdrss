@@ -80,7 +80,7 @@ public function init(){
         ga('create', 'UA-9773251-6', 'auto');
         ga('require', 'displayfeatures');
         ga('send', 'pageview');
-     ");
+     ",CClientScript::POS_HEAD);
     //ga('set', '&uid', <?php echo ? >); // Set the user ID using signed-in user_id.
      
     //ga('require', 'linkid', 'linkid.js');
