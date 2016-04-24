@@ -2,6 +2,16 @@
 
 class KickstarterParser {
     
+    public function statusParser($htmlData) {
+        $pattern = '/window.current_project = "(.+)";/'; 
+        preg_match($pattern, $htmlData, $match);
+        $json = html_entity_decode($match[1]);
+        $json = str_replace('\\"', "\'", $json);
+        $jsonData = json_decode($json);
+        if ($jsonData == null){ return false; }
+        return $jsonData->state;
+    }
+    
     public function linkParser($htmlData) {
         // Link
         $pattern = '/(\/projects\/.+)\?ref=newest/';

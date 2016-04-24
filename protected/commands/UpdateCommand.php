@@ -34,6 +34,22 @@ class UpdateCommand extends CConsoleCommand {
             return $category;
         }
     }
+    
+//  Update project status
+    public function actionUpdateStatus() {
+        $web = new webText();
+        $projects = Project::model()->findAll('end < :date AND status IS NULL AND platform_id = 1 ORDER BY end DESC LIMIT 100', array(":date"=>date('Y-m-d H:i')));
+        foreach ($projects as $project){
+            switch ($project->platform->name) {
+                case "Kickstarter": $parser = new KickstarterParser(); break;
+//                case "Indiegogo": $parser = new IndiegogoParser(); break;
+                default: /*continue;*/ break;
+            }
+            $htmlData = $web->getHtml($project->link);
+            $project->status = $parser->statusParser($htmlData);
+            $project->save();
+        }
+    }
 
 //  Kickstarter store in to DB
     public function actionKickstarter() {

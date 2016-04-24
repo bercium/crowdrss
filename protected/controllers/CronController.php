@@ -98,6 +98,13 @@ class CronController extends Controller {
     }
 
     /**
+     * 
+     */
+    public function actionUpdateStatus() {
+        echo $this->consoleCommand('update', 'updateStatus');
+    }
+    
+    /**
      * all hidden profiles will be notified every second week
      */
     public function actionPoolSingle($type) {
@@ -196,5 +203,5 @@ class CronController extends Controller {
     public function actionValidateParsers() {
         echo $this->consoleCommand('mailer', 'validateParsers');
     }
-
+   
 }

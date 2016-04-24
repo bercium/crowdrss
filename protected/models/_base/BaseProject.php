@@ -61,10 +61,10 @@ abstract class BaseProject extends GxActiveRecord {
 			array('rating', 'numerical'),
 			array('title, image, link, internal_link, location, creator', 'length', 'max'=>255),
 			array('description', 'length', 'max'=>1000),
-			array('goal', 'length', 'max'=>20),
+			array('goal, status', 'length', 'max'=>20),
 			array('start, end', 'safe'),
-			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating', 'default', 'setOnEmpty' => true, 'value' => null),
-			array('id, platform_id, orig_category_id, title, description, image, link, internal_link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, rating, time_added, removed', 'safe', 'on'=>'search'),
+			array('start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, status, rating', 'default', 'setOnEmpty' => true, 'value' => null),
+			array('id, platform_id, orig_category_id, title, description, image, link, internal_link, start, end, location, creator, creator_created, creator_backed, goal, type_of_funding, status, rating, time_added, removed', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,7 +93,7 @@ abstract class BaseProject extends GxActiveRecord {
 			'description' => Yii::t('app', 'Description'),
 			'image' => Yii::t('app', 'Image'),
 			'link' => Yii::t('app', 'Link'),
-            'internal_link' => Yii::t('app', 'Link'),
+                        'internal_link' => Yii::t('app', 'Link'),
 			'start' => Yii::t('app', 'Start'),
 			'end' => Yii::t('app', 'End'),
 			'location' => Yii::t('app', 'Location'),
@@ -102,6 +102,7 @@ abstract class BaseProject extends GxActiveRecord {
 			'creator_backed' => Yii::t('app', 'Creator Backed'),
 			'goal' => Yii::t('app', 'Goal'),
 			'type_of_funding' => Yii::t('app', 'Type Of Funding'),
+			'status' => Yii::t('app', 'Status'),
 			'rating' => Yii::t('app', 'Rating'),
 			'time_added' => Yii::t('app', 'Time Added'),
 			'feedClickLogs' => null,
@@ -123,7 +124,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('description', $this->description, true);
 		$criteria->compare('image', $this->image, true);
 		$criteria->compare('internal_link', $this->internal_link, true);
-        $criteria->compare('link', $this->link, true);
+                $criteria->compare('link', $this->link, true);
 		$criteria->compare('start', $this->start, true);
 		$criteria->compare('end', $this->end, true);
 		$criteria->compare('location', $this->location, true);
@@ -132,6 +133,7 @@ abstract class BaseProject extends GxActiveRecord {
 		$criteria->compare('creator_backed', $this->creator_backed);
 		$criteria->compare('goal', $this->goal, true);
 		$criteria->compare('type_of_funding', $this->type_of_funding);
+		$criteria->compare('status', $this->status, true);
 		$criteria->compare('rating', $this->rating);
 		$criteria->compare('time_added', $this->time_added, true);
 		$criteria->compare('removed', $this->removed);
