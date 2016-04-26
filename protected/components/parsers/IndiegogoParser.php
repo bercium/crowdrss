@@ -1,14 +1,28 @@
 <?php
 
 class IndiegogoParser {
-    
+
+    public function statusParser($htmlData) {
+        $pattern = '/gon.tealium_data_layer=(.+);gon.domain/';
+        preg_match($pattern, $htmlData, $match);
+        if (isset($match[1])){$json = html_entity_decode($match[1]);}
+        else{return false;}
+        $json = str_replace('\\"', "", $json);
+        $json = str_replace('\"', "", $json);
+        $jsonData = json_decode($json);
+        if ($jsonData == null){ return false; }
+        if (!$jsonData->campaign_name) {return false;}
+        if ($jsonData->campaign_percent_of_goal >= 1){return "successful";}
+        else {return "failed";}
+    }
+
     public function linkParser($htmlData) {
         $htmlDataSplit = explode('{"campaigns":', $htmlData);
         $htmlData = '{"campaigns":'.$htmlDataSplit[1];
         $json = html_entity_decode($htmlData);
         return json_decode($json);
     }
-   
+
     public function projectParser($htmlData){
         $pattern = '/gon.tealium_data_layer=(.+);gon.domain/';
         preg_match($pattern, $htmlData, $match);
@@ -22,7 +36,7 @@ class IndiegogoParser {
 
         // Description
         $data['description'] = $jsonData->campaign_description;
-            
+
         // Category
         $data['category'] = $jsonData->campaign_category;
 
@@ -44,21 +58,21 @@ class IndiegogoParser {
 
         // Location
         $data['location'] = $jsonData->campaign_city . ", " . $jsonData->campaign_country;
-        
+
         // Creator
         $pattern = '/owner_name":"(.+)","currency"/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['creator'] = $match[1];
-        
+
         return($data);
     }
-    
+
     public function ratingParser($htmlData, $projectDescription){
         if (!($projectDescription)){return false;}
         $jsonData = json_decode($projectDescription);
         if ($jsonData == null){ return false;}
-        
-        // Words Full Description 
+
+        // Words Full Description
         $description = $jsonData->response->description_html;
         $data['#wordsContent'] = str_word_count(strip_tags($description));
 
@@ -89,8 +103,8 @@ class IndiegogoParser {
         // Money
         $money = $jsonData->goal;
         switch ($jsonData->currency->iso_code) {
-            case "GBP": $convert = 1.69; break; 
-            case "EUR": $convert = 1.14; break; 
+            case "GBP": $convert = 1.69; break;
+            case "EUR": $convert = 1.14; break;
             case "AUD": $convert = 0.93; break;
             case "CAD": $convert = 0.92; break;
             default: $convert = 1; break;
@@ -103,7 +117,7 @@ class IndiegogoParser {
         if (isset($matches[0])){$vid_img = 1;}
         else{$vid_img = 0;}
          $data['Bvideo'] = $vid_img;
-      
+
          // Days running
         $pattern = '/<span.*>in (\d)+ day.*<\/span>/';
         preg_match($pattern, $htmlData, $match);
@@ -145,10 +159,10 @@ class IndiegogoParser {
         // Type of funding
         if ($jsonData->funding_type == "flexible"){ $data['Bfunding'] = 0;  }
         else{ $data['Bfunding'] = 1;}
-      
+
         // External pages
         $beginingPosition = strpos($htmlData, 'Find This Campaign On');
-        if ($beginingPosition  !== false){ 
+        if ($beginingPosition  !== false){
             $endPosition = strpos($htmlData, 'Team</div>');
             $endPosition = $endPosition - $beginingPosition;
             $externalPages = substr($htmlData, $beginingPosition, $endPosition);
@@ -166,7 +180,7 @@ class IndiegogoParser {
             $this->projectRemoved();
             return false;
         }else $data['Bsuccessful'] = 0;
-        
-        return $data;     
+
+        return $data;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
-    
+
 //  Function for emailing of problematic project
     function errorMail($link, $category, $id) {
         $message = new YiiMailMessage;
@@ -34,15 +34,24 @@ class UpdateCommand extends CConsoleCommand {
             return $category;
         }
     }
-    
+
 //  Update project status
     public function actionUpdateStatus() {
         $web = new webText();
-        $projects = Project::model()->findAll('end < :date AND status IS NULL AND platform_id = 1 ORDER BY end DESC LIMIT 100', array(":date"=>date('Y-m-d H:i')));
+        $projects = Project::model()->findAll('end < :date AND status IS NULL AND platform_id IN (1,2) ORDER BY end DESC LIMIT 100', array(":date"=>date('Y-m-d H:i')));
         foreach ($projects as $project){
             switch ($project->platform->name) {
                 case "Kickstarter": $parser = new KickstarterParser(); break;
-//                case "Indiegogo": $parser = new IndiegogoParser(); break;
+                case "Indiegogo": $parser = new IndiegogoParser(); break;
+                //                case "Go get funding": $parser = new IndiegogoParser(); break;
+                //                case "Fund anything": $parser = new IndiegogoParser(); break;
+                //                case "FundRazr": $parser = new IndiegogoParser(); break;
+                //                case "Pledge music": $parser = new IndiegogoParser(); break;
+                //                case "Ulule": $parser = new IndiegogoParser(); break;
+                //                case "Pozible": $parser = new IndiegogoParser(); break;
+                //                case "PledgeMe": $parser = new IndiegogoParser(); break;
+                //                case "FundedByMe": $parser = new IndiegogoParser(); break;
+                //                case "CrowdfunderUK": $parser = new IndiegogoParser(); break;
                 default: /*continue;*/ break;
             }
             $htmlData = $web->getHtml($project->link);
@@ -60,7 +69,7 @@ class UpdateCommand extends CConsoleCommand {
         $count = 0;
         $platform = Platform::model()->findByAttributes(array('name' => 'Kickstarter'));
         if (!$platform->download) return;
-        
+
         $id = $platform->id;
         while (($i <= 50) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest"));
@@ -72,7 +81,7 @@ class UpdateCommand extends CConsoleCommand {
                     $count_link_parts = count($link_parts);
                     $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
                                                             array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                                  ':link2' => $data['links'][$j], 
+                                                                  ':link2' => $data['links'][$j],
                                                                   ':link3' => $link,
                                                                   ':image' => $data['images'][$j]));
 
@@ -109,7 +118,7 @@ class UpdateCommand extends CConsoleCommand {
                         $insert_category->orig_category_id = $category->id;
                         $insert_category->save();
 
-                        // get rating 
+                        // get rating
                         $KsRating = new KickstarterRating($link, $insert->id, $htmlData);
                         $rating = $KsRating->firstAnalize();
                         $insert->rating = $rating;
@@ -179,7 +188,7 @@ class UpdateCommand extends CConsoleCommand {
                     $insert_category->orig_category_id = $category->id;
                     $insert_category->save();
 
-                    // get rating 
+                    // get rating
                     $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
                     $rating = $IggRating->firstAnalize();
                     $insert->rating = $rating;
@@ -308,7 +317,7 @@ class UpdateCommand extends CConsoleCommand {
             $data = $parser->linkParser($web->getHtml("https://fundrazr.com/find?type=newest&page=$i"));
             if (isset($data['link'])) {
                 for ($j=0; $j < (count($data['link'])); $j++) {
-                    $link = "https:" . $data['link'][$j]; 
+                    $link = "https:" . $data['link'][$j];
                     $link_check = Project::model()->findByAttributes(array('link' => $link));
                     if ($link_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
@@ -369,7 +378,7 @@ class UpdateCommand extends CConsoleCommand {
                 $count_link_parts = count($link_parts);
                 $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3",
                                                           array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
-                                                                ':link2' => $data['link'][$j], 
+                                                                ':link2' => $data['link'][$j],
                                                                 ':link3' => $link));
                 if ($project_check) {$count = $count+1;} // Counter for checking if it missed some project in the next few projects
                 else{
@@ -416,7 +425,7 @@ class UpdateCommand extends CConsoleCommand {
             }
         }
     }
-    
+
 // Ulule store to DB
     public function actionUlule() {
         $platform = Platform::model()->findByAttributes(array('name' => 'Ulule'));
@@ -460,7 +469,7 @@ class UpdateCommand extends CConsoleCommand {
 //                                $insert_category->project_id = $id_project;
 //                                $category = $this->checkCategory($data_single['categories'][$k], $data['links'][$j], "");
 //                                $insert_category->orig_category_id = $category->id;
-//                                $insert_category->save(); 
+//                                $insert_category->save();
 //                            }
 //                        }else{
                             $insert_category = new ProjectOrigcategory;
@@ -599,7 +608,7 @@ class UpdateCommand extends CConsoleCommand {
             //$i = $i + 1;
         //}
     }
-    
+
 // FundedByMe store to DB
     public function actionFundedByMe() {
         $platform = Platform::model()->findByAttributes(array('name' => 'FundedByMe'));
@@ -656,7 +665,7 @@ class UpdateCommand extends CConsoleCommand {
 //            $i = $i + 1;
 //        }
     }
-    
+
 // CrowdfunderUK store to DB
     public function actionCrowdfunderUK() {
         $platform = Platform::model()->findByAttributes(array('name' => 'CrowdfunderUK'));
