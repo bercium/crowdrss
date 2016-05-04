@@ -82,8 +82,8 @@ public function init(){
         ga('send', 'pageview');
      ",CClientScript::POS_HEAD);
     
+    $cs->registerScriptFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',CClientScript::POS_HEAD);
     $cs->registerScript("mobileads",'
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         (adsbygoogle = window.adsbygoogle || []).push({
           google_ad_client: "ca-pub-0534207295672567",
           enable_page_level_ads: true
