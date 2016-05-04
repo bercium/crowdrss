@@ -82,14 +82,14 @@ public function init(){
         ga('send', 'pageview');
      ",CClientScript::POS_HEAD);
     
-    /*$cs->registerScriptFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',CClientScript::POS_HEAD, array('async'=>'async'));
+    $cs->registerScriptFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js',CClientScript::POS_HEAD, array('async'=>'async'));
     $cs->registerScript("mobileads",'
         (adsbygoogle = window.adsbygoogle || []).push({
           google_ad_client: "ca-pub-0534207295672567",
           enable_page_level_ads: true
         });
      ',CClientScript::POS_HEAD);
-    */
+    
     //ga('set', '&uid', <?php echo ? >); // Set the user ID using signed-in user_id.
      
     //ga('require', 'linkid', 'linkid.js');
