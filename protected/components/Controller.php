@@ -81,6 +81,14 @@ public function init(){
         ga('require', 'displayfeatures');
         ga('send', 'pageview');
      ",CClientScript::POS_HEAD);
+    
+    $cs->registerScript("mobileads",'
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0534207295672567",
+          enable_page_level_ads: true
+        });
+     ',CClientScript::POS_HEAD);
     //ga('set', '&uid', <?php echo ? >); // Set the user ID using signed-in user_id.
      
     //ga('require', 'linkid', 'linkid.js');
