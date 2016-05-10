@@ -36,14 +36,14 @@
 
                 <div class="row">
                   <div class="columns medium-4">
-                    <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
+                    <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
                         <img src="<?php echo $project->image; ?>" class="" style="width: 100%;">
                     </a>
                   </div>
                   <div class="columns medium-8">
                       <div class="show-for-small pt30"></div>
                         <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("view/index",array("remove"=>$project->id,"name"=>$project->internal_link)); ?>">Remove</a> <?php }?>
-                    <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
+                    <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" trk="link_preview_<?php echo $project->id; ?>" target="_blank"><h4><?php echo $project->title; ?></h4></a>
                     <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
                     <p style="margin-top: 10px;" class="mb0">
                     <?php echo $project->description; ?>

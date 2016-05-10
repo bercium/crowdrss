@@ -73,7 +73,7 @@ $this->pageTitle = "RSS preview";
                   ?>
                   </p>
                   
-                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
+                  <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
                 </div>
 
               </div>

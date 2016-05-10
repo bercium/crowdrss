@@ -53,14 +53,14 @@ if ($project->removed == 0){
                         </i>
                       </span>
                       <?php } ?>
-                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
+                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
                           <img itemprop="image" src="<?php echo $project->image; ?>" alt='<?php echo $project->title; ?>' style="width:100%">
                         </a>
                       <div class="show-for-small pb20"></div>
                   </div>
                   <div class="columns medium-8">
                         <?php if (!Yii::app()->user->isGuest){ ?><a href="<?php echo Yii::app()->createUrl("view/index",array("remove"=>$project->id,"name"=>$project->internal_link)); ?>">Remove</a> <?php }?>
-                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
+                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" trk="link_preview_<?php echo $project->id; ?>" target="_blank">
                             <h1 class="small" itemprop="name"><?php echo $project->title; ?></h1>
                         </a>
                         <small><?php echo "in ".$project->origCategory->name." on ".date("D, d M Y H:i:s e",strtotime($project->time_added)); ?></small>
@@ -80,7 +80,7 @@ if ($project->removed == 0){
                            //"<br />Rating: ".round($project->rating);
                         ?>
                         </p>
-                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
+                        <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" rel="nofollow" target="_blank" trk="link_preview_<?php echo $project->id; ?>">View on <?php echo $project->platform->name; ?> <i class="fa fa-external-link"></i></a>
                   </div>
 
             </div>
