@@ -23,7 +23,8 @@ $this->pageTitle = $title;
 		if ($i > 3) break;
     ?>		
 		<div class="columns medium-4 text-center">
-			<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
+			<?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
+            <a href="<?php echo $internal_link; ?>" trk="link_<?php echo $listType."_".$project->id; ?>">
 				<div class="panel callout">
 					<i class="fa fa-external-link right" style="color:#999;"></i>
 					
@@ -53,7 +54,8 @@ $this->pageTitle = $title;
   
   <div class="row">
     <div class="columns">
-      <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
+      <?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
+      <a href="<?php echo $internal_link; ?>" trk="link_<?php echo $listType."_".$project->id; ?>">
         <div class="row panel <?php if ($i < 4) echo "callout"; ?>" style="padding: 1rem; margin-bottom:1.25rem">
           <div class="columns small-1 ">
             <h4 style="margin:0;">
