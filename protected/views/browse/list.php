@@ -21,6 +21,16 @@ $this->pageTitle = $title;
     foreach ($projects as $project){
 		$i++;
 		if ($i > 3) break;
+        
+        if (!empty($project->internal_link)){
+            $internal_link = Yii::app()->createUrl("view/index", array("name" => $project->internal_link));
+        }else{
+            if (strpos($project->title, "/") === false)
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $project->title)))));
+            else
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $project->title)));
+        }
+        
     ?>		
 		<div class="columns medium-4 text-center">
 			<?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
@@ -50,6 +60,16 @@ $this->pageTitle = $title;
     foreach ($projects as $project){
 		$i++;
 		if ($i < 4) continue;
+        
+        if (!empty($project->internal_link)){
+            $internal_link = Yii::app()->createUrl("view/index", array("name" => $project->internal_link));
+        }else{
+            if (strpos($project->title, "/") === false)
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $project->title)))));
+            else
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $project->title)));
+        }
+        
     ?>
   
   <div class="row">
