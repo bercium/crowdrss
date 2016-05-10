@@ -36,7 +36,7 @@ $this->pageTitle = $title;
 			<?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
             <a href="<?php echo $internal_link; ?>" trk="link_<?php echo $listType."_".$project->id; ?>">
 				<div class="panel callout">
-					<i class="fa fa-external-link right" style="color:#999;"></i>
+                    <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
 					
 					<h4 style=""><?php echo $i; ?></h4>
 					<img src="<?php echo $project->image; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
@@ -104,7 +104,7 @@ $this->pageTitle = $title;
           </div>
           <div class="columns small-11 medium-7">
             
-            <i class="fa fa-external-link right show-for-small"></i>
+            <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
             <?php
               echo "<strong>".$project->title."</strong>";
               if ($project->creator) echo "<i> by ".$project->creator."</i>";
@@ -120,7 +120,7 @@ $this->pageTitle = $title;
             </div>
           </div>
           <div class="columns show-for-medium-up medium-3">
-            <i class="fa fa-external-link right"></i>
+            <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
             <?php 
             //
             echo "Goal: ".$project->goal; ?>
