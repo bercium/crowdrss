@@ -21,11 +21,22 @@ $this->pageTitle = $title;
     foreach ($projects as $project){
 		$i++;
 		if ($i > 3) break;
+        
+        if (!empty($project->internal_link)){
+            $internal_link = Yii::app()->createUrl("view/index", array("name" => $project->internal_link));
+        }else{
+            if (strpos($project->title, "/") === false)
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $project->title)))));
+            else
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $project->title)));
+        }
+        
     ?>		
 		<div class="columns medium-4 text-center">
-			<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
+			<?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
+            <a href="<?php echo $internal_link; ?>" trk="link_<?php echo $listType."_".$project->id; ?>">
 				<div class="panel callout">
-					<i class="fa fa-external-link right" style="color:#999;"></i>
+                    <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
 					
 					<h4 style=""><?php echo $i; ?></h4>
 					<img src="<?php echo $project->image; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
@@ -49,11 +60,22 @@ $this->pageTitle = $title;
     foreach ($projects as $project){
 		$i++;
 		if ($i < 4) continue;
+        
+        if (!empty($project->internal_link)){
+            $internal_link = Yii::app()->createUrl("view/index", array("name" => $project->internal_link));
+        }else{
+            if (strpos($project->title, "/") === false)
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index", array("name" => $project->title)))));
+            else
+                $internal_link = htmlspecialchars(str_replace(" ", "+", (Yii::app()->createUrl("view/index") . "?name=" . $project->title)));
+        }
+        
     ?>
   
   <div class="row">
     <div class="columns">
-      <a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">
+      <?php /*<a href="<?php echo Yii::app()->createUrl("feed/rl",array("l"=>$project->link)); ?>" target="_blank" style="color:inherit;" trk="link_<?php echo $listType."_".$project->id; ?>">*/ ?>
+      <a href="<?php echo $internal_link; ?>" trk="link_<?php echo $listType."_".$project->id; ?>">
         <div class="row panel <?php if ($i < 4) echo "callout"; ?>" style="padding: 1rem; margin-bottom:1.25rem">
           <div class="columns small-1 ">
             <h4 style="margin:0;">
@@ -82,7 +104,7 @@ $this->pageTitle = $title;
           </div>
           <div class="columns small-11 medium-7">
             
-            <i class="fa fa-external-link right show-for-small"></i>
+            <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
             <?php
               echo "<strong>".$project->title."</strong>";
               if ($project->creator) echo "<i> by ".$project->creator."</i>";
@@ -98,7 +120,7 @@ $this->pageTitle = $title;
             </div>
           </div>
           <div class="columns show-for-medium-up medium-3">
-            <i class="fa fa-external-link right"></i>
+            <?php /* <i class="fa fa-external-link right" style="color:#999;"></i> */?>
             <?php 
             //
             echo "Goal: ".$project->goal; ?>
