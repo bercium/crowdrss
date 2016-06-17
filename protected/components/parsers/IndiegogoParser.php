@@ -34,6 +34,8 @@ class IndiegogoParser {
         if ($jsonData == null){ return false; }
         if (!$jsonData->campaign_name) {return false;}
 
+        $data['title'] = $jsonData->campaign_name;
+        $data['image'] = $jsonData->campaign_image_url;
         // Description
         $data['description'] = $jsonData->campaign_description;
 

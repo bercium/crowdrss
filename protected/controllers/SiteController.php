@@ -657,6 +657,69 @@ EOD;
         exit;
     }
     
+    
+    public function actionManualinputigg($url){
+        $parser = new IndiegogoParser();
+        $web = new webText();
+        $link = $url; 
+        $project_check = Project::model()->find("link LIKE :link ", array(':link' => $link));
+        $htmlData = $web->getHtml($link, array(), true);
+        
+        print_r($htmlData);
+        $data_single = $parser->projectParser($htmlData);
+        if ($data_single == false) { echo "1"; return; }
+            
+        if (!$project_check) {
+            $insert = new Project;
+            $insert->title = $data_single['title'];
+            $insert->description = $data_single['description'];
+            $insert->image = $data_single['image'];
+            $insert->link = $link;
+            $insert->internal_link = toAscii($title);
+            $insert->time_added = date("Y-m-d H:i:s");
+            $insert->platform_id = $id;
+            $category = $this->checkCategory($data_single['category'], $link, "");
+            $insert->orig_category_id = $category->id;
+            if (isset($data_single['start_date'])) $insert->start = $data_single['start_date'];
+            if (isset($data_single['end_date'])) $insert->end = $data_single['end_date'];
+            if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+            if (isset($data_single['location'])) $insert->location = $data_single['location'];
+            if (isset($data_single['creator'])) $insert->creator = $data_single['creator'];
+            if (isset($data_single['type_of_funding'])) {
+                if ($data_single['type_of_funding'] == "Fixed Funding") { $typeOfFunding = 0; }
+                else {$typeOfFunding = 1; }
+                $insert->type_of_funding = $typeOfFunding;
+            }
+            $insert->save();
+            
+            echo "save1";
+
+
+            $id_project = $insert->id;
+            // Category add
+            $insert_category = new ProjectOrigcategory;
+            $insert_category->project_id = $id_project;
+            $category = $this->checkCategory($data_single['category'], $link, "");
+            $insert_category->orig_category_id = $category->id;
+            $insert_category->save();
+
+            // get rating
+            $IggRating = new IndiegogoRating($link, $insert->id, $htmlData);
+            $rating = $IggRating->firstAnalize();
+            $insert->rating = $rating;
+            $insert->save();
+    //                  print_r($insert->getErrors());
+        }else{
+            echo "update";
+            $IggRating = new IndiegogoRating($link, $project_check->id, $htmlData);
+            $rating = $IggRating->analize();
+            $project_check->rating = $rating;
+            $project_check->save();
+        }
+        
+        
+    }
+    
 	
     /**
      * used to fix some issues
