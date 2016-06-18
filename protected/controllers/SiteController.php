@@ -661,6 +661,9 @@ EOD;
     public function actionManualinputigg($url){
         $parser = new IndiegogoParser();
         $web = new webText();
+        $platform = Platform::model()->findByAttributes(array('name' => 'Indiegogo'));
+        if (!$platform->download) return;
+        $id = $platform->id;
         $link = $url; 
         $project_check = Project::model()->find("link LIKE :link ", array(':link' => $link));
         $htmlData = $web->getHtml($link, array(), false);
@@ -675,7 +678,7 @@ EOD;
             $insert->description = $data_single['description'];
             $insert->image = $data_single['image'];
             $insert->link = $link;
-            $insert->internal_link = toAscii($title);
+            $insert->internal_link = toAscii($data_single['title']);
             $insert->time_added = date("Y-m-d H:i:s");
             $insert->platform_id = $id;
             $category = $this->checkCategory($data_single['category'], $link, "");
@@ -718,6 +721,27 @@ EOD;
         }
         
         
+    }
+    
+    //  Check if category exists
+    function checkCategory($category_check, $link, $platform){
+        $category_check = preg_replace_callback("/(&#[0-9]+;)/", function($m) { return mb_convert_encoding($m[1], "UTF-8", "HTML-ENTITIES"); }, $category_check);
+        if ($platform == "PledgeMusic") { $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15')); }
+        elseif ($platform == "PubSlush"){ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24')); }
+        else{$category = OrigCategory::model()->findByAttributes(array('name' => $category_check));}
+        if ($category) { return $category; }
+        else {
+            $updateOrigCategory = new OrigCategory();
+            if ($platform == "PledgeMusic") { $updateOrigCategory->category_id = 15; }
+            elseif ($platform == "PubSlush"){ $updateOrigCategory->category_id = 24; }
+            $updateOrigCategory->name = $category_check;
+            $updateOrigCategory->save();
+            if ($platform == "PledgeMusic") { $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '15')); }
+            elseif ($platform == "PubSlush"){ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check, 'category_id' => '24')); }
+            else{ $category = OrigCategory::model()->findByAttributes(array('name' => $category_check)); }
+            //$this->errorMail($link, $category_check, $category->id);
+            return $category;
+        }
     }
     
 	
