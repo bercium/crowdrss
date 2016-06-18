@@ -663,9 +663,9 @@ EOD;
         $web = new webText();
         $link = $url; 
         $project_check = Project::model()->find("link LIKE :link ", array(':link' => $link));
-        $htmlData = $web->getHtml($link, array(), true);
+        $htmlData = $web->getHtml($link, array(), false);
         
-        print_r($htmlData);
+        //var_dump($htmlData);die;
         $data_single = $parser->projectParser($htmlData);
         if ($data_single == false) { echo "1"; return; }
             
