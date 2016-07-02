@@ -40,9 +40,14 @@ class BrowseController extends Controller
 		$sqlcategory = $this->getCategories($category);
         $platform_id_sql = Platform::model()->findByAttributes(array("name" => str_replace("-", " ", $platform)));
         if ($platform_id_sql) $platform_id = $platform_id_sql->id;
+        
+        $date = date('Y-m-d',strtotime('-1 week'));
+        if ($platform_id && $sqlcategory) $date = date('Y-m-d',strtotime('-6 months'));
+        else
+        if ($platform_id || $sqlcategory) $date = date('Y-m-d',strtotime('-3 months'));
 		
 		$projects = Project::model()->findAll("time_added >= :date AND (platform_id = :platformid OR :platformid IS NULL)".$sqlcategory." ORDER BY rating DESC, time_added DESC LIMIT :limit",
-											  array(":date"=>date('Y-m-d',strtotime('-3 months')),
+											  array(":date"=>$date,
 													":limit"=>$count,
                                                     ":platformid" => $platform_id));
 
