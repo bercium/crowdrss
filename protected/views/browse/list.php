@@ -6,11 +6,11 @@ $this->pageTitle = $title;
     <div class="row">
       <div class="columns">
 		<?php if ($title == 'Top projects for today'){ ?>
-			<h2><?php echo $title; ?></h2>
+			<h1><?php echo $title; ?></h1>
 			<p>Best newcomers in the last 24h</p>
 		<?php }else{ ?>
-			<h2><?php echo $title; ?></h2>
-			<p>List is generated from new projects from past 7 days</p>
+			<h1><?php echo $title; ?></h1>
+			<p>List of new crowdfunding projects from past 7 days</p>
 		<?php } ?>
       </div>
     </div>
@@ -41,11 +41,14 @@ $this->pageTitle = $title;
 					<h4 style=""><?php echo $i; ?></h4>
 					<img src="<?php echo $project->image; ?>" data-tooltip data-options="disable_for_touch:true" class="tip-right radius" title="<img src='<?php echo $project->image; ?>'>">
 
-					<h1 style="font-size: 16px; font-weight: bold; margin-top:8px;"><?php echo $project->title; if ($project->creator) echo '<i style="font-weight: normal"> by '.$project->creator."</i>"; ?></h1>
+					<h2 style="font-size: 16px; font-weight: bold; margin-top:8px;"><?php echo $project->title; if ($project->creator) echo '<i style="font-weight: normal"> by '.$project->creator."</i>"; ?></h2>
+                    
 					<div style="padding-top:5px; text-align: left; line-height: 18px;">
-					  <strong><?php echo $project->platform->name; ?></strong><?php if (isset($project->origCategory)) echo ": ".$project->origCategory->name; ?>
-					  <br />Goal: <?php echo $project->goal; ?><br />
-					   <small>Ends on: <?php echo $project->end; ?></small>
+                        <em><?php echo trim_text($project->description, 80); ?></em><br />
+                        
+                        <strong><?php echo $project->platform->name; ?></strong><?php if (isset($project->origCategory)) echo ": ".$project->origCategory->name; ?>
+                        <br />Goal: <?php echo $project->goal; ?><br />
+                        <small>Ends on: <?php echo $project->end; ?></small>
 					</div>
 				</div>
 			</a>
@@ -113,8 +116,7 @@ $this->pageTitle = $title;
             <div style="padding-top:5px;">
               <small>
               <?php
-                if ($allPlatforms) echo "<strong>".$project->platform->name."</strong>";
-                if (isset($project->origCategory)) echo ": ".$project->origCategory->name;
+                echo "<em>".trim_text($project->description,80)."</em>";
               ?>
               </small>
             </div>
@@ -128,7 +130,9 @@ $this->pageTitle = $title;
             <div style="padding-top:5px;">
               <small>
               <?php
-                echo "Ends on: ".$project->end;
+                /*if ($allPlatforms) */echo "<strong>".$project->platform->name."</strong>";
+                if (isset($project->origCategory)) echo ": ".$project->origCategory->name;
+                //echo "Ends on: ".$project->end;
               ?>
               </small>
             </div>
@@ -140,5 +144,23 @@ $this->pageTitle = $title;
     </div>
   </div>
    <?php } ?>
-  
+      
+      
+    <div class="row">
+        <div class="columns">
+            <h3>More <?php echo $listType." ".$count; ?> lists</h3>
+            <?php if ($platforms){
+                foreach ($platforms as $p){
+                    echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'/'.str_replace(" ","-",$p->name).'">'. ucfirst($listType)." ".$count." ".$p->name." projects</a><br />";
+                }
+            } ?>
+            <?php if ($categories){
+                foreach ($categories as $c){
+                    if ($platform) echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'/'.$platform.'/'.str_replace(" ","-",str_replace("&","_",$c->name)).'">'. ucfirst($listType)." ".$count." ".ucfirst(str_replace ("-", " ", $platform))." ".$c->name." projects</a><br />";
+                    else echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'//'.str_replace(" ","-",str_replace("&","_",$c->name)).'">'. ucfirst($listType)." ".$count." ".$c->name." projects</a><br />";
+                }
+            } ?>
+        </div>
+    </div>
+      
 </div>

@@ -93,10 +93,10 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
 				  <strong><a href="<?php echo Yii::app()->createUrl('topDaily'); ?>"  trk="link_bottom_topDaily"><i class="fa fa-star fa-5x"></i><br />Top daily</a></strong>
 				</li>
 				<li class="text-center ">
-					<strong><a href="<?php echo Yii::app()->createUrl('top50'); ?>"  trk="link_bottom_top50"><i class="fa fa-trophy fa-5x"></i><br />Top 50</a></strong>
+					<strong><a href="<?php echo Yii::app()->createUrl('top10'); ?>"  trk="link_bottom_top10"><i class="fa fa-trophy fa-5x"></i><br />Top 10</a></strong>
 				</li>
 				<li class="text-center ">
-				  <strong><a href="<?php echo Yii::app()->createUrl('bottom50'); ?>" trk="link_bottom_bottom50"><i class="fa fa-bolt fa-5x"></i><br />Bottom 50</a></strong>
+				  <strong><a href="<?php echo Yii::app()->createUrl('bottom10'); ?>" trk="link_bottom_bottom10"><i class="fa fa-bolt fa-5x"></i><br />Bottom 10</a></strong>
 				</li>
 				<li class="text-center ">
 				  <strong><a href="<?php echo Yii::app()->createUrl('site/owners'); ?>"  trk="link_bottom_owners"><i class="fa fa-info-circle fa-5x"></i><br />Project owners</a></strong>

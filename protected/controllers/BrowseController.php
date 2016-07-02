@@ -36,16 +36,29 @@ class BrowseController extends Controller
 		//if ($count < 10) $count = 10;
 		if ($count > 100) $count = 100;
 		
-		$category = $this->getCategories($category);
+        $category = str_replace("-", " ", str_replace("_", "&", $category));
+		$sqlcategory = $this->getCategories($category);
+        $platform_id = Platform::model()->findByAttributes(array("name" => str_replace("-", " ", $platform)));
 		
-		$projects = Project::model()->findAll("time_added >= :date ".$category." ORDER BY rating DESC, time_added DESC LIMIT :limit",
+		$projects = Project::model()->findAll("time_added >= :date AND platform_id = :platformid".$sqlcategory." ORDER BY rating DESC, time_added DESC LIMIT :limit",
 											  array(":date"=>date('Y-m-d',strtotime('-1 week')),
-													":limit"=>$count));
+													":limit"=>$count,
+                                                    ":platformid" => $platform_id));
 
-
+        $platforms = Platform::model()->findAll();
+        $categories = null;
+        
 		$title = "Top ".$count." projects";
-		if ($platform) $title .= " on ".$platform;
-		$this->render('list',array("title"=>$title,"projects"=>$projects,"allPlatforms"=>($platform == ''),"listType"=>"top"));
+		if ($platform){
+            $title = "Top ".$count." ".ucfirst(str_replace("-", " ", $platform))." projects";
+            if ($category == '') $platforms = null;
+            $categories = Category::model()->findAll();
+        }
+		if ($category){
+            $title = "Top ".$count." ".ucfirst(str_replace("-", " ", $platform))." ".$category." projects";
+            $categories = null;
+        }
+		$this->render('list',array("title"=>$title,"projects"=>$projects,"platform"=>$platform,"listType"=>"top", "platforms" => $platforms, "categories" => $categories, 'count' => $count));
 	}
   
 	/**
