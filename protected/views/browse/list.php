@@ -44,7 +44,7 @@ $this->pageTitle = $title;
 					<h2 style="font-size: 16px; font-weight: bold; margin-top:8px;"><?php echo $project->title; if ($project->creator) echo '<i style="font-weight: normal"> by '.$project->creator."</i>"; ?></h2>
                     
 					<div style="padding-top:5px; text-align: left; line-height: 18px;">
-                        <em><?php echo trim_text($project->description, 80); ?></em><br />
+                        <em><?php echo trim_text($project->description, 80); ?></em><br /><br />
                         
                         <strong><?php echo $project->platform->name; ?></strong><?php if (isset($project->origCategory)) echo ": ".$project->origCategory->name; ?>
                         <br />Goal: <?php echo $project->goal; ?><br />
@@ -116,7 +116,7 @@ $this->pageTitle = $title;
             <div style="padding-top:5px;">
               <small>
               <?php
-                echo "<em>".trim_text($project->description,80)."</em>";
+                echo "<em>".trim_text($project->description,120)."</em>";
               ?>
               </small>
             </div>
