@@ -564,7 +564,7 @@ EOD;
 
             // all platforms and number of projects
             $platforms = Platform::model()->findAll();
-            foreach (array(10, 15, 25, 50, 100) as $c) {
+            foreach (array(10, 15, 20) as $c) {
                 $sitemapResponse .= "
             <url>
               <loc>http://crowdfundingrss.com/top" . $c . "</loc>
