@@ -156,6 +156,7 @@ class SiteController extends Controller {
 
                 if (isset($_POST['rating']))
                     $subscription->rating = $_POST['rating'];
+                else $subscription->rating = 4;
                 $subscription->time_updated = date("Y-m-d H:i:s");
 
                 if ($subscription->save()) {
@@ -203,7 +204,7 @@ class SiteController extends Controller {
                     if (YII_DEBUG)
                         setFlash("save", "Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), "alert", false);
                     else{
-                        Yii::log("Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), CLogger::LEVEL_ERROR);
+                        Yii::log("Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true). print_r($_POST, true), CLogger::LEVEL_ERROR);
                         setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
                     }
                 }
