@@ -155,7 +155,7 @@ class SiteController extends Controller {
                     $subscription->two_times_weekly_digest = 0;
 
                 if (isset($_POST['rating']))
-                    $subscription->rating = $_POST['rating'];
+                    $subscription->rating = round($_POST['rating']);
                 else $subscription->rating = 4;
                 $subscription->time_updated = date("Y-m-d H:i:s");
 
