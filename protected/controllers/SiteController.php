@@ -202,8 +202,10 @@ class SiteController extends Controller {
                 } else {
                     if (YII_DEBUG)
                         setFlash("save", "Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), "alert", false);
-                    else
+                    else{
+                        Yii::log("Problem saving your subscription! Please try later or contact us. " . print_r($subscription->getErrors(), true), CLogger::LEVEL_ERROR);
                         setFlash("save", "Problem saving your subscription! Please try later or contact us and tell us all about it.", "alert", false);
+                    }
                 }
             } else {
                 setFlash("save", "You need to check reCAPTCHA.", "alert", false);
