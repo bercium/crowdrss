@@ -19,7 +19,7 @@ class ViewController extends Controller
         }
 
         if ($project == null || $project->removed){
-          throw new CHttpException(400, Yii::t('msg', 'No such project.'));
+          throw new CHttpException(410, Yii::t('msg', 'No such project.'));
         }
 
         if (isset($_GET['remove']) && ($_GET['remove'] == $project->id) && (!Yii::app()->user->isGuest)){
