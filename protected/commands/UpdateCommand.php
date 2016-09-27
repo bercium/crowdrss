@@ -62,6 +62,9 @@ class UpdateCommand extends CConsoleCommand {
 
 //  Kickstarter store in to DB
     public function actionKickstarter() {
+        // once a while delete cookies file
+        if (file_exists(Yii::app()->basePath.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'cookies.curl.txt')) unlink(Yii::app()->basePath.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'cookies.curl.txt');
+
         $parser = new KickstarterParser();
         $web = new webText();
         $i = 1;
