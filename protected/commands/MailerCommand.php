@@ -391,7 +391,7 @@ class MailerCommand extends CConsoleCommand {
 	public function actionValidateParsers() {
 		$hours = 8;
 		$ksCount = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -" . $hours . " HOUR) AND platform_id = 1");
-		$iggCount = Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -" . $hours . " HOUR) AND platform_id = 2");
+		$iggCount = 30;//Project::model()->countBySql("SELECT COUNT(*) FROM project WHERE time_added > DATE_ADD(NOW(), INTERVAL -" . $hours . " HOUR) AND platform_id = 2");
 
 		if (($ksCount < 15) || ($iggCount < 15)) {
 
