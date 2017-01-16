@@ -63,8 +63,7 @@ class KickstarterParser {
         $data['end_date'] = date("Y-m-d H:i:s", $jsonData->{'deadline'});
 
         // Created
-        $pattern = '/<a class="medium navy-700 remote_modal_dialog" data-modal-title="About the creator" data-modal-class="modal_project_by" href="\/projects\/.+\/creator_bio">(.+)<\/a>/';
-//        $pattern = '/<span .+>(.+) created<\/span>/';
+/*        $pattern = '/<span .+>(.+) created<\/span>/';
         preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
             if ($matches[1] == "First"){ $matches[1] = 1; }
@@ -72,7 +71,8 @@ class KickstarterParser {
             $pattern = '/">(.+) created<\/a>/';
             preg_match($pattern, $htmlData, $matches);
         }
-        $data['created'] = $matches[1];
+        $data['created'] = $matches[1];*/
+        $data['created'] = 1;
 
         // Backed
         $pattern = '/<span .+>(.+) backed<\/span>/';

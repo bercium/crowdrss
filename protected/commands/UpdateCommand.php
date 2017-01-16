@@ -132,7 +132,7 @@ class UpdateCommand extends CConsoleCommand {
                         $insert->rating = $rating;
                         $insert->save();
 
-//                      print_r($insert->getErrors());
+//print_r($insert->getErrors());
                     }
                     if ($count >= 30) {
                         $check = true;
