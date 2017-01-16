@@ -82,11 +82,16 @@ class UpdateCommand extends CConsoleCommand {
                     if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
                     $link_parts = explode("/", $link);
                     $count_link_parts = count($link_parts);
-                    $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
+/*                    $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3 OR image LIKE :image",
                                                             array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
                                                                   ':link2' => $data['links'][$j],
                                                                   ':link3' => $link,
-                                                                  ':image' => $data['images'][$j]));
+                                                                  ':image' => $data['images'][$j]));*/
+
+                    $project_check = Project::model()->find("link LIKE :link1  OR  link LIKE :link2  OR  link LIKE :link3",
+                                                            array(':link1' => '%/' . $link_parts[$count_link_parts - 1],
+                                                                  ':link2' => $data['links'][$j],
+                                                                  ':link3' => $link));
 
                     if ($project_check) { $count = $count + 1; } // Counter for checking if it missed some project in the next few projects
                     else {
@@ -112,7 +117,7 @@ class UpdateCommand extends CConsoleCommand {
                         if (isset($data_single['backed'])) $insert->creator_backed = $data_single['backed'];
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
                         $insert->save();
-
+                        
                         $id_project = $insert->id;
                         // Category add
                         $insert_category = new ProjectOrigcategory;
@@ -147,7 +152,7 @@ class UpdateCommand extends CConsoleCommand {
         if (!$platform->download) return;
         $id = $platform->id;
         $numberOfPages = 100;
-        $jsonData = $parser->linkParser($web->getHtml("https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages"));
+        $jsonData = $parser->linkParser($web->getHtml("https://www.indiegogo.com/private_api/explore?experiment=true&filter_funding=&filter_percent_funded=&filter_quick=new&filter_status=&locale=en&per_page=$numberOfPages", array("Mozilla/5.0 (Macintosh; Intel Mac OS X 10.7; rv:7.0.1) Gecko/20100101 Firefox/7.0.1")));
         if ($jsonData == null){ return false; }
         if (count($jsonData->campaigns)>$numberOfPages/2) {
             for ($j=0; $j<=count($jsonData->campaigns)-1; $j++) {

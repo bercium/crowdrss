@@ -17,6 +17,8 @@ class IndiegogoParser {
     }
 
     public function linkParser($htmlData) {
+        var_dump($htmlData); die;
+
         $htmlDataSplit = explode('{"campaigns":', $htmlData);
         $htmlData = '{"campaigns":'.$htmlDataSplit[1];
         $json = html_entity_decode($htmlData);
@@ -24,6 +26,7 @@ class IndiegogoParser {
     }
 
     public function projectParser($htmlData){
+
         $pattern = '/gon.tealium_data_layer=(.+);gon.domain/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])){$json = html_entity_decode($match[1]);}
@@ -33,7 +36,6 @@ class IndiegogoParser {
         $jsonData = json_decode($json);
         if ($jsonData == null){ return false; }
         if (!$jsonData->campaign_name) {return false;}
-
         $data['title'] = $jsonData->campaign_name;
         $data['image'] = $jsonData->campaign_image_url;
         // Description
@@ -65,6 +67,8 @@ class IndiegogoParser {
         $pattern = '/owner_name":"(.+)","currency"/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['creator'] = $match[1];
+                
+
 
         return($data);
     }

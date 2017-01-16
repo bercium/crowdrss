@@ -23,7 +23,7 @@ class KickstarterParser {
         }
         
         // Image Link
-        $pattern = '/class="project-thumbnail-img".*src="(.+)".{6}="/';
+        $pattern = '/class="project-thumbnail-img".*src="(.+)" \/>/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['images'] = str_replace("&amp;", "&", $matches[1]);
         return $data;
@@ -63,7 +63,8 @@ class KickstarterParser {
         $data['end_date'] = date("Y-m-d H:i:s", $jsonData->{'deadline'});
 
         // Created
-        $pattern = '/<span .+>(.+) created<\/span>/';
+        $pattern = '/<a class="medium navy-700 remote_modal_dialog" data-modal-title="About the creator" data-modal-class="modal_project_by" href="\/projects\/.+\/creator_bio">(.+)<\/a>/';
+//        $pattern = '/<span .+>(.+) created<\/span>/';
         preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
             if ($matches[1] == "First"){ $matches[1] = 1; }
@@ -149,8 +150,13 @@ class KickstarterParser {
         // If project ended
         $pattern = '/Project-ended-(.+) Project-is_/';
         preg_match($pattern, $htmlData, $matches);
-        if ($matches[1] == "true") $data['Bfinished'] = 1;
-        elseif ($matches[1] == "false") $data['Bfinished'] = 0;
+        if ($matches == array()){
+            $data['Bfinished'] = 0;
+        }else{
+          if ($matches[1] == "true") $data['Bfinished'] = 1;
+          elseif ($matches[1] == "false") $data['Bfinished'] = 0;
+        }
+
         
         if (isset($data['Bfinished']) && ($data['Bfinished'] == 1)){
           $this->projectRemoved();
@@ -169,7 +175,7 @@ class KickstarterParser {
 //      $data['#wordsFaq'] = 0;
       
         // Created
-        $pattern = '/<span .+>(.+) created<\/span>/';
+/*        $pattern = '/<span .+>(.+) created<\/span>/';
         preg_match($pattern, $htmlData, $matches);
         if (isset($matches[1])){
           if ($matches[1] == "First"){ $matches[1] = 1; }
@@ -177,7 +183,8 @@ class KickstarterParser {
           $pattern = '/">(.+) created<\/a>/';
   	  preg_match($pattern, $htmlData, $matches);
         }
-        $data['#personCreated'] = $matches[1];
+        $data['#personCreated'] = $matches[1]; */
+        $data['#personCreated'] = 1;
 
         // Backed
         $pattern = '/<span .+>(.+) backed<\/span>/';
@@ -206,7 +213,8 @@ class KickstarterParser {
         }else $data['#daysLong'] = 0;
 
         // State of project
-        $pattern = '/Project-state-(.+) Project/';
+        $pattern = '/data-project-state="(.+)">/';
+        //$pattern = '/Project-state-(.+) Project/';
         preg_match($pattern, $htmlData, $matches);
         if ($matches[1] == "successful") $data['Bsuccessful'] = 1;
         else $data['Bsuccessful'] = 0;
