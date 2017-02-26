@@ -85,11 +85,13 @@ class FeaturedProject {
         
         $hashids = new Hashids('crowdrss');
         
-        $h = floor(date("G") / 6)*6; // 4 comercials per day
+        //$h = floor(date("G") / 6)*6; // 4 comercials per day
+        $d = floor(date("d") / 6)*6; // 1 comercial per week
         
         $project->id = -1;
         $project->title = 'Crowdfunding RSS [★★★★★]'; //☆
-        $project->time_added = strtotime(date("Y-m-d ".$h.":00:00"));
+        //$project->time_added = strtotime(date("Y-m-d ".$h.":00:00"));
+        $project->time_added = strtotime(date("Y-m-".$d." 12:00:00"));
         $project->origCategory = new stdClass();
         $project->origCategory->name = 'Crowdfunding-rss';
         $project->link = 'http://crowdfundingrss.com/site/share?ref='.$this->sub->hash.'&lnk='. substr($hashids->encrypt(date("Ymd").$h),0,6);
