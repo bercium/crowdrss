@@ -22,7 +22,7 @@ if (!empty($this->pageTitle) && (Yii::app()->name != $this->pageTitle)) $fullTit
   <meta property="og:description" content="<?php echo $this->pageDesc; ?>" />
   <meta property="og:image" content="<?php if ($this->fbImage != ''){ echo $this->fbImage; } else echo Yii::app()->createAbsoluteUrl('/images/fb-logo.png'); ?>" />
   <meta property="og:url" content="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>"/>
-  <link rel="canonical" itemprop="url" href="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>" />
+<?php /* ?>  <link rel="canonical" itemprop="url" href="<?php echo Yii::app()->createAbsoluteUrl(Yii::app()->request->url); ?>" /><?php */ ?>
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="website" />
   
