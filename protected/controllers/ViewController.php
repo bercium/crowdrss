@@ -59,8 +59,10 @@ class ViewController extends Controller
 				case "Indiegogo": $rating_class = new IndiegogoRating($project->link, $project->id); /* echo "igg ".$project->link; */ break;
 			}
 
-			$rating_class->save = false;
-			$rating_detail = $rating_class->analize();
+            if ($rating_class){
+                $rating_class->save = false;
+                $rating_detail = $rating_class->analize();
+            }
 		}
         
         // redirect to project url in a few seconds
