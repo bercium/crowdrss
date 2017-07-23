@@ -78,7 +78,8 @@ class UpdateCommand extends CConsoleCommand {
             $data = $parser->linkParser($web->getHtml("https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest"));
             if (isset($data['links'])&&isset($data['images'])) {
                 for ($j=0; $j< 20; $j++) {
-                    $link = "https://www.kickstarter.com".$data['links'][$j];
+                    //$link = "https://www.kickstarter.com".$data['links'][$j];
+                    $link = $data['links'][$j];
                     if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
                     $link_parts = explode("/", $link);
                     $count_link_parts = count($link_parts);
@@ -116,6 +117,7 @@ class UpdateCommand extends CConsoleCommand {
                         if (isset($data_single['created'])) $insert->creator_created = $data_single['created'];
                         if (isset($data_single['backed'])) $insert->creator_backed = $data_single['backed'];
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
+                        var_dump($insert); die;
                         $insert->save();
                         
                         $id_project = $insert->id;
@@ -218,7 +220,7 @@ class UpdateCommand extends CConsoleCommand {
         if (!$platform->download) return;
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
-            $data = $parser->linkParser($web->getHtml("http://gogetfunding.com/wp-content/themes/ggf/campaigns.php", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type")));
+            $data = $parser->linkParser($web->getHtml("https://gogetfunding.com/campaigns/?type=recent_campaigns", array(), false, array("campaign_type" => "recent_campaigns", "page" => "$i", "step" => "get_campaigns_by_campaign_type")));
             if (isset($data['link'])) {
                 for ($j=0; $j < (count($data['link'] )); $j++) {
                     $link_check = Project::model()->findByAttributes(array('link' => $data['link'][$j]));

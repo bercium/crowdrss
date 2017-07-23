@@ -14,7 +14,8 @@ class KickstarterParser {
     
     public function linkParser($htmlData) {
         // Link
-        $pattern = '/(\/projects\/.+)\?ref=newest/';
+        //$pattern = '/(\/projects\/.+)\?ref=newest/';
+        $pattern = '/{"project":"(https:\/\/www.kickstarter.com\/projects\/.+)"\,"rewards":/';
         preg_match_all($pattern, $htmlData, $matches);
         if (is_array($matches)){
             foreach ($matches[1] as $key => $val){ $links[$val] = true; }
@@ -23,7 +24,7 @@ class KickstarterParser {
         }
         
         // Image Link
-        $pattern = '/class="project-thumbnail-img".*src="(.+)" \/>/';
+        $pattern = '/"full":"(.+)"\,"ed":"/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['images'] = str_replace("&amp;", "&", $matches[1]);
         return $data;

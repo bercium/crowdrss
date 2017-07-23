@@ -12,7 +12,7 @@ class GoGetFundingParser {
         // Image link
         $pattern_image = '/<img class="img-responsive" src="(.+)" alt="main-img">/';
         preg_match_all($pattern_image, $htmlData, $matches);
-        $data['image'] = $matches[1];
+        $data['image'] = $matches[1];        
         return $data;
     }
    
@@ -48,7 +48,7 @@ class GoGetFundingParser {
         $pattern = '/<a href="http:..gogetfunding.com.category.+">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['category'] = $match[1];
-        
+             
         return($data);
     }
     
