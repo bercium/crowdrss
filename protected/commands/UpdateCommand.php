@@ -117,7 +117,6 @@ class UpdateCommand extends CConsoleCommand {
                         if (isset($data_single['created'])) $insert->creator_created = $data_single['created'];
                         if (isset($data_single['backed'])) $insert->creator_backed = $data_single['backed'];
                         if (isset($data_single['goal'])) $insert->goal = $data_single['goal'];
-                        var_dump($insert); die;
                         $insert->save();
                         
                         $id_project = $insert->id;
