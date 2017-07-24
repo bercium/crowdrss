@@ -2,7 +2,7 @@
 
 class GoGetFundingParser {
     
-    public function linkParser($htmlData) {
+    public function linkParser($htmlData) { 
         // Link and Title
         $pattern_link = '/<h2 class="cat_h2 visible-xs-block hidden-sm hidden-md hidden-lg"><a href="(.+)">(.+)<\/a><\/h2>/';
         preg_match_all($pattern_link, $htmlData, $matches);

@@ -2,7 +2,7 @@
 //set_time_limit(60*5); //5 min
 class UpdateCommand extends CConsoleCommand {
 
-//  Function for emailing of problematic project
+//  Function for emailing of problematic project 
     function errorMail($link, $category, $id) {
         $message = new YiiMailMessage;
         $message->view = 'system';
