@@ -4,12 +4,12 @@ class PledgeMusicParser {
    
     public function linkParser($htmlData) {
         //Link
-        $pattern_link = '/(\/projects.+)\?referrer=launched/';
+        $pattern_link = '/href="(http:\/\/www.pledgemusic.com\/projects\/.+)" class="" /';
         preg_match_all($pattern_link, $htmlData, $matches);
         $data['link'] = $matches[1];
         
         // Image link
-        $pattern_image = '/alt="Mobile" src="(.+)" \/>/';
+        $pattern_image = '/<img src="(.+)" class="" data-reactid="3"/';
         preg_match_all($pattern_image, $htmlData, $matches);
         $data['image'] = $matches[1];
         return $data;
@@ -17,9 +17,9 @@ class PledgeMusicParser {
     
     public function projectParser($htmlData){
         // Title
-        $pattern = '/<h1>(.+)<\/h1>/';
+        $pattern = '/<h1 itemprop=\'name\'>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = $match[1];
+        $data['title'] = html_entity_decode($match[1]);
 
         // Description
         $pattern = '/<meta content=.(.+). itemprop=.description.>/';
@@ -39,7 +39,7 @@ class PledgeMusicParser {
         // Creator
         $pattern = '/<h1 itemprop=.name.>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])) $data['creator'] = $match[1];
+        if (isset($match[1])) $data['creator'] = html_entity_decode($match[1]);
         
         // Time
         $pattern = '/<div class=.timer.>(\d+).+<\/div>/';
@@ -47,9 +47,9 @@ class PledgeMusicParser {
         if (isset($match[1])) $data['time'] = $match[1];
         
         // Location 
-        $pattern = '/<a href="\/artists\?country=.+">(.+)<\/a>/';
-        preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])) $data['location'] = $match[1];
+//        $pattern = '/<a href="\/artists\?country=.+">(.+)<\/a>/';
+//        preg_match($pattern, $htmlData, $match);
+//        if (isset($match[1])) $data['location'] = $match[1];
 
         // Category
         $pattern = '/<div class=.genres.>(.+)<\/div>/';

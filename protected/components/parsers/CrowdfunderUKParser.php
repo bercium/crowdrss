@@ -13,7 +13,6 @@ class CrowdfunderUKParser {
         $pattern = '/<img src="(http.+)" alt/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['images'] = $matches[1];
-
         return $data;
     }
    
@@ -29,31 +28,30 @@ class CrowdfunderUKParser {
         $data['description'] = $match[1];
 
         // Creator
-        $pattern = '/title=">(.+)"><i class/';
+        $pattern = '/<a href="http:..www.crowdfunder.co.uk.user.+?">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['creator'] = $match[1];        
 
         // Location
-        $pattern = '/<a href="\/projects\/search\/string:.+\/">(.+) {12}<\/a>/';
-        preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])) $data['location'] = $match[1];
+//        $pattern = '/<a href="\/projects\/search\/string:.+\/">(.+) {12}<\/a>/';
+//        preg_match($pattern, $htmlData, $match);
+//        if (isset($match[1])) $data['location'] = $match[1];
         
         // Goal
-        $pattern = '/Raised of (.+) target/';
+        $pattern = '/raised of (.+) target/';
         preg_match($pattern, $htmlData, $match);
-        if (isset($match[1])) $data['goal'] = $match[1];
+        if (isset($match[1])) $data['goal'] = html_entity_decode($match[1]);
         
         // Days to end
-        $pattern = '/by (.+\d{4})<\/p>/';
+        $pattern = '/by (.+\d{4})<\/small>/';
         preg_match($pattern, $htmlData, $match);
         //var_dump($match[1]);
         if (isset($match[1])) $data['end_date'] = strtotime($match[1]);
 
         // Category
-        $pattern = '/<a href="\/projects\/search\/category:.+">(.+)<\/a>/';
+        $pattern = '/<a href="\/projects\/search\/category:.+"><\/i> (.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['category'] = $match[1];
-        
         return($data);
     }
     

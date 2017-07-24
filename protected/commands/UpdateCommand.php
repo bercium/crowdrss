@@ -145,7 +145,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-//  Indiegogo store to DB
+//  Indiegogo store to DB (Not Working)
     public function actionIndiegogo() {
         $parser = new IndiegogoParser();
         $web = new webText();
@@ -264,7 +264,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-//  FundAnything store in to DB
+//  FundAnything store in to DB (Not Working)
     public function actionFundAnything() {
         $parser = new FundAnythingParser();
         $web = new webText();
@@ -355,7 +355,7 @@ class UpdateCommand extends CConsoleCommand {
                         $insert_category->project_id = $id_project;
                         $category = $this->checkCategory($data_single['category'], $link, "");
                         $insert_category->orig_category_id = $category->id;
-                        $insert_category->save();
+                       $insert_category->save();
 //                      print_r($insert->getErrors());
                     }
                     if ($count >= 10) {
@@ -379,9 +379,10 @@ class UpdateCommand extends CConsoleCommand {
         if (!$platform->download) return;
         $id = $platform->id;
         while (($i <= 10) and ($check == false)) {
-            $data = $parser->linkParser($web->getHtml("http://www.pledgemusic.com/projects/index/launched?page=$i"));
+            $data = $parser->linkParser($web->getHtml("https://www.pledgemusic.com/projects?page=$i"));
             for ($j=0; $j < (count($data['link'])); $j++) {
-                $link = "http://www.pledgemusic.com".$data['link'][$j];
+                //$link = "http://www.pledgemusic.com".$data['link'][$j];
+                $link = $data['link'][$j];
                 if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
                 $link_parts = explode("/", $link);
                 $count_link_parts = count($link_parts);
@@ -445,7 +446,7 @@ class UpdateCommand extends CConsoleCommand {
         $i = 1;
         $check = false;
         $count = 0;
-        while (($i <= 5) and ($check == false)) {
+        while (($i <= 10) and ($check == false)) {
             $data = $parser->linkParser($web->getHtml("http://www.ulule.com/discover/filter/new/$i/"));
             if (isset($data['links'])) {
                 for ($j=0; $j < (count($data['links'] )); $j++) {
@@ -501,7 +502,7 @@ class UpdateCommand extends CConsoleCommand {
         }
     }
 
-// Pozible store to DB
+// Pozible store to DB (Not Working)
     public function actionPozible() {
         $platform = Platform::model()->findByAttributes(array('name' => 'Pozible'));
         if (!$platform->download) return;
@@ -618,7 +619,7 @@ class UpdateCommand extends CConsoleCommand {
         //}
     }
 
-// FundedByMe store to DB
+// FundedByMe store to DB (Not Working)
     public function actionFundedByMe() {
         $platform = Platform::model()->findByAttributes(array('name' => 'FundedByMe'));
         if (!$platform->download) return;
