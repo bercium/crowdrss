@@ -4,7 +4,7 @@ class UluleParser {
     
     public function linkParser($htmlData) {
         // Link
-        $pattern = '/<div class="title"><a href="(http:\/\/www.ulule.com.+)" title.+<\/a><\/div>/';
+        $pattern = '/class="invisible-full " href="(.+)"><div class="about">/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['links'] = $matches[1];
         
@@ -14,7 +14,7 @@ class UluleParser {
         $data['images'] = $matches[1];
         
         // Category
-        $pattern = '/<a href="http:\/\/www.ulule.com\/discover\/tags\/.+" title="(.+)\'s projects">.+<\/a><\/div><\/div>/';
+        $pattern = '/<.span><a href="https:..www.ulule.com.discover.tags.+" title="(.+)\'s projects">/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['categories'] = $matches[1];
         return $data;
@@ -47,7 +47,7 @@ class UluleParser {
         if (isset($match[1])) $data['location'] = $match[1];
         
         // Goal
-        $pattern = '/committed on a goal of <b>(.+)<\/b><\/p>/';
+        $pattern = '/data-currency=".+" data-value=".+">(.+)<\/b>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['goal'] = $match[1];
         else{
@@ -65,7 +65,6 @@ class UluleParser {
 //        $pattern = '/<a href="http:\/\/www.ulule.com\/discover\/tags\/.+<\/i>&nbsp;(.+)/';
 //        preg_match_all($pattern, $htmlData, $matches);
 //        if (isset($matches[1])) $data['categories'] = $matches[1];
-        
         return($data);
     }
     

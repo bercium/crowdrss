@@ -13,16 +13,15 @@ class PledgeMeParser {
         $pattern = '/src="(https:\/\/s3\-ap\-southeast\-2\.amazonaws\.com\/pledgeme.+)" \/>/';
         preg_match_all($pattern, $htmlData, $matches);
         $data['images'] = $matches[1];
-
         return $data;
     }
    
     public function projectParser($htmlData){
         // Title
-        $pattern = '/<title>(.+) \| PledgeMe<\/title>/';
+        $pattern = '/<title>.(.+) \| PledgeMe.+<\/title>/s';
         preg_match($pattern, $htmlData, $match);
         $data['title'] = $match[1];
-                
+
         // Description
         $pattern = '/<meta content=.(.+). name=.description.>/';
         preg_match($pattern, $htmlData, $match);
@@ -51,7 +50,6 @@ class PledgeMeParser {
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['category'] = $match[1];
         else $data['category'] = "Other";
-
         return($data);
     }
     

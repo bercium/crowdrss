@@ -2,7 +2,7 @@
 
 class GoGetFundingParser {
     
-    public function linkParser($htmlData) {
+    public function linkParser($htmlData) { 
         // Link and Title
         $pattern_link = '/<h2 class="cat_h2 visible-xs-block hidden-sm hidden-md hidden-lg"><a href="(.+)">(.+)<\/a><\/h2>/';
         preg_match_all($pattern_link, $htmlData, $matches);
@@ -10,7 +10,7 @@ class GoGetFundingParser {
         $data['title'] = $matches[2];
 
         // Image link
-        $pattern_image = '/<img class="img-responsive" src="(.+)" alt="main-img">/';
+        $pattern_image = '/class="img-responsive" src="(.+)" alt="main-img">/';
         preg_match_all($pattern_image, $htmlData, $matches);
         $data['image'] = $matches[1];
         return $data;
@@ -18,12 +18,12 @@ class GoGetFundingParser {
    
     public function projectParser($htmlData){
         // Goal
-        $pattern = '/<p class="brokersText-1">Donated of (.+) goal<\/p>/';
+        $pattern = '/Donated of (.+)<\/p>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['goal'] = html_entity_decode($match[1]);
 
         // Creator
-        $pattern = '/<a target="_blank" href="http:..gogetfunding.com.user..uid=\d+">(.+)<\/a>/';
+        $pattern = '/uid=\d+">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['creator'] = $match[1];
         
@@ -33,7 +33,7 @@ class GoGetFundingParser {
         if (isset($match[1])) $data['end_date'] = $match[1];
 
         // Location
-        $pattern = '/<a href="http:..gogetfunding.com.campaigns.country=.+">(.+)<\/a>/';
+        $pattern = '/country=.+">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['location'] = $match[1];
         
@@ -45,10 +45,9 @@ class GoGetFundingParser {
         $data['description'] = $description . " ...";
         
         // Category
-        $pattern = '/<a href="http:..gogetfunding.com.category.+">(.+)<\/a>/';
+        $pattern = '/category\/.+">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['category'] = $match[1];
-        
         return($data);
     }
     

@@ -33,7 +33,8 @@ class FundRazrParser {
         if (isset($match[1])) $data['creator'] = $split[1];
         
         // Description
-        $pattern = '/<span class="content">(.+)<\/span>/';
+        $pattern = '/data-update-attribute="introduction">(.+)
+								<\/span>.+<a data-action="view-story"/s';
         preg_match($pattern, $htmlData, $match);
         $data['description'] = strip_tags($match[1]);
 
@@ -43,7 +44,7 @@ class FundRazrParser {
         $data['category'] = $match[1];
 
         // Location
-        $pattern = '/<a href="https:..fundrazr.com.find.loc=\d+" target="_blank" class="muted" title="Find more campaigns here">(.+)<\/a><\/span>/';
+        $pattern = '/formattedAddress":"(.+)","latitude"/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['location'] = $match[1];
         
