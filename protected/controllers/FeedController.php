@@ -26,7 +26,7 @@ class FeedController extends Controller {
 	 * @param type $id
 	 * @return string
 	 */
-	private function FcreateRssItem($project, $id, $track = true) {
+	private function createRssItem($project, $id, $track = true) {
 		$rssResponse = '<item>' . PHP_EOL;
 		$rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>' . PHP_EOL;
 		$rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e", strtotime($project->time_added)) . '</pubDate>' . PHP_EOL;
