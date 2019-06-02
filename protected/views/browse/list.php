@@ -1,5 +1,7 @@
 <?php 
 $this->pageTitle = $title;
+
+if (!isset($count)) $count = 0;
 ?>
 
   <div class="pb50 pt50">

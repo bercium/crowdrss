@@ -208,7 +208,7 @@ class FeedController extends Controller {
 		Yii::app()->clientScript->reset();
 		$this->layout = 'none';
 
-		//header('Content-Type', 'application/rss+xml;charset=utf-8'); 
+		//header('Content-Type', 'application/rss+xml;charset=utf-8');
 		//header('Content-Type: application/rss+xml; charset=UTF-8');
 		mb_internal_encoding("UTF-8");
 

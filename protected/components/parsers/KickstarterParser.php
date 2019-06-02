@@ -19,7 +19,7 @@ class KickstarterParser {
         preg_match_all($pattern, $htmlData, $matches);
         if (is_array($matches)){
             foreach ($matches[1] as $key => $val){ $links[$val] = true; }
-            if (is_array($links)) $data['links'] = array_keys($links);
+            if (isset($links) && is_array($links)) $data['links'] = array_keys($links);
             else $data['links'] = array();
         }
         

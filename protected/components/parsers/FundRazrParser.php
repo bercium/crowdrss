@@ -36,7 +36,8 @@ class FundRazrParser {
         $pattern = '/data-update-attribute="introduction">(.+)
 								<\/span>.+<a data-action="view-story"/s';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = strip_tags($match[1]);
+        if (isset($match[1])) $data['description'] = strip_tags($match[1]);
+        $data['description'] = '';
 
         // Category
         $pattern = '/"category":"(.+)","contributionAmount/';
