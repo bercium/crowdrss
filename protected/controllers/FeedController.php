@@ -26,7 +26,7 @@ class FeedController extends Controller {
 	 * @param type $id
 	 * @return string
 	 */
-	private function createRssItem($project, $id, $track = true) {
+	private function FcreateRssItem($project, $id, $track = true) {
 		$rssResponse = '<item>' . PHP_EOL;
 		$rssResponse .= '<title><![CDATA[' . $project->title . ']]></title>' . PHP_EOL;
 		$rssResponse .= '<pubDate>' . date("D, d M Y H:i:s e", strtotime($project->time_added)) . '</pubDate>' . PHP_EOL;
@@ -209,7 +209,7 @@ class FeedController extends Controller {
 		$this->layout = 'none';
 
 		//header('Content-Type', 'application/rss+xml;charset=utf-8'); 
-		header('Content-Type: application/rss+xml; charset=UTF-8');
+		//header('Content-Type: application/rss+xml; charset=UTF-8');
 		mb_internal_encoding("UTF-8");
 
 
