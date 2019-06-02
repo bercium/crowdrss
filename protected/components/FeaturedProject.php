@@ -65,7 +65,7 @@ class FeaturedProject {
               if ($featuredProject->rating) $featuredProject->rating += 11;
               else $featuredProject->rating = 11;
 			  
-			  $h = floor(date("G") / 6)*6; // 4 comercials per day
+              $h = floor(date("G") / 6)*6; // 4 comercials per day
               $featuredProject->time_added = strtotime(date("Y-m-d ".$h.":00:00"));
 
               break;
