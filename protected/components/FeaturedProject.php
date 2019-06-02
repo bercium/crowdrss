@@ -94,7 +94,7 @@ class FeaturedProject {
         $project->time_added = strtotime(date("Y-m-".$d." 12:00:00"));
         $project->origCategory = new stdClass();
         $project->origCategory->name = 'Crowdfunding-rss';
-        $project->link = 'http://crowdfundingrss.com/site/share?ref='.$this->sub->hash.'&lnk='. substr($hashids->encrypt(date("Ymd").$h),0,6);
+        $project->link = 'http://crowdfundingrss.com/site/share?ref='.$this->sub->hash.'&lnk='. substr($hashids->encrypt(date("Ymd").$d),0,6);
         $project->image = 'http://crowdfundingrss.com/images/cf-rss-show-small.png';
         $tracking_link = "http://crowdfundingrss.com/feed/rl?l=".urlencode("/site/share?ref=".$this->sub->hash).'&i='.$this->sub->id;
         $project->description = 'We here at CrowdfundingRSS ❤<strong>LOVE you guys</strong>❤.<br />If you find our service usefull <strong><a href="'.$tracking_link.'">tell your friends</a></strong> about us so they might enjoy it too. By doing that you are helping us build the best crowdfunding digest site. <br /><strong>📢 <a href="'.$tracking_link.'">Invite them NOW</a>.</strong>';
