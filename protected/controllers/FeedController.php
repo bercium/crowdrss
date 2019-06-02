@@ -209,7 +209,7 @@ class FeedController extends Controller {
 		$this->layout = 'none';
 
 		//header('Content-Type', 'application/rss+xml;charset=utf-8');
-		//header('Content-Type: application/rss+xml; charset=UTF-8');
+		header('Content-Type: application/rss+xml; charset=UTF-8');
 		mb_internal_encoding("UTF-8");
 
 
