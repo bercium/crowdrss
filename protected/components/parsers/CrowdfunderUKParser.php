@@ -20,12 +20,12 @@ class CrowdfunderUKParser {
         // Title
         $pattern = '/<meta property="og:title" content="(.+)" \/>/';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = $match[1];
+        if (isset($match[1])) $data['title'] = $match[1];
 
         // Description
         $pattern = '/<meta property="og:description" content="(.+)" \/>.<meta property="og:image"/s';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = $match[1];
+        if (isset($match[1])) $data['description'] = $match[1];
 
         // Creator
         $pattern = '/<a href="http:..www.crowdfunder.co.uk.user.+?">(.+)<\/a>/';

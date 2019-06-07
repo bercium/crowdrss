@@ -42,7 +42,7 @@ class FundRazrParser {
         // Category
         $pattern = '/"category":"(.+)","contributionAmount/';
         preg_match($pattern, $htmlData, $match);
-        $data['category'] = $match[1];
+        if (isset($match[1])) $data['category'] = $match[1];
 
         // Location
         $pattern = '/formattedAddress":"(.+)","latitude"/';

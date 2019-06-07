@@ -40,10 +40,11 @@ class GoGetFundingParser {
         // Description
         $pattern = '/<div id="contentxsLimit" class="brokersText-27">(.+)/';
         preg_match($pattern, $htmlData, $match);
-        $description = strip_tags($match[1]);
-        $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
-        $data['description'] = $description . " ...";
-        
+        if (isset($match[1])) {
+          $description = strip_tags($match[1]);
+          $description = preg_replace('/\s+?(\S+)?$/', '', substr($description, 0, 201));
+          $data['description'] = $description . " ...";
+        }
         // Category
         $pattern = '/category\/.+">(.+)<\/a>/';
         preg_match($pattern, $htmlData, $match);

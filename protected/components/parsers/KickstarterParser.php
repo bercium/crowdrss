@@ -5,6 +5,7 @@ class KickstarterParser {
     public function statusParser($htmlData) {
         $pattern = '/window.current_project = "(.+)";/'; 
         preg_match($pattern, $htmlData, $match);
+        if (!isset($match[1])) return false;
         $json = html_entity_decode($match[1]);
         $json = str_replace('\\"', "\'", $json);
         $jsonData = json_decode($json);

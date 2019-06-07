@@ -149,11 +149,11 @@ class IndiegogoParser {
         $pattern_updates = '/Updates","count":(\d+),"disabled"/';
         $pattern_backers = '/Backers","count":(\d+),"disabled"/';
         preg_match($pattern_comments, $htmlData, $match);
-        $data['#comments'] = $match[1];
+        if (isset($match[1])) $data['#comments'] = $match[1];
         preg_match($pattern_updates, $htmlData, $match);
-        $data['#updates'] = $match[1];
+        if (isset($match[1])) $data['#updates'] = $match[1];
         preg_match($pattern_backers, $htmlData, $match);
-        $data['#backers'] = $match[1];
+        if (isset($match[1])) $data['#backers'] = $match[1];
 
         // Rased money
         $data['$raised'] = $jsonData->collected_funds * $convert;

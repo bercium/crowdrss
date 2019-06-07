@@ -19,7 +19,7 @@ class PledgeMusicParser {
         // Title
         $pattern = '/<h1 itemprop=\'name\'>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = html_entity_decode($match[1]);
+        if (isset($match[1])) $data['title'] = html_entity_decode($match[1]);
 
         // Description
         $pattern = '/<meta content=.(.+). itemprop=.description.>/';

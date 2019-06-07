@@ -20,17 +20,17 @@ class PledgeMeParser {
         // Title
         $pattern = '/<title>.(.+) \| PledgeMe.+<\/title>/s';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = $match[1];
+        if (isset($match[1])) $data['title'] = $match[1];
 
         // Description
         $pattern = '/<meta content=.(.+). name=.description.>/';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = $match[1];
+        if (isset($match[1])) $data['description'] = $match[1];
         
         // Creator
         $pattern = '/<meta content=.(.+). name=.author.>/';
         preg_match($pattern, $htmlData, $match);
-        $data['creator'] = $match[1];
+        if (isset($match[1])) $data['creator'] = $match[1];
         
         // Goal
         $pattern = '/title=.Target: (.+).><\/a>/';

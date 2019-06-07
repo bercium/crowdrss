@@ -21,17 +21,17 @@ class FundedByMeParser {
         // Title
         $pattern = '/<h1>(.+)<\/h1>/';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = $match[1];
+        if (isset($match[1])) $data['title'] = $match[1];
 
         // Description
         $pattern = '/<meta property="og:description" content="(.+)"\/>/';
         preg_match($pattern, $htmlData, $match);
-        $data['description'] = $match[1];
+        if (isset($match[1])) $data['description'] = $match[1];
 
         // Creator
         $pattern = '/<h5 class="colorHeading">(.+)<\/h5>/';
         preg_match($pattern, $htmlData, $match);
-        $data['creator'] = $match[1];        
+        if (isset($match[1])) $data['creator'] = $match[1];        
 
         // Location
         $pattern = '/icon-location-on"><\/i>\s([a-zA-Z,]+)\s<\/a>/s';

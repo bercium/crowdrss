@@ -26,9 +26,11 @@ class PozibleParser {
         // Title & Creator
         $pattern = '/<title>(.+)<\/title>/';
         preg_match($pattern, $htmlData, $match);
-        $splited = explode(" by ", $match[1]);
-        $data['title'] = $splited[0];
-        if (isset($splited[1])) $data['creator'] = $splited[1];
+        if (isset($match[1])) {
+          $splited = explode(" by ", $match[1]);
+          $data['title'] = $splited[0];
+          if (isset($splited[1])) $data['creator'] = $splited[1];
+        }
 
         // Description
         $pattern = '/<\/h2><div class="v3p_p">(.+)<\/div>/';

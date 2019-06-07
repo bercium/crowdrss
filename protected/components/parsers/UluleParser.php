@@ -24,7 +24,7 @@ class UluleParser {
         // Title
         $pattern = '/<title>(.+) - Ulule<\/title>/';
         preg_match($pattern, $htmlData, $match);
-        $data['title'] = $match[1];
+        if (isset($match[1])) $data['title'] = $match[1];
         
         // Description
         $pattern = '/<section class="from-editor">(.+)/s';

@@ -78,6 +78,7 @@ class UpdateCommand extends CConsoleCommand {
             $data = $parser->linkParser($web->getHtml("https://www.kickstarter.com/discover/advanced?page=$i&state=live&sort=newest"));
             if (isset($data['links'])&&isset($data['images'])) {
                 for ($j=0; $j< 20; $j++) {
+                    if (!isset($data['links'][$j])) break; // no data
                     //$link = "https://www.kickstarter.com".$data['links'][$j];
                     $link = $data['links'][$j];
                     if (strpos($link,"?") !== false) $link = substr($link, 0, strpos($link,"?"));
