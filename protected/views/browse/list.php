@@ -151,12 +151,12 @@ if (!isset($count)) $count = 0;
     <div class="row">
         <div class="columns">
             <h3>More <?php echo $listType." ".$count; ?> lists</h3>
-            <?php if ($platforms){
+            <?php if (!empty($platforms)){
                 foreach ($platforms as $p){
                     echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'/'.str_replace(" ","-",$p->name).'">'. ucfirst($listType)." ".$count." ".$p->name." projects</a><br />";
                 }
             } ?>
-            <?php if ($categories){
+            <?php if (!empty($categories)){
                 foreach ($categories as $c){
                     if ($platform) echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'/'.$platform.'/'.str_replace(" ","-",str_replace("&","_",$c->name)).'">'. ucfirst($listType)." ".$count." ".ucfirst(str_replace ("-", " ", $platform))." ".$c->name." projects</a><br />";
                     else echo '<a href="'.Yii::app()->params['absoluteHost'].$listType.$count.'//'.str_replace(" ","-",str_replace("&","_",$c->name)).'">'. ucfirst($listType)." ".$count." ".$c->name." projects</a><br />";

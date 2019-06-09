@@ -37,12 +37,13 @@ class FundRazrParser {
 								<\/span>.+<a data-action="view-story"/s';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['description'] = strip_tags($match[1]);
-        $data['description'] = '';
+        else $data['description'] = '';
 
         // Category
         $pattern = '/"category":"(.+)","contributionAmount/';
         preg_match($pattern, $htmlData, $match);
         if (isset($match[1])) $data['category'] = $match[1];
+        else $data['category'] = '';
 
         // Location
         $pattern = '/formattedAddress":"(.+)","latitude"/';

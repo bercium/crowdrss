@@ -412,7 +412,7 @@ class SiteController extends Controller {
          */
         $web = new webText();
         $post = null;
-        if (isset($_POST['new_link'])){
+        if (isset($_POST['new_link']) && isset($_POST['g-recaptcha-response'])){
             $GRecaptchaResponse = $_POST['g-recaptcha-response'];
             $secret = "6LfsQBgTAAAAAPTvmA7hSGl-uA3x0XXsdChdhVeB";
             $validateRecaptcha = $web->getHtml("https://www.google.com/recaptcha/api/siteverify", array(), false, array("secret" => $secret, "response" => $GRecaptchaResponse));
