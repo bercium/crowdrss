@@ -209,9 +209,10 @@ class FeedController extends Controller {
 		$this->layout = 'none';
 
 		//header('Content-Type', 'application/rss+xml;charset=utf-8');
-		header('Content-Type: application/rss+xml; charset=UTF-8');
-		mb_internal_encoding("UTF-8");
-
+    if (!isset($_GET['test'])){
+      header('Content-Type: application/rss+xml; charset=UTF-8');
+      mb_internal_encoding("UTF-8");
+    }
 
 //   $rssResponse .= '<webMaster>team@eberce.si</webMaster>';
 		//$data hash tag for
