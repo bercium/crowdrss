@@ -463,9 +463,10 @@ class FeedController extends Controller {
 			$feedClick->project_id = $project->id;
 			$feedClick->subscription_id = $i;
 			$feedClick->save();
+      
+      $this->redirect($l);
 		}
-
-		$this->redirect($l);
+		header("HTTP/1.0 404 Not Found");
 		Yii::app()->end();
 	}
 
