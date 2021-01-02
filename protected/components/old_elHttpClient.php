@@ -198,10 +198,10 @@
         	$this->__construct($cURLMultiInstance, $cURLInstance);
         }*/
         function __construct($cURLMultiInstance = null, $cURLInstance = null) {
-            $cURLMultiInstance    = ($cURLMultiInstance == null ? null : (get_class($cURLMultiInstance) == 'elHttpMClient' ?
-            	$cURLMultiInstance->cURLMultiInstance : $cURLMultiInstance));
-            $cURLInstance         = ($cURLInstance == null ? null : (get_class($cURLInstance) !== 'elHttpClient' ?
-            	$cURLInstance->cURLInstance : $cURLInstance));
+            $cURLMultiInstance    = (get_class($cURLMultiInstance) == 'elHttpMClient' ?
+            	$cURLMultiInstance->cURLMultiInstance : $cURLMultiInstance);
+            $cURLInstance         = (get_class($cURLInstance) !== 'elHttpClient' ?
+            	$cURLInstance->cURLInstance : $cURLInstance);
             if (!is_null($cURLMultiInstance) && get_resource_type($cURLMultiInstance) != 'curl') $cURLMultiInstance = null;
             $this->cURLMultiInstance = $cURLMultiInstance;
             //$this->cookieJar        = dirname(__FILE__).'/cookies.curl.txt';
